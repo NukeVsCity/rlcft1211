@@ -1,0 +1,23 @@
+{
+  "family": "rlgen:fir",
+  "tapering": 0.3,
+  "signal_energy": 26.0,
+  "up_probability": 7,
+  "lowest_branch_height": 6,
+  "growth_rate": 0.9,
+  "growth_logic_kit": "conifer",
+  "leaves_properties": "rlgen:dt_fir",
+  "preferred_climate": "cold",
+  "climate_tolerance": 0.5,
+  "generate_seed": false,
+  "generate_sapling": false,
+  "acceptable_soils": [
+    "dirt_like"
+  ],
+  "world_gen_acceptable_soils": [
+    "snow_like"
+  ],
+  "features": [
+    "conifer_topper"
+  ]
+}

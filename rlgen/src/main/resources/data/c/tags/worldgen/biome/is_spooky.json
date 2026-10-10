@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "rlgen:forest_tenebra",
+    "rlgen:mutated_roofed_forest",
+    "rlgen:roofed_forest"
+  ]
+}

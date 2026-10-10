@@ -1,0 +1,8 @@
+{
+  "common_leaves": "rlgen:dt_fir",
+  "common_species": "rlgen:fir",
+  "primitive_log": "rlgen:fir_log",
+  "primitive_stripped_log": "minecraft:stripped_spruce_log",
+  "max_branch_radius": 24,
+  "conifer_variants": true
+}

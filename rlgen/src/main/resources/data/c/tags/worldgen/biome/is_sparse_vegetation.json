@@ -1,0 +1,23 @@
+{
+  "replace": false,
+  "values": [
+    "rlgen:arid_highland",
+    "rlgen:cliffs",
+    "rlgen:crag_cliffs",
+    "rlgen:extreme_hills",
+    "rlgen:extreme_hills_with_trees",
+    "rlgen:hills_defiled",
+    "rlgen:jungle_edge",
+    "rlgen:mesa_rock",
+    "rlgen:mutated_extreme_hills",
+    "rlgen:mutated_extreme_hills_with_trees",
+    "rlgen:mutated_jungle_edge",
+    "rlgen:mutated_mesa_rock",
+    "rlgen:mutated_savanna",
+    "rlgen:mutated_savanna_rock",
+    "rlgen:rocky_plateau",
+    "rlgen:savanna",
+    "rlgen:savanna_rock",
+    "rlgen:smaller_extreme_hills"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "rlgen:cliffs",
+    "rlgen:crag_cliffs",
+    "rlgen:extreme_hills",
+    "rlgen:extreme_hills_with_trees",
+    "rlgen:hills_defiled",
+    "rlgen:mutated_extreme_hills",
+    "rlgen:mutated_extreme_hills_with_trees",
+    "rlgen:smaller_extreme_hills"
+  ]
+}

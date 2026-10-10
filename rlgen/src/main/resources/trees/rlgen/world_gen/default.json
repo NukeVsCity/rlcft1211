@@ -1,0 +1,1345 @@
+[
+  {
+    "select": {
+      "name": "rlgen:ocean"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "oak": 1
+        }
+      },
+      "density": "noise() * 0.0",
+      "chance": "standard"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:plains"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "oak": 24,
+          "apple_oak": 1
+        }
+      },
+      "density": "noise() * 0.0",
+      "chance": "standard"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:desert"
+    },
+    "apply": {
+      "species": "...",
+      "density": "noise() * 0.6 + 0.4",
+      "chance": 0.075
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:extreme_hills"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "spruce": 2,
+          "oak": 1
+        }
+      },
+      "density": "noise() * 0.0",
+      "chance": "standard"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:forest"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "oak": 4,
+          "birch": 1
+        }
+      },
+      "density": "noise() * 1.0",
+      "chance": 1.0,
+      "forestness": 1.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:taiga"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "spruce": 1
+        }
+      },
+      "density": "noise() * 1.0",
+      "chance": {
+        "math": {
+          "ifgt": [
+            "radius",
+            6,
+            0.5,
+            1.0
+          ]
+        }
+      },
+      "forestness": 1.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:swampland"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "swamp_oak": 1
+        }
+      },
+      "density": "noise() * 0.2",
+      "chance": 0.75
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:river"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "oak": 1
+        }
+      },
+      "density": "noise() * 0.0",
+      "chance": 0.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:frozen_ocean"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "spruce": 1
+        }
+      },
+      "density": "noise() * 0.0",
+      "chance": "standard"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:frozen_river"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "spruce": 1
+        }
+      },
+      "density": "noise() * 0.0",
+      "chance": 0.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:ice_flats"
+    },
+    "apply": {
+      "species": "...",
+      "density": "noise() * 0.0",
+      "chance": "standard"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:ice_mountains"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "spruce": 1
+        }
+      },
+      "density": "noise() * 0.0",
+      "chance": "standard"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mushroom_island"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "...": 7
+        }
+      },
+      "density": "noise() * 0.25 + 0.25",
+      "chance": 0.66
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mushroom_island_shore"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "...": 7
+        }
+      },
+      "density": "noise() * 0.25 + 0.25",
+      "chance": 0.66
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:beaches"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "oak": 1
+        }
+      },
+      "density": "noise() * -1.0",
+      "chance": 0.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:desert_hills"
+    },
+    "apply": {
+      "species": "...",
+      "density": "noise() * 0.6 + 0.4",
+      "chance": 0.075
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:forest_hills"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "oak": 4,
+          "birch": 1
+        }
+      },
+      "density": "noise() * 1.0",
+      "chance": 1.0,
+      "forestness": 1.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:taiga_hills"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "spruce": 1
+        }
+      },
+      "density": "noise() * 1.0",
+      "chance": {
+        "math": {
+          "ifgt": [
+            "radius",
+            6,
+            0.5,
+            1.0
+          ]
+        }
+      },
+      "forestness": 1.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:smaller_extreme_hills"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "spruce": 2,
+          "oak": 1
+        }
+      },
+      "density": "noise() * 0.3",
+      "chance": "standard"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:jungle"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "jungle": 5,
+          "mega_jungle": 1
+        }
+      },
+      "density": "noise() * 1.0",
+      "chance": "standard",
+      "forestness": 1.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:jungle_hills"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "jungle": 5,
+          "mega_jungle": 1
+        }
+      },
+      "density": "noise() * 1.0",
+      "chance": "standard",
+      "forestness": 1.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:jungle_edge"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "jungle": 5,
+          "mega_jungle": 1
+        }
+      },
+      "density": "noise() * 0.2",
+      "chance": 1.0,
+      "forestness": 1.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:deep_ocean"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "oak": 1
+        }
+      },
+      "density": "noise() * 0.0",
+      "chance": "standard"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:stone_beach"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "oak": 1
+        }
+      },
+      "density": "noise() * -1.0",
+      "chance": 0.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:cold_beach"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "spruce": 1
+        }
+      },
+      "density": "noise() * -1.0",
+      "chance": 0.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:birch_forest"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "birch": 1
+        }
+      },
+      "density": "noise() * 1.0",
+      "chance": 1.0,
+      "forestness": 1.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:birch_forest_hills"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "birch": 1
+        }
+      },
+      "density": "noise() * 1.0",
+      "chance": 1.0,
+      "forestness": 1.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:roofed_forest"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "dark_oak": 1
+        }
+      },
+      "density": "noise() / 3.0",
+      "chance": 1.0,
+      "forestness": 1.0,
+      "multipass": true
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:taiga_cold"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "spruce": 1
+        }
+      },
+      "density": "noise() * 1.0",
+      "chance": {
+        "math": {
+          "ifgt": [
+            "radius",
+            6,
+            0.5,
+            1.0
+          ]
+        }
+      },
+      "forestness": 1.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:taiga_cold_hills"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "spruce": 1
+        }
+      },
+      "density": "noise() * 1.0",
+      "chance": {
+        "math": {
+          "ifgt": [
+            "radius",
+            6,
+            0.5,
+            1.0
+          ]
+        }
+      },
+      "forestness": 1.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:redwood_taiga"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "mega_spruce": 1
+        }
+      },
+      "density": "noise() * 1.0",
+      "chance": {
+        "math": {
+          "ifgt": [
+            "radius",
+            6,
+            0.5,
+            1.0
+          ]
+        }
+      },
+      "forestness": 1.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:redwood_taiga_hills"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "mega_spruce": 1
+        }
+      },
+      "density": "noise() * 1.0",
+      "chance": {
+        "math": {
+          "ifgt": [
+            "radius",
+            6,
+            0.5,
+            1.0
+          ]
+        }
+      },
+      "forestness": 1.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:extreme_hills_with_trees"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "spruce": 2,
+          "oak": 1
+        }
+      },
+      "density": "noise() * 0.3",
+      "chance": 1.0,
+      "forestness": 1.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:savanna"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "acacia": 1
+        }
+      },
+      "density": "noise() * 0.1",
+      "chance": "standard"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:savanna_rock"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "acacia": 1
+        }
+      },
+      "density": "noise() * 0.1",
+      "chance": "standard"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mesa"
+    },
+    "apply": {
+      "species": "...",
+      "density": "noise() * 0.6 + 0.4",
+      "chance": 0.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mesa_rock"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "oak": 1
+        }
+      },
+      "density": "noise() * 0.6 + 0.4",
+      "chance": 0.5
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mesa_clear_rock"
+    },
+    "apply": {
+      "species": "...",
+      "density": "noise() * 0.6 + 0.4",
+      "chance": 0.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_plains"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "oak": 24,
+          "apple_oak": 1
+        }
+      },
+      "density": "noise() * 0.0",
+      "chance": "standard"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_desert"
+    },
+    "apply": {
+      "species": "...",
+      "density": "noise() * 0.6 + 0.4",
+      "chance": 0.075
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_extreme_hills"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "spruce": 2,
+          "oak": 1
+        }
+      },
+      "density": "noise() * 0.0",
+      "chance": "standard"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_forest"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "oak": 4,
+          "birch": 1
+        }
+      },
+      "density": "noise() * 0.6",
+      "chance": 1.0,
+      "forestness": 1.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_taiga"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "spruce": 1
+        }
+      },
+      "density": "noise() * 1.0",
+      "chance": {
+        "math": {
+          "ifgt": [
+            "radius",
+            6,
+            0.5,
+            1.0
+          ]
+        }
+      },
+      "forestness": 1.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_swampland"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "swamp_oak": 1
+        }
+      },
+      "density": "noise() * 0.2",
+      "chance": 0.75
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_ice_flats"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "spruce": 1
+        }
+      },
+      "density": "noise() * 0.0",
+      "chance": "standard"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_jungle"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "jungle": 5,
+          "mega_jungle": 1
+        }
+      },
+      "density": "noise() * 1.0",
+      "chance": "standard",
+      "forestness": 1.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_jungle_edge"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "jungle": 5,
+          "mega_jungle": 1
+        }
+      },
+      "density": "noise() * 0.2",
+      "chance": "standard",
+      "forestness": 1.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_birch_forest"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "tall_birch": 1
+        }
+      },
+      "density": "noise() * 1.0",
+      "chance": 1.0,
+      "forestness": 1.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_birch_forest_hills"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "tall_birch": 1
+        }
+      },
+      "density": "noise() * 1.0",
+      "chance": 1.0,
+      "forestness": 1.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_roofed_forest"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "dark_oak": 1
+        }
+      },
+      "density": "noise() / 3.0",
+      "chance": 1.0,
+      "forestness": 1.0,
+      "multipass": true
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_taiga_cold"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "spruce": 1
+        }
+      },
+      "density": "noise() * 1.0",
+      "chance": {
+        "math": {
+          "ifgt": [
+            "radius",
+            6,
+            0.5,
+            1.0
+          ]
+        }
+      },
+      "forestness": 1.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_redwood_taiga"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "mega_spruce": 1
+        }
+      },
+      "density": "noise() * 1.0",
+      "chance": 1.0,
+      "forestness": 1.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_redwood_taiga_hills"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "mega_spruce": 1
+        }
+      },
+      "density": "noise() * 1.0",
+      "chance": 1.0,
+      "forestness": 1.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_extreme_hills_with_trees"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "spruce": 2,
+          "oak": 1
+        }
+      },
+      "density": "noise() * 0.3",
+      "chance": "standard"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_savanna"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "acacia": 1
+        }
+      },
+      "density": "noise() * 0.2",
+      "chance": "standard"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_savanna_rock"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "acacia": 1
+        }
+      },
+      "density": "noise() * 0.2",
+      "chance": "standard"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_mesa"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "oak": 1
+        }
+      },
+      "density": "noise() * -1.0",
+      "chance": 0.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_mesa_rock"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "oak": 1
+        }
+      },
+      "density": "noise() * 0.5",
+      "chance": 0.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_mesa_clear_rock"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "oak": 1
+        }
+      },
+      "density": "noise() * -1.0",
+      "chance": 0.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:autumnal_woods"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "rlgen:autumn_yellow": 4,
+          "rlgen:autumn_orange": 5,
+          "oak": 1,
+          "rlgen:autumn_brown": 2,
+          "rlgen:autumn_red": 4
+        }
+      },
+      "chance": 1.0,
+      "density": "noise() * 0.9"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:autumnal_wooded_hills"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "rlgen:autumn_yellow": 4,
+          "rlgen:autumn_orange": 5,
+          "oak": 1,
+          "rlgen:autumn_brown": 2,
+          "rlgen:autumn_red": 4
+        }
+      },
+      "chance": 1.0,
+      "density": "noise() * 0.9"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:temperate_rainforest"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "rlgen:fir": 1
+        }
+      },
+      "chance": 1.0,
+      "density": "noise()"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:snowy_coniferous_forest"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "rlgen:fir": 1
+        }
+      },
+      "chance": 1.0,
+      "density": "noise()"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:arid_highland"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "acacia": 4,
+          "oak": 1,
+          "...": 1
+        }
+      },
+      "chance": 0.2,
+      "density": "noise() * 0.1"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:badlands"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "rlgen:autumn_brown": 1,
+          "oak": 1
+        }
+      },
+      "chance": 0.0625,
+      "density": "noise() * 0.03"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:birch_forested_hills"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "birch": 1
+        }
+      },
+      "chance": 1.0,
+      "density": "noise()"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:forested_hills"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "oak": 4,
+          "birch": 2
+        }
+      },
+      "chance": 1.0,
+      "density": "noise() * 0.9"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:lush_hills"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "oak": 4,
+          "swamp_oak": 1
+        }
+      },
+      "chance": 1.0,
+      "density": "noise() * 0.4"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:green_swamp"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "swamp_oak": 4,
+          "oak": 1
+        }
+      },
+      "chance": 1.0,
+      "density": "noise() * 0.6"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:meadow"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "oak": 2,
+          "birch": 1
+        }
+      },
+      "chance": 0.5,
+      "density": "noise() * 0.01"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:rocky_plains"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "oak": 2
+        }
+      },
+      "chance": 0.05,
+      "density": "noise() * 0.01"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:rocky_plateau"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "oak": 2
+        }
+      },
+      "chance": 0.5,
+      "density": "noise() * 0.01"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:thicket"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "oak": 4,
+          "dark_oak": 2
+        }
+      },
+      "chance": 1.0,
+      "density": "noise() * 1.5"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:woodlands"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "oak": 1
+        }
+      },
+      "chance": 0.75,
+      "density": "noise() * 0.6"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:red_desert"
+    },
+    "apply": {
+      "species": "...",
+      "chance": 0.05,
+      "density": "noise() * 2.0"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mountainous_desert"
+    },
+    "apply": {
+      "species": "...",
+      "chance": 0.05,
+      "density": "noise() * 2.0"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mini_jungle"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "oak": 1,
+          "rlgen:mini_jungle": 4
+        }
+      },
+      "chance": 0.85,
+      "density": "noise() * 2.0"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:cliffs"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "oak": 2,
+          "...": 4
+        }
+      },
+      "chance": 0.5,
+      "density": "noise() * 2.0"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:glacier"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "spruce": 2,
+          "...": 8
+        }
+      },
+      "chance": 0.5,
+      "density": "noise() * 2.0"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:glacier_spikes"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "spruce": 2,
+          "...": 8
+        }
+      },
+      "chance": 0.5,
+      "density": "noise() * 2.0"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:desert_shrubland"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "rlgen:oak_shrub": 3,
+          "...": 8
+        }
+      },
+      "chance": 0.6,
+      "density": "noise() * 0.8"
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:canyon"
+    },
+    "apply": {
+      "species": "...",
+      "chance": 0.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:crag_cliffs"
+    },
+    "apply": {
+      "species": "...",
+      "chance": 0.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:forest_tenebra"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "rlgen:tenebra": 1
+        }
+      },
+      "density": 0.8,
+      "chance": 1.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:plains_defiled"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "rlgen:tenebra": 1
+        }
+      },
+      "density": 0.1,
+      "chance": 0.2
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:hills_defiled"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "rlgen:tenebra": 1
+        }
+      },
+      "density": 0.1,
+      "chance": 0.05
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:ice_plains_defiled"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "rlgen:tenebra": 1
+        }
+      },
+      "density": 0.1,
+      "chance": 0.4
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:swamp_defiled"
+    },
+    "apply": {
+      "species": {
+        "random": {
+          "rlgen:tenebra": 1
+        }
+      },
+      "density": 0.5,
+      "chance": 0.5
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:desert_defiled"
+    },
+    "apply": {
+      "species": "...",
+      "chance": 0.0
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:forest_vilespine"
+    },
+    "apply": {
+      "species": "...",
+      "chance": 0.0
+    }
+  }
+]

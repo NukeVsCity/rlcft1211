@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "rlgen:mesa_rock",
+    "rlgen:mutated_mesa_rock",
+    "rlgen:rocky_plateau",
+    "rlgen:savanna_rock"
+  ]
+}

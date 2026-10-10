@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "rlgen:badlands",
+    "rlgen:forest_vilespine",
+    "rlgen:lush_hills",
+    "rlgen:meadow",
+    "rlgen:mutated_plains",
+    "rlgen:plains",
+    "rlgen:plains_defiled",
+    "rlgen:rocky_plains"
+  ]
+}

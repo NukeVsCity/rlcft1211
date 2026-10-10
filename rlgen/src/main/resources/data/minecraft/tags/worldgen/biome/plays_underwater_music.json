@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "rlgen:deep_ocean",
+    "rlgen:frozen_ocean",
+    "rlgen:frozen_river",
+    "rlgen:ocean",
+    "rlgen:river"
+  ]
+}

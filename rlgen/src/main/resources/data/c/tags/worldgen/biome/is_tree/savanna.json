@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "rlgen:arid_highland",
+    "rlgen:mutated_savanna",
+    "rlgen:mutated_savanna_rock",
+    "rlgen:rocky_plateau",
+    "rlgen:savanna",
+    "rlgen:savanna_rock"
+  ]
+}

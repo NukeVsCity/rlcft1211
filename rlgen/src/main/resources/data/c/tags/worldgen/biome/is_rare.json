@@ -1,0 +1,24 @@
+{
+  "replace": false,
+  "values": [
+    "rlgen:glacier_spikes",
+    "rlgen:jungle_edge",
+    "rlgen:mushroom_island",
+    "rlgen:mushroom_island_shore",
+    "rlgen:mutated_birch_forest",
+    "rlgen:mutated_birch_forest_hills",
+    "rlgen:mutated_extreme_hills",
+    "rlgen:mutated_extreme_hills_with_trees",
+    "rlgen:mutated_forest",
+    "rlgen:mutated_ice_flats",
+    "rlgen:mutated_jungle_edge",
+    "rlgen:mutated_mesa",
+    "rlgen:mutated_plains",
+    "rlgen:mutated_redwood_taiga",
+    "rlgen:mutated_redwood_taiga_hills",
+    "rlgen:mutated_savanna",
+    "rlgen:mutated_savanna_rock",
+    "rlgen:rocky_plateau",
+    "rlgen:savanna_rock"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "replace": false,
+  "values": [
+    "rlgen:canyon",
+    "rlgen:cliffs",
+    "rlgen:crag_cliffs",
+    "rlgen:extreme_hills",
+    "rlgen:extreme_hills_with_trees",
+    "rlgen:hills_defiled",
+    "rlgen:mesa",
+    "rlgen:mesa_clear_rock",
+    "rlgen:mesa_rock",
+    "rlgen:mutated_extreme_hills",
+    "rlgen:mutated_extreme_hills_with_trees",
+    "rlgen:mutated_mesa",
+    "rlgen:mutated_mesa_clear_rock",
+    "rlgen:mutated_mesa_rock",
+    "rlgen:mutated_savanna",
+    "rlgen:mutated_savanna_rock",
+    "rlgen:rocky_plateau",
+    "rlgen:savanna_rock",
+    "rlgen:smaller_extreme_hills",
+    "rlgen:stone_beach"
+  ]
+}

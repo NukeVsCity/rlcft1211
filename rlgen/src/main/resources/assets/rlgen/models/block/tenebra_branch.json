@@ -1,0 +1,7 @@
+{
+  "loader": "dynamictrees:branch",
+  "textures": {
+    "bark": "rlgen:block/tenebra_log",
+    "rings": "rlgen:block/tenebra_log_top"
+  }
+}

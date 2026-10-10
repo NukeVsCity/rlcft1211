@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "rlgen:mutated_forest",
+    "rlgen:mutated_plains"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "rlgen:mutated_birch_forest",
+    "rlgen:mutated_birch_forest_hills",
+    "rlgen:mutated_redwood_taiga",
+    "rlgen:mutated_redwood_taiga_hills",
+    "rlgen:redwood_taiga",
+    "rlgen:redwood_taiga_hills"
+  ]
+}

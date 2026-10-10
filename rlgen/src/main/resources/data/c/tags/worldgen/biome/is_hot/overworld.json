@@ -1,0 +1,33 @@
+{
+  "replace": false,
+  "values": [
+    "rlgen:arid_highland",
+    "rlgen:canyon",
+    "rlgen:desert",
+    "rlgen:desert_defiled",
+    "rlgen:desert_hills",
+    "rlgen:desert_shrubland",
+    "rlgen:jungle",
+    "rlgen:jungle_edge",
+    "rlgen:jungle_hills",
+    "rlgen:mesa",
+    "rlgen:mesa_clear_rock",
+    "rlgen:mesa_rock",
+    "rlgen:mini_jungle",
+    "rlgen:mountainous_desert",
+    "rlgen:mushroom_island",
+    "rlgen:mushroom_island_shore",
+    "rlgen:mutated_desert",
+    "rlgen:mutated_jungle",
+    "rlgen:mutated_jungle_edge",
+    "rlgen:mutated_mesa",
+    "rlgen:mutated_mesa_clear_rock",
+    "rlgen:mutated_mesa_rock",
+    "rlgen:mutated_savanna",
+    "rlgen:mutated_savanna_rock",
+    "rlgen:red_desert",
+    "rlgen:rocky_plateau",
+    "rlgen:savanna",
+    "rlgen:savanna_rock"
+  ]
+}

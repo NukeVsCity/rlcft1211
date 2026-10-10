@@ -1,0 +1,6 @@
+{
+  "primitive_soil": "rlgen:grass_defiled",
+  "acceptable_soils": [
+    "dirt_like"
+  ]
+}

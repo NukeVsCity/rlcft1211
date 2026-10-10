@@ -6,10 +6,14 @@ import com.nukevscity.rlgen.world.LegacyChunkGenerator;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.material.MapColor;
+import com.dtteam.dynamictrees.registry.NeoForgeRegistryHandler;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -40,10 +44,21 @@ public final class RLGen {
       "sand_defiled", p -> new ColoredFallingBlock(new ColorRGBA(0x4F3B5A), p),
       BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).strength(0.5F).sound(SoundType.SAND));
 
+   // Traverse fir / autumnal and Defiled Lands tenebra trees: primitive blocks for the Dynamic Trees species.
+   public static final DeferredBlock<RotatedPillarBlock> FIR_LOG = log("fir_log", MapColor.COLOR_BROWN);
+   public static final DeferredBlock<RotatedPillarBlock> TENEBRA_LOG = log("tenebra_log", MapColor.COLOR_BLACK);
+   public static final DeferredBlock<LeavesBlock> FIR_LEAVES = leaves("fir_leaves");
+   public static final DeferredBlock<LeavesBlock> RED_AUTUMNAL_LEAVES = leaves("red_autumnal_leaves");
+   public static final DeferredBlock<LeavesBlock> ORANGE_AUTUMNAL_LEAVES = leaves("orange_autumnal_leaves");
+   public static final DeferredBlock<LeavesBlock> YELLOW_AUTUMNAL_LEAVES = leaves("yellow_autumnal_leaves");
+   public static final DeferredBlock<LeavesBlock> BROWN_AUTUMNAL_LEAVES = leaves("brown_autumnal_leaves");
+   public static final DeferredBlock<LeavesBlock> TENEBRA_LEAVES = leaves("tenebra_leaves");
+
    static {
       CHUNK_GENERATORS.register("legacy", () -> LegacyChunkGenerator.CODEC);
       BIOME_SOURCES.register("legacy", () -> LegacyBiomeSource.CODEC);
-      for (DeferredBlock<?> b : new DeferredBlock<?>[]{RED_ROCK, BLUE_ROCK, STONE_DEFILED, GRASS_DEFILED, DIRT_DEFILED, SAND_DEFILED}) {
+      for (DeferredBlock<?> b : new DeferredBlock<?>[]{RED_ROCK, BLUE_ROCK, STONE_DEFILED, GRASS_DEFILED, DIRT_DEFILED, SAND_DEFILED,
+         FIR_LOG, TENEBRA_LOG, FIR_LEAVES, RED_AUTUMNAL_LEAVES, ORANGE_AUTUMNAL_LEAVES, YELLOW_AUTUMNAL_LEAVES, BROWN_AUTUMNAL_LEAVES, TENEBRA_LEAVES}) {
          ITEMS.registerSimpleBlockItem(b);
       }
    }
@@ -52,7 +67,18 @@ public final class RLGen {
       return BLOCKS.registerSimpleBlock(name, BlockBehaviour.Properties.of().mapColor(color).requiresCorrectToolForDrops().strength(1.5F, 6.0F));
    }
 
+   private static DeferredBlock<RotatedPillarBlock> log(String name, MapColor color) {
+      return BLOCKS.registerBlock(name, RotatedPillarBlock::new,
+         BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_LOG).mapColor(color));
+   }
+
+   private static DeferredBlock<LeavesBlock> leaves(String name) {
+      return BLOCKS.registerBlock(name, LeavesBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_LEAVES));
+   }
+
    public RLGen(IEventBus modBus) {
+      // Lets Dynamic Trees create branch/leaves blocks for the rlgen tree pack (trees/rlgen).
+      NeoForgeRegistryHandler.setup(MODID, modBus);
       CHUNK_GENERATORS.register(modBus);
       BIOME_SOURCES.register(modBus);
       BLOCKS.register(modBus);

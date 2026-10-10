@@ -1,0 +1,12 @@
+[
+  {
+    "__comment": "RLCraft: Dynamic Trees replaces all normal trees in the 1.12 biomes.",
+    "select": {
+      "name": "rlgen:.*"
+    },
+    "cancellers": {
+      "type": "tree",
+      "namespace": "minecraft"
+    }
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "rlgen:cold_beach",
+    "rlgen:glacier",
+    "rlgen:glacier_spikes",
+    "rlgen:ice_flats",
+    "rlgen:ice_mountains",
+    "rlgen:ice_plains_defiled",
+    "rlgen:mutated_ice_flats",
+    "rlgen:mutated_taiga_cold",
+    "rlgen:snowy_coniferous_forest",
+    "rlgen:taiga_cold",
+    "rlgen:taiga_cold_hills"
+  ]
+}

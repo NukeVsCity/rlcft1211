@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "rlgen:block/tenebra_log_top",
+    "side": "rlgen:block/tenebra_log"
+  }
+}

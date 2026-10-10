@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "rlgen:forest_tenebra",
+    "rlgen:jungle",
+    "rlgen:jungle_hills",
+    "rlgen:mini_jungle",
+    "rlgen:mutated_birch_forest",
+    "rlgen:mutated_birch_forest_hills",
+    "rlgen:mutated_jungle",
+    "rlgen:mutated_redwood_taiga",
+    "rlgen:mutated_redwood_taiga_hills",
+    "rlgen:mutated_roofed_forest",
+    "rlgen:roofed_forest"
+  ]
+}

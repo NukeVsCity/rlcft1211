@@ -1,0 +1,23 @@
+{
+  "replace": false,
+  "values": [
+    "rlgen:jungle",
+    "rlgen:jungle_hills",
+    "rlgen:mini_jungle",
+    "rlgen:mutated_birch_forest",
+    "rlgen:mutated_birch_forest_hills",
+    "rlgen:mutated_jungle",
+    "rlgen:mutated_redwood_taiga",
+    "rlgen:mutated_redwood_taiga_hills",
+    "rlgen:mutated_taiga",
+    "rlgen:mutated_taiga_cold",
+    "rlgen:redwood_taiga",
+    "rlgen:redwood_taiga_hills",
+    "rlgen:snowy_coniferous_forest",
+    "rlgen:taiga",
+    "rlgen:taiga_cold",
+    "rlgen:taiga_cold_hills",
+    "rlgen:taiga_hills",
+    "rlgen:temperate_rainforest"
+  ]
+}

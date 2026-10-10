@@ -1,0 +1,29 @@
+{
+  "replace": false,
+  "values": [
+    "rlgen:arid_highland",
+    "rlgen:badlands",
+    "rlgen:desert",
+    "rlgen:desert_defiled",
+    "rlgen:desert_hills",
+    "rlgen:desert_shrubland",
+    "rlgen:forest_vilespine",
+    "rlgen:glacier",
+    "rlgen:ice_flats",
+    "rlgen:ice_mountains",
+    "rlgen:ice_plains_defiled",
+    "rlgen:lush_hills",
+    "rlgen:meadow",
+    "rlgen:mountainous_desert",
+    "rlgen:mutated_desert",
+    "rlgen:mutated_taiga",
+    "rlgen:plains",
+    "rlgen:plains_defiled",
+    "rlgen:red_desert",
+    "rlgen:rocky_plains",
+    "rlgen:savanna",
+    "rlgen:taiga",
+    "rlgen:taiga_hills",
+    "rlgen:temperate_rainforest"
+  ]
+}

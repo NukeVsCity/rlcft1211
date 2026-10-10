@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "rlgen:beaches",
+    "rlgen:green_swamp",
+    "rlgen:jungle",
+    "rlgen:jungle_edge",
+    "rlgen:jungle_hills",
+    "rlgen:mini_jungle",
+    "rlgen:mutated_jungle",
+    "rlgen:mutated_jungle_edge",
+    "rlgen:mutated_swampland",
+    "rlgen:swamp_defiled",
+    "rlgen:swampland"
+  ]
+}

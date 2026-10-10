@@ -28,7 +28,16 @@ sourceSets {
         runtimeClasspath += sourceSets.main.output
     }
 }
+repositories {
+    maven {
+        url = 'https://api.modrinth.com/maven'
+        content { includeGroup 'maven.modrinth' }
+    }
+}
+
 dependencies {
+    // Dynamic Trees 1.21.1 NeoForge (players install it from Modrinth; for runServer put the jar in run/mods)
+    compileOnly 'maven.modrinth:dynamictrees:1.7.2'
     oracleImplementation files(System.getenv('MC1122_JAR') ?: 'tools/client-mcp-1.12.2.jar')
 }
 

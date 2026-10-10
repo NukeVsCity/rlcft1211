@@ -1,0 +1,6 @@
+{
+  "multipart": [
+    { "apply": { "model": "rlgen:block/grass_defiled" } },
+    { "apply": { "model": "dynamictrees:block/roots" } }
+  ]
+}

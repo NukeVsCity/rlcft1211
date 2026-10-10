@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "rlgen:birch_forest",
+    "rlgen:birch_forest_hills",
+    "rlgen:birch_forested_hills",
+    "rlgen:mutated_birch_forest",
+    "rlgen:mutated_birch_forest_hills"
+  ]
+}

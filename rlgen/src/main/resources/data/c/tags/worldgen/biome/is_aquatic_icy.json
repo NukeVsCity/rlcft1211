@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "rlgen:frozen_ocean",
+    "rlgen:frozen_river"
+  ]
+}

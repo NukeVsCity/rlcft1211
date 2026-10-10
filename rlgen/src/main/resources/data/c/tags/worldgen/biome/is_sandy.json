@@ -1,0 +1,20 @@
+{
+  "replace": false,
+  "values": [
+    "rlgen:beaches",
+    "rlgen:canyon",
+    "rlgen:desert",
+    "rlgen:desert_defiled",
+    "rlgen:desert_hills",
+    "rlgen:desert_shrubland",
+    "rlgen:mesa",
+    "rlgen:mesa_clear_rock",
+    "rlgen:mesa_rock",
+    "rlgen:mountainous_desert",
+    "rlgen:mutated_desert",
+    "rlgen:mutated_mesa",
+    "rlgen:mutated_mesa_clear_rock",
+    "rlgen:mutated_mesa_rock",
+    "rlgen:red_desert"
+  ]
+}

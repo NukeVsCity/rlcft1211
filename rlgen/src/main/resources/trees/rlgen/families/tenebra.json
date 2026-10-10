@@ -1,0 +1,7 @@
+{
+  "common_leaves": "rlgen:dt_tenebra",
+  "common_species": "rlgen:tenebra",
+  "primitive_log": "rlgen:tenebra_log",
+  "primitive_stripped_log": "minecraft:stripped_dark_oak_log",
+  "max_branch_radius": 8
+}

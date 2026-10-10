@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=y": {
+      "model": "rlgen:block/fir_log"
+    },
+    "axis=z": {
+      "model": "rlgen:block/fir_log_horizontal",
+      "x": 90
+    },
+    "axis=x": {
+      "model": "rlgen:block/fir_log_horizontal",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

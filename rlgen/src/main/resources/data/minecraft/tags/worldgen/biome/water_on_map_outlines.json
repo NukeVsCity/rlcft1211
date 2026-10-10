@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "rlgen:deep_ocean",
+    "rlgen:frozen_ocean",
+    "rlgen:frozen_river",
+    "rlgen:green_swamp",
+    "rlgen:mutated_swampland",
+    "rlgen:ocean",
+    "rlgen:river",
+    "rlgen:swamp_defiled",
+    "rlgen:swampland"
+  ]
+}

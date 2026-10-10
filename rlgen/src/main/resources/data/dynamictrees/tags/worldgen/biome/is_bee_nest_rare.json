@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "rlgen:autumnal_wooded_hills",
+    "rlgen:autumnal_woods",
+    "rlgen:birch_forest",
+    "rlgen:birch_forest_hills",
+    "rlgen:birch_forested_hills",
+    "rlgen:forest",
+    "rlgen:forest_hills",
+    "rlgen:forest_tenebra",
+    "rlgen:forested_hills",
+    "rlgen:mutated_birch_forest",
+    "rlgen:mutated_birch_forest_hills",
+    "rlgen:mutated_forest",
+    "rlgen:mutated_roofed_forest",
+    "rlgen:roofed_forest",
+    "rlgen:thicket",
+    "rlgen:woodlands"
+  ]
+}

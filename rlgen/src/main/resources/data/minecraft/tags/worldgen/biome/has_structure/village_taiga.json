@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "rlgen:mutated_taiga",
+    "rlgen:taiga",
+    "rlgen:taiga_hills",
+    "rlgen:temperate_rainforest"
+  ]
+}
