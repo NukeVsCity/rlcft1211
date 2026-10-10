@@ -1,0 +1,41 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.148'
+}
+
+version = mod_version
+group = 'com.nukevscity.rlgen'
+base { archivesName = mod_id }
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+neoForge {
+    version = project.neo_version
+    runs {
+        client { client() }
+        server { server(); programArgument '--nogui' }
+    }
+    mods {
+        "${mod_id}" { sourceSet(sourceSets.main) }
+    }
+}
+
+// Plain-Java checks of the 1.12 port against the real 1.12.2 classes (optional, see tools/).
+sourceSets {
+    oracle {
+        java.srcDir 'src/oracle/java'
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+}
+dependencies {
+    oracleImplementation files(System.getenv('MC1122_JAR') ?: 'tools/client-mcp-1.12.2.jar')
+}
+
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+
+tasks.named('processResources', ProcessResources) {
+    var props = [mod_id: mod_id, mod_version: mod_version, neo_version: neo_version, minecraft_version: minecraft_version]
+    inputs.properties props
+    filesMatching('META-INF/neoforge.mods.toml') { expand props }
+}

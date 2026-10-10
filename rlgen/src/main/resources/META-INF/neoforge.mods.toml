@@ -1,0 +1,23 @@
+modLoader="javafml"
+loaderVersion="[1,)"
+license="Personal use only"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="RLCraft Legacy Worldgen"
+description='''Ports the RLCraft 1.12.2 overworld generator (vanilla 1.12 terrain + Traverse + Defiled Lands biomes) to 1.21.1.'''
+
+[[dependencies.${mod_id}]]
+modId="neoforge"
+type="required"
+versionRange="[21.1,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.${mod_id}]]
+modId="minecraft"
+type="required"
+versionRange="[1.21.1]"
+ordering="NONE"
+side="BOTH"
