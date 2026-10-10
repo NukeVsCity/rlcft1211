@@ -21,7 +21,19 @@ public final class LegacyPopulator {
 
    private static final ThreadLocal<State> STATE = new ThreadLocal<>();
 
+   /** Chunk (as a long) whose populate area a village reached, for the lake check; set before the decoration steps run. */
+   private static final ThreadLocal<Long> VILLAGE = new ThreadLocal<>();
+
    private LegacyPopulator() {
+   }
+
+   public static void setVillage(ChunkPos cp, boolean village) {
+      VILLAGE.set(village ? cp.toLong() : null);
+   }
+
+   private static boolean village(ChunkPos cp) {
+      Long v = VILLAGE.get();
+      return v != null && v == cp.toLong();
    }
 
    private static BlockPos origin(ChunkPos cp) {
@@ -54,13 +66,14 @@ public final class LegacyPopulator {
       BiomeDeco deco = BiomeDeco.of(biome);
       STATE.set(new State(cp.toLong(), rand, biome, deco, deco.counts()));
       String name = biome.getRegistryName();
-      if (!name.equals("desert") && !name.equals("desert_hills") && rand.nextInt(4) == 0) {
+      boolean flag = village(cp);
+      if (!name.equals("desert") && !name.equals("desert_hills") && !flag && rand.nextInt(4) == 0) {
          int k1 = rand.nextInt(16) + 8;
          int l1 = rand.nextInt(256);
          int i2 = rand.nextInt(16) + 8;
          Gen.lake(w, rand, pos.offset(k1, l1, i2), false);
       }
-      if (rand.nextInt(80 / 10) == 0) {
+      if (!flag && rand.nextInt(80 / 10) == 0) {
          int k2 = rand.nextInt(16) + 8;
          int j3 = rand.nextInt(rand.nextInt(248) + 8);
          int i4 = rand.nextInt(16) + 8;

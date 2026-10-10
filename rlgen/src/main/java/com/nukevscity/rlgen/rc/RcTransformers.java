@@ -114,8 +114,7 @@ public final class RcTransformers {
          case "propertyReplace" -> new Property(str(o, "sourceExpression", ""), str(o, "propertyName", ""), str(o, "propertyValue", ""));
          case "ensureBlocks" -> new EnsureBlocks(str(o, "sourceExpression", ""), str(o, "destExpression", ""));
          case "ruins" -> Ruins.parse(o);
-         case "villagereplace" -> new T() {
-         }; // only acts inside villages (villageType), never for natural generation
+         case "villagereplace" -> new VillageSpecific(sourceExpression(o));
          default -> {
             LOGGER.warn("rlgen: unknown RC transformer type {}", type);
             yield new T() {
@@ -612,6 +611,28 @@ public final class RcTransformers {
       void transformBlock(Object data, RcContext c, BlockPos worldPos, Src src) {
          Dest d = this.uniform ? (Dest)data : this.select(c.random);
          RcGenerator.setBlock(c, worldPos, d.state, null, null);
+      }
+   }
+
+   /** TransformerVillageSpecific: the 1.12 village block swaps (desert/savanna/taiga), only inside villages. */
+   static final class VillageSpecific extends SingleBlock {
+      final RcExpr<RcBlocks.LegacyId> source;
+
+      VillageSpecific(String source) {
+         this.source = RcBlocks.blockExpr(source);
+      }
+
+      @Override
+      boolean matches(Object data, RcContext c, Src src) {
+         Integer type = c.env.villageType;
+         return type != null && src.state() != null && this.source.test(src.legacy())
+            && com.nukevscity.rlgen.village.VillageBlocks.biomeSpecific(src.state(), type, null) != src.state();
+      }
+
+      @Override
+      void transformBlock(Object data, RcContext c, BlockPos worldPos, Src src) {
+         BlockState state = com.nukevscity.rlgen.village.VillageBlocks.biomeSpecific(src.state(), c.env.villageType, null);
+         RcGenerator.setBlock(c, worldPos, c.transform.apply(state), null, null);
       }
    }
 

@@ -10,6 +10,7 @@ import com.nukevscity.rlgen.world.RcPiece;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import com.nukevscity.rlgen.world.RcStructure;
+import com.nukevscity.rlgen.world.LegacyVillageStructure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -49,6 +50,11 @@ public final class RLGen {
       STRUCTURE_TYPES.register("recurrent_complex", () -> () -> RcStructure.CODEC);
    public static final DeferredHolder<StructurePieceType, StructurePieceType> RC_PIECE =
       STRUCTURE_PIECES.register("recurrent_complex", () -> RcPiece::new);
+   /** 1.12 MapGenVillage (with Recurrent Complex village pieces). */
+   public static final DeferredHolder<StructureType<?>, StructureType<LegacyVillageStructure>> VILLAGE_STRUCTURE =
+      STRUCTURE_TYPES.register("village", () -> () -> LegacyVillageStructure.CODEC);
+   public static final DeferredHolder<StructurePieceType, StructurePieceType> VILLAGE_PIECE =
+      STRUCTURE_PIECES.register("village", () -> com.nukevscity.rlgen.village.VillagePieces::load);
    private static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(Registries.FEATURE, MODID);
    static {
       FEATURES.register("legacy_lakes", () -> new LegacyDecorationFeature(LegacyDecorationFeature.Step.LAKES));

@@ -106,6 +106,15 @@ public abstract class Biome {
       return IDS.keySet();
    }
 
+   public static Biome byName(String name) {
+      for (Biome b : all()) {
+         if (name.equals(b.registryName)) {
+            return b;
+         }
+      }
+      return null;
+   }
+
    /** 1.12 registry name, e.g. "extreme_hills" or "traverse:cliffs". */
    public String getRegistryName() {
       return this.registryName;

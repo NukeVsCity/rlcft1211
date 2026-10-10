@@ -86,6 +86,19 @@ public final class RcStructureDef {
    public record Variable(String id, RcExpr<RcEnv> condition, float chance) {
    }
 
+   /** VanillaGeneration: a piece of 1.12 villages. */
+   public record VanillaGen(String id, Double weight, double minBaseLimit, double maxBaseLimit, double minScaledLimit, double maxScaledLimit,
+                            BlockPos spawnShift, Direction front, RcExpr<Biome> biomeExpression) {
+      public double activeWeight() {
+         return this.weight != null ? this.weight : 1.0;
+      }
+
+      /** getVanillaWeight with RCConfig.baseVillageSpawnWeight = 10 and no spawn tweaks. */
+      public int vanillaWeight() {
+         return (int)Math.floor(this.activeWeight() * 1.0 * 10.0 + 0.5);
+      }
+   }
+
    public final String id;
    public final int[] size;
    public final Palette[] palette;
@@ -99,6 +112,7 @@ public final class RcStructureDef {
    public final RcTransformers.Multi transformer;
    public final List<NaturalGen> natural = new ArrayList<>();
    public final List<ListGen> lists = new ArrayList<>();
+   public final List<VanillaGen> vanilla = new ArrayList<>();
    public final List<Variable> variables = new ArrayList<>();
 
    RcStructureDef(String id, CompoundTag tag, RcRegistry reg) {
@@ -159,6 +173,15 @@ public final class RcStructureDef {
                   new BlockPos((int)RcTransformers.dbl(info, "positionX", 0), (int)RcTransformers.dbl(info, "positionY", 0),
                      (int)RcTransformers.dbl(info, "positionZ", 0)),
                   front != null ? front : Direction.NORTH, RcTransformers.dbl(info, "weight", 1.0)));
+            } else if (type.equals("vanilla")) {
+               String f = RcTransformers.str(info, "front", null);
+               this.vanilla.add(new VanillaGen(RcTransformers.str(info, "id", ""),
+                  info.has("generationWeight") ? info.get("generationWeight").getAsDouble() : null,
+                  RcTransformers.dbl(info, "minBaseLimit", 0.0), RcTransformers.dbl(info, "maxBaseLimit", 0.0),
+                  RcTransformers.dbl(info, "minScaledLimit", 0.0), RcTransformers.dbl(info, "maxScaledLimit", 0.0),
+                  new BlockPos((int)RcTransformers.dbl(info, "spawnShiftX", 0), (int)RcTransformers.dbl(info, "spawnShiftY", 0),
+                     (int)RcTransformers.dbl(info, "spawnShiftZ", 0)),
+                  f == null ? null : Direction.byName(f.toLowerCase(Locale.ROOT)), RcEnv.biomeExpr(RcTransformers.str(info, "biomeExpression", ""))));
             }
          }
       }

@@ -118,10 +118,12 @@ def members(tag, seen=()):
     memo[tag] = out
     return out
 added = {}
+# 1.12 villages come from rlgen:village (MapGenVillage), so no 1.21 jigsaw villages in rlgen biomes
+SKIP_TAGS = {f"minecraft:has_structure/village_{t}" for t in ("plains", "desert", "savanna", "snowy", "taiga")}
 for name in biomes:
     tmpl = "minecraft:" + TEMPLATE[name]
     for tag in tags:
-        if tmpl in members(tag):
+        if tag not in SKIP_TAGS and tmpl in members(tag):
             added.setdefault(tag, []).append(rl(name))
 # rlgen biomes must never be in the 1.21 overworld noise list, keep everything else
 for tag, vals in added.items():

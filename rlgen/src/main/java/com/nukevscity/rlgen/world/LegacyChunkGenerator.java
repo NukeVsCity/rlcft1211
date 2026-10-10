@@ -254,6 +254,34 @@ public final class LegacyChunkGenerator extends ChunkGenerator {
       }
    }
 
+   private static final ResourceLocation VILLAGE = ResourceLocation.fromNamespaceAndPath("rlgen", "village");
+
+   /** 1.12 populate: no water or lava lakes where a village generated (generateStructure returned true for the populate area). */
+   @Override
+   public void applyBiomeDecoration(net.minecraft.world.level.WorldGenLevel level, ChunkAccess chunk, StructureManager structures) {
+      ChunkPos cp = chunk.getPos();
+      boolean village = false;
+      net.minecraft.world.level.levelgen.structure.Structure structure =
+         level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(VILLAGE);
+      if (structure != null) {
+         int minX = cp.getMinBlockX() + 8;
+         int minZ = cp.getMinBlockZ() + 8;
+         for (int dx = 0; dx <= 1 && !village; dx++) {
+            for (int dz = 0; dz <= 1 && !village; dz++) {
+               net.minecraft.core.SectionPos sp = net.minecraft.core.SectionPos.of(new ChunkPos(cp.x + dx, cp.z + dz), 0);
+               for (net.minecraft.world.level.levelgen.structure.StructureStart start : structures.startsForStructure(sp, structure)) {
+                  if (start.isValid() && start.getBoundingBox().intersects(minX, minZ, minX + 15, minZ + 15)) {
+                     village = true;
+                     break;
+                  }
+               }
+            }
+         }
+      }
+      com.nukevscity.rlgen.deco.LegacyPopulator.setVillage(cp, village);
+      super.applyBiomeDecoration(level, chunk, structures);
+   }
+
    @Override
    public void applyCarvers(WorldGenRegion region, long seed, RandomState randomState, BiomeManager biomeManager, StructureManager structures,
       ChunkAccess chunk, GenerationStep.Carving step) {

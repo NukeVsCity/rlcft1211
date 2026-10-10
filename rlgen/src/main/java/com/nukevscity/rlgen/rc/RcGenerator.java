@@ -247,6 +247,11 @@ public final class RcGenerator {
       return prepare(def, genId, seed, t, lower, env, oracle, 0, true);
    }
 
+   /** GenericVillagePiece.prepare: no suggest checks, the village already decided. */
+   public static Instance prepareVillage(RcStructureDef def, String genId, long seed, RcTransform t, BlockPos lower, RcEnv env, Oracle oracle, int layer) {
+      return prepare(def, genId, seed, t, lower, env, oracle, layer, false);
+   }
+
    // ------------------------------------------------------------------ prepare (GenericStructure.prepareInstanceData)
 
    static Instance prepare(RcStructureDef def, String genId, long seed, RcTransform t, BlockPos lower, RcEnv env, Oracle oracle, int layer,

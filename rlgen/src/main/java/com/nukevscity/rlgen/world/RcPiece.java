@@ -134,13 +134,13 @@ public final class RcPiece extends StructurePiece {
    }
 
    /** The real chunk (and its neighbours for reading); the 1.12 terrain oracle further away. */
-   static final class LiveView implements RcWorldView {
+   public static final class LiveView implements RcWorldView {
       final WorldGenLevel level;
       final ChunkPos center;
       final RcGenerator.Oracle oracle;
       final List<BlockPos> written = new ArrayList<>();
 
-      LiveView(WorldGenLevel level, ChunkPos center, RcGenerator.Oracle oracle) {
+      public LiveView(WorldGenLevel level, ChunkPos center, RcGenerator.Oracle oracle) {
          this.level = level;
          this.center = center;
          this.oracle = oracle;
@@ -182,7 +182,7 @@ public final class RcPiece extends StructurePiece {
       }
 
       /** 1.12 worked out fence/pane/stair connections and double chests when drawing; 1.21 stores them in the block. */
-      void finish() {
+      public void finish() {
          for (BlockPos p : new java.util.LinkedHashSet<>(this.written)) {
             BlockState state = this.level.getBlockState(p);
             Block b = state.getBlock();
