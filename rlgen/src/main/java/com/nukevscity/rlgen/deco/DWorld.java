@@ -30,6 +30,10 @@ public final class DWorld {
       this.center = center;
    }
 
+   public long seed() {
+      return this.seed;
+   }
+
    boolean inRegion(BlockPos p) {
       return Math.abs((p.getX() >> 4) - this.center.x) <= 1 && Math.abs((p.getZ() >> 4) - this.center.z) <= 1;
    }

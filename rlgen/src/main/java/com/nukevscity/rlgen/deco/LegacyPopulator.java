@@ -97,7 +97,8 @@ public final class LegacyPopulator {
       BiomeDeco d = s.deco;
       BiomeDeco.Counts c = s.counts;
       d.pre(w, r, pos, c);
-      // generateOres (ChunkGeneratorSettings defaults)
+      // generateOres (ChunkGeneratorSettings defaults); Quark's revamped stones ran from the DIRT ore event
+      com.nukevscity.rlgen.quark.RevampStoneGen.generate(w, cp);
       ore(w, r, pos, 10, Blocks.DIRT.defaultBlockState(), 33, 0, 256);
       ore(w, r, pos, 8, Blocks.GRAVEL.defaultBlockState(), 33, 0, 256);
       ore(w, r, pos, GRANITE_DIORITE_ANDESITE, Blocks.DIORITE.defaultBlockState(), 33, 0, 80);
@@ -163,10 +164,20 @@ public final class LegacyPopulator {
       if (r.nextFloat() < c.extraTreeChance) {
          c.treesPerChunk++;
       }
-      for (int k2 = 0; k2 < c.bigMushroomsPerChunk; k2++) {
-         int x = r.nextInt(16) + 8;
-         int z = r.nextInt(16) + 8;
-         Gen.bigMushroom(w, r, w.height(pos.offset(x, 0, z)), null);
+      // Quark "Big mushrooms generate in swamps" (0.5 per chunk) took the BIG_SHROOM event in swamps, by the biome at the chunk corner
+      String corner = w.biome(pos).getRegistryName();
+      if (corner.equals("swampland") || corner.equals("mutated_swampland")) {
+         if (!(r.nextDouble() > 0.5)) {
+            int x = r.nextInt(16) + 8;
+            int z = r.nextInt(16) + 8;
+            Gen.bigMushroom(w, r, w.height(pos.offset(x, 0, z)), null);
+         }
+      } else {
+         for (int k2 = 0; k2 < c.bigMushroomsPerChunk; k2++) {
+            int x = r.nextInt(16) + 8;
+            int z = r.nextInt(16) + 8;
+            Gen.bigMushroom(w, r, w.height(pos.offset(x, 0, z)), null);
+         }
       }
       for (int l2 = 0; l2 < c.flowersPerChunk; l2++) {
          int x = r.nextInt(16) + 8;
@@ -287,6 +298,8 @@ public final class LegacyPopulator {
       }
       d.post(w, r, pos);
       freeze(w, pos.offset(8, 0, 8));
+      // IWorldGenerators that ran after populate
+      com.nukevscity.rlgen.quark.FairyRings.generate(w, cp);
    }
 
    /** The populate snow/ice pass over the decorated 16x16 (offset by 8, like population). */

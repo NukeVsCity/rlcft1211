@@ -87,6 +87,11 @@ public final class RLGen {
    // Traverse and Defiled Lands terrain blocks (plain blocks for now; the mods' behaviour comes later).
    public static final DeferredBlock<Block> RED_ROCK = stone("red_rock", MapColor.COLOR_ORANGE);
    public static final DeferredBlock<Block> BLUE_ROCK = stone("blue_rock", MapColor.COLOR_LIGHT_BLUE);
+   // Quark's Revamp stone gen stones (generation only; their crafting variants are not ported).
+   public static final DeferredBlock<Block> MARBLE = stone("marble", MapColor.QUARTZ);
+   public static final DeferredBlock<Block> LIMESTONE = stone("limestone", MapColor.STONE);
+   public static final DeferredBlock<Block> JASPER = stone("jasper", MapColor.TERRACOTTA_RED);
+   public static final DeferredBlock<Block> SLATE = stone("slate", MapColor.COLOR_GRAY);
    public static final DeferredBlock<Block> STONE_DEFILED = stone("stone_defiled", MapColor.COLOR_PURPLE);
    public static final DeferredBlock<Block> GRASS_DEFILED = BLOCKS.registerSimpleBlock(
       "grass_defiled", BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).strength(0.6F).sound(SoundType.GRASS));
@@ -145,7 +150,7 @@ public final class RLGen {
       for (DeferredBlock<?> b : new DeferredBlock<?>[]{RED_ROCK, BLUE_ROCK, STONE_DEFILED, GRASS_DEFILED, DIRT_DEFILED, SAND_DEFILED,
          FIR_LOG, TENEBRA_LOG, FIR_LEAVES, RED_AUTUMNAL_LEAVES, ORANGE_AUTUMNAL_LEAVES, YELLOW_AUTUMNAL_LEAVES, BROWN_AUTUMNAL_LEAVES, TENEBRA_LEAVES,
          GRAVEL_DEFILED, SANDSTONE_DEFILED, STONE_BRICKS_DEFILED, STONE_BRICKS_DEFILED_CRACKED, STONE_BRICKS_DEFILED_MOSSY, STONE_DEFILED_MOSSY,
-         HEPHAESTITE_ORE, UMBRIUM_ORE, SCARLITE_ORE, BLUE_ROCK_COBBLESTONE, CONJURING_ALTAR, DEAD_GRASS, COLD_GRASS, BLASTEM, SCURONOTTE, VILESPINE}) {
+         HEPHAESTITE_ORE, UMBRIUM_ORE, SCARLITE_ORE, MARBLE, LIMESTONE, JASPER, SLATE, BLUE_ROCK_COBBLESTONE, CONJURING_ALTAR, DEAD_GRASS, COLD_GRASS, BLASTEM, SCURONOTTE, VILESPINE}) {
          ITEMS.registerSimpleBlockItem(b);
       }
    }

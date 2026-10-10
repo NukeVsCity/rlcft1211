@@ -120,5 +120,9 @@
   "block.rlgen.blastem": "Blastem",
   "block.rlgen.scuronotte": "Scuronotte",
   "block.rlgen.vilespine": "Vilespine",
-  "block.rlgen.conjuring_altar": "Conjuring Altar"
+  "block.rlgen.conjuring_altar": "Conjuring Altar",
+  "block.rlgen.marble": "Marble",
+  "block.rlgen.limestone": "Limestone",
+  "block.rlgen.jasper": "Jasper",
+  "block.rlgen.slate": "Slate"
 }
