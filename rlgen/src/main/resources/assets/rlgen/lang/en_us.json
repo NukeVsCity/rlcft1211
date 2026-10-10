@@ -104,5 +104,21 @@
   "block.rlgen.tenebra_log": "Tenebra Log",
   "block.rlgen.yellow_autumnal_leaves": "Yellow Autumnal Leaves",
   "generator.rlgen.rlcraft_legacy": "RLCraft Legacy",
-  "generator.rlgen.vanilla_1_12": "Vanilla 1.12"
+  "generator.rlgen.vanilla_1_12": "Vanilla 1.12",
+  "block.rlgen.gravel_defiled": "Gravel Defiled",
+  "block.rlgen.sandstone_defiled": "Sandstone Defiled",
+  "block.rlgen.stone_bricks_defiled": "Stone Bricks Defiled",
+  "block.rlgen.stone_bricks_defiled_cracked": "Stone Bricks Defiled Cracked",
+  "block.rlgen.stone_bricks_defiled_mossy": "Stone Bricks Defiled Mossy",
+  "block.rlgen.stone_defiled_mossy": "Stone Defiled Mossy",
+  "block.rlgen.hephaestite_ore": "Hephaestite Ore",
+  "block.rlgen.umbrium_ore": "Umbrium Ore",
+  "block.rlgen.scarlite_ore": "Scarlite Ore",
+  "block.rlgen.blue_rock_cobblestone": "Blue Rock Cobblestone",
+  "block.rlgen.dead_grass": "Dead Grass",
+  "block.rlgen.cold_grass": "Cold Grass",
+  "block.rlgen.blastem": "Blastem",
+  "block.rlgen.scuronotte": "Scuronotte",
+  "block.rlgen.vilespine": "Vilespine",
+  "block.rlgen.conjuring_altar": "Conjuring Altar"
 }

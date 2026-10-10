@@ -59,6 +59,8 @@ COLOURS = {
 }
 DEFILED_COLOURS = (4468548, 7035752, 2228275, 7035752)
 
+LEGACY_FEATURES = [[], ["rlgen:legacy_lakes"], ["rlgen:underground/amethyst_geode"], ["minecraft:monster_room_deep"], [], [], ["rlgen:legacy_ores", "minecraft:ore_tuff", "rlgen:underground/ore_iron", "rlgen:underground/ore_gold", "minecraft:ore_gold_lower", "rlgen:underground/ore_redstone", "minecraft:ore_redstone_lower", "rlgen:underground/ore_diamond", "minecraft:ore_diamond_medium", "rlgen:underground/ore_lapis", "rlgen:underground/ore_copper"], [], [], [], ["rlgen:legacy_plants"]]
+
 def rl(name):
     return "rlgen:" + name.split(":")[-1]
 
@@ -91,6 +93,7 @@ for name, b in biomes.items():
         if f is not None: e["foliage_color"] = f & 0xFFFFFF
         if s is not None: e["sky_color"] = s & 0xFFFFFF
         if w is not None: e["water_color"] = w & 0xFFFFFF
+    t["features"] = LEGACY_FEATURES  # 1.12 population (rlgen:legacy_*) + 1.21 ores/geodes below Y 0 only
     os.makedirs(f"{RES}/data/rlgen/worldgen/biome", exist_ok=True)
     json.dump(t, open(f"{RES}/data/rlgen/worldgen/biome/{short}.json", "w"), indent=2)
     lang[f"biome.rlgen.{short}"] = b["disp"]

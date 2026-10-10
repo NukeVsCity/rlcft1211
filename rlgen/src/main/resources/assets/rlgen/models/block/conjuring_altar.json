@@ -1,0 +1,8 @@
+{
+  "parent": "rlgen:block/altar_base",
+  "textures": {
+    "bottom": "rlgen:block/stone_defiled",
+    "top": "rlgen:block/conjuring_altar_top",
+    "side": "rlgen:block/conjuring_altar_side"
+  }
+}

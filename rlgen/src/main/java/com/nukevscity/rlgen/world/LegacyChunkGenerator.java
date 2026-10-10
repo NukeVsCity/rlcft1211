@@ -136,6 +136,10 @@ public final class LegacyChunkGenerator extends ChunkGenerator {
       }
    }
 
+   public LegacyGenerator legacyGenerator() {
+      return this.legacy;
+   }
+
    /** The 1.12 world as Recurrent Complex sees it when planning: terrain from the port (no decoration), 1.12 biomes. */
    public RcGenerator.Oracle oracle() {
       return new Oracle();

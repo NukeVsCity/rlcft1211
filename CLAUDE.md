@@ -66,6 +66,14 @@ Credits are limited (about $100 total). Do milestones in order. After each one, 
 ### Later (not Phase 1, only if asked)
 Quark worldgen bits, BetterNether, other dungeon mods, mobs (Lycanites, Ice and Fire 1.12 dragon AI with RLCraft's config: dragon attack damage 30), combat, everything else.
 
+## User's priorities after M4 (session 3)
+He wants the *visual feel* back: everything that was visibly generated in the world. Order:
+1. 1.12 decoration (BiomeDecorator ores/flowers/grass/lakes/dungeons/snow, biome extras, Traverse/Defiled decorate).
+2. 1.12 villages (MapGenVillage) with the RC "lively" house pieces; RC mazes.
+3. Battle Towers, Roguelike Dungeons, Doomlike Dungeons, Ruins mod (all from his RLCraft 2.9.3 configs).
+4. Quark world gen (underground biomes, crystal caves, stone revamp, etc.).
+Dropped: BetterNether (he prefers the 1.21 nether), Lost Cities (waste of time). Mobs etc. only later if asked.
+
 ## Files in `ref/`
 - `structures/`: all Recurrent Complex structures from his instance (`active/` is what generates).
 - `config/`: Traverse, Dynamic Trees, Quark, Recurrent Complex, Defiled Lands, Chunk Animator, Lost Cities, Ice and Fire, Serene Seasons, Snow Real Magic, Better Foliage, Forge configs.

@@ -142,6 +142,24 @@ public final class RcGenerator {
       return out;
    }
 
+   /** The random draws RC's PopulateChunkEvent.Pre handler made on the populate random (selection only; placing uses its own seeds). */
+   public static void consumeSelection(Random rand, int cx, int cz, com.nukevscity.rlgen.legacy.LegacyGenerator legacy) {
+      RcRegistry reg = RcRegistry.get();
+      Biome biomeGen;
+      Biome biome00;
+      synchronized (com.nukevscity.rlgen.legacy.LegacyGenerator.LOCK) {
+         biomeGen = legacy.getBiome(cx * 16 + 8, cz * 16 + 8);
+         biome00 = legacy.getBiome(cx * 16, cz * 16);
+      }
+      RcRegistry.Selector selector = reg.selector(biomeGen);
+      if (selector.isEmpty()) {
+         return;
+      }
+      for (RcRegistry.Entry e : reg.generatedStructures(selector, rand, biome00)) {
+         rand.nextLong();
+      }
+   }
+
    static BlockPos center(BoundingBox bb) {
       return new BlockPos(bb.minX() + (bb.maxX() - bb.minX() + 1) / 2, bb.minY() + (bb.maxY() - bb.minY() + 1) / 2,
          bb.minZ() + (bb.maxZ() - bb.minZ() + 1) / 2);

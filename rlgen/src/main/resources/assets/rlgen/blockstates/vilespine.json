@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "topmost=false": {
+      "model": "rlgen:block/vilespine_part"
+    },
+    "topmost=true": {
+      "model": "rlgen:block/vilespine_top"
+    }
+  }
+}
