@@ -1,0 +1,32 @@
+package greymerk.roguelike.theme.builtin;
+
+import com.github.fnar.minecraft.block.BlockType;
+import com.github.fnar.minecraft.block.normal.ColoredBlock;
+import com.github.fnar.minecraft.block.normal.Quartz;
+import com.github.fnar.minecraft.block.normal.StairsBlock;
+import greymerk.roguelike.theme.BlockSet;
+import greymerk.roguelike.theme.Theme;
+import greymerk.roguelike.util.DyeColor;
+import greymerk.roguelike.worldgen.BlockBrush;
+import greymerk.roguelike.worldgen.BlockStripes;
+import greymerk.roguelike.worldgen.BlockWeightedRandom;
+import greymerk.roguelike.worldgen.Direction;
+
+public class ThemeEniQuartz extends Theme {
+   public ThemeEniQuartz() {
+      BlockWeightedRandom red = new BlockWeightedRandom();
+      red.addBlock(ColoredBlock.stainedHardenedClay().setColor(DyeColor.RED), 100);
+      red.addBlock(BlockType.WATER_FLOWING.getBrush(), 5);
+      red.addBlock(BlockType.REDSTONE_BLOCK.getBrush(), 1);
+      BlockStripes floor = new BlockStripes();
+      floor.addBlock(red);
+      floor.addBlock(BlockType.OBSIDIAN.getBrush());
+      BlockBrush walls = BlockType.BRICK.getBrush();
+      StairsBlock stair = StairsBlock.brick();
+      this.primary = new BlockSet(floor, walls, stair, walls);
+      BlockBrush quartz = BlockType.QUARTZ.getBrush();
+      StairsBlock quartzStair = StairsBlock.quartz();
+      BlockBrush quartzPillar = Quartz.PILLAR.getBrush().setFacing(Direction.UP);
+      this.secondary = new BlockSet(floor, quartz, quartzStair, quartzPillar);
+   }
+}

@@ -1,0 +1,93 @@
+package greymerk.roguelike.dungeon.rooms.prototype;
+
+import com.github.fnar.minecraft.block.BlockType;
+import com.github.fnar.minecraft.block.SingleBlockBrush;
+import com.github.fnar.minecraft.block.decorative.TorchBlock;
+import com.google.common.collect.Lists;
+import greymerk.roguelike.dungeon.base.BaseRoom;
+import greymerk.roguelike.dungeon.rooms.RoomSetting;
+import greymerk.roguelike.dungeon.settings.LevelSettings;
+import greymerk.roguelike.treasure.TreasureChest;
+import greymerk.roguelike.treasure.loot.ChestType;
+import greymerk.roguelike.worldgen.Coord;
+import greymerk.roguelike.worldgen.Direction;
+import greymerk.roguelike.worldgen.WorldEditor;
+import greymerk.roguelike.worldgen.shapes.RectSolid;
+import java.util.List;
+
+public class PitRoom extends BaseRoom {
+   public PitRoom(RoomSetting roomSetting, LevelSettings levelSettings, WorldEditor worldEditor) {
+      super(roomSetting, levelSettings, worldEditor);
+      this.wallDist = 3;
+   }
+
+   @Override
+   public BaseRoom generate(Coord at, List<Direction> entrances) {
+      super.generate(at, entrances);
+      this.generatePit(at);
+      this.generateTraps(at, entrances);
+      this.generateChest(at, entrances);
+      return this;
+   }
+
+   private void generateChest(Coord origin, List<Direction> entrances) {
+      Coord chest = origin.copy().north(this.random().nextBoolean() ? 2 : -2).east(this.random().nextBoolean() ? 2 : -2);
+      new TreasureChest(chest, this.worldEditor)
+         .withChestType(this.getChestTypeOrUse(ChestType.chooseRandomAmong(this.random(), ChestType.COMMON_TREASURES)))
+         .withFacing(this.getEntrance(entrances))
+         .withTrap(TreasureChest.shouldBeTrapped(this.random(), this.levelSettings.getLevel()))
+         .stroke(this.worldEditor, chest);
+   }
+
+   private void generatePit(Coord at) {
+      Coord pit = at.copy().down();
+      int layersDepth = this.random().nextInt(4) + 1;
+      int blocksDepth = layersDepth * 10;
+      int bottomOfPit = Math.max(5, pit.getY() - blocksDepth) + 1;
+      Coord wallsCorner0 = pit.copy().north(2).west(2);
+      Coord wallsCorner1 = pit.copy().south(2).east(2).setY(bottomOfPit);
+      RectSolid wallsRect = RectSolid.newRect(wallsCorner0, wallsCorner1);
+      this.primaryWallBrush().fill(this.worldEditor, wallsRect, false, true);
+      Coord pitCorner0 = pit.copy().north().west();
+      Coord pitCorner1 = pit.copy().south().east().setY(bottomOfPit);
+      RectSolid pitRect = RectSolid.newRect(pitCorner0, pitCorner1);
+      SingleBlockBrush.AIR.fill(this.worldEditor, pitRect);
+      if (this.random().nextBoolean()) {
+         int liquidBlocksDepth = this.random().nextInt(7) + 3;
+         Coord waterCorner0 = pit.copy().north().west().setY(bottomOfPit + liquidBlocksDepth);
+         Coord waterCorner1 = pit.copy().south().east().setY(bottomOfPit);
+         RectSolid waterRect = RectSolid.newRect(waterCorner0, waterCorner1);
+         this.primaryLiquidBrush().fill(this.worldEditor, waterRect);
+      }
+   }
+
+   private void generateTraps(Coord origin, List<Direction> entrances) {
+      List<Direction> trapDirections = Lists.newArrayList(Direction.CARDINAL);
+      trapDirections.removeAll(entrances);
+      trapDirections.forEach(dir -> this.setTrap(origin, dir));
+   }
+
+   private void setTrap(Coord at, Direction outward) {
+      double trapChance = 0.2;
+      if (!(this.random().nextDouble() >= trapChance)) {
+         Coord start = at.copy().translate(outward, 3).translate(outward.left()).down();
+         Coord end = at.copy().translate(outward, 6).translate(outward.right()).up(3);
+         RectSolid trapRect = RectSolid.newRect(start, end);
+         List<Coord> trapCoords = trapRect.asList();
+         boolean isValidTrapLocation = trapCoords.stream().noneMatch(this.worldEditor::isAirBlock);
+         if (isValidTrapLocation) {
+            trapCoords.forEach(block -> this.primaryWallBrush().stroke(this.worldEditor, block));
+            Coord cursor = at.copy().translate(outward, 2);
+            BlockType.PRESSURE_PLATE_STONE.getBrush().stroke(this.worldEditor, cursor);
+            cursor = cursor.translate(outward).down();
+            TorchBlock.redstone().setFacing(outward).stroke(this.worldEditor, cursor);
+            cursor.translate(outward);
+            BlockType.REDSTONE_WIRE.getBrush().stroke(this.worldEditor, cursor);
+            cursor.translate(outward).up();
+            TorchBlock.redstone().extinguish().setFacing(Direction.UP).stroke(this.worldEditor, cursor);
+            cursor.translate(outward.reverse()).up();
+            BlockType.STICKY_PISTON.getBrush().setFacing(outward).stroke(this.worldEditor, cursor);
+         }
+      }
+   }
+}

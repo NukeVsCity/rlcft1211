@@ -1,0 +1,31 @@
+package com.github.fnar.roguelike.dungeon.rooms;
+
+import com.github.fnar.roguelike.worldgen.generatables.Fountain;
+import com.github.fnar.roguelike.worldgen.generatables.Generatable;
+import com.github.fnar.roguelike.worldgen.generatables.Pillar;
+import greymerk.roguelike.dungeon.base.BaseRoom;
+import greymerk.roguelike.dungeon.rooms.RoomSetting;
+import greymerk.roguelike.dungeon.settings.LevelSettings;
+import greymerk.roguelike.worldgen.Coord;
+import greymerk.roguelike.worldgen.Direction;
+import greymerk.roguelike.worldgen.WorldEditor;
+import java.util.List;
+
+public class FountainRoom extends BaseRoom {
+   public FountainRoom(RoomSetting roomSetting, LevelSettings levelSettings, WorldEditor worldEditor) {
+      super(roomSetting, levelSettings, worldEditor);
+      this.wallDist = 5;
+      this.ceilingHeight = 5;
+   }
+
+   @Override
+   protected void generateDecorations(Coord at, List<Direction> entrances) {
+      Fountain.newFountain(this.worldEditor).generate(at);
+      Generatable pillar = Pillar.newPillar(this.worldEditor).withHeight(this.getCeilingHeight()).withTheme(this.theme());
+
+      for (Direction cardinal : Direction.cardinals()) {
+         int pillarDist = this.getWallDist() - 1;
+         pillar.generate(at.copy().translate(cardinal, pillarDist).translate(cardinal.left(), pillarDist));
+      }
+   }
+}

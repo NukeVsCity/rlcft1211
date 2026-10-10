@@ -4,11 +4,11 @@ import java.util.Map;
 import java.util.Set;
 
 /** Forge 1.12 BiomeDictionary types of every legacy biome (vanilla registerVanillaBiomes, Traverse 1.6.0, Defiled Lands 1.4.3). Generated. */
-final class BiomeDict {
+public final class BiomeDict {
    private BiomeDict() {
    }
 
-   static final Map<String, Set<String>> TYPES = Map.ofEntries(
+   public static final Map<String, Set<String>> TYPES = Map.ofEntries(
       Map.entry("beaches", Set.of("BEACH")),
       Map.entry("birch_forest", Set.of("FOREST")),
       Map.entry("birch_forest_hills", Set.of("FOREST", "HILLS")),

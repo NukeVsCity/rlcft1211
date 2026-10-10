@@ -136,6 +136,21 @@ public final class LegacyChunkGenerator extends ChunkGenerator {
       }
    }
 
+   /** The 1.12 terrain block (no decoration) through the shared chunk cache, for generators that read a large area. */
+   public BlockState legacyState(BlockPos pos) {
+      int y = pos.getY();
+      if (y < 0 || y >= LEGACY_HEIGHT) {
+         return Blocks.AIR.defaultBlockState();
+      }
+      return state(this.chunk(pos.getX() >> 4, pos.getZ() >> 4).primer.getBlockState(pos.getX() & 15, y, pos.getZ() & 15));
+   }
+
+   public com.nukevscity.rlgen.legacy.biome.Biome legacyBiome(int x, int z) {
+      synchronized (LegacyGenerator.LOCK) {
+         return this.legacy.getBiome(x, z);
+      }
+   }
+
    public LegacyGenerator legacyGenerator() {
       return this.legacy;
    }

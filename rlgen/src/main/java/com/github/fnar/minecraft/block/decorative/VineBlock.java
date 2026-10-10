@@ -1,0 +1,51 @@
+package com.github.fnar.minecraft.block.decorative;
+
+import com.github.fnar.minecraft.block.BlockType;
+import com.github.fnar.minecraft.block.SingleBlockBrush;
+import greymerk.roguelike.worldgen.Coord;
+import greymerk.roguelike.worldgen.Direction;
+import greymerk.roguelike.worldgen.WorldEditor;
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class VineBlock extends SingleBlockBrush {
+   public VineBlock() {
+      super(BlockType.VINE);
+   }
+
+   @Override
+   public boolean stroke(WorldEditor editor, Coord origin, boolean fillAir, boolean replaceSolid) {
+      if (!editor.isAirBlock(origin)) {
+         return false;
+      } else {
+         ArrayList<Direction> directions = new ArrayList<>(Direction.CARDINAL);
+         directions.add(Direction.UP);
+         Collections.shuffle(directions, editor.getRandom());
+
+         for (Direction dir : directions) {
+            if (dir == Direction.DOWN) {
+               return false;
+            }
+
+            Coord c = origin.copy();
+            if (editor.canPlace(this, c, dir)) {
+               this.setFacing(dir);
+               super.stroke(editor, origin, fillAir, replaceSolid);
+               return true;
+            }
+         }
+
+         return false;
+      }
+   }
+
+   public static VineBlock vine() {
+      return new VineBlock();
+   }
+
+   public VineBlock copy() {
+      VineBlock vineBlock = new VineBlock();
+      vineBlock.setFacing(this.getFacing());
+      return vineBlock;
+   }
+}

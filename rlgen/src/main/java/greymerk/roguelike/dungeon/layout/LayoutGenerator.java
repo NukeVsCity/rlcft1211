@@ -1,0 +1,31 @@
+package greymerk.roguelike.dungeon.layout;
+
+import greymerk.roguelike.dungeon.layout.classic.LayoutGeneratorClassic;
+import greymerk.roguelike.dungeon.layout.mst.LayoutGeneratorMST;
+import greymerk.roguelike.dungeon.settings.LevelSettings;
+import greymerk.roguelike.worldgen.Coord;
+import java.util.Random;
+
+public interface LayoutGenerator {
+   LevelLayout generate(Coord var1, Random var2);
+
+   LevelLayout getLayout();
+
+   public static enum Type {
+      CLASSIC,
+      MST;
+
+      public LayoutGenerator instantiate(LevelSettings levelSettings) {
+         int numRooms = levelSettings.getNumRooms();
+         int scatter = levelSettings.getScatter();
+         int range = levelSettings.getRange();
+         switch (this) {
+            case CLASSIC:
+            default:
+               return new LayoutGeneratorClassic(numRooms, scatter, range);
+            case MST:
+               return new LayoutGeneratorMST(numRooms, scatter);
+         }
+      }
+   }
+}

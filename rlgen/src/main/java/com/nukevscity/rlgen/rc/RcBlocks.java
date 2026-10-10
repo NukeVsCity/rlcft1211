@@ -39,7 +39,7 @@ public final class RcBlocks {
       return GLOBALS.getOrDefault(name, false);
    }
 
-   static String normalizeId(String s) {
+   public static String normalizeId(String s) {
       s = s.toLowerCase(Locale.ROOT);
       return s.indexOf(':') < 0 ? "minecraft:" + s : s;
    }

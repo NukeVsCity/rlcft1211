@@ -864,4 +864,5 @@ def main():
     for k, v in sorted(STATS.items(), key=lambda kv: -kv[1])[:60]:
         print(v, k)
 
-main()
+if __name__ == "__main__":
+    main()

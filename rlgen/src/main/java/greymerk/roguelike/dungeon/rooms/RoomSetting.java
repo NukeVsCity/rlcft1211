@@ -1,0 +1,289 @@
+package greymerk.roguelike.dungeon.rooms;
+
+import com.github.fnar.roguelike.dungeon.rooms.FountainRoom;
+import com.github.fnar.roguelike.dungeon.rooms.NetherPortalRoom;
+import com.github.fnar.roguelike.dungeon.rooms.Platforms2Room;
+import com.github.fnar.roguelike.dungeon.rooms.PlatformsRoom;
+import com.github.fnar.roguelike.dungeon.rooms.SmallLiquidPitRoom;
+import greymerk.roguelike.dungeon.base.BaseRoom;
+import greymerk.roguelike.dungeon.base.RoomType;
+import greymerk.roguelike.dungeon.rooms.prototype.AvidyaRoom;
+import greymerk.roguelike.dungeon.rooms.prototype.BTeamRoom;
+import greymerk.roguelike.dungeon.rooms.prototype.BedRoomRoom;
+import greymerk.roguelike.dungeon.rooms.prototype.BlazeRoom;
+import greymerk.roguelike.dungeon.rooms.prototype.BrickRoom;
+import greymerk.roguelike.dungeon.rooms.prototype.CakeRoom;
+import greymerk.roguelike.dungeon.rooms.prototype.CornerRoom;
+import greymerk.roguelike.dungeon.rooms.prototype.DarkHallRoom;
+import greymerk.roguelike.dungeon.rooms.prototype.DungeonsCreeperDen;
+import greymerk.roguelike.dungeon.rooms.prototype.DungeonsCrypt;
+import greymerk.roguelike.dungeon.rooms.prototype.DungeonsEnchant;
+import greymerk.roguelike.dungeon.rooms.prototype.DungeonsEnder;
+import greymerk.roguelike.dungeon.rooms.prototype.DungeonsFire;
+import greymerk.roguelike.dungeon.rooms.prototype.DungeonsMusic;
+import greymerk.roguelike.dungeon.rooms.prototype.DungeonsPrison;
+import greymerk.roguelike.dungeon.rooms.prototype.DungeonsSlime;
+import greymerk.roguelike.dungeon.rooms.prototype.DungeonsSmithy;
+import greymerk.roguelike.dungeon.rooms.prototype.DungeonsSpiderNest;
+import greymerk.roguelike.dungeon.rooms.prototype.EnikoRoom;
+import greymerk.roguelike.dungeon.rooms.prototype.FireworkRoom;
+import greymerk.roguelike.dungeon.rooms.prototype.LabRoom;
+import greymerk.roguelike.dungeon.rooms.prototype.LibraryRoom;
+import greymerk.roguelike.dungeon.rooms.prototype.LinkerRoom;
+import greymerk.roguelike.dungeon.rooms.prototype.LinkerTopRoom;
+import greymerk.roguelike.dungeon.rooms.prototype.MessRoom;
+import greymerk.roguelike.dungeon.rooms.prototype.NetherBrickRoom;
+import greymerk.roguelike.dungeon.rooms.prototype.NetherFortressRoom;
+import greymerk.roguelike.dungeon.rooms.prototype.ObsidianRoom;
+import greymerk.roguelike.dungeon.rooms.prototype.OssuaryRoom;
+import greymerk.roguelike.dungeon.rooms.prototype.PitRoom;
+import greymerk.roguelike.dungeon.rooms.prototype.PyramidCornerRoom;
+import greymerk.roguelike.dungeon.rooms.prototype.PyramidSpawnerRoom;
+import greymerk.roguelike.dungeon.rooms.prototype.PyramidTombRoom;
+import greymerk.roguelike.dungeon.rooms.prototype.RewardRoom;
+import greymerk.roguelike.dungeon.rooms.prototype.StorageRoom;
+import greymerk.roguelike.dungeon.rooms.prototype.TreethoRoom;
+import greymerk.roguelike.dungeon.settings.LevelSettings;
+import greymerk.roguelike.treasure.loot.ChestType;
+import greymerk.roguelike.worldgen.WorldEditor;
+import java.util.List;
+import java.util.Optional;
+
+public class RoomSetting {
+   private final RoomType roomType;
+   private final String spawnerId;
+   private final Frequency frequency;
+   private final int weight;
+   private final int count;
+   private final List<Integer> levels;
+   private final Optional<ChestType> chestType;
+
+   public RoomSetting(RoomType roomType, String spawnerId, Frequency frequency, int weight, int count, List<Integer> levels, Optional<ChestType> chestType) {
+      this.roomType = roomType;
+      this.spawnerId = spawnerId;
+      this.frequency = frequency;
+      this.weight = weight;
+      this.count = count;
+      this.levels = levels;
+      this.chestType = chestType;
+   }
+
+   public boolean isRandom() {
+      return this.frequency.isRandom();
+   }
+
+   public boolean isSecret() {
+      return this.frequency.isSecret();
+   }
+
+   public boolean isSingle() {
+      return this.frequency.isSingle();
+   }
+
+   public boolean isOnFloorLevel(int floorLevel) {
+      return this.getLevels() != null && this.getLevels().contains(floorLevel);
+   }
+
+   public BaseRoom instantiate(LevelSettings levelSettings, WorldEditor worldEditor) {
+      switch (this.getRoomType()) {
+         case BRICK:
+         default:
+            return new BrickRoom(this, levelSettings, worldEditor);
+         case AVIDYA:
+            return new AvidyaRoom(this, levelSettings, worldEditor);
+         case BEDROOM:
+            return new BedRoomRoom(this, levelSettings, worldEditor);
+         case BLAZE:
+            return new BlazeRoom(this, levelSettings, worldEditor);
+         case BTEAM:
+            return new BTeamRoom(this, levelSettings, worldEditor);
+         case CAKE:
+            return new CakeRoom(this, levelSettings, worldEditor);
+         case CORNER:
+            return new CornerRoom(this, levelSettings, worldEditor);
+         case CREEPER:
+            return new DungeonsCreeperDen(this, levelSettings, worldEditor);
+         case CRYPT:
+            return new DungeonsCrypt(this, levelSettings, worldEditor);
+         case DARKHALL:
+            return new DarkHallRoom(this, levelSettings, worldEditor);
+         case ENCHANT:
+            return new DungeonsEnchant(this, levelSettings, worldEditor);
+         case ENDER:
+            return new DungeonsEnder(this, levelSettings, worldEditor);
+         case ENIKO:
+            return new EnikoRoom(this, levelSettings, worldEditor);
+         case FIRE:
+            return new DungeonsFire(this, levelSettings, worldEditor);
+         case FIREWORK:
+            return new FireworkRoom(this, levelSettings, worldEditor);
+         case FOUNTAIN:
+            return new FountainRoom(this, levelSettings, worldEditor);
+         case LAB:
+            return new LabRoom(this, levelSettings, worldEditor);
+         case LIBRARY:
+            return new LibraryRoom(this, levelSettings, worldEditor);
+         case LINKER:
+            return new LinkerRoom(this, levelSettings, worldEditor);
+         case LINKERTOP:
+            return new LinkerTopRoom(this, levelSettings, worldEditor);
+         case MESS:
+            return new MessRoom(this, levelSettings, worldEditor);
+         case MUSIC:
+            return new DungeonsMusic(this, levelSettings, worldEditor);
+         case NETHER:
+            return new NetherBrickRoom(this, levelSettings, worldEditor);
+         case NETHERFORT:
+            return new NetherFortressRoom(this, levelSettings, worldEditor);
+         case NETHER_PORTAL:
+            return new NetherPortalRoom(this, levelSettings, worldEditor);
+         case OBSIDIAN:
+            return new ObsidianRoom(this, levelSettings, worldEditor);
+         case OSSUARY:
+            return new OssuaryRoom(this, levelSettings, worldEditor);
+         case PIT:
+            return new PitRoom(this, levelSettings, worldEditor);
+         case PLATFORMS:
+            return new PlatformsRoom(this, levelSettings, worldEditor);
+         case PLATFORMS_2:
+            return new Platforms2Room(this, levelSettings, worldEditor);
+         case PRISON:
+            return new DungeonsPrison(this, levelSettings, worldEditor);
+         case PYRAMIDCORNER:
+            return new PyramidCornerRoom(this, levelSettings, worldEditor);
+         case PYRAMIDSPAWNER:
+            return new PyramidSpawnerRoom(this, levelSettings, worldEditor);
+         case PYRAMIDTOMB:
+            return new PyramidTombRoom(this, levelSettings, worldEditor);
+         case REWARD:
+            return new RewardRoom(this, levelSettings, worldEditor);
+         case SLIME:
+            return new DungeonsSlime(this, levelSettings, worldEditor);
+         case SMALL_LIQUID_PIT:
+            return new SmallLiquidPitRoom(this, levelSettings, worldEditor);
+         case SMITH:
+            return new DungeonsSmithy(this, levelSettings, worldEditor);
+         case SPIDER:
+            return new DungeonsSpiderNest(this, levelSettings, worldEditor);
+         case STORAGE:
+            return new StorageRoom(this, levelSettings, worldEditor);
+         case TREETHO:
+            return new TreethoRoom(this, levelSettings, worldEditor);
+      }
+   }
+
+   @Override
+   public String toString() {
+      return "RoomSetting(roomType="
+         + this.getRoomType()
+         + ", spawnerId="
+         + this.getSpawnerId()
+         + ", frequency="
+         + this.getFrequency()
+         + ", weight="
+         + this.getWeight()
+         + ", count="
+         + this.getCount()
+         + ", levels="
+         + this.getLevels()
+         + ", chestType="
+         + this.getChestType()
+         + ")";
+   }
+
+   @Override
+   public boolean equals(Object o) {
+      if (o == this) {
+         return true;
+      } else if (!(o instanceof RoomSetting)) {
+         return false;
+      } else {
+         RoomSetting other = (RoomSetting)o;
+         if (!other.canEqual(this)) {
+            return false;
+         } else if (this.getWeight() != other.getWeight()) {
+            return false;
+         } else if (this.getCount() != other.getCount()) {
+            return false;
+         } else {
+            Object this$roomType = this.getRoomType();
+            Object other$roomType = other.getRoomType();
+            if (this$roomType == null ? other$roomType == null : this$roomType.equals(other$roomType)) {
+               Object this$spawnerId = this.getSpawnerId();
+               Object other$spawnerId = other.getSpawnerId();
+               if (this$spawnerId == null ? other$spawnerId == null : this$spawnerId.equals(other$spawnerId)) {
+                  Object this$frequency = this.getFrequency();
+                  Object other$frequency = other.getFrequency();
+                  if (this$frequency == null ? other$frequency == null : this$frequency.equals(other$frequency)) {
+                     Object this$levels = this.getLevels();
+                     Object other$levels = other.getLevels();
+                     if (this$levels == null ? other$levels == null : this$levels.equals(other$levels)) {
+                        Object this$chestType = this.getChestType();
+                        Object other$chestType = other.getChestType();
+                        return this$chestType == null ? other$chestType == null : this$chestType.equals(other$chestType);
+                     } else {
+                        return false;
+                     }
+                  } else {
+                     return false;
+                  }
+               } else {
+                  return false;
+               }
+            } else {
+               return false;
+            }
+         }
+      }
+   }
+
+   protected boolean canEqual(Object other) {
+      return other instanceof RoomSetting;
+   }
+
+   @Override
+   public int hashCode() {
+      int PRIME = 59;
+      int result = 1;
+      result = result * 59 + this.getWeight();
+      result = result * 59 + this.getCount();
+      Object $roomType = this.getRoomType();
+      result = result * 59 + ($roomType == null ? 43 : $roomType.hashCode());
+      Object $spawnerId = this.getSpawnerId();
+      result = result * 59 + ($spawnerId == null ? 43 : $spawnerId.hashCode());
+      Object $frequency = this.getFrequency();
+      result = result * 59 + ($frequency == null ? 43 : $frequency.hashCode());
+      Object $levels = this.getLevels();
+      result = result * 59 + ($levels == null ? 43 : $levels.hashCode());
+      Object $chestType = this.getChestType();
+      return result * 59 + ($chestType == null ? 43 : $chestType.hashCode());
+   }
+
+   public RoomType getRoomType() {
+      return this.roomType;
+   }
+
+   public String getSpawnerId() {
+      return this.spawnerId;
+   }
+
+   public Frequency getFrequency() {
+      return this.frequency;
+   }
+
+   public int getWeight() {
+      return this.weight;
+   }
+
+   public int getCount() {
+      return this.count;
+   }
+
+   public List<Integer> getLevels() {
+      return this.levels;
+   }
+
+   public Optional<ChestType> getChestType() {
+      return this.chestType;
+   }
+}
