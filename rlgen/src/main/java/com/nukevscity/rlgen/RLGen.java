@@ -60,6 +60,11 @@ public final class RLGen {
       STRUCTURE_TYPES.register("doomlike", () -> () -> com.nukevscity.rlgen.doomlike.DoomlikeStructure.CODEC);
    public static final DeferredHolder<StructurePieceType, StructurePieceType> DOOMLIKE_PIECE =
       STRUCTURE_PIECES.register("doomlike", () -> com.nukevscity.rlgen.doomlike.DoomlikePiece::new);
+   /** Ruins (AtomicStryker) with RLCraft's templates. */
+   public static final DeferredHolder<StructureType<?>, StructureType<com.nukevscity.rlgen.ruins.RuinsStructure>> RUINS =
+      STRUCTURE_TYPES.register("ruins", () -> () -> com.nukevscity.rlgen.ruins.RuinsStructure.CODEC);
+   public static final DeferredHolder<StructurePieceType, StructurePieceType> RUINS_PIECE =
+      STRUCTURE_PIECES.register("ruins", () -> com.nukevscity.rlgen.ruins.RuinsPiece::new);
    /** Battle Towers (AtomicStryker). */
    public static final DeferredHolder<StructureType<?>, StructureType<com.nukevscity.rlgen.towers.BattleTowerStructure>> BATTLE_TOWER =
       STRUCTURE_TYPES.register("battle_tower", () -> () -> com.nukevscity.rlgen.towers.BattleTowerStructure.CODEC);
@@ -171,6 +176,11 @@ public final class RLGen {
       STRUCTURE_TYPES.register(modBus);
       FEATURES.register(modBus);
       NeoForge.EVENT_BUS.addListener((RegisterCommandsEvent e) -> RcCommand.register(e.getDispatcher()));
+      NeoForge.EVENT_BUS.addListener((net.neoforged.neoforge.event.level.LevelEvent.Load e) -> {
+         if (e.getLevel() instanceof net.minecraft.server.level.ServerLevel sl && sl.dimension() == net.minecraft.world.level.Level.OVERWORLD) {
+            com.nukevscity.rlgen.ruins.RuinsSavedData.attach(sl);
+         }
+      });
       if (net.neoforged.fml.loading.FMLEnvironment.dist.isClient()) {
          RLGenClient.init(modBus);
       }

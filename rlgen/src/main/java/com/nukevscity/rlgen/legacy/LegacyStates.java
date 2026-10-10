@@ -67,6 +67,48 @@ public final class LegacyStates {
       });
    }
 
+   private static volatile Map<net.minecraft.world.level.block.Block, String> reverse;
+
+   /** The 1.12 vanilla block name a 1.21 block came from (meta 0 first, never the flowing_ / lit_ twins); else its 1.21 id. */
+   public static String legacyName(net.minecraft.world.level.block.Block block) {
+      Map<net.minecraft.world.level.block.Block, String> r = reverse;
+      if (r == null) {
+         Map<String, String> b = blocks;
+         if (b == null) {
+            blocks = b = load("blocks.json");
+         }
+         Map<net.minecraft.world.level.block.Block, String> out = new HashMap<>();
+         Map<net.minecraft.world.level.block.Block, Integer> rank = new HashMap<>();
+         for (Map.Entry<String, String> e : b.entrySet()) {
+            String key = e.getKey();
+            if (!key.startsWith("minecraft:")) {
+               continue;
+            }
+            int c = key.lastIndexOf(':');
+            String name = key.substring(0, c);
+            int meta = Integer.parseInt(key.substring(c + 1));
+            String path = name.substring(10);
+            int score = meta + (path.startsWith("flowing_") || path.startsWith("lit_") || path.startsWith("unlit_") || path.startsWith("double_")
+               || path.startsWith("powered_") || path.startsWith("unpowered_") ? 100 : 0);
+            String v = e.getValue();
+            int br = v.indexOf('[');
+            ResourceLocation id = ResourceLocation.tryParse(br < 0 ? v : v.substring(0, br));
+            if (id == null || !BuiltInRegistries.BLOCK.containsKey(id)) {
+               continue;
+            }
+            net.minecraft.world.level.block.Block blk = BuiltInRegistries.BLOCK.get(id);
+            Integer old = rank.get(blk);
+            if (old == null || score < old || score == old && name.compareTo(out.get(blk)) < 0) {
+               rank.put(blk, score);
+               out.put(blk, name);
+            }
+         }
+         reverse = r = out;
+      }
+      String n = r.get(block);
+      return n != null ? n : BuiltInRegistries.BLOCK.getKey(block).toString();
+   }
+
    @Nullable
    public static Item item(String name, int damage) {
       Map<String, String> i = items;
