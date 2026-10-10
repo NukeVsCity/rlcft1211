@@ -76,3 +76,16 @@ Quark worldgen bits, BetterNether, other dungeon mods, mobs (Lycanites, Ice and 
 - A mod change counts as done only once the built jar is installed in the game's mods folder. Install into a separate NeoForge 1.21.1 instance, never into his RLCraft 1.12.2 instance. If this session can't reach his computer, hand him the jar and the exact folder to put it in.
 - Keep replies short and plain. He doesn't want long reports or spreadsheets.
 - Personal use only. Most of these mods are all-rights-reserved, so don't publish anything.
+
+## Progress log
+
+### Session 1 (M1 + M2 terrain/biomes)
+- Mod lives in `rlgen/` (ModDevGradle 2.0.148, NeoForge 21.1.257). Build: `cd rlgen && ./gradlew build` -> `build/libs/rlgen-<ver>.jar`.
+- `com.nukevscity.rlgen.legacy` is a pure-Java copy of the 1.12.2 code, decompiled from the real 1.12.2 client jar with MCP stable_39 names (Vineflower, SpecialSource) plus the Forge 1.12.x patches (GenLayerBiome weighted lists, MapGenCaves/Ravine digBlock/isTopBlock). No MC 1.21 imports in there.
+  - noise/, layer/ (whole GenLayer stack), gen/ (caves, ravines), biome/ (Biome + vanilla subclasses + `ModBiomes` for Traverse/Defiled, `Biomes` registry), `LegacyGenerator` (= ChunkGeneratorOverworld.generateChunk), `LegacyBiomeProvider`.
+  - Biome lists order: vanilla, Defiled Lands (added in registry event, weight 1 each from cfg), Traverse (added at init/server start). See `BiomeLists.rlcraft()`.
+  - Faithful quirks kept: Forge cave isTopBlock bug (never regrows grass), mutable Biome.topBlock, mesa pillar noise seeded with 0, unseeded hills river-zoom layers.
+- Verified: `src/oracle/.../Oracle.java` runs real 1.12.2 classes (tools/client-mcp-1.12.2.jar + 1.12.2 libraries, not committed) next to the port: GenLayer output and 200 chunks match exactly (vanilla lists).
+- 1.21 side (`world/`): `LegacyChunkGenerator` (rlgen:legacy) fills chunks from the port, no 1.21 carvers/surface; `LegacyBiomeSource` maps 1.12 biomes to 1.21 keys (`LegacyBiomeMap`); seed comes from `createState`. World preset `rlgen:rlcraft_legacy` (and `rlgen:vanilla_1_12`), dimension type `rlgen:overworld_legacy` = Y 0..255.
+- Traverse/Defiled biomes are rlgen:* biome JSONs built from vanilla templates (decoration is still 1.21 vanilla features until M3). Blocks rlgen:red_rock, blue_rock, grass/dirt/sand/stone_defiled with the old textures.
+- Not done yet: M3 decoration (1.12 BiomeDecorator, Dynamic Trees), M4 Recurrent Complex structures, lakes/dungeons (populate), snow layers via 1.12 freeze.
