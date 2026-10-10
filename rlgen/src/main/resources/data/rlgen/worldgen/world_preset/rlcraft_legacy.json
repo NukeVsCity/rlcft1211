@@ -1,12 +1,17 @@
 {
   "dimensions": {
     "minecraft:overworld": {
-      "type": "rlgen:overworld_legacy",
+      "type": "minecraft:overworld",
       "generator": {
         "type": "rlgen:legacy",
+        "underground_settings": "rlgen:underground",
         "biome_source": {
           "type": "rlgen:legacy",
-          "biome_lists": "rlcraft"
+          "biome_lists": "rlcraft",
+          "underground": {
+            "type": "minecraft:multi_noise",
+            "preset": "minecraft:overworld"
+          }
         }
       }
     },
