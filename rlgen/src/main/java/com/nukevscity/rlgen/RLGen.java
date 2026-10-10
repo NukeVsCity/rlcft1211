@@ -55,6 +55,11 @@ public final class RLGen {
       STRUCTURE_TYPES.register("roguelike", () -> () -> com.nukevscity.rlgen.roguelike.RoguelikeStructure.CODEC);
    public static final DeferredHolder<StructurePieceType, StructurePieceType> ROGUELIKE_PIECE =
       STRUCTURE_PIECES.register("roguelike", () -> com.nukevscity.rlgen.roguelike.RoguelikePiece::new);
+   /** Doomlike Dungeons (JaredBGreat 1.14.12 with RLCraft's themes). */
+   public static final DeferredHolder<StructureType<?>, StructureType<com.nukevscity.rlgen.doomlike.DoomlikeStructure>> DOOMLIKE =
+      STRUCTURE_TYPES.register("doomlike", () -> () -> com.nukevscity.rlgen.doomlike.DoomlikeStructure.CODEC);
+   public static final DeferredHolder<StructurePieceType, StructurePieceType> DOOMLIKE_PIECE =
+      STRUCTURE_PIECES.register("doomlike", () -> com.nukevscity.rlgen.doomlike.DoomlikePiece::new);
    /** Battle Towers (AtomicStryker). */
    public static final DeferredHolder<StructureType<?>, StructureType<com.nukevscity.rlgen.towers.BattleTowerStructure>> BATTLE_TOWER =
       STRUCTURE_TYPES.register("battle_tower", () -> () -> com.nukevscity.rlgen.towers.BattleTowerStructure.CODEC);
