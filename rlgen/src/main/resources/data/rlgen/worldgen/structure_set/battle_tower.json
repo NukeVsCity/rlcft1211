@@ -1,0 +1,4 @@
+{
+  "structures": [{"structure": "rlgen:battle_tower", "weight": 1}],
+  "placement": {"type": "minecraft:random_spread", "salt": 1597463007, "spacing": 60, "separation": 56}
+}

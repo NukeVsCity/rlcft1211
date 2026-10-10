@@ -50,6 +50,11 @@ public final class RLGen {
       STRUCTURE_TYPES.register("recurrent_complex", () -> () -> RcStructure.CODEC);
    public static final DeferredHolder<StructurePieceType, StructurePieceType> RC_PIECE =
       STRUCTURE_PIECES.register("recurrent_complex", () -> RcPiece::new);
+   /** Battle Towers (AtomicStryker). */
+   public static final DeferredHolder<StructureType<?>, StructureType<com.nukevscity.rlgen.towers.BattleTowerStructure>> BATTLE_TOWER =
+      STRUCTURE_TYPES.register("battle_tower", () -> () -> com.nukevscity.rlgen.towers.BattleTowerStructure.CODEC);
+   public static final DeferredHolder<StructurePieceType, StructurePieceType> BATTLE_TOWER_PIECE =
+      STRUCTURE_PIECES.register("battle_tower", () -> com.nukevscity.rlgen.towers.BattleTowerPiece::new);
    /** 1.12 MapGenVillage (with Recurrent Complex village pieces). */
    public static final DeferredHolder<StructureType<?>, StructureType<LegacyVillageStructure>> VILLAGE_STRUCTURE =
       STRUCTURE_TYPES.register("village", () -> () -> LegacyVillageStructure.CODEC);
