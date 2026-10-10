@@ -1,0 +1,16 @@
+{
+ "data": [
+  {
+   "dimensions": "$UNCATEGORIZED"
+  },
+  {
+   "dimensions": "$NO_TOP_LIMIT & $BOTTOM_LIMIT & $INFINITE & $EARTH"
+  }
+ ],
+ "metadata": {
+  "title": "Overworld",
+  "description": [
+   "Dimensions resembling the real world surface"
+  ]
+ }
+}

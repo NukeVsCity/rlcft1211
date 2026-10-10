@@ -1,0 +1,16 @@
+{
+ "components": [
+  {
+   "items": [
+    {
+     "id": "minecraft:arrow",
+     "weight": 2.0475566387176514,
+     "min": 8,
+     "max": 20
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  }
+ ]
+}

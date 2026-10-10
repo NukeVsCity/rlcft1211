@@ -1,0 +1,124 @@
+{
+ "components": [
+  {
+   "items": [
+    {
+     "id": "minecraft:blue_orchid",
+     "weight": 0.5,
+     "min": 1,
+     "max": 5
+    },
+    {
+     "id": "minecraft:poppy",
+     "weight": 0.5,
+     "min": 1,
+     "max": 5
+    },
+    {
+     "id": "minecraft:dandelion",
+     "weight": 0.5,
+     "min": 1,
+     "max": 5
+    },
+    {
+     "id": "minecraft:red_tulip",
+     "weight": 0.5,
+     "min": 1,
+     "max": 5
+    },
+    {
+     "id": "minecraft:azure_bluet",
+     "weight": 0.5,
+     "min": 1,
+     "max": 5
+    },
+    {
+     "id": "minecraft:allium",
+     "weight": 0.5,
+     "min": 1,
+     "max": 5
+    },
+    {
+     "id": "minecraft:pink_tulip",
+     "weight": 0.5,
+     "min": 1,
+     "max": 5
+    },
+    {
+     "id": "minecraft:white_tulip",
+     "weight": 0.5,
+     "min": 1,
+     "max": 5
+    },
+    {
+     "id": "minecraft:orange_tulip",
+     "weight": 0.5,
+     "min": 1,
+     "max": 5
+    },
+    {
+     "id": "minecraft:lilac",
+     "weight": 0.5,
+     "min": 1,
+     "max": 5
+    },
+    {
+     "id": "minecraft:rose_bush",
+     "weight": 0.5,
+     "min": 1,
+     "max": 5
+    },
+    {
+     "id": "minecraft:oxeye_daisy",
+     "weight": 0.5,
+     "min": 1,
+     "max": 5
+    },
+    {
+     "id": "minecraft:peony",
+     "weight": 0.54,
+     "min": 1,
+     "max": 5
+    },
+    {
+     "id": "minecraft:sunflower",
+     "weight": 0.5,
+     "min": 1,
+     "max": 5
+    },
+    {
+     "id": "minecraft:bone",
+     "weight": 0.5,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:cobweb",
+     "weight": 3.124999523162842,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:feather",
+     "weight": 0.5354365706443787,
+     "min": 1,
+     "max": 16
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  }
+ ]
+}

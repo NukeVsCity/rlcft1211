@@ -1,0 +1,82 @@
+{
+ "components": [
+  {
+   "items": [
+    {
+     "id": "minecraft:beef",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:cooked_porkchop",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:porkchop",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:cooked_beef",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:apple",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potato",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:baked_potato",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:pumpkin_pie",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:bread",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:chicken",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:cooked_chicken",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:carrot",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  }
+ ]
+}

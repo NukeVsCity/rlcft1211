@@ -1,0 +1,22 @@
+{
+ "components": [
+  {
+   "items": [
+    {
+     "id": "minecraft:coal",
+     "weight": 0.27027028799057007,
+     "min": 1,
+     "max": 16
+    },
+    {
+     "id": "minecraft:charcoal",
+     "weight": 1.0,
+     "min": 1,
+     "max": 16
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  }
+ ]
+}

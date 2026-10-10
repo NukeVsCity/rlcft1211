@@ -1,0 +1,58 @@
+{
+ "components": [
+  {
+   "items": [
+    {
+     "id": "minecraft:cobweb",
+     "weight": 4.83,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:bone",
+     "weight": 3.97,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:gold_ingot",
+     "weight": 0.58,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:emerald",
+     "weight": 0.66,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.09,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:paper",
+     "weight": 0.7,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:rotten_flesh",
+     "weight": 0.86,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:stone_shovel",
+     "weight": 0.78,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "minItems": 10,
+   "maxItems": 26
+  }
+ ]
+}

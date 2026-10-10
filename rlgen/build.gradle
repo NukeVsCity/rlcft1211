@@ -13,7 +13,7 @@ neoForge {
     version = project.neo_version
     runs {
         client { client() }
-        server { server(); programArgument '--nogui' }
+        server { server(); programArgument '--nogui'; systemProperty 'rlgen.rcdebug', 'true' }
     }
     mods {
         "${mod_id}" { sourceSet(sourceSets.main) }

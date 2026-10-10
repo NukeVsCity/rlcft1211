@@ -45,6 +45,7 @@ import net.minecraft.world.level.levelgen.blending.Blender;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.NoiseColumn;
 import net.minecraft.world.level.ChunkPos;
+import com.nukevscity.rlgen.rc.RcGenerator;
 
 /**
  * Overworld generator that runs the ported 1.12.2 ChunkGeneratorOverworld (terrain, surfaces, caves,
@@ -132,6 +133,35 @@ public final class LegacyChunkGenerator extends ChunkGenerator {
             this.cache.put(key, c);
          }
          return c;
+      }
+   }
+
+   /** The 1.12 world as Recurrent Complex sees it when planning: terrain from the port (no decoration), 1.12 biomes. */
+   public RcGenerator.Oracle oracle() {
+      return new Oracle();
+   }
+
+   private final class Oracle implements RcGenerator.Oracle {
+      private final Map<Long, ChunkPrimer> primers = new java.util.HashMap<>();
+
+      @Override
+      public BlockState get(BlockPos pos) {
+         int y = pos.getY();
+         if (y < 0 || y >= LEGACY_HEIGHT) {
+            return Blocks.AIR.defaultBlockState();
+         }
+         int cx = pos.getX() >> 4;
+         int cz = pos.getZ() >> 4;
+         ChunkPrimer primer = this.primers.computeIfAbsent(ChunkPos.asLong(cx, cz), k -> LegacyChunkGenerator.this.chunk(cx, cz).primer);
+         return state(primer.getBlockState(pos.getX() & 15, y, pos.getZ() & 15));
+      }
+
+      @Override
+      public com.nukevscity.rlgen.legacy.biome.Biome biome(int x, int z) {
+         LegacyGenerator g = LegacyChunkGenerator.this.legacy;
+         synchronized (LegacyGenerator.LOCK) {
+            return g.getBiome(x, z);
+         }
       }
    }
 

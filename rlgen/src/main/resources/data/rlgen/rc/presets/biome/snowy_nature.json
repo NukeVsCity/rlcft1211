@@ -1,0 +1,17 @@
+{
+ "data": [
+  {
+   "biomes": "$WATER",
+   "weight": 0.0
+  },
+  {
+   "biomes": "$COLD & $SNOWY & ($WASTELAND | $FOREST)"
+  }
+ ],
+ "metadata": {
+  "title": "Snowy Nature",
+  "description": [
+   "Nature that wants a cold climate."
+  ]
+ }
+}

@@ -1,0 +1,46 @@
+{
+ "components": [
+  {
+   "items": [
+    {
+     "id": "minecraft:iron_ingot",
+     "weight": 1.0,
+     "min": 1,
+     "max": 8
+    },
+    {
+     "id": "minecraft:gold_ingot",
+     "weight": 1.0,
+     "min": 1,
+     "max": 8
+    },
+    {
+     "id": "minecraft:iron_ingot",
+     "weight": 1.0,
+     "min": 1,
+     "max": 8
+    },
+    {
+     "id": "minecraft:glowstone_dust",
+     "weight": 1.0,
+     "min": 1,
+     "max": 10
+    },
+    {
+     "id": "minecraft:emerald",
+     "weight": 1.0,
+     "min": 1,
+     "max": 6
+    },
+    {
+     "id": "minecraft:redstone",
+     "weight": 1.0,
+     "min": 1,
+     "max": 8
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  }
+ ]
+}

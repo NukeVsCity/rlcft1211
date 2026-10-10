@@ -1,0 +1,106 @@
+{
+ "components": [
+  {
+   "items": [
+    {
+     "id": "minecraft:bow",
+     "weight": 2.33,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:arrow",
+     "weight": 3.41,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:leather_helmet",
+     "weight": 2.13,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 0.38,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 0.41,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 0.21,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 0.48,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 0.21,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:leather",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:zombie_head",
+     "weight": 0.11,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:skeleton_skull",
+     "weight": 0.07,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:spider_eye",
+     "weight": 0.78,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.14,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.14,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:bone",
+     "weight": 4.46,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:cobweb",
+     "weight": 4.39,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "minItems": 4,
+   "maxItems": 8
+  }
+ ]
+}

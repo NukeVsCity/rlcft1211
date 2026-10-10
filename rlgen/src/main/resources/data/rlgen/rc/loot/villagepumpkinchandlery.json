@@ -1,0 +1,34 @@
+{
+ "components": [
+  {
+   "items": [
+    {
+     "id": "minecraft:pumpkin_seeds",
+     "weight": 0.7755888104438782,
+     "min": 1,
+     "max": 64
+    },
+    {
+     "id": "minecraft:jack_o_lantern",
+     "weight": 0.9243392944335938,
+     "min": 1,
+     "max": 16
+    },
+    {
+     "id": "minecraft:jack_o_lantern",
+     "weight": 1.0068187713623047,
+     "min": 1,
+     "max": 8
+    },
+    {
+     "id": "minecraft:torch",
+     "weight": 1.0068187713623047,
+     "min": 1,
+     "max": 32
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  }
+ ]
+}

@@ -1,0 +1,112 @@
+{
+ "components": [
+  {
+   "items": [
+    {
+     "id": "minecraft:book",
+     "weight": 10.335477828979492,
+     "min": 1,
+     "max": 30
+    },
+    {
+     "id": "minecraft:writable_book",
+     "weight": 2.202605724334717,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:writable_book",
+     "weight": 2.202605724334717,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.11158588528633118,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.020207388326525688,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.024237150326371193,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.020207388326525688,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.024237150326371193,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.013752810657024384,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.013752810657024384,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.013752810657024384,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.013752810657024384,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.013752810657024384,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.013752810657024384,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.013752810657024384,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.013752810657024384,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.016732392832636833,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  }
+ ]
+}

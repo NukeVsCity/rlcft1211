@@ -1,0 +1,88 @@
+{
+ "components": [
+  {
+   "items": [
+    {
+     "id": "minecraft:gold_ingot",
+     "weight": 0.32298368215560913,
+     "min": 1,
+     "max": 16
+    },
+    {
+     "id": "minecraft:iron_ingot",
+     "weight": 0.7755888104438782,
+     "min": 1,
+     "max": 8
+    },
+    {
+     "id": "minecraft:diamond",
+     "weight": 0.0739658921957016,
+     "min": 1,
+     "max": 6
+    },
+    {
+     "id": "minecraft:emerald",
+     "weight": 0.16315889358520508,
+     "min": 1,
+     "max": 8
+    },
+    {
+     "id": "minecraft:obsidian",
+     "weight": 0.3978064954280853,
+     "min": 1,
+     "max": 8
+    },
+    {
+     "id": "minecraft:iron_ingot",
+     "weight": 0.35883715748786926,
+     "min": 1,
+     "max": 5
+    },
+    {
+     "id": "minecraft:lapis_lazuli",
+     "weight": 0.12706157565116882,
+     "min": 1,
+     "max": 4
+    },
+    {
+     "id": "minecraft:redstone",
+     "weight": 0.5889394283294678,
+     "min": 1,
+     "max": 16
+    },
+    {
+     "id": "minecraft:lapis_lazuli",
+     "weight": 0.3978064954280853,
+     "min": 1,
+     "max": 16
+    },
+    {
+     "id": "minecraft:quartz",
+     "weight": 0.5354365706443787,
+     "min": 1,
+     "max": 16
+    },
+    {
+     "id": "minecraft:coal",
+     "weight": 0.5889394283294678,
+     "min": 1,
+     "max": 16
+    },
+    {
+     "id": "minecraft:glowstone_dust",
+     "weight": 0.3978064954280853,
+     "min": 1,
+     "max": 13
+    },
+    {
+     "id": "minecraft:glowstone",
+     "weight": 0.23224952816963196,
+     "min": 1,
+     "max": 7
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  }
+ ]
+}

@@ -1,0 +1,148 @@
+{
+ "components": [
+  {
+   "items": [
+    {
+     "id": "minecraft:iron_helmet",
+     "weight": 0.4400899410247803,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_chestplate",
+     "weight": 0.4400899410247803,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_leggings",
+     "weight": 0.4400899410247803,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_boots",
+     "weight": 0.4400899410247803,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:chainmail_helmet",
+     "weight": 0.4858947992324829,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:chainmail_chestplate",
+     "weight": 0.4858947992324829,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:chainmail_leggings",
+     "weight": 0.4858947992324829,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:chainmail_boots",
+     "weight": 0.4858947992324829,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_ingot",
+     "weight": 0.646636426448822,
+     "min": 1,
+     "max": 8
+    },
+    {
+     "id": "minecraft:gold_ingot",
+     "weight": 0.7755888104438782,
+     "min": 1,
+     "max": 10
+    },
+    {
+     "id": "minecraft:iron_ingot",
+     "weight": 0.4400899410247803,
+     "min": 1,
+     "max": 9
+    },
+    {
+     "id": "minecraft:torch",
+     "weight": 0.3978064954280853,
+     "min": 1,
+     "max": 6
+    },
+    {
+     "id": "minecraft:iron_pickaxe",
+     "weight": 0.35883715748786926,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_sword",
+     "weight": 0.35883715748786926,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_axe",
+     "weight": 0.35883715748786926,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:bucket",
+     "weight": 0.5354365706443787,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:ender_pearl",
+     "weight": 0.5354365706443787,
+     "min": 1,
+     "max": 5
+    },
+    {
+     "id": "minecraft:cake",
+     "weight": 0.35883715748786926,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:cookie",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 27
+    },
+    {
+     "id": "minecraft:milk_bucket",
+     "weight": 0.3978064954280853,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:compass",
+     "weight": 0.23224952816963196,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:clock",
+     "weight": 0.23224952816963196,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:experience_bottle",
+     "weight": 0.4858947992324829,
+     "min": 1,
+     "max": 12
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  }
+ ]
+}

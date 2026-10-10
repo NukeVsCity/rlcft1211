@@ -1,0 +1,184 @@
+{
+ "components": [
+  {
+   "items": [
+    {
+     "id": "minecraft:experience_bottle",
+     "weight": 3.445945978164673,
+     "min": 1,
+     "max": 16
+    },
+    {
+     "id": "minecraft:fire_charge",
+     "weight": 5.135135173797607,
+     "min": 1,
+     "max": 8
+    },
+    {
+     "id": "minecraft:iron_sword",
+     "weight": 7.635135173797607,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_chestplate",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_helmet",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_boots",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_leggings",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:leather_chestplate",
+     "weight": 8.378377914428711,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:leather_boots",
+     "weight": 7.972972869873047,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:leather_leggings",
+     "weight": 7.837838172912598,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:leather_helmet",
+     "weight": 7.567567825317383,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  }
+ ]
+}

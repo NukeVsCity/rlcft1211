@@ -1,0 +1,106 @@
+{
+ "data": [
+  {
+   "block": "minecraft:wool",
+   "metadata": 0,
+   "tileEntityInfo": "",
+   "_state": "minecraft:white_wool"
+  },
+  {
+   "block": "minecraft:wool",
+   "metadata": 1,
+   "tileEntityInfo": "",
+   "_state": "minecraft:orange_wool"
+  },
+  {
+   "block": "minecraft:wool",
+   "metadata": 2,
+   "tileEntityInfo": "",
+   "_state": "minecraft:magenta_wool"
+  },
+  {
+   "block": "minecraft:wool",
+   "metadata": 3,
+   "tileEntityInfo": "",
+   "_state": "minecraft:light_blue_wool"
+  },
+  {
+   "block": "minecraft:wool",
+   "metadata": 4,
+   "tileEntityInfo": "",
+   "_state": "minecraft:yellow_wool"
+  },
+  {
+   "block": "minecraft:wool",
+   "metadata": 5,
+   "tileEntityInfo": "",
+   "_state": "minecraft:lime_wool"
+  },
+  {
+   "block": "minecraft:wool",
+   "metadata": 6,
+   "tileEntityInfo": "",
+   "_state": "minecraft:pink_wool"
+  },
+  {
+   "block": "minecraft:wool",
+   "metadata": 7,
+   "tileEntityInfo": "",
+   "_state": "minecraft:gray_wool"
+  },
+  {
+   "block": "minecraft:wool",
+   "metadata": 8,
+   "tileEntityInfo": "",
+   "_state": "minecraft:light_gray_wool"
+  },
+  {
+   "block": "minecraft:wool",
+   "metadata": 9,
+   "tileEntityInfo": "",
+   "_state": "minecraft:cyan_wool"
+  },
+  {
+   "block": "minecraft:wool",
+   "metadata": 10,
+   "tileEntityInfo": "",
+   "_state": "minecraft:purple_wool"
+  },
+  {
+   "block": "minecraft:wool",
+   "metadata": 11,
+   "tileEntityInfo": "",
+   "_state": "minecraft:blue_wool"
+  },
+  {
+   "block": "minecraft:wool",
+   "metadata": 12,
+   "tileEntityInfo": "",
+   "_state": "minecraft:brown_wool"
+  },
+  {
+   "block": "minecraft:wool",
+   "metadata": 13,
+   "tileEntityInfo": "",
+   "_state": "minecraft:green_wool"
+  },
+  {
+   "block": "minecraft:wool",
+   "metadata": 14,
+   "tileEntityInfo": "",
+   "_state": "minecraft:red_wool"
+  },
+  {
+   "block": "minecraft:wool",
+   "metadata": 15,
+   "tileEntityInfo": "",
+   "_state": "minecraft:black_wool"
+  }
+ ],
+ "metadata": {
+  "title": "Wool",
+  "description": [
+   "All 16 wool blocks"
+  ]
+ }
+}

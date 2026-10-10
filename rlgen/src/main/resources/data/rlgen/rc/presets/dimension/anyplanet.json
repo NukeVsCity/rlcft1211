@@ -1,0 +1,16 @@
+{
+ "data": [
+  {
+   "dimensions": "$UNCATEGORIZED"
+  },
+  {
+   "dimensions": "$NO_TOP_LIMIT & $BOTTOM_LIMIT & $INFINITE"
+  }
+ ],
+ "metadata": {
+  "title": "Planet Surface",
+  "description": [
+   "Dimensions resembling a planet-like surface"
+  ]
+ }
+}

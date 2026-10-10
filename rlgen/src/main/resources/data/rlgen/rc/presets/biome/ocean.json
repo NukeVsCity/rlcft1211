@@ -1,0 +1,17 @@
+{
+ "data": [
+  {
+   "biomes": "$OCEAN & $SNOWY",
+   "weight": 0.0
+  },
+  {
+   "biomes": "$OCEAN"
+  }
+ ],
+ "metadata": {
+  "title": "Ocean",
+  "description": [
+   "Biomes with lots of water"
+  ]
+ }
+}

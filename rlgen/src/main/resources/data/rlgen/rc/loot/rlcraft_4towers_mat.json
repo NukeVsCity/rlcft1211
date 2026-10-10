@@ -1,0 +1,34 @@
+{
+ "components": [
+  {
+   "items": [
+    {
+     "id": "minecraft:gold_ingot",
+     "weight": 0.32298368215560913,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_ingot",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:diamond",
+     "weight": 0.0739658921957016,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:emerald",
+     "weight": 0.16315889358520508,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  }
+ ]
+}

@@ -1,0 +1,100 @@
+{
+ "components": [
+  {
+   "items": [
+    {
+     "id": "minecraft:leather_helmet",
+     "weight": 0.0739658921957016,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:leather_chestplate",
+     "weight": 0.0739658921957016,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:leather_leggings",
+     "weight": 0.0739658921957016,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:leather_boots",
+     "weight": 0.0739658921957016,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:chainmail_helmet",
+     "weight": 0.0739658921957016,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:chainmail_chestplate",
+     "weight": 0.0739658921957016,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:chainmail_leggings",
+     "weight": 0.0739658921957016,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:chainmail_boots",
+     "weight": 0.0739658921957016,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:arrow",
+     "weight": 0.35883715748786926,
+     "min": 1,
+     "max": 8
+    },
+    {
+     "id": "minecraft:rotten_flesh",
+     "weight": 1.0,
+     "min": 1,
+     "max": 6
+    },
+    {
+     "id": "minecraft:bone",
+     "weight": 1.0,
+     "min": 1,
+     "max": 8
+    },
+    {
+     "id": "minecraft:iron_helmet",
+     "weight": 0.08515378087759018,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_chestplate",
+     "weight": 0.08515378087759018,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_leggings",
+     "weight": 0.08515378087759018,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_boots",
+     "weight": 0.08515378087759018,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  }
+ ]
+}

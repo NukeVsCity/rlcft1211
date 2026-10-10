@@ -1,0 +1,268 @@
+{
+ "components": [
+  {
+   "items": [
+    {
+     "id": "minecraft:tipped_arrow",
+     "weight": 1.0,
+     "min": 5,
+     "max": 10
+    },
+    {
+     "id": "minecraft:tipped_arrow",
+     "weight": 1.0,
+     "min": 5,
+     "max": 10
+    },
+    {
+     "id": "minecraft:tipped_arrow",
+     "weight": 4.910394668579102,
+     "min": 5,
+     "max": 10
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  },
+  {
+   "items": [
+    {
+     "id": "minecraft:chainmail_boots",
+     "weight": 0.35883715748786926,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:chainmail_leggings",
+     "weight": 0.35883715748786926,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:chainmail_chestplate",
+     "weight": 0.32298368215560913,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:chainmail_helmet",
+     "weight": 0.32298368215560913,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:cod",
+     "weight": 0.18405085802078247,
+     "min": 9,
+     "max": 34
+    },
+    {
+     "id": "minecraft:salmon",
+     "weight": 0.25986868143081665,
+     "min": 6,
+     "max": 35
+    },
+    {
+     "id": "minecraft:wheat",
+     "weight": 0.7755888104438782,
+     "min": 19,
+     "max": 41
+    },
+    {
+     "id": "minecraft:feather",
+     "weight": 1.0,
+     "min": 22,
+     "max": 39
+    },
+    {
+     "id": "minecraft:string",
+     "weight": 0.23224952816963196,
+     "min": 16,
+     "max": 33
+    },
+    {
+     "id": "minecraft:clay_ball",
+     "weight": 1.0,
+     "min": 20,
+     "max": 38
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 0.2900550961494446,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 0.23224952816963196,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 0.32298368215560913,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  },
+  {
+   "items": [
+    {
+     "id": "minecraft:arrow",
+     "weight": 0.03422137722373009,
+     "min": 15,
+     "max": 64
+    },
+    {
+     "id": "minecraft:gold_nugget",
+     "weight": 1.290178656578064,
+     "min": 18,
+     "max": 42
+    },
+    {
+     "id": "minecraft:gold_ingot",
+     "weight": 0.18405085802078247,
+     "min": 10,
+     "max": 29
+    },
+    {
+     "id": "minecraft:iron_sword",
+     "weight": 0.4400899410247803,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:bow",
+     "weight": 2.366908550262451,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potato",
+     "weight": 1.763644814491272,
+     "min": 11,
+     "max": 38
+    },
+    {
+     "id": "minecraft:leather_leggings",
+     "weight": 2.366908550262451,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:leather_helmet",
+     "weight": 2.9194812774658203,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:leather_chestplate",
+     "weight": 2.366908550262451,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:leather_boots",
+     "weight": 3.3419337272644043,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:white_wool",
+     "weight": 0.5354365706443787,
+     "min": 15,
+     "max": 35
+    },
+    {
+     "id": "minecraft:leather",
+     "weight": 0.020207388326525688,
+     "min": 6,
+     "max": 26
+    },
+    {
+     "id": "minecraft:cod",
+     "weight": 1.9013646841049194,
+     "min": 8,
+     "max": 24
+    },
+    {
+     "id": "minecraft:salmon",
+     "weight": 1.763644814491272,
+     "min": 5,
+     "max": 23
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  },
+  {
+   "items": [
+    {
+     "id": "minecraft:glistering_melon_slice",
+     "weight": 0.35883715748786926,
+     "min": 1,
+     "max": 16
+    },
+    {
+     "id": "minecraft:glowstone_dust",
+     "weight": 0.3978064954280853,
+     "min": 1,
+     "max": 16
+    },
+    {
+     "id": "minecraft:gunpowder",
+     "weight": 0.4858947992324829,
+     "min": 1,
+     "max": 16
+    },
+    {
+     "id": "minecraft:golden_carrot",
+     "weight": 0.35883715748786926,
+     "min": 1,
+     "max": 16
+    },
+    {
+     "id": "minecraft:fermented_spider_eye",
+     "weight": 0.32298368215560913,
+     "min": 1,
+     "max": 16
+    },
+    {
+     "id": "minecraft:blaze_powder",
+     "weight": 0.32298368215560913,
+     "min": 1,
+     "max": 16
+    },
+    {
+     "id": "minecraft:magma_cream",
+     "weight": 0.35883715748786926,
+     "min": 1,
+     "max": 16
+    },
+    {
+     "id": "minecraft:rabbit_foot",
+     "weight": 0.35883715748786926,
+     "min": 1,
+     "max": 16
+    },
+    {
+     "id": "minecraft:glass_bottle",
+     "weight": 0.7087690830230713,
+     "min": 4,
+     "max": 16
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 0.7755888104438782,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  }
+ ]
+}

@@ -1,0 +1,70 @@
+{
+ "components": [
+  {
+   "items": [
+    {
+     "id": "minecraft:gold_ingot",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:cobweb",
+     "weight": 3.65,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:bone",
+     "weight": 0.41,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_sword",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_helmet",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_leggings",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_chestplate",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_boots",
+     "weight": 1.0,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:diamond",
+     "weight": 0.5,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:emerald",
+     "weight": 0.7,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "minItems": 4,
+   "maxItems": 8
+  }
+ ]
+}

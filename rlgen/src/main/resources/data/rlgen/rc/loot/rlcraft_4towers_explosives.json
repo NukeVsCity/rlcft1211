@@ -1,0 +1,28 @@
+{
+ "components": [
+  {
+   "items": [
+    {
+     "id": "minecraft:tnt",
+     "weight": 0.0976562350988388,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:gunpowder",
+     "weight": 1.0,
+     "min": 1,
+     "max": 4
+    },
+    {
+     "id": "minecraft:sand",
+     "weight": 1.0,
+     "min": 1,
+     "max": 4
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  }
+ ]
+}

@@ -1,0 +1,16 @@
+{
+ "components": [
+  {
+   "items": [
+    {
+     "id": "minecraft:cobweb",
+     "weight": 9.281763076782227,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  }
+ ]
+}

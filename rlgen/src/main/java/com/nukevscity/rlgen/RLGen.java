@@ -3,6 +3,14 @@ package com.nukevscity.rlgen;
 import com.mojang.serialization.MapCodec;
 import com.nukevscity.rlgen.world.LegacyBiomeSource;
 import com.nukevscity.rlgen.world.LegacyChunkGenerator;
+import com.nukevscity.rlgen.world.RcCommand;
+import com.nukevscity.rlgen.world.RcPiece;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import com.nukevscity.rlgen.world.RcStructure;
+import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.block.Block;
@@ -29,6 +37,13 @@ public final class RLGen {
       DeferredRegister.create(Registries.CHUNK_GENERATOR, MODID);
    private static final DeferredRegister<MapCodec<? extends BiomeSource>> BIOME_SOURCES =
       DeferredRegister.create(Registries.BIOME_SOURCE, MODID);
+   private static final DeferredRegister<StructureType<?>> STRUCTURE_TYPES = DeferredRegister.create(Registries.STRUCTURE_TYPE, MODID);
+   private static final DeferredRegister<StructurePieceType> STRUCTURE_PIECES = DeferredRegister.create(Registries.STRUCTURE_PIECE, MODID);
+   /** Recurrent Complex natural generation (data/rlgen/rc). */
+   public static final DeferredHolder<StructureType<?>, StructureType<RcStructure>> RC_STRUCTURE =
+      STRUCTURE_TYPES.register("recurrent_complex", () -> () -> RcStructure.CODEC);
+   public static final DeferredHolder<StructurePieceType, StructurePieceType> RC_PIECE =
+      STRUCTURE_PIECES.register("recurrent_complex", () -> RcPiece::new);
    private static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
    private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
 
@@ -81,6 +96,9 @@ public final class RLGen {
       NeoForgeRegistryHandler.setup(MODID, modBus);
       CHUNK_GENERATORS.register(modBus);
       BIOME_SOURCES.register(modBus);
+      STRUCTURE_TYPES.register(modBus);
+      NeoForge.EVENT_BUS.addListener((RegisterCommandsEvent e) -> RcCommand.register(e.getDispatcher()));
+      STRUCTURE_PIECES.register(modBus);
       BLOCKS.register(modBus);
       ITEMS.register(modBus);
    }

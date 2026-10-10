@@ -1,0 +1,784 @@
+{
+ "components": [
+  {
+   "items": [
+    {
+     "id": "minecraft:pufferfish",
+     "weight": 0.7087690830230713,
+     "min": 5,
+     "max": 15
+    },
+    {
+     "id": "minecraft:cod",
+     "weight": 0.7087690830230713,
+     "min": 5,
+     "max": 15
+    },
+    {
+     "id": "minecraft:bread",
+     "weight": 0.7087690830230713,
+     "min": 5,
+     "max": 15
+    },
+    {
+     "id": "minecraft:chicken",
+     "weight": 0.7087690830230713,
+     "min": 5,
+     "max": 15
+    },
+    {
+     "id": "minecraft:beef",
+     "weight": 0.7087690830230713,
+     "min": 5,
+     "max": 15
+    },
+    {
+     "id": "minecraft:beetroot_soup",
+     "weight": 0.7087690830230713,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  },
+  {
+   "items": [
+    {
+     "id": "minecraft:potato",
+     "weight": 0.5354365706443787,
+     "min": 1,
+     "max": 15
+    },
+    {
+     "id": "minecraft:wheat",
+     "weight": 0.5354365706443787,
+     "min": 1,
+     "max": 15
+    },
+    {
+     "id": "minecraft:mutton",
+     "weight": 0.5354365706443787,
+     "min": 1,
+     "max": 15
+    },
+    {
+     "id": "minecraft:salmon",
+     "weight": 0.5354365706443787,
+     "min": 5,
+     "max": 25
+    },
+    {
+     "id": "minecraft:mushroom_stew",
+     "weight": 0.5354365706443787,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:cod",
+     "weight": 0.5354365706443787,
+     "min": 5,
+     "max": 25
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  },
+  {
+   "items": [
+    {
+     "id": "minecraft:gold_ingot",
+     "weight": 0.18405085802078247,
+     "min": 1,
+     "max": 20
+    },
+    {
+     "id": "minecraft:iron_ingot",
+     "weight": 0.23224952816963196,
+     "min": 10,
+     "max": 25
+    },
+    {
+     "id": "minecraft:diamond",
+     "weight": 0.0976562350988388,
+     "min": 1,
+     "max": 5
+    },
+    {
+     "id": "minecraft:emerald",
+     "weight": 0.16315889358520508,
+     "min": 2,
+     "max": 10
+    },
+    {
+     "id": "minecraft:enchanted_golden_apple",
+     "weight": 0.0976562350988388,
+     "min": 1,
+     "max": 5
+    },
+    {
+     "id": "minecraft:golden_apple",
+     "weight": 0.20703016221523285,
+     "min": 2,
+     "max": 10
+    },
+    {
+     "id": "minecraft:glowstone_dust",
+     "weight": 0.23224952816963196,
+     "min": 8,
+     "max": 16
+    },
+    {
+     "id": "minecraft:lapis_lazuli",
+     "weight": 0.23224952816963196,
+     "min": 18,
+     "max": 30
+    },
+    {
+     "id": "minecraft:cocoa_beans",
+     "weight": 0.7755888104438782,
+     "min": 10,
+     "max": 20
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  },
+  {
+   "items": [
+    {
+     "id": "minecraft:iron_helmet",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_chestplate",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_leggings",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_boots",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:leather_helmet",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:leather_chestplate",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:leather_leggings",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:leather_boots",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:chainmail_helmet",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:chainmail_chestplate",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:chainmail_leggings",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:chainmail_boots",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_axe",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_sword",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:stone_axe",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:stone_sword",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:stone_pickaxe",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:stone_shovel",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:stone_hoe",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_hoe",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:clay_ball",
+     "weight": 0.4400899410247803,
+     "min": 5,
+     "max": 20
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  },
+  {
+   "items": [
+    {
+     "id": "minecraft:potion",
+     "weight": 0.4858947992324829,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 0.4858947992324829,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 0.4858947992324829,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 0.4858947992324829,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 0.4858947992324829,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 0.4858947992324829,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 0.4858947992324829,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 0.4858947992324829,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 0.4858947992324829,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 0.4858947992324829,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 0.4858947992324829,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 0.7755888104438782,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 0.7755888104438782,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:potion",
+     "weight": 0.7755888104438782,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:glass_bottle",
+     "weight": 0.25986868143081665,
+     "min": 5,
+     "max": 10
+    },
+    {
+     "id": "minecraft:glass_bottle",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 15
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  },
+  {
+   "items": [
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.05511390045285225,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.05511390045285225,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.0739658921957016,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.05511390045285225,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.11158588528633118,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.11158588528633118,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.11158588528633118,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.11158588528633118,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.11158588528633118,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.25986868143081665,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:enchanted_book",
+     "weight": 0.0739658921957016,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  },
+  {
+   "items": [
+    {
+     "id": "minecraft:potato",
+     "weight": 0.25986868143081665,
+     "min": 5,
+     "max": 15
+    },
+    {
+     "id": "minecraft:bread",
+     "weight": 0.35883715748786926,
+     "min": 5,
+     "max": 15
+    },
+    {
+     "id": "minecraft:wheat",
+     "weight": 0.25986868143081665,
+     "min": 5,
+     "max": 15
+    },
+    {
+     "id": "minecraft:wheat_seeds",
+     "weight": 0.0739658921957016,
+     "min": 8,
+     "max": 16
+    },
+    {
+     "id": "minecraft:pumpkin_seeds",
+     "weight": 0.0739658921957016,
+     "min": 8,
+     "max": 16
+    },
+    {
+     "id": "minecraft:melon_seeds",
+     "weight": 0.0739658921957016,
+     "min": 8,
+     "max": 16
+    },
+    {
+     "id": "minecraft:beetroot_seeds",
+     "weight": 0.0739658921957016,
+     "min": 8,
+     "max": 16
+    },
+    {
+     "id": "minecraft:carrot",
+     "weight": 0.35883715748786926,
+     "min": 5,
+     "max": 15
+    },
+    {
+     "id": "minecraft:beef",
+     "weight": 0.20703016221523285,
+     "min": 5,
+     "max": 10
+    },
+    {
+     "id": "minecraft:porkchop",
+     "weight": 0.20703016221523285,
+     "min": 5,
+     "max": 10
+    },
+    {
+     "id": "minecraft:apple",
+     "weight": 0.32298368215560913,
+     "min": 1,
+     "max": 8
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  },
+  {
+   "items": [
+    {
+     "id": "minecraft:bow",
+     "weight": 0.1442086547613144,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:leather_helmet",
+     "weight": 0.5889394283294678,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:chainmail_helmet",
+     "weight": 0.20703016221523285,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:leather_boots",
+     "weight": 0.5889394283294678,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:chainmail_chestplate",
+     "weight": 0.20703016221523285,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:chainmail_leggings",
+     "weight": 0.20703016221523285,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:leather_chestplate",
+     "weight": 0.5889394283294678,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:chainmail_boots",
+     "weight": 0.20703016221523285,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:leather_leggings",
+     "weight": 0.5889394283294678,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_sword",
+     "weight": 0.20703016221523285,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_axe",
+     "weight": 0.20703016221523285,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_shovel",
+     "weight": 0.20703016221523285,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_pickaxe",
+     "weight": 0.20703016221523285,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_hoe",
+     "weight": 0.20703016221523285,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:arrow",
+     "weight": 0.20703016221523285,
+     "min": 10,
+     "max": 30
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  },
+  {
+   "items": [
+    {
+     "id": "minecraft:brown_mushroom",
+     "weight": 0.4858947992324829,
+     "min": 5,
+     "max": 15
+    },
+    {
+     "id": "minecraft:red_mushroom",
+     "weight": 0.4858947992324829,
+     "min": 5,
+     "max": 15
+    },
+    {
+     "id": "minecraft:mushroom_stew",
+     "weight": 0.4858947992324829,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:sugar_cane",
+     "weight": 0.4858947992324829,
+     "min": 5,
+     "max": 15
+    },
+    {
+     "id": "minecraft:cod",
+     "weight": 0.4858947992324829,
+     "min": 5,
+     "max": 15
+    },
+    {
+     "id": "minecraft:rabbit_stew",
+     "weight": 0.4858947992324829,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:beetroot_soup",
+     "weight": 0.4858947992324829,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  },
+  {
+   "items": [
+    {
+     "id": "minecraft:stone_shovel",
+     "weight": 0.5889394283294678,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:stone_pickaxe",
+     "weight": 0.5889394283294678,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:stone_axe",
+     "weight": 0.5889394283294678,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:stone_hoe",
+     "weight": 0.5889394283294678,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:stone_sword",
+     "weight": 0.5889394283294678,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:bowl",
+     "weight": 0.4400899410247803,
+     "min": 1,
+     "max": 5
+    },
+    {
+     "id": "minecraft:bow",
+     "weight": 0.32298368215560913,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:arrow",
+     "weight": 0.4858947992324829,
+     "min": 10,
+     "max": 30
+    },
+    {
+     "id": "minecraft:torch",
+     "weight": 1.0,
+     "min": 8,
+     "max": 20
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  }
+ ]
+}

@@ -1,0 +1,106 @@
+{
+ "components": [
+  {
+   "items": [
+    {
+     "id": "minecraft:diamond_sword",
+     "weight": 0.5889394283294678,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:diamond_pickaxe",
+     "weight": 0.5889394283294678,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:diamond_shovel",
+     "weight": 0.5354365706443787,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:golden_carrot",
+     "weight": 0.646636426448822,
+     "min": 1,
+     "max": 4
+    },
+    {
+     "id": "minecraft:diamond_helmet",
+     "weight": 0.32298368215560913,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:diamond_chestplate",
+     "weight": 0.32298368215560913,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:diamond_leggings",
+     "weight": 0.32298368215560913,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:diamond_boots",
+     "weight": 0.32298368215560913,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:iron_block",
+     "weight": 0.7087690830230713,
+     "min": 1,
+     "max": 2
+    },
+    {
+     "id": "minecraft:gold_block",
+     "weight": 0.7087690830230713,
+     "min": 1,
+     "max": 2
+    },
+    {
+     "id": "minecraft:diamond_block",
+     "weight": 0.7087690830230713,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:emerald_block",
+     "weight": 0.7087690830230713,
+     "min": 1,
+     "max": 2
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  },
+  {
+   "items": [
+    {
+     "id": "minecraft:gold_nugget",
+     "weight": 0.646636426448822,
+     "min": 1,
+     "max": 8
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  },
+  {
+   "items": [
+    {
+     "id": "minecraft:iron_nugget",
+     "weight": 0.7087690830230713,
+     "min": 1,
+     "max": 8
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  }
+ ]
+}

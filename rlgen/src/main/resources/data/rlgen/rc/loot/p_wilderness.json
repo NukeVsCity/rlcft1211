@@ -1,0 +1,64 @@
+{
+ "components": [
+  {
+   "items": [
+    {
+     "id": "minecraft:leather",
+     "weight": 2.7249209880828857,
+     "min": 3,
+     "max": 22
+    },
+    {
+     "id": "minecraft:leather_boots",
+     "weight": 4.065970420837402,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:leather_leggings",
+     "weight": 1.9013646841049194,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:leather_chestplate",
+     "weight": 6.248647212982178,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:leather_helmet",
+     "weight": 1.6340234279632568,
+     "min": 1,
+     "max": 1
+    },
+    {
+     "id": "minecraft:arrow",
+     "weight": 4.333380699157715,
+     "min": 12,
+     "max": 28
+    },
+    {
+     "id": "minecraft:rabbit",
+     "weight": 3.124999523162842,
+     "min": 4,
+     "max": 18
+    },
+    {
+     "id": "minecraft:cod",
+     "weight": 2.202605724334717,
+     "min": 8,
+     "max": 21
+    },
+    {
+     "id": "minecraft:flint_and_steel",
+     "weight": 0.024237150326371193,
+     "min": 1,
+     "max": 1
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  }
+ ]
+}

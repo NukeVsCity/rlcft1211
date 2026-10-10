@@ -1,0 +1,52 @@
+{
+ "components": [
+  {
+   "items": [
+    {
+     "id": "minecraft:birch_log",
+     "weight": 1.0,
+     "min": 1,
+     "max": 16
+    },
+    {
+     "id": "minecraft:oak_log",
+     "weight": 1.0,
+     "min": 1,
+     "max": 16
+    },
+    {
+     "id": "minecraft:spruce_log",
+     "weight": 1.0,
+     "min": 1,
+     "max": 16
+    },
+    {
+     "id": "minecraft:oak_planks",
+     "weight": 1.0,
+     "min": 1,
+     "max": 64
+    },
+    {
+     "id": "minecraft:birch_planks",
+     "weight": 1.0,
+     "min": 1,
+     "max": 64
+    },
+    {
+     "id": "minecraft:spruce_planks",
+     "weight": 1.0,
+     "min": 1,
+     "max": 64
+    },
+    {
+     "id": "minecraft:stick",
+     "weight": 1.0,
+     "min": 1,
+     "max": 64
+    }
+   ],
+   "minItems": null,
+   "maxItems": null
+  }
+ ]
+}
