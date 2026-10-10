@@ -83,7 +83,7 @@ public final class RcStructureDef {
    public record ListGen(String id, String listId, BlockPos shift, Direction front, double weight) {
    }
 
-   public record Variable(String id, RcExpr<RcEnv> condition, float chance) {
+   public record Variable(String id, RcExpr<RcEnv> condition, float chance, boolean affectsLogic) {
    }
 
    /** VanillaGeneration: a piece of 1.12 villages. */
@@ -113,6 +113,7 @@ public final class RcStructureDef {
    public final List<NaturalGen> natural = new ArrayList<>();
    public final List<ListGen> lists = new ArrayList<>();
    public final List<VanillaGen> vanilla = new ArrayList<>();
+   public final List<com.nukevscity.rlgen.rc.maze.MazeRc.MazeGen> mazeGens = new ArrayList<>();
    public final List<Variable> variables = new ArrayList<>();
 
    RcStructureDef(String id, CompoundTag tag, RcRegistry reg) {
@@ -173,6 +174,8 @@ public final class RcStructureDef {
                   new BlockPos((int)RcTransformers.dbl(info, "positionX", 0), (int)RcTransformers.dbl(info, "positionY", 0),
                      (int)RcTransformers.dbl(info, "positionZ", 0)),
                   front != null ? front : Direction.NORTH, RcTransformers.dbl(info, "weight", 1.0)));
+            } else if (type.equals("mazeComponent")) {
+               this.mazeGens.add(com.nukevscity.rlgen.rc.maze.MazeRc.MazeGen.fromJson(info));
             } else if (type.equals("vanilla")) {
                String f = RcTransformers.str(info, "front", null);
                this.vanilla.add(new VanillaGen(RcTransformers.str(info, "id", ""),
@@ -189,7 +192,7 @@ public final class RcStructureDef {
          for (JsonElement e : json.getAsJsonObject("variableDomain").getAsJsonArray("variables")) {
             JsonObject v = e.getAsJsonObject();
             this.variables.add(new Variable(RcTransformers.str(v, "id", ""), RcEnv.envExpr(RcTransformers.str(v, "condition", "")),
-               (float)RcTransformers.dbl(v, "chance", 0.5)));
+               (float)RcTransformers.dbl(v, "chance", 0.5), RcTransformers.bool(v, "affectsLogic", false)));
          }
       }
    }

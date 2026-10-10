@@ -633,6 +633,8 @@ def convert_script(s):
                                    "front": str(inner["front"]) if "front" in inner else None})
         elif sid == "multi":
             out["scripts"].append({"type": "multi", "inner": convert_script(inner)})
+        elif sid == "mazeGen":
+            out["scripts"].append({"type": "maze", "maze": inner})  # RC's own compound, read by MazeScript
         elif sid == "holder":
             STATS["script_holder"] += 1
         else:

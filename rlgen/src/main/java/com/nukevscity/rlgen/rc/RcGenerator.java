@@ -2,6 +2,8 @@ package com.nukevscity.rlgen.rc;
 
 import com.mojang.logging.LogUtils;
 import com.nukevscity.rlgen.legacy.biome.Biome;
+import com.nukevscity.rlgen.rc.maze.Maze;
+import com.nukevscity.rlgen.rc.maze.MazeScript;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -209,7 +211,12 @@ public final class RcGenerator {
          }
       }
       RcEnv env = new RcEnv(biome, "natural", gen.id, null);
-      Instance inst = prepare(def, gen.id, seed, t, lower, env, oracle, 0, true);
+      Instance inst;
+      try {
+         inst = prepare(def, gen.id, seed, t, lower, env, oracle, 0, true);
+      } catch (Maze.TimeoutException e) {
+         return fail(def, "maze timed out");
+      }
       return inst == null ? fail(def, "ensureBlocks") : new Planned(def.id, gen.id, seed, t, lower, inst);
    }
 
@@ -244,12 +251,20 @@ public final class RcGenerator {
       int[] size = t.applySize(def.size);
       BlockPos c = new BlockPos(lower.getX() + size[0] / 2, 0, lower.getZ() + size[2] / 2);
       RcEnv env = new RcEnv(oracle.biome(c.getX(), c.getZ()), "natural", genId, null);
-      return prepare(def, genId, seed, t, lower, env, oracle, 0, true);
+      try {
+         return prepare(def, genId, seed, t, lower, env, oracle, 0, true);
+      } catch (Maze.TimeoutException e) {
+         return null;
+      }
    }
 
    /** GenericVillagePiece.prepare: no suggest checks, the village already decided. */
    public static Instance prepareVillage(RcStructureDef def, String genId, long seed, RcTransform t, BlockPos lower, RcEnv env, Oracle oracle, int layer) {
-      return prepare(def, genId, seed, t, lower, env, oracle, layer, false);
+      try {
+         return prepare(def, genId, seed, t, lower, env, oracle, layer, false);
+      } catch (Maze.TimeoutException e) {
+         return null;
+      }
    }
 
    // ------------------------------------------------------------------ prepare (GenericStructure.prepareInstanceData)
@@ -360,6 +375,8 @@ public final class RcGenerator {
          }
          case "structure":
             return prepareStructureScript(s, inst, c, pos, oracle);
+         case "maze":
+            return prepareMazeScript(s.getCompound("maze"), inst, c, pos, oracle);
          default:
             return null;
       }
@@ -422,6 +439,35 @@ public final class RcGenerator {
       return new StructureScriptData(child);
    }
 
+   record MazeScriptData(List<Instance> rooms) {
+   }
+
+   /** WorldScriptMazeGenerator.prepareInstanceData: solve the maze, then prepare every room like a child structure. */
+   static Object prepareMazeScript(CompoundTag s, Instance parent, RcContext c, BlockPos pos, Oracle oracle) {
+      MazeScript script = MazeScript.fromNbt(s);
+      List<MazeScript.Placed> placed = script.place(c.random, c.transform, c.env);
+      if (placed == null) {
+         return null;
+      }
+      if (DEBUG) {
+         LOGGER.info("rlgen: maze {} in {}: {} rooms", script.mazeID(), parent.def.id, placed.size());
+      }
+      List<Instance> rooms = new ArrayList<>();
+      for (MazeScript.Placed p : placed) {
+         RcEnv env = c.env.child();
+         p.variables().forEach(env.variables::putIfAbsent);
+         long seed = c.random.nextLong();
+         RcTransform t = MazeScript.compose(p.transform(), c.transform);
+         BlockPos lower = MazeScript.lowerCoord(p.def(), p.lowerPos(), p.transform(), pos, c.transform);
+         Instance child = prepare(p.def(), null, seed, t, lower, env, oracle, parent.layer + 1, false);
+         if (child != null) {
+            parent.children.add(child);
+            rooms.add(child);
+         }
+      }
+      return new MazeScriptData(rooms);
+   }
+
    static void generateScript(Object data, RcContext c, BlockPos pos) {
       if (data instanceof MultiScriptData m) {
          if (!m.deactivated) {
@@ -433,6 +479,14 @@ public final class RcGenerator {
          if (c.includes(pos) && !cd.entries.isEmpty()) {
             CommandEntry entry = RcRegistry.selectWeighted(c.random, cd.entries, CommandEntry::weight);
             runCommand(entry.tag, c, pos);
+         }
+      } else if (data instanceof MazeScriptData md) {
+         // WorldGenMaze.generate: asChild draws the seed even for rooms outside this chunk
+         for (Instance room : md.rooms) {
+            long seed = c.random.nextLong();
+            if (c.genBB == null || room.bb.intersects(c.genBB)) {
+               spawn(room, c.world, c.genBB, seed, c.env.child());
+            }
          }
       } else if (data instanceof StructureScriptData sd) {
          Instance child = sd.child;
