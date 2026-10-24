@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/dirt_path",
+  "textures": {
+    "particle": "rlgen:block/frozen_dirt",
+    "bottom": "rlgen:block/frozen_dirt",
+    "top": "rlgen:block/frozen_grass_path_top",
+    "side": "rlgen:block/frozen_grass_path_side"
+  }
+}

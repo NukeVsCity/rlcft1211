@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "rlgen:block/chared_dirt",
+    "top": "rlgen:block/chared_grass_top",
+    "side": "rlgen:block/chared_grass_side"
+  }
+}

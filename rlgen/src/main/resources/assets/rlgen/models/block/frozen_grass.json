@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "rlgen:block/frozen_dirt",
+    "top": "rlgen:block/frozen_grass_top",
+    "side": "rlgen:block/frozen_grass_side"
+  }
+}

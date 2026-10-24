@@ -26,7 +26,9 @@ public final class RcCommand {
          .then(Commands.literal("rc").then(Commands.argument("structure", StringArgumentType.word())
             .suggests((ctx, b) -> SharedSuggestionProvider.suggest(
                java.util.stream.StreamSupport.stream(RcRegistry.get().structures().spliterator(), false).map(d -> d.id), b))
-            .executes(ctx -> place(ctx.getSource(), StringArgumentType.getString(ctx, "structure"))))));
+            .executes(ctx -> place(ctx.getSource(), StringArgumentType.getString(ctx, "structure")))))
+         .then(Commands.literal("iaf").then(Commands.argument("radius", com.mojang.brigadier.arguments.IntegerArgumentType.integer(0, 200))
+            .executes(ctx -> iaf(ctx.getSource(), com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(ctx, "radius"))))));
    }
 
    private static int place(CommandSourceStack source, String id) {
@@ -66,5 +68,19 @@ public final class RcCommand {
       level.getEntitiesOfClass(net.minecraft.world.entity.item.FallingBlockEntity.class, box).forEach(e -> e.discard());
       source.sendSuccess(() -> Component.literal("Placed " + def.id + " at " + inst.lower.toShortString()), true);
       return 1;
+   }
+
+   private static int iaf(CommandSourceStack source, int radius) {
+      if (!(source.getLevel().getChunkSource().getGenerator() instanceof LegacyChunkGenerator gen)) {
+         source.sendFailure(Component.literal("Not an RLCraft Legacy world"));
+         return 0;
+      }
+      java.util.List<String> found = com.nukevscity.rlgen.iaf.IafGen.find(gen, source.getLevel().getSeed(), new net.minecraft.world.level.ChunkPos(BlockPos.containing(source.getPosition())), radius);
+      for (String f : found) {
+         com.mojang.logging.LogUtils.getLogger().info("rlgen iaf: {}", f);
+         source.sendSuccess(() -> Component.literal(f), false);
+      }
+      source.sendSuccess(() -> Component.literal(found.size() + " Ice and Fire structures"), false);
+      return found.size();
    }
 }

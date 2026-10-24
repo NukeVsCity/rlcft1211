@@ -41,7 +41,8 @@ Status: DONE = ported; PART = partly ported; TODO = to port; SKIP = deliberately
 | **Waystones** | waystones in villages (1.0) and anywhere (10/10000 per chunk), mossy | TODO |
 | Realistic Torches | generateLitTorches=false: torches in generated chunks become unlit torches | TODO (small) |
 | Lycanites Mobs | dungeons enabled (distance 45 chunks, towers), fluid lakes (check config) | TODO |
-| Ice and Fire | dragon roosts/caves/skeletons, snow villages, silver/sapphire ore, cyclops caves, sirens, gorgon temples, pixie villages, myrmex hives (check what 1.7.1 has) | TODO |
+| Ice and Fire 1.7.1 | StructureGenerator (weight 0): fire/ice dragon roosts and dens, cyclops caves, siren islands, silver/sapphire ore, fire/frost lilies; mobs and dragon skeletons not spawned (their random draws kept) | DONE (`iaf/`, planned on 1.12 terrain, replayed after each populate area) |
+| Ice and Fire 1.7.1 | gorgon temples, pixie villages, snow villages, myrmex hives | TODO |
 | Recurrent Complex | all active structures | DONE |
 | Battle Towers / Roguelike / Doomlike / Ruins | | DONE |
 | Bountiful | bounty board in villages | TODO (small) |

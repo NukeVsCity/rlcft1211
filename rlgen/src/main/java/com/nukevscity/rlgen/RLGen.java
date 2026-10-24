@@ -110,6 +110,46 @@ public final class RLGen {
                .noOcclusion().pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)));
       }
    }
+   // Ice and Fire 1.7.1 world-gen blocks (dragon roosts and dens, cyclops caves, ores, lilies).
+   private static BlockBehaviour.Properties iaf(MapColor color, float hardness, float resistance, SoundType sound, boolean frozen) {
+      BlockBehaviour.Properties p = BlockBehaviour.Properties.of().mapColor(color).strength(hardness, resistance).sound(sound);
+      return frozen ? p.friction(0.98F) : p;
+   }
+   public static final DeferredBlock<ColoredFallingBlock> ASH = BLOCKS.registerBlock("ash", p -> new ColoredFallingBlock(new ColorRGBA(0x5B5B5B), p),
+      iaf(MapColor.COLOR_GRAY, 0.5F, 0.5F, SoundType.SAND, false));
+   public static final DeferredBlock<Block> CHARED_DIRT = BLOCKS.registerSimpleBlock("chared_dirt", iaf(MapColor.COLOR_BLACK, 0.5F, 0.0F, SoundType.GRAVEL, false));
+   public static final DeferredBlock<Block> CHARED_GRASS = BLOCKS.registerSimpleBlock("chared_grass", iaf(MapColor.COLOR_BLACK, 0.6F, 0.0F, SoundType.GRAVEL, false));
+   public static final DeferredBlock<Block> CHARED_STONE = BLOCKS.registerSimpleBlock("chared_stone",
+      iaf(MapColor.COLOR_BLACK, 1.5F, 10.0F, SoundType.STONE, false).requiresCorrectToolForDrops());
+   public static final DeferredBlock<Block> CHARED_COBBLESTONE = BLOCKS.registerSimpleBlock("chared_cobblestone",
+      iaf(MapColor.COLOR_BLACK, 2.0F, 10.0F, SoundType.STONE, false).requiresCorrectToolForDrops());
+   public static final DeferredBlock<ColoredFallingBlock> CHARED_GRAVEL = BLOCKS.registerBlock("chared_gravel",
+      p -> new ColoredFallingBlock(new ColorRGBA(0x333333), p), iaf(MapColor.COLOR_BLACK, 0.6F, 0.0F, SoundType.GRAVEL, false));
+   public static final DeferredBlock<com.nukevscity.rlgen.iaf.PathBlock> CHARED_GRASS_PATH = BLOCKS.registerBlock("chared_grass_path",
+      com.nukevscity.rlgen.iaf.PathBlock::new, iaf(MapColor.COLOR_BLACK, 0.6F, 0.6F, SoundType.GRAVEL, false));
+   public static final DeferredBlock<Block> FROZEN_DIRT = BLOCKS.registerSimpleBlock("frozen_dirt", iaf(MapColor.ICE, 0.5F, 0.0F, SoundType.GLASS, true));
+   public static final DeferredBlock<Block> FROZEN_GRASS = BLOCKS.registerSimpleBlock("frozen_grass", iaf(MapColor.ICE, 0.6F, 0.0F, SoundType.GLASS, true));
+   public static final DeferredBlock<Block> FROZEN_STONE = BLOCKS.registerSimpleBlock("frozen_stone",
+      iaf(MapColor.ICE, 1.5F, 10.0F, SoundType.GLASS, true).requiresCorrectToolForDrops());
+   public static final DeferredBlock<Block> FROZEN_COBBLESTONE = BLOCKS.registerSimpleBlock("frozen_cobblestone",
+      iaf(MapColor.ICE, 2.0F, 10.0F, SoundType.GLASS, true).requiresCorrectToolForDrops());
+   public static final DeferredBlock<ColoredFallingBlock> FROZEN_GRAVEL = BLOCKS.registerBlock("frozen_gravel",
+      p -> new ColoredFallingBlock(new ColorRGBA(0x9DB8C9), p), iaf(MapColor.ICE, 0.6F, 0.0F, SoundType.GLASS, true));
+   public static final DeferredBlock<com.nukevscity.rlgen.iaf.PathBlock> FROZEN_GRASS_PATH = BLOCKS.registerBlock("frozen_grass_path",
+      com.nukevscity.rlgen.iaf.PathBlock::new, iaf(MapColor.ICE, 0.6F, 0.6F, SoundType.GLASS, true));
+   public static final DeferredBlock<Block> FROZEN_SPLINTERS = BLOCKS.registerSimpleBlock("frozen_splinters", iaf(MapColor.ICE, 2.0F, 10.0F, SoundType.GLASS, true));
+   public static final DeferredBlock<com.nukevscity.rlgen.iaf.PileBlock> GOLD_PILE = BLOCKS.registerBlock("gold_pile", com.nukevscity.rlgen.iaf.PileBlock::new,
+      iaf(MapColor.GOLD, 0.3F, 0.3F, SoundType.CHAIN, false).noOcclusion());
+   public static final DeferredBlock<com.nukevscity.rlgen.iaf.PileBlock> SILVER_PILE = BLOCKS.registerBlock("silver_pile", com.nukevscity.rlgen.iaf.PileBlock::new,
+      iaf(MapColor.METAL, 0.3F, 0.3F, SoundType.CHAIN, false).noOcclusion());
+   public static final DeferredBlock<Block> SILVER_ORE = BLOCKS.registerSimpleBlock("silver_ore",
+      iaf(MapColor.STONE, 3.0F, 5.0F, SoundType.STONE, false).requiresCorrectToolForDrops());
+   public static final DeferredBlock<Block> SAPPHIRE_ORE = BLOCKS.registerSimpleBlock("sapphire_ore",
+      iaf(MapColor.STONE, 3.0F, 5.0F, SoundType.STONE, false).requiresCorrectToolForDrops());
+   public static final DeferredBlock<com.nukevscity.rlgen.iaf.LilyBlock> FIRE_LILY = BLOCKS.registerBlock("fire_lily",
+      p -> new com.nukevscity.rlgen.iaf.LilyBlock(p, true), BlockBehaviour.Properties.ofFullCopy(Blocks.POPPY));
+   public static final DeferredBlock<com.nukevscity.rlgen.iaf.LilyBlock> FROST_LILY = BLOCKS.registerBlock("frost_lily",
+      p -> new com.nukevscity.rlgen.iaf.LilyBlock(p, false), BlockBehaviour.Properties.ofFullCopy(Blocks.POPPY));
    // Quark's Revamp stone gen stones (generation only; their crafting variants are not ported).
    public static final DeferredBlock<Block> MARBLE = stone("marble", MapColor.QUARTZ);
    public static final DeferredBlock<Block> LIMESTONE = stone("limestone", MapColor.STONE);
@@ -173,7 +213,9 @@ public final class RLGen {
       for (DeferredBlock<?> b : new DeferredBlock<?>[]{RED_ROCK, BLUE_ROCK, STONE_DEFILED, GRASS_DEFILED, DIRT_DEFILED, SAND_DEFILED,
          FIR_LOG, TENEBRA_LOG, FIR_LEAVES, RED_AUTUMNAL_LEAVES, ORANGE_AUTUMNAL_LEAVES, YELLOW_AUTUMNAL_LEAVES, BROWN_AUTUMNAL_LEAVES, TENEBRA_LEAVES,
          GRAVEL_DEFILED, SANDSTONE_DEFILED, STONE_BRICKS_DEFILED, STONE_BRICKS_DEFILED_CRACKED, STONE_BRICKS_DEFILED_MOSSY, STONE_DEFILED_MOSSY,
-         HEPHAESTITE_ORE, UMBRIUM_ORE, SCARLITE_ORE, MARBLE, LIMESTONE, JASPER, SLATE, BLUE_ROCK_COBBLESTONE, CONJURING_ALTAR, DEAD_GRASS, COLD_GRASS, BLASTEM, SCURONOTTE, VILESPINE}) {
+         HEPHAESTITE_ORE, UMBRIUM_ORE, SCARLITE_ORE, MARBLE, LIMESTONE, JASPER, SLATE, BLUE_ROCK_COBBLESTONE, CONJURING_ALTAR, DEAD_GRASS, COLD_GRASS, BLASTEM, SCURONOTTE, VILESPINE,
+         ASH, CHARED_DIRT, CHARED_GRASS, CHARED_STONE, CHARED_COBBLESTONE, CHARED_GRAVEL, CHARED_GRASS_PATH, FROZEN_DIRT, FROZEN_GRASS, FROZEN_STONE,
+         FROZEN_COBBLESTONE, FROZEN_GRAVEL, FROZEN_GRASS_PATH, FROZEN_SPLINTERS, GOLD_PILE, SILVER_PILE, SILVER_ORE, SAPPHIRE_ORE, FIRE_LILY, FROST_LILY}) {
          ITEMS.registerSimpleBlockItem(b);
       }
       LOOSE_ROCKS.values().forEach(ITEMS::registerSimpleBlockItem);

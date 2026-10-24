@@ -8,6 +8,15 @@
     "rlgen:jasper",
     "rlgen:slate",
     "rlgen:reef",
-    "rlgen:reef_rock"
+    "rlgen:reef_rock",
+    "rlgen:chared_stone",
+    "rlgen:chared_cobblestone",
+    "rlgen:chared_gravel",
+    "rlgen:frozen_stone",
+    "rlgen:frozen_cobblestone",
+    "rlgen:frozen_gravel",
+    "rlgen:frozen_splinters",
+    "rlgen:silver_ore",
+    "rlgen:sapphire_ore"
   ]
 }

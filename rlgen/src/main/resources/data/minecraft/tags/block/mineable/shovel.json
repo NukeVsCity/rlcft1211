@@ -2,6 +2,15 @@
   "values": [
     "rlgen:dirt_defiled",
     "rlgen:grass_defiled",
-    "rlgen:sand_defiled"
+    "rlgen:sand_defiled",
+    "rlgen:ash",
+    "rlgen:chared_dirt",
+    "rlgen:chared_grass",
+    "rlgen:chared_grass_path",
+    "rlgen:frozen_dirt",
+    "rlgen:frozen_grass",
+    "rlgen:frozen_grass_path",
+    "rlgen:gold_pile",
+    "rlgen:silver_pile"
   ]
 }
