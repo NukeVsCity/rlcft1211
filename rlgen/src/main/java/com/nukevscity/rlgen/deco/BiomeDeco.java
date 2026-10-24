@@ -152,7 +152,7 @@ public class BiomeDeco {
          case "taiga", "taiga_hills", "taiga_cold", "taiga_cold_hills", "mutated_taiga", "mutated_taiga_cold" -> taiga(false);
          case "redwood_taiga", "redwood_taiga_hills", "mutated_redwood_taiga", "mutated_redwood_taiga_hills" -> taiga(true);
          case "swampland", "mutated_swampland" -> swamp();
-         case "ice_flats", "ice_mountains" -> snow(false);
+         case "ice_flats", "ice_mountains", "iceandfire:glacier" -> snow(false);
          case "mutated_ice_flats" -> snow(true);
          case "mushroom_island", "mushroom_island_shore" -> mushroom();
          case "beaches", "cold_beach", "stone_beach" -> beach();

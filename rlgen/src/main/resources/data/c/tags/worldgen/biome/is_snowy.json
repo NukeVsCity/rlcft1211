@@ -11,6 +11,7 @@
     "rlgen:mutated_taiga_cold",
     "rlgen:snowy_coniferous_forest",
     "rlgen:taiga_cold",
-    "rlgen:taiga_cold_hills"
+    "rlgen:taiga_cold_hills",
+    "rlgen:iceandfire_glacier"
   ]
 }

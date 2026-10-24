@@ -88,6 +88,7 @@ public final class BiomeDict {
       Map.entry("traverse:desert_shrubland", Set.of("DEAD", "DRY", "HOT", "SANDY")),
       Map.entry("traverse:forested_hills", Set.of("FOREST", "HILLS")),
       Map.entry("traverse:glacier", Set.of("COLD", "MOUNTAIN", "SNOWY")),
+      Map.entry("iceandfire:glacier", Set.of("SNOWY", "COLD", "SPARSE", "DEAD", "WASTELAND")),
       Map.entry("traverse:glacier_spikes", Set.of("COLD", "MOUNTAIN", "SNOWY")),
       Map.entry("traverse:green_swamp", Set.of("LUSH", "SWAMP", "WET")),
       Map.entry("traverse:lush_hills", Set.of("HILLS", "LUSH", "SPARSE", "WET")),

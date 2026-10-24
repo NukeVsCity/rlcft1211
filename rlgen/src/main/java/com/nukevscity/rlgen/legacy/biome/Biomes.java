@@ -623,6 +623,8 @@ public final class Biomes {
       Biome.registerBiome(68, "traverse:thicket", new ModBiomes.BiomeThicket(new Biome.BiomeProperties("Thicket").setTemperature(0.8F).setRainfall(0.3F).setBaseHeight(0.2F).setHeightVariation(0.3F)));
       Biome.registerBiome(69, "traverse:arid_highland", new ModBiomes.BiomeAridHighland(new Biome.BiomeProperties("Arid Highland").setTemperature(2.0F).setRainfall(0.0F).setRainDisabled().setBaseHeight(1.3F).setHeightVariation(0.4F)));
       Biome.registerBiome(70, "traverse:rocky_plains", new ModBiomes.BiomeRockyPlains(new Biome.BiomeProperties("Rocky Plains").setTemperature(0.9F).setRainfall(0.7F).setBaseHeight(0.125F).setHeightVariation(0.15F)));
+      // Ice and Fire 1.12.2: added in the biome registry event, after Defiled Lands (mods load alphabetically)
+      Biome.registerBiome(71, "iceandfire:glacier", new ModBiomes.BiomeIceAndFireGlacier(new Biome.BiomeProperties("Glacier").setBaseHeight(2.125F).setHeightVariation(0.025F).setTemperature(0.0F).setRainfall(0.5F).setSnowEnabled()));
 
       OCEAN = byName("ocean");
       DEFAULT = byName("ocean");

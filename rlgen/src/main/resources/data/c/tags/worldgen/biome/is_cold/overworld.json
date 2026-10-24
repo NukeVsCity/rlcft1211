@@ -30,6 +30,7 @@
     "rlgen:taiga_cold",
     "rlgen:taiga_cold_hills",
     "rlgen:taiga_hills",
-    "rlgen:temperate_rainforest"
+    "rlgen:temperate_rainforest",
+    "rlgen:iceandfire_glacier"
   ]
 }

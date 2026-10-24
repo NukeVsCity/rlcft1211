@@ -4,6 +4,7 @@
     "rlgen:glacier",
     "rlgen:ice_flats",
     "rlgen:ice_mountains",
-    "rlgen:ice_plains_defiled"
+    "rlgen:ice_plains_defiled",
+    "rlgen:iceandfire_glacier"
   ]
 }

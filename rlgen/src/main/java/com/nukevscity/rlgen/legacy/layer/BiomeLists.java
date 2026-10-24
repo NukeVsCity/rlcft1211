@@ -80,7 +80,7 @@ public final class BiomeLists {
 
    /**
     * RLCraft 2.9.3: Defiled Lands adds its biomes during the biome registry event (weights from
-    * defiled_lands.cfg, all 1), Traverse adds its biomes later at init and again on server start
+    * defiled_lands.cfg, all 1), then Ice and Fire its Glacier, Traverse adds its biomes later at init and again on server start
     * (re-added at the end, same order). So the order is vanilla, Defiled Lands, Traverse.
     */
    public static BiomeLists rlcraft() {
@@ -93,6 +93,8 @@ public final class BiomeLists {
       l.add(Type.COOL, Biomes.HILLS_DEFILED, 1);
       l.add(Type.WARM, Biomes.SWAMP_DEFILED, 1);
       l.add(Type.ICY, Biomes.ICE_PLAINS_DEFILED, 1);
+      // Ice and Fire CommonProxy.registerBiomes: Glacier as a COOL biome, "Glacier Spawn Weight"=4
+      l.add(Type.COOL, com.nukevscity.rlgen.legacy.biome.Biome.byName("iceandfire:glacier"), 4);
       // Traverse TraverseWorld.registerBiomes order, weights as registered
       l.add(Type.COOL, Biomes.AUTUMNAL_WOODS, 8);
       l.add(Type.WARM, Biomes.WOODLANDS, 9);

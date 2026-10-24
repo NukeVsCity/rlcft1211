@@ -1341,5 +1341,15 @@
       "species": "...",
       "chance": 0.0
     }
+  },
+  {
+    "select": {
+      "name": "rlgen:iceandfire_glacier"
+    },
+    "apply": {
+      "species": "...",
+      "density": "noise() * 0.0",
+      "chance": "standard"
+    }
   }
 ]

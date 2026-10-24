@@ -78,6 +78,7 @@
     "rlgen:taiga_hills",
     "rlgen:temperate_rainforest",
     "rlgen:thicket",
-    "rlgen:woodlands"
+    "rlgen:woodlands",
+    "rlgen:iceandfire_glacier"
   ]
 }

@@ -16,6 +16,7 @@ public final class LegacyBiomeMap {
       put("hell", "minecraft:nether_wastes");
       put("sky", "minecraft:the_end");
       put("void", "minecraft:the_void");
+      put("iceandfire:glacier", "rlgen:iceandfire_glacier"); // traverse:glacier already is rlgen:glacier
    }
 
    private LegacyBiomeMap() {

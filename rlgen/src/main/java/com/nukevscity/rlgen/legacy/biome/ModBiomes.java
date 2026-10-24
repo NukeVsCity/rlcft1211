@@ -362,4 +362,58 @@ public final class ModBiomes {
          this.generateBiomeTerrain(worldIn, rand, chunkPrimerIn, x, z, noiseVal);
       }
    }
+
+   /** Ice and Fire 1.12 BiomeGlacier (BiomeSnow without spikes): snow on packed ice with ice streaks. */
+   public static class BiomeIceAndFireGlacier extends BiomeSnow {
+      public BiomeIceAndFireGlacier(Biome.BiomeProperties p) {
+         super(false, p);
+         this.topBlock = LBlock.SNOW;
+         this.fillerBlock = LBlock.PACKED_ICE;
+      }
+
+      @Override
+      public void genTerrainBlocks(LegacyWorld worldIn, Random rand, ChunkPrimer chunkPrimerIn, int x, int z, double noiseVal) {
+         int i = worldIn.getSeaLevel();
+         LBlock iblockstate = this.topBlock;
+         LBlock iblockstate1 = rand.nextInt(5) == 0 ? LBlock.ICE : this.fillerBlock;
+         int j = -1;
+         int k = (int)(noiseVal / 3.0 + 3.0 + rand.nextDouble() * 0.25);
+         int l = x & 15;
+         int i1 = z & 15;
+         for (int j1 = 255; j1 >= 0; j1--) {
+            if (j1 <= rand.nextInt(5)) {
+               chunkPrimerIn.setBlockState(i1, j1, l, BEDROCK);
+            } else {
+               LBlock iblockstate2 = chunkPrimerIn.getBlockState(i1, j1, l);
+               if (iblockstate2.isAir()) {
+                  j = -1;
+               } else if (iblockstate2.getBlock() == LBlock.STONE) {
+                  if (j == -1) {
+                     iblockstate = this.topBlock;
+                     iblockstate1 = rand.nextInt(5) == 0 ? LBlock.ICE : this.fillerBlock;
+                     if (j1 < i && (iblockstate == null || iblockstate.isAir())) {
+                        iblockstate = this.getTemperature(x, j1, z) < 0.15F ? ICE : WATER;
+                     }
+                     j = k;
+                     if (j1 >= i - 1) {
+                        chunkPrimerIn.setBlockState(i1, j1, l, iblockstate);
+                     } else if (j1 < i - 7 - k) {
+                        iblockstate = this.topBlock;
+                        iblockstate1 = rand.nextInt(5) == 0 ? LBlock.ICE : this.fillerBlock;
+                        chunkPrimerIn.setBlockState(i1, j1, l, GRAVEL);
+                     } else {
+                        chunkPrimerIn.setBlockState(i1, j1, l, iblockstate1);
+                     }
+                  } else if (j > 0) {
+                     j--;
+                     chunkPrimerIn.setBlockState(i1, j1, l, iblockstate1);
+                     if (j == 0 && (iblockstate1.getBlock() == LBlock.ICE || iblockstate1.getBlock() == this.fillerBlock.getBlock()) && k > 1) {
+                        j = rand.nextInt(4) + Math.max(0, j1 - 63);
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
 }
