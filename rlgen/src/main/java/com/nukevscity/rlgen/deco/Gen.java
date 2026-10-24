@@ -98,7 +98,11 @@ public final class Gen {
    // ------------------------------------------------------------------ WorldGenLakes
 
    public static boolean lake(DWorld w, Random random, BlockPos pos, boolean lava) {
-      BlockState fluid = lava ? Blocks.LAVA.defaultBlockState() : Blocks.WATER.defaultBlockState();
+      return lake(w, random, pos, lava ? Blocks.LAVA.defaultBlockState() : Blocks.WATER.defaultBlockState(), lava);
+   }
+
+   /** WorldGenLakes with any fluid; lava = Material.LAVA (stone border), else water material (ice on top). */
+   public static boolean lake(DWorld w, Random random, BlockPos pos, BlockState fluid, boolean lava) {
       pos = pos.offset(-8, 0, -8);
       while (pos.getY() > 5 && w.isAir(pos)) {
          pos = pos.below();

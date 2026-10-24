@@ -14,7 +14,7 @@ Status: DONE = ported; PART = partly ported; TODO = to port; SKIP = deliberately
 | Defiled Lands | 7 biomes, weight 1 (registry event) | DONE |
 | Ice and Fire 1.7.1 | Glacier, COOL weight 4 (registry event, after Defiled) | DONE (v0.6.1) |
 | Traverse 1.6.0 | 24 biomes, re-added at server start (last) | DONE |
-| SR Parasites | biome "infested" exists but `SRPBiomes.register` is never called: not in the lists (spreads in game only) | NONE |
+| SR Parasites | IWorldGenerator is empty; biome "infested" exists but `SRPBiomes.register` is never called: not in the lists (spreads in game only) | NONE |
 | RTG | own WorldType only; Default worlds untouched | NONE |
 | Lost Cities | own dimension | SKIP (user dropped) |
 | BiomeManager.removeBiome | only Traverse (its own re-add) | DONE |
@@ -36,12 +36,13 @@ Status: DONE = ported; PART = partly ported; TODO = to port; SKIP = deliberately
 | Quark | buried treasure (treasure maps in loot, chest made when a player holds the map) | SKIP (gameplay, not world gen) |
 | **No Tree Punching** | loose rocks on the ground everywhere (WorldGenRocks, frequency 8, Quark marble/limestone rocks) | DONE (`ntp/`, rlgen:loose_rock_*) |
 | **Rustic** | herbs 0.04 (x8, surface + cave), wildberries 0.04 (x4); slate and beehives off; olive (0.02) / ironwood (0.01) are Dynamic Trees species spliced into the DT populator (weights 10 and 5 per 1000) | TODO (low: rare) |
-| **Snow! Real Magic!** | ReplaceSnowWorldGen: snow layers inside grass/flowers in snowy biomes | TODO |
+| **Snow! Real Magic!** | ReplaceSnowWorldGen: snow layers inside grass/flowers in snowy biomes | DONE (freeze pass; the plant is replaced, not kept inside the snow) |
 | **Coral Reef** | coral reefs and rocks in oceans; biome list matches only "ocean" (quirk kept) | DONE (`coral/`, rlgen:reef, reef_rock, coral_1..6) |
 | **Charm** | VillageDecorations (inside/outside village decoration), AbandonedCrates; MoreVillageBiomes off; NetherGoldDeposits (nether, skip) | TODO |
 | **Waystones** | waystones in villages (1.0) and anywhere (10/10000 per chunk), mossy | TODO |
-| Realistic Torches | generateLitTorches=false: torches in generated chunks become unlit torches | TODO (small) |
-| Lycanites Mobs | dungeons enabled (distance 45 chunks, towers), fluid lakes (check config) | TODO |
+| Realistic Torches | generateLitTorches=false: no world-gen effect | NONE |
+| Lycanites Mobs | fluid lakes (weight 0): ooze (cold), poison (swamp/spooky), acid (wasteland/dead) 0.08 surface, 0.01 underground; moglava nether only | DONE (`lyc/`, rlgen:ooze/acid/poison fluids with Lycanites textures, no effects yet) |
+| Lycanites Mobs | dungeons (weight 1000, distance 45 chunks, towers) | TODO |
 | Ice and Fire 1.7.1 | StructureGenerator (weight 0): fire/ice dragon roosts and dens, cyclops caves, siren islands, silver/sapphire ore, fire/frost lilies; mobs and dragon skeletons not spawned (their random draws kept) | DONE (`iaf/`, planned on 1.12 terrain, replayed after each populate area) |
 | Ice and Fire 1.7.1 | gorgon temples (template converted by scripts/convert_template112.py), myrmex hives (600 apart, saved in rlgen_myrmex) | DONE |
 | Ice and Fire 1.7.1 | pixie villages (pixie house as a block model), snow villages | DONE (`iaf/IafVillage`) |
@@ -49,7 +50,7 @@ Status: DONE = ported; PART = partly ported; TODO = to port; SKIP = deliberately
 | Battle Towers / Roguelike / Doomlike / Ruins | | DONE |
 | Bountiful | bounty board in villages | TODO (small) |
 | Serene Seasons | season-dependent snow/colours at populate | TODO (install 1.21 version) |
-| RLTweaker | RecurrentHandler (RC populate), LostCities handler: check config | TODO (check) |
+| RLTweaker | RecurrentHandler (RC populate), LostCities handler: no change to generated blocks | NONE |
 | Locks | locks on generated chests (game mechanic, needs the mod) | SKIP for now |
 | RLArtifacts | underground chests: chance 0 in config | NONE |
 | YUNG's Law | ore hiding disabled in config | NONE |

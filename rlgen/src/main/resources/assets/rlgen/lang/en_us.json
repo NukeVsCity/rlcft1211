@@ -246,5 +246,8 @@
   "block.rlgen.fir_stairs": "Fir Stairs",
   "block.rlgen.blue_rock_slab": "Blue Rock Slab",
   "block.rlgen.tenebra_planks": "Tenebra Planks",
-  "block.rlgen.tenebra_stairs": "Tenebra Stairs"
+  "block.rlgen.tenebra_stairs": "Tenebra Stairs",
+  "block.rlgen.ooze": "Ooze",
+  "block.rlgen.acid": "Acid",
+  "block.rlgen.poison": "Poison"
 }

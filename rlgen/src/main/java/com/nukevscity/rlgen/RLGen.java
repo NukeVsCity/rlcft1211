@@ -358,5 +358,6 @@ public final class RLGen {
       BLOCKS.register(modBus);
       BLOCK_ENTITIES.register(modBus);
       ITEMS.register(modBus);
+      com.nukevscity.rlgen.lyc.LycFluids.register(modBus);
    }
 }
