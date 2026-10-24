@@ -11,6 +11,12 @@
     "rlgen:frozen_grass",
     "rlgen:frozen_grass_path",
     "rlgen:gold_pile",
-    "rlgen:silver_pile"
+    "rlgen:silver_pile",
+    "rlgen:desert_myrmex_resin",
+    "rlgen:desert_myrmex_resin_sticky",
+    "rlgen:desert_myrmex_cocoon",
+    "rlgen:jungle_myrmex_resin",
+    "rlgen:jungle_myrmex_resin_sticky",
+    "rlgen:jungle_myrmex_cocoon"
   ]
 }

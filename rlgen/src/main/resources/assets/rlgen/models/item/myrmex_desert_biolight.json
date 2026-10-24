@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "rlgen:block/myrmex_desert_biolight_bottom"
+  }
+}

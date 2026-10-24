@@ -161,5 +161,14 @@
   "block.rlgen.gold_pile": "Gold Pile",
   "block.rlgen.silver_pile": "Silver Pile",
   "block.rlgen.fire_lily": "Fire Lily",
-  "block.rlgen.frost_lily": "Frost Lily"
+  "block.rlgen.frost_lily": "Frost Lily",
+  "block.rlgen.desert_myrmex_resin": "Desert Myrmex Resin",
+  "block.rlgen.desert_myrmex_resin_sticky": "Desert Myrmex Resin Sticky",
+  "block.rlgen.myrmex_desert_biolight": "Myrmex Desert Biolight",
+  "block.rlgen.desert_myrmex_cocoon": "Desert Myrmex Cocoon",
+  "block.rlgen.jungle_myrmex_resin": "Jungle Myrmex Resin",
+  "block.rlgen.jungle_myrmex_resin_sticky": "Jungle Myrmex Resin Sticky",
+  "block.rlgen.myrmex_jungle_biolight": "Myrmex Jungle Biolight",
+  "block.rlgen.jungle_myrmex_cocoon": "Jungle Myrmex Cocoon",
+  "container.rlgen.myrmex_cocoon": "Myrmex Cocoon"
 }

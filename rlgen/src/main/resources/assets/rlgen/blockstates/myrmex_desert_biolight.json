@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "down=true": {
+      "model": "rlgen:block/myrmex_desert_biolight_top"
+    },
+    "down=false": {
+      "model": "rlgen:block/myrmex_desert_biolight_bottom"
+    }
+  }
+}

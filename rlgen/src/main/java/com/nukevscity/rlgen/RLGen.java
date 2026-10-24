@@ -150,6 +150,27 @@ public final class RLGen {
       p -> new com.nukevscity.rlgen.iaf.LilyBlock(p, true), BlockBehaviour.Properties.ofFullCopy(Blocks.POPPY));
    public static final DeferredBlock<com.nukevscity.rlgen.iaf.LilyBlock> FROST_LILY = BLOCKS.registerBlock("frost_lily",
       p -> new com.nukevscity.rlgen.iaf.LilyBlock(p, false), BlockBehaviour.Properties.ofFullCopy(Blocks.POPPY));
+   private static BlockBehaviour.Properties resin(boolean sticky) {
+      BlockBehaviour.Properties p = BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_ORANGE).strength(2.5F).sound(sticky ? SoundType.SLIME_BLOCK : SoundType.GRAVEL);
+      return sticky ? p.speedFactor(0.4F) : p;
+   }
+   public static final DeferredBlock<Block> DESERT_MYRMEX_RESIN = BLOCKS.registerSimpleBlock("desert_myrmex_resin", resin(false));
+   public static final DeferredBlock<Block> JUNGLE_MYRMEX_RESIN = BLOCKS.registerSimpleBlock("jungle_myrmex_resin", resin(false));
+   public static final DeferredBlock<Block> DESERT_MYRMEX_RESIN_STICKY = BLOCKS.registerSimpleBlock("desert_myrmex_resin_sticky", resin(true));
+   public static final DeferredBlock<Block> JUNGLE_MYRMEX_RESIN_STICKY = BLOCKS.registerSimpleBlock("jungle_myrmex_resin_sticky", resin(true));
+   public static final DeferredBlock<com.nukevscity.rlgen.iaf.BiolightBlock> MYRMEX_DESERT_BIOLIGHT = BLOCKS.registerBlock("myrmex_desert_biolight",
+      com.nukevscity.rlgen.iaf.BiolightBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS).lightLevel(s -> 9).noOcclusion());
+   public static final DeferredBlock<com.nukevscity.rlgen.iaf.BiolightBlock> MYRMEX_JUNGLE_BIOLIGHT = BLOCKS.registerBlock("myrmex_jungle_biolight",
+      com.nukevscity.rlgen.iaf.BiolightBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS).lightLevel(s -> 9).noOcclusion());
+   public static final DeferredBlock<com.nukevscity.rlgen.iaf.CocoonBlock> DESERT_MYRMEX_COCOON = BLOCKS.registerBlock("desert_myrmex_cocoon",
+      com.nukevscity.rlgen.iaf.CocoonBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_ORANGE).strength(2.5F).sound(SoundType.SLIME_BLOCK).noOcclusion());
+   public static final DeferredBlock<com.nukevscity.rlgen.iaf.CocoonBlock> JUNGLE_MYRMEX_COCOON = BLOCKS.registerBlock("jungle_myrmex_cocoon",
+      com.nukevscity.rlgen.iaf.CocoonBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).strength(2.5F).sound(SoundType.SLIME_BLOCK).noOcclusion());
+   private static final DeferredRegister<net.minecraft.world.level.block.entity.BlockEntityType<?>> BLOCK_ENTITIES =
+      DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, MODID);
+   public static final DeferredHolder<net.minecraft.world.level.block.entity.BlockEntityType<?>, net.minecraft.world.level.block.entity.BlockEntityType<com.nukevscity.rlgen.iaf.CocoonBlockEntity>> COCOON_BE =
+      BLOCK_ENTITIES.register("myrmex_cocoon", () -> net.minecraft.world.level.block.entity.BlockEntityType.Builder.of(
+         com.nukevscity.rlgen.iaf.CocoonBlockEntity::new, DESERT_MYRMEX_COCOON.get(), JUNGLE_MYRMEX_COCOON.get()).build(null));
    // Quark's Revamp stone gen stones (generation only; their crafting variants are not ported).
    public static final DeferredBlock<Block> MARBLE = stone("marble", MapColor.QUARTZ);
    public static final DeferredBlock<Block> LIMESTONE = stone("limestone", MapColor.STONE);
@@ -215,7 +236,9 @@ public final class RLGen {
          GRAVEL_DEFILED, SANDSTONE_DEFILED, STONE_BRICKS_DEFILED, STONE_BRICKS_DEFILED_CRACKED, STONE_BRICKS_DEFILED_MOSSY, STONE_DEFILED_MOSSY,
          HEPHAESTITE_ORE, UMBRIUM_ORE, SCARLITE_ORE, MARBLE, LIMESTONE, JASPER, SLATE, BLUE_ROCK_COBBLESTONE, CONJURING_ALTAR, DEAD_GRASS, COLD_GRASS, BLASTEM, SCURONOTTE, VILESPINE,
          ASH, CHARED_DIRT, CHARED_GRASS, CHARED_STONE, CHARED_COBBLESTONE, CHARED_GRAVEL, CHARED_GRASS_PATH, FROZEN_DIRT, FROZEN_GRASS, FROZEN_STONE,
-         FROZEN_COBBLESTONE, FROZEN_GRAVEL, FROZEN_GRASS_PATH, FROZEN_SPLINTERS, GOLD_PILE, SILVER_PILE, SILVER_ORE, SAPPHIRE_ORE, FIRE_LILY, FROST_LILY}) {
+         FROZEN_COBBLESTONE, FROZEN_GRAVEL, FROZEN_GRASS_PATH, FROZEN_SPLINTERS, GOLD_PILE, SILVER_PILE, SILVER_ORE, SAPPHIRE_ORE, FIRE_LILY, FROST_LILY,
+         DESERT_MYRMEX_RESIN, JUNGLE_MYRMEX_RESIN, DESERT_MYRMEX_RESIN_STICKY, JUNGLE_MYRMEX_RESIN_STICKY, MYRMEX_DESERT_BIOLIGHT, MYRMEX_JUNGLE_BIOLIGHT,
+         DESERT_MYRMEX_COCOON, JUNGLE_MYRMEX_COCOON}) {
          ITEMS.registerSimpleBlockItem(b);
       }
       LOOSE_ROCKS.values().forEach(ITEMS::registerSimpleBlockItem);
@@ -253,6 +276,7 @@ public final class RLGen {
       NeoForge.EVENT_BUS.addListener((net.neoforged.neoforge.event.level.LevelEvent.Load e) -> {
          if (e.getLevel() instanceof net.minecraft.server.level.ServerLevel sl && sl.dimension() == net.minecraft.world.level.Level.OVERWORLD) {
             com.nukevscity.rlgen.ruins.RuinsSavedData.attach(sl);
+            com.nukevscity.rlgen.iaf.MyrmexSavedData.attach(sl);
          }
       });
       if (net.neoforged.fml.loading.FMLEnvironment.dist.isClient()) {
@@ -260,6 +284,7 @@ public final class RLGen {
       }
       STRUCTURE_PIECES.register(modBus);
       BLOCKS.register(modBus);
+      BLOCK_ENTITIES.register(modBus);
       ITEMS.register(modBus);
    }
 }

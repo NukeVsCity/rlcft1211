@@ -356,7 +356,7 @@ final class IafStructures {
       return isTouchingAir;
    }
 
-   private static void genSkeleton(IafWorld world, BlockPos blockpos, Random rand, Random unseeded, BlockPos origin, float radius) {
+   static void genSkeleton(IafWorld world, BlockPos blockpos, Random rand, Random unseeded, BlockPos origin, float radius) {
       Direction direction = HORIZONTALS[unseeded.nextInt(3)];
       Direction.Axis oppositeAxis = direction.getAxis() == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X;
       int maxRibHeight = rand.nextInt(2);
