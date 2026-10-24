@@ -27,8 +27,13 @@ final class IafWorld {
    static final byte LILY = 5;
    /** A 1.12 structure template placed with its min corner here (loot = template id, lootSeed = rotation * 4 + mirror). */
    static final byte TEMPLATE = 6;
+   /** An Ice and Fire village (extra = IafVillage) built inside its box. */
+   static final byte VILLAGE = 7;
 
-   record Op(int x, int y, int z, byte kind, BlockState state, String loot, long lootSeed) {
+   record Op(int x, int y, int z, byte kind, BlockState state, String loot, long lootSeed, Object extra) {
+      Op(int x, int y, int z, byte kind, BlockState state, String loot, long lootSeed) {
+         this(x, y, z, kind, state, loot, lootSeed, null);
+      }
    }
 
    private final LegacyChunkGenerator gen;
@@ -105,6 +110,10 @@ final class IafWorld {
 
    void template(BlockPos p, String id, int rotation, int mirror) {
       this.ops.add(new Op(p.getX(), p.getY(), p.getZ(), TEMPLATE, null, id, rotation * 4L + mirror));
+   }
+
+   void village(BlockPos center, Object village) {
+      this.ops.add(new Op(center.getX(), center.getY(), center.getZ(), VILLAGE, null, null, 0L, village));
    }
 
    void lily(int x, int z, BlockState lily) {

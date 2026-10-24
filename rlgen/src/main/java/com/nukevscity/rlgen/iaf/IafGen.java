@@ -45,6 +45,7 @@ public final class IafGen {
    private static final int BIRD_CHANCE = 100;
    private static final int DEN_CHANCE = 400;
    private static final int MYRMEX_CHANCE = 150;
+   private static final int SNOW_VILLAGE_CHANCE = 300;
    static final int ORE_TO_STONE_RATIO = 45;
    static final int DEN_GOLD_AMOUNT = 4;
    static final String FIRE_CHEST = "rlgen:iceandfire/fire_dragon_cave";
@@ -52,7 +53,7 @@ public final class IafGen {
    static final String CYCLOPS_CHEST = "rlgen:iceandfire/cyclops_cave";
    /** EnumFacing.HORIZONTALS */
    private static final Direction[] HORIZONTALS = {Direction.SOUTH, Direction.WEST, Direction.NORTH, Direction.EAST};
-   /** Planned chunks within this many chunks can reach a populate area (a gorgon temple ends up to 47 blocks from the chunk centre). */
+   /** Planned chunks within this many chunks can reach a chunk (a gorgon temple ends up to 47 blocks from the chunk centre). */
    private static final int REACH = 4;
    private static final int HIVE_REACH = 9;
    static final String GORGON_TEMPLE = "rlgen:iceandfire/gorgon_temple";
@@ -94,15 +95,15 @@ public final class IafGen {
       generate(world, chunkRandom(seed, cx, cz), unseeded, cx, cz);
       Map<Long, List<IafWorld.Op>> byArea = new HashMap<>();
       for (IafWorld.Op op : world.ops) {
-         if (op.kind() == IafWorld.TEMPLATE) {
+         if (op.kind() == IafWorld.TEMPLATE || op.kind() == IafWorld.VILLAGE) {
             // rotated and mirrored around its corner it can reach TEMPLATE_SIZE - 1 blocks to any side
-            for (int ax = (op.x() - TEMPLATE_SIZE - 8) >> 4; ax <= (op.x() + TEMPLATE_SIZE - 8) >> 4; ax++) {
-               for (int az = (op.z() - TEMPLATE_SIZE - 8) >> 4; az <= (op.z() + TEMPLATE_SIZE - 8) >> 4; az++) {
+            for (int ax = (op.x() - TEMPLATE_SIZE) >> 4; ax <= (op.x() + TEMPLATE_SIZE) >> 4; ax++) {
+               for (int az = (op.z() - TEMPLATE_SIZE) >> 4; az <= (op.z() + TEMPLATE_SIZE) >> 4; az++) {
                   byArea.computeIfAbsent(ChunkPos.asLong(ax, az), k -> new ArrayList<>()).add(op);
                }
             }
          } else {
-            byArea.computeIfAbsent(ChunkPos.asLong((op.x() - 8) >> 4, (op.z() - 8) >> 4), k -> new ArrayList<>()).add(op);
+            byArea.computeIfAbsent(ChunkPos.asLong(op.x() >> 4, op.z() >> 4), k -> new ArrayList<>()).add(op);
          }
       }
       Plan p = new Plan(byArea.isEmpty() ? Map.of() : byArea, world.found.isEmpty() ? List.of() : world.found);
@@ -112,7 +113,11 @@ public final class IafGen {
       return p;
    }
 
-   /** Replays every planned write that lands in the populate area of this chunk (x and z from +8 to +23). */
+   /**
+    * Replays every planned write that lands in this chunk, at the end of its decoration: after its structures, trees and plants,
+    * which 1.12 had all placed before Ice and Fire ran (1.21 places structures chunk by chunk, so the 1.12 populate area offset
+    * of +8 would let a neighbour's structures cover these writes).
+    */
    public static void apply(DWorld w, ChunkPos cp) {
       if (!(w.level.getLevel().getChunkSource().getGenerator() instanceof LegacyChunkGenerator gen)) {
          return;
@@ -172,8 +177,8 @@ public final class IafGen {
          case IafWorld.TEMPLATE -> {
             net.minecraft.server.level.ServerLevel level = w.level.getLevel();
             level.getStructureManager().get(ResourceLocation.parse(op.loot())).ifPresent(t -> {
-               int x0 = cp.getMinBlockX() + 8;
-               int z0 = cp.getMinBlockZ() + 8;
+               int x0 = cp.getMinBlockX();
+               int z0 = cp.getMinBlockZ();
                net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings settings =
                   new net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings()
                      .setRotation(net.minecraft.world.level.block.Rotation.values()[(int)(op.lootSeed() >> 2)])
@@ -181,6 +186,11 @@ public final class IafGen {
                      .setBoundingBox(new net.minecraft.world.level.levelgen.structure.BoundingBox(x0, 0, z0, x0 + 15, 255, z0 + 15));
                t.placeInWorld(w.level, p, p, settings, w.level.getRandom(), 2);
             });
+         }
+         case IafWorld.VILLAGE -> {
+            int x0 = cp.getMinBlockX();
+            int z0 = cp.getMinBlockZ();
+            ((IafVillage)op.extra()).build(w.level, new net.minecraft.world.level.levelgen.structure.BoundingBox(x0, 0, z0, x0 + 15, 255, z0 + 15));
          }
          case IafWorld.LILY -> {
             BlockPos surface = w.height(p);
@@ -247,7 +257,8 @@ public final class IafGen {
       if (far(height)) {
          boolean isSpookyForest = world.hasType(height, "FOREST") && (world.hasType(height, "SPOOKY") || world.hasType(height, "MAGICAL"));
          if (isSpookyForest && random.nextInt(PIXIE_CHANCE + 1) == 0) {
-            // TODO pixie village (MapGenPixieVillage)
+            world.found.add("pixie village " + height.toShortString());
+            world.village(height, IafVillage.plan(world, random, unseeded, height, false));
          }
       }
 
@@ -347,8 +358,10 @@ public final class IafGen {
          }
       }
 
-      if (world.hasType(height, "COLD") && world.hasType(height, "SNOWY")) {
-         // TODO snow village (MapGenSnowVillage: an unseeded 1 in 301 chance, then a village start drawn from this random)
+      if (world.hasType(height, "COLD") && world.hasType(height, "SNOWY") && unseeded.nextInt(SNOW_VILLAGE_CHANCE + 1) == 0) {
+         // MapGenSnowVillage drew its chance from an unseeded new Random()
+         world.found.add("snow village " + height.toShortString());
+         world.village(height, IafVillage.plan(world, random, unseeded, height, true));
       }
 
       if (random.nextInt(MYRMEX_CHANCE) == 0 && far(height) && hiveBiome(world, height)) {

@@ -43,7 +43,7 @@ Status: DONE = ported; PART = partly ported; TODO = to port; SKIP = deliberately
 | Lycanites Mobs | dungeons enabled (distance 45 chunks, towers), fluid lakes (check config) | TODO |
 | Ice and Fire 1.7.1 | StructureGenerator (weight 0): fire/ice dragon roosts and dens, cyclops caves, siren islands, silver/sapphire ore, fire/frost lilies; mobs and dragon skeletons not spawned (their random draws kept) | DONE (`iaf/`, planned on 1.12 terrain, replayed after each populate area) |
 | Ice and Fire 1.7.1 | gorgon temples (template converted by scripts/convert_template112.py), myrmex hives (600 apart, saved in rlgen_myrmex) | DONE |
-| Ice and Fire 1.7.1 | pixie villages, snow villages | TODO |
+| Ice and Fire 1.7.1 | pixie villages (pixie house as a block model), snow villages | DONE (`iaf/IafVillage`) |
 | Recurrent Complex | all active structures | DONE |
 | Battle Towers / Roguelike / Doomlike / Ruins | | DONE |
 | Bountiful | bounty board in villages | TODO (small) |

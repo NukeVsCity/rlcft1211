@@ -318,7 +318,8 @@ def item_id(iid, damage):
         s = b.split("[")[0]
     n = s.split(":")[-1]
     n = {"sign": "oak_sign", "grass": "short_grass", "grass_path": "dirt_path", "stone_slab": "smooth_stone_slab",
-         "zombie_pigman_spawn_egg": "zombified_piglin_spawn_egg", "scute": "turtle_scute"}.get(n, n)
+         "zombie_pigman_spawn_egg": "zombified_piglin_spawn_egg", "scute": "turtle_scute",
+         "rose_red": "red_dye", "dandelion_yellow": "yellow_dye", "cactus_green": "green_dye"}.get(n, n)
     return "minecraft:" + n
 
 def fixed_id(it):

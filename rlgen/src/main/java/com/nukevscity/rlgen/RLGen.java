@@ -166,6 +166,8 @@ public final class RLGen {
       com.nukevscity.rlgen.iaf.CocoonBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.TERRACOTTA_ORANGE).strength(2.5F).sound(SoundType.SLIME_BLOCK).noOcclusion());
    public static final DeferredBlock<com.nukevscity.rlgen.iaf.CocoonBlock> JUNGLE_MYRMEX_COCOON = BLOCKS.registerBlock("jungle_myrmex_cocoon",
       com.nukevscity.rlgen.iaf.CocoonBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GREEN).strength(2.5F).sound(SoundType.SLIME_BLOCK).noOcclusion());
+   public static final DeferredBlock<com.nukevscity.rlgen.iaf.PixieHouseBlock> PIXIE_HOUSE = BLOCKS.registerBlock("pixie_house",
+      com.nukevscity.rlgen.iaf.PixieHouseBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_RED).strength(2.0F).sound(SoundType.WOOD).noOcclusion());
    private static final DeferredRegister<net.minecraft.world.level.block.entity.BlockEntityType<?>> BLOCK_ENTITIES =
       DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, MODID);
    public static final DeferredHolder<net.minecraft.world.level.block.entity.BlockEntityType<?>, net.minecraft.world.level.block.entity.BlockEntityType<com.nukevscity.rlgen.iaf.CocoonBlockEntity>> COCOON_BE =
@@ -238,7 +240,7 @@ public final class RLGen {
          ASH, CHARED_DIRT, CHARED_GRASS, CHARED_STONE, CHARED_COBBLESTONE, CHARED_GRAVEL, CHARED_GRASS_PATH, FROZEN_DIRT, FROZEN_GRASS, FROZEN_STONE,
          FROZEN_COBBLESTONE, FROZEN_GRAVEL, FROZEN_GRASS_PATH, FROZEN_SPLINTERS, GOLD_PILE, SILVER_PILE, SILVER_ORE, SAPPHIRE_ORE, FIRE_LILY, FROST_LILY,
          DESERT_MYRMEX_RESIN, JUNGLE_MYRMEX_RESIN, DESERT_MYRMEX_RESIN_STICKY, JUNGLE_MYRMEX_RESIN_STICKY, MYRMEX_DESERT_BIOLIGHT, MYRMEX_JUNGLE_BIOLIGHT,
-         DESERT_MYRMEX_COCOON, JUNGLE_MYRMEX_COCOON}) {
+         DESERT_MYRMEX_COCOON, JUNGLE_MYRMEX_COCOON, PIXIE_HOUSE}) {
          ITEMS.registerSimpleBlockItem(b);
       }
       LOOSE_ROCKS.values().forEach(ITEMS::registerSimpleBlockItem);

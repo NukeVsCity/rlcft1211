@@ -1,0 +1,100 @@
+{
+ "variants": {
+  "facing=north,house=0": {
+   "model": "rlgen:block/pixie_house_0",
+   "y": 180
+  },
+  "facing=east,house=0": {
+   "model": "rlgen:block/pixie_house_0",
+   "y": 270
+  },
+  "facing=south,house=0": {
+   "model": "rlgen:block/pixie_house_0",
+   "y": 0
+  },
+  "facing=west,house=0": {
+   "model": "rlgen:block/pixie_house_0",
+   "y": 90
+  },
+  "facing=north,house=1": {
+   "model": "rlgen:block/pixie_house_1",
+   "y": 180
+  },
+  "facing=east,house=1": {
+   "model": "rlgen:block/pixie_house_1",
+   "y": 270
+  },
+  "facing=south,house=1": {
+   "model": "rlgen:block/pixie_house_1",
+   "y": 0
+  },
+  "facing=west,house=1": {
+   "model": "rlgen:block/pixie_house_1",
+   "y": 90
+  },
+  "facing=north,house=2": {
+   "model": "rlgen:block/pixie_house_2",
+   "y": 180
+  },
+  "facing=east,house=2": {
+   "model": "rlgen:block/pixie_house_2",
+   "y": 270
+  },
+  "facing=south,house=2": {
+   "model": "rlgen:block/pixie_house_2",
+   "y": 0
+  },
+  "facing=west,house=2": {
+   "model": "rlgen:block/pixie_house_2",
+   "y": 90
+  },
+  "facing=north,house=3": {
+   "model": "rlgen:block/pixie_house_3",
+   "y": 180
+  },
+  "facing=east,house=3": {
+   "model": "rlgen:block/pixie_house_3",
+   "y": 270
+  },
+  "facing=south,house=3": {
+   "model": "rlgen:block/pixie_house_3",
+   "y": 0
+  },
+  "facing=west,house=3": {
+   "model": "rlgen:block/pixie_house_3",
+   "y": 90
+  },
+  "facing=north,house=4": {
+   "model": "rlgen:block/pixie_house_4",
+   "y": 180
+  },
+  "facing=east,house=4": {
+   "model": "rlgen:block/pixie_house_4",
+   "y": 270
+  },
+  "facing=south,house=4": {
+   "model": "rlgen:block/pixie_house_4",
+   "y": 0
+  },
+  "facing=west,house=4": {
+   "model": "rlgen:block/pixie_house_4",
+   "y": 90
+  },
+  "facing=north,house=5": {
+   "model": "rlgen:block/pixie_house_5",
+   "y": 180
+  },
+  "facing=east,house=5": {
+   "model": "rlgen:block/pixie_house_5",
+   "y": 270
+  },
+  "facing=south,house=5": {
+   "model": "rlgen:block/pixie_house_5",
+   "y": 0
+  },
+  "facing=west,house=5": {
+   "model": "rlgen:block/pixie_house_5",
+   "y": 90
+  }
+ }
+}
