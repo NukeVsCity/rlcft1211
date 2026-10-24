@@ -36,7 +36,7 @@ Status: DONE = ported; PART = partly ported; TODO = to port; SKIP = deliberately
 | **No Tree Punching** | loose rocks on the ground everywhere (WorldGenRocks, frequency 8, Quark marble/limestone rocks) | DONE (`ntp/`, rlgen:loose_rock_*) |
 | **Rustic** | herbs 0.04 (x8, surface + cave), wildberries 0.04 (x4); slate and beehives off; olive (0.02) / ironwood (0.01) are Dynamic Trees species spliced into the DT populator (weights 10 and 5 per 1000) | TODO (low: rare) |
 | **Snow! Real Magic!** | ReplaceSnowWorldGen: snow layers inside grass/flowers in snowy biomes | TODO |
-| **Coral Reef** | coral reefs and rocks in oceans | TODO |
+| **Coral Reef** | coral reefs and rocks in oceans; biome list matches only "ocean" (quirk kept) | DONE (`coral/`, rlgen:reef, reef_rock, coral_1..6) |
 | **Charm** | VillageDecorations (inside/outside village decoration), AbandonedCrates; MoreVillageBiomes off; NetherGoldDeposits (nether, skip) | TODO |
 | **Waystones** | waystones in villages (1.0) and anywhere (10/10000 per chunk), mossy | TODO |
 | Realistic Torches | generateLitTorches=false: torches in generated chunks become unlit torches | TODO (small) |

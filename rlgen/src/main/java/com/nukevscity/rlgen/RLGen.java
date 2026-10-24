@@ -96,6 +96,20 @@ public final class RLGen {
                .pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)));
       }
    }
+   /** Coral Reef 2.5: reef rock and six corals (light 15, underwater). */
+   public static final DeferredBlock<com.nukevscity.rlgen.coral.ReefBlock> REEF = BLOCKS.registerBlock("reef", com.nukevscity.rlgen.coral.ReefBlock::new,
+      BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PINK).requiresCorrectToolForDrops().strength(1.5F, 10.0F).sound(SoundType.STONE));
+   public static final DeferredBlock<com.nukevscity.rlgen.coral.ReefBlock> REEF_ROCK = BLOCKS.registerBlock("reef_rock", com.nukevscity.rlgen.coral.ReefBlock::new,
+      BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PINK).requiresCorrectToolForDrops().strength(1.5F, 10.0F).sound(SoundType.STONE));
+   public static final java.util.List<DeferredBlock<com.nukevscity.rlgen.coral.CoralBlock>> CORALS = new java.util.ArrayList<>();
+   static {
+      for (int i = 0; i < 6; i++) {
+         boolean high = i > 3;
+         CORALS.add(BLOCKS.registerBlock("coral_" + (i + 1), p -> new com.nukevscity.rlgen.coral.CoralBlock(p, high),
+            BlockBehaviour.Properties.of().mapColor(MapColor.WATER).noCollission().instabreak().sound(SoundType.WET_GRASS).lightLevel(s -> 15)
+               .noOcclusion().pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)));
+      }
+   }
    // Quark's Revamp stone gen stones (generation only; their crafting variants are not ported).
    public static final DeferredBlock<Block> MARBLE = stone("marble", MapColor.QUARTZ);
    public static final DeferredBlock<Block> LIMESTONE = stone("limestone", MapColor.STONE);
@@ -163,6 +177,9 @@ public final class RLGen {
          ITEMS.registerSimpleBlockItem(b);
       }
       LOOSE_ROCKS.values().forEach(ITEMS::registerSimpleBlockItem);
+      ITEMS.registerSimpleBlockItem(REEF);
+      ITEMS.registerSimpleBlockItem(REEF_ROCK);
+      CORALS.forEach(ITEMS::registerSimpleBlockItem);
    }
 
    private static DeferredBlock<LegacyPlantBlock> plant(String name, java.util.function.Predicate<net.minecraft.world.level.block.state.BlockState> soil,

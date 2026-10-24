@@ -6,6 +6,8 @@
     "rlgen:marble",
     "rlgen:limestone",
     "rlgen:jasper",
-    "rlgen:slate"
+    "rlgen:slate",
+    "rlgen:reef",
+    "rlgen:reef_rock"
   ]
 }

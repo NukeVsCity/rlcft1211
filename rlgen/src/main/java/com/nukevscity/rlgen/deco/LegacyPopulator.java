@@ -298,7 +298,8 @@ public final class LegacyPopulator {
       }
       d.post(w, r, pos);
       freeze(w, pos.offset(8, 0, 8));
-      // IWorldGenerators that ran after populate, by weight (No Tree Punching 3, Quark fairy rings 5)
+      // IWorldGenerators that ran after populate, by weight (Coral Reef 1, No Tree Punching 3, Quark fairy rings 5)
+      com.nukevscity.rlgen.coral.CoralReefs.generate(w, cp);
       com.nukevscity.rlgen.ntp.LooseRocks.generate(w, cp);
       com.nukevscity.rlgen.quark.FairyRings.generate(w, cp);
    }
