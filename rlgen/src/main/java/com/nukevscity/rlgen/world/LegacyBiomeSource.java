@@ -58,6 +58,10 @@ public final class LegacyBiomeSource extends BiomeSource {
       }
    }
 
+   public boolean isRLCraft() {
+      return !"vanilla".equals(this.listsName);
+   }
+
    public BiomeLists createLists() {
       return "vanilla".equals(this.listsName) ? BiomeLists.vanilla() : BiomeLists.rlcraft();
    }

@@ -23,7 +23,7 @@ Status: DONE = ported; PART = partly ported; TODO = to port; SKIP = deliberately
 | Mod | What | Status |
 |---|---|---|
 | Vanilla 1.12 ChunkGeneratorOverworld | noise terrain | DONE |
-| **Better Caves 2.0.4** | replaces vanilla caves + ravines (InitMapGenEvent): type 1/2 caves, surface caves, vanilla caves (density 14), caverns, water regions, flattened bedrock off. Config bettercaves-1_12_2.cfg | TODO (high) |
+| **Better Caves 2.0.4** | replaces vanilla caves + ravines (InitMapGenEvent): type 1/2 caves, surface caves, vanilla caves (density 14), caverns, water regions, flattened bedrock off. Config bettercaves-1_12_2.cfg | DONE: original source (tag v1.12.2-2.0.4) in `com.yungnickyoung.minecraft.bettercaves`, MC types swapped for `mc/` stand-ins, RLCraft values in `config/RLCraftConfig` |
 | Better Mineshafts | replaces mineshafts | TODO |
 
 ## Decoration / per-chunk generators (visible)

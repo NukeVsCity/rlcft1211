@@ -32,8 +32,8 @@ public final class LegacyGenerator implements LegacyWorld {
    private final float[] biomeWeights;
    private final ChunkGeneratorSettings settings = new ChunkGeneratorSettings();
    private double[] depthBuffer = new double[256];
-   private final MapGenBase caveGenerator = new MapGenCaves();
-   private final MapGenBase ravineGenerator = new MapGenRavine();
+   private MapGenBase caveGenerator = new MapGenCaves();
+   private MapGenBase ravineGenerator = new MapGenRavine();
    private final LegacyBiomeProvider biomeProvider;
    private Biome[] biomesForGeneration;
    double[] mainNoiseRegion;
@@ -62,6 +62,13 @@ public final class LegacyGenerator implements LegacyWorld {
             this.biomeWeights[j + 2 + (k + 2) * 5] = f;
          }
       }
+   }
+
+   /** RLCraft: Better Caves replaced the cave and ravine MapGens (InitMapGenEvent CAVE / RAVINE). */
+   public LegacyGenerator withBetterCaves() {
+      this.caveGenerator = new com.yungnickyoung.minecraft.bettercaves.world.MapGenBetterCaves();
+      this.ravineGenerator = new com.yungnickyoung.minecraft.bettercaves.world.ravine.MapGenBetterRavine();
+      return this;
    }
 
    @Override

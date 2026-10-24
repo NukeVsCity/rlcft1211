@@ -42,7 +42,9 @@ public enum LBlock {
    DEFILED_GRASS(null, "rlgen:grass_defiled"),
    DEFILED_DIRT(null, "rlgen:dirt_defiled"),
    DEFILED_SAND(null, "rlgen:sand_defiled"),
-   DEFILED_STONE(null, "rlgen:stone_defiled");
+   DEFILED_STONE(null, "rlgen:stone_defiled"),
+   // Better Caves puts andesite (a stone variant) under gravel it would leave floating
+   ANDESITE(STONE, "minecraft:andesite");
 
    private static final LBlock[] VALUES = values();
 

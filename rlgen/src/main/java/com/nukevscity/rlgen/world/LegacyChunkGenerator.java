@@ -110,6 +110,9 @@ public final class LegacyChunkGenerator extends ChunkGenerator {
       LegacyGenerator g = this.legacy;
       if (g == null || g.getSeed() != seed) {
          g = new LegacyGenerator(seed, this.legacySource.createLists());
+         if (this.legacySource.isRLCraft()) {
+            g.withBetterCaves();
+         }
          synchronized (LegacyGenerator.LOCK) {
             this.cache.clear();
          }
