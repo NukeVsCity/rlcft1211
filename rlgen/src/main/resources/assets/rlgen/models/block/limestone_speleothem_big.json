@@ -1,0 +1,6 @@
+{
+  "parent": "rlgen:block/speleothem_big",
+  "textures": {
+    "block": "rlgen:block/limestone"
+  }
+}

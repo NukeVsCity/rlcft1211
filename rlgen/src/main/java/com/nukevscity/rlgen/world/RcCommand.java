@@ -75,7 +75,7 @@ public final class RcCommand {
          source.sendFailure(Component.literal("Not an RLCraft Legacy world"));
          return 0;
       }
-      java.util.List<String> found = com.nukevscity.rlgen.iaf.IafGen.find(gen, source.getLevel().getSeed(), new net.minecraft.world.level.ChunkPos(BlockPos.containing(source.getPosition())), radius);
+      java.util.List<String> found = com.nukevscity.rlgen.iaf.IafGen.find(gen, source.getLevel(), source.getLevel().getSeed(), new net.minecraft.world.level.ChunkPos(BlockPos.containing(source.getPosition())), radius);
       for (String f : found) {
          com.mojang.logging.LogUtils.getLogger().info("rlgen iaf: {}", f);
          source.sendSuccess(() -> Component.literal(f), false);

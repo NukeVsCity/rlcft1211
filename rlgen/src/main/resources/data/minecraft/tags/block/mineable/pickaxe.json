@@ -17,6 +17,19 @@
     "rlgen:frozen_gravel",
     "rlgen:frozen_splinters",
     "rlgen:silver_ore",
-    "rlgen:sapphire_ore"
+    "rlgen:sapphire_ore",
+    "rlgen:stone_speleothem",
+    "rlgen:granite_speleothem",
+    "rlgen:diorite_speleothem",
+    "rlgen:andesite_speleothem",
+    "rlgen:marble_speleothem",
+    "rlgen:limestone_speleothem",
+    "rlgen:jasper_speleothem",
+    "rlgen:slate_speleothem",
+    "rlgen:monster_box",
+    "rlgen:fire_stone",
+    "rlgen:icy_stone",
+    "rlgen:cobbed_stone",
+    "rlgen:elder_prismarine"
   ]
 }

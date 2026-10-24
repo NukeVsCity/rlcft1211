@@ -53,7 +53,9 @@ for b in t["blocks"]:
     name, props = pal[int(b["state"])]
     nb = Compound({"pos": b["pos"]})
     nbt = b.get("nbt")
-    if nbt is not None and str(nbt.get("id")) == "minecraft:skull":
+    if nbt is not None and str(nbt.get("id")) == "Structure":  # pre-1.11 block entity ids
+        nbt["id"] = String("minecraft:structure_block")
+    if nbt is not None and str(nbt.get("id")) in ("minecraft:skull", "Skull"):
         kind = SKULLS[int(nbt.get("SkullType", 0))]
         wall = "wall" in name
         base = "skull" if kind in ("skeleton", "wither_skeleton") else "head"

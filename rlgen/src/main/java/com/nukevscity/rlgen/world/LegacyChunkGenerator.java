@@ -148,6 +148,15 @@ public final class LegacyChunkGenerator extends ChunkGenerator {
       return state(this.chunk(pos.getX() >> 4, pos.getZ() >> 4).primer.getBlockState(pos.getX() & 15, y, pos.getZ() & 15));
    }
 
+   /** True where the 1.12 terrain had bedrock (Y 0..4; the 1.21 world has stone there). */
+   public boolean legacyBedrock(BlockPos pos) {
+      int y = pos.getY();
+      if (y < 0 || y > 4) {
+         return false;
+      }
+      return this.chunk(pos.getX() >> 4, pos.getZ() >> 4).primer.getBlockState(pos.getX() & 15, y, pos.getZ() & 15) == LBlock.BEDROCK;
+   }
+
    public com.nukevscity.rlgen.legacy.biome.Biome legacyBiome(int x, int z) {
       synchronized (LegacyGenerator.LOCK) {
          return this.legacy.getBiome(x, z);

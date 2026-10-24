@@ -1,0 +1,6 @@
+{
+  "parent": "rlgen:block/speleothem_medium",
+  "textures": {
+    "block": "rlgen:block/slate"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "size=small": {
+      "model": "rlgen:block/granite_speleothem_small"
+    },
+    "size=medium": {
+      "model": "rlgen:block/granite_speleothem_medium"
+    },
+    "size=big": {
+      "model": "rlgen:block/granite_speleothem_big"
+    }
+  }
+}

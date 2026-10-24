@@ -29,6 +29,8 @@ final class IafWorld {
    static final byte TEMPLATE = 6;
    /** An Ice and Fire village (extra = IafVillage) built inside its box. */
    static final byte VILLAGE = 7;
+   /** A block whose block entity is then filled (extra = Consumer of the block entity). */
+   static final byte BLOCK_ENTITY = 8;
 
    record Op(int x, int y, int z, byte kind, BlockState state, String loot, long lootSeed, Object extra) {
       Op(int x, int y, int z, byte kind, BlockState state, String loot, long lootSeed) {
@@ -110,6 +112,18 @@ final class IafWorld {
 
    void template(BlockPos p, String id, int rotation, int mirror) {
       this.ops.add(new Op(p.getX(), p.getY(), p.getZ(), TEMPLATE, null, id, rotation * 4L + mirror));
+   }
+
+   void blockEntity(BlockPos p, BlockState s, java.util.function.Consumer<net.minecraft.world.level.block.entity.BlockEntity> fill) {
+      if (p.getY() >= 0 && p.getY() <= 255) {
+         this.put(p, s);
+         this.ops.add(new Op(p.getX(), p.getY(), p.getZ(), BLOCK_ENTITY, s, null, 0L, fill));
+      }
+   }
+
+   /** 1.12 bedrock at Y 0..4 (hardness -1). */
+   boolean bedrock(BlockPos p) {
+      return this.gen.legacyBedrock(p);
    }
 
    void village(BlockPos center, Object village) {

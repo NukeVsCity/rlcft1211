@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "size=small": {
+      "model": "rlgen:block/marble_speleothem_small"
+    },
+    "size=medium": {
+      "model": "rlgen:block/marble_speleothem_medium"
+    },
+    "size=big": {
+      "model": "rlgen:block/marble_speleothem_big"
+    }
+  }
+}

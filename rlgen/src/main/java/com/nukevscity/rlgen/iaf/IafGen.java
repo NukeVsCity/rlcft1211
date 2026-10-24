@@ -54,7 +54,7 @@ public final class IafGen {
    /** EnumFacing.HORIZONTALS */
    private static final Direction[] HORIZONTALS = {Direction.SOUTH, Direction.WEST, Direction.NORTH, Direction.EAST};
    /** Planned chunks within this many chunks can reach a chunk (a gorgon temple ends up to 47 blocks from the chunk centre). */
-   private static final int REACH = 4;
+   private static final int REACH = 5;
    private static final int HIVE_REACH = 9;
    static final String GORGON_TEMPLE = "rlgen:iceandfire/gorgon_temple";
    /** The gorgon temple template is 32 x 25 x 32. */
@@ -81,7 +81,7 @@ public final class IafGen {
       return new Random(xSeed * (long)cx + zSeed * (long)cz ^ seed);
    }
 
-   private static Plan plan(LegacyChunkGenerator gen, long seed, int cx, int cz) {
+   private static Plan plan(LegacyChunkGenerator gen, net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager templates, long seed, int cx, int cz) {
       String key = seed + "/" + cx + "/" + cz;
       synchronized (PLANS) {
          Plan p = PLANS.get(key);
@@ -93,6 +93,9 @@ public final class IafGen {
       // what Ice and Fire drew from an unseeded new Random(): seeded here so a world always comes out the same
       Random unseeded = new Random(seed ^ ((long)cx * 0x2F0B3A49L + (long)cz * 0x61C88647L) ^ 0x1CEA9DF1L);
       generate(world, chunkRandom(seed, cx, cz), unseeded, cx, cz);
+      // Quark's generators of weight 0 and 1 that reach beyond one decoration step
+      QuarkPlanned.pirateShip(world, templates, chunkRandom(seed, cx, cz), cx, cz);
+      QuarkPlanned.crystalCave(world, chunkRandom(seed, cx, cz), cx, cz);
       Map<Long, List<IafWorld.Op>> byArea = new HashMap<>();
       for (IafWorld.Op op : world.ops) {
          if (op.kind() == IafWorld.TEMPLATE || op.kind() == IafWorld.VILLAGE) {
@@ -129,7 +132,7 @@ public final class IafGen {
             if ((Math.abs(i) > REACH || Math.abs(j) > REACH) && !hiveBiome(gen, cp.x + i, cp.z + j)) {
                continue;
             }
-            List<IafWorld.Op> ops = plan(gen, w.seed(), cp.x + i, cp.z + j).byArea().get(area);
+            List<IafWorld.Op> ops = plan(gen, w.level.getLevel().getStructureManager(), w.seed(), cp.x + i, cp.z + j).byArea().get(area);
             if (ops != null) {
                for (IafWorld.Op op : ops) {
                   apply(w, op, shaped, cp);
@@ -183,7 +186,8 @@ public final class IafGen {
                   new net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings()
                      .setRotation(net.minecraft.world.level.block.Rotation.values()[(int)(op.lootSeed() >> 2)])
                      .setMirror(net.minecraft.world.level.block.Mirror.values()[(int)(op.lootSeed() & 3)])
-                     .setBoundingBox(new net.minecraft.world.level.levelgen.structure.BoundingBox(x0, 0, z0, x0 + 15, 255, z0 + 15));
+                     .setBoundingBox(new net.minecraft.world.level.levelgen.structure.BoundingBox(x0, 0, z0, x0 + 15, 255, z0 + 15))
+                     .addProcessor(net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor.STRUCTURE_BLOCK);
                t.placeInWorld(w.level, p, p, settings, w.level.getRandom(), 2);
             });
          }
@@ -191,6 +195,15 @@ public final class IafGen {
             int x0 = cp.getMinBlockX();
             int z0 = cp.getMinBlockZ();
             ((IafVillage)op.extra()).build(w.level, new net.minecraft.world.level.levelgen.structure.BoundingBox(x0, 0, z0, x0 + 15, 255, z0 + 15));
+         }
+         case IafWorld.BLOCK_ENTITY -> {
+            w.set(p, op.state());
+            BlockEntity be = w.level.getBlockEntity(p);
+            if (be != null && w.get(p).is(op.state().getBlock())) {
+               @SuppressWarnings("unchecked")
+               java.util.function.Consumer<BlockEntity> fill = (java.util.function.Consumer<BlockEntity>)op.extra();
+               fill.accept(be);
+            }
          }
          case IafWorld.LILY -> {
             BlockPos surface = w.height(p);
@@ -204,11 +217,11 @@ public final class IafGen {
    }
 
    /** /rlgen iaf: what Ice and Fire generates in the chunks around a position. */
-   public static List<String> find(LegacyChunkGenerator gen, long seed, ChunkPos center, int radius) {
+   public static List<String> find(LegacyChunkGenerator gen, net.minecraft.server.level.ServerLevel level, long seed, ChunkPos center, int radius) {
       List<String> out = new ArrayList<>();
       for (int i = -radius; i <= radius; i++) {
          for (int j = -radius; j <= radius; j++) {
-            out.addAll(plan(gen, seed, center.x + i, center.z + j).found());
+            out.addAll(plan(gen, level.getStructureManager(), seed, center.x + i, center.z + j).found());
          }
       }
       return out;

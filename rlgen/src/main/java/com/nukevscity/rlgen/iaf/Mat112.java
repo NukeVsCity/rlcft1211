@@ -12,10 +12,10 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 
 /** The 1.12 Material of a 1.21 block state, as far as Ice and Fire's generators test it. */
-enum Mat112 {
+public enum Mat112 {
    AIR, GRASS, GROUND, SAND, ROCK, WOOD, LEAVES, PLANTS, VINE, WATER, LAVA, SNOW, CRAFTED_SNOW, ICE, PACKED_ICE, OTHER;
 
-   static Mat112 of(BlockState s) {
+   public static Mat112 of(BlockState s) {
       if (s.isAir()) {
          return AIR;
       }
@@ -78,33 +78,33 @@ enum Mat112 {
       return OTHER;
    }
 
-   static float hardness(BlockState s) {
+   public static float hardness(BlockState s) {
       return s.getDestroySpeed(EmptyBlockGetter.INSTANCE, BlockPos.ZERO);
    }
 
    /** Block.isOpaqueCube */
-   static boolean opaqueCube(BlockState s) {
+   public static boolean opaqueCube(BlockState s) {
       return s.canOcclude() && s.isCollisionShapeFullBlock(EmptyBlockGetter.INSTANCE, BlockPos.ZERO);
    }
 
    /** World.isBlockFullCube: a full collision box. */
-   static boolean fullCube(BlockState s) {
+   public static boolean fullCube(BlockState s) {
       return s.isCollisionShapeFullBlock(EmptyBlockGetter.INSTANCE, BlockPos.ZERO);
    }
 
    /** BlockDirt (dirt, coarse dirt, podzol) */
-   static boolean dirt(BlockState s) {
+   public static boolean dirt(BlockState s) {
       return s.is(Blocks.DIRT) || s.is(Blocks.COARSE_DIRT) || s.is(Blocks.PODZOL);
    }
 
    /** WorldGenMinable's StonePredicate / BlockMatcher.forBlock(STONE): stone and its 1.12 variants. */
-   static boolean stone(BlockState s) {
+   public static boolean stone(BlockState s) {
       return s.is(Blocks.STONE) || s.is(Blocks.GRANITE) || s.is(Blocks.DIORITE) || s.is(Blocks.ANDESITE) || s.is(Blocks.POLISHED_GRANITE)
          || s.is(Blocks.POLISHED_DIORITE) || s.is(Blocks.POLISHED_ANDESITE);
    }
 
    /** WorldGenFireDragonRoosts.burnGround for one block, or null when it stays. */
-   static BlockState burn(BlockState s) {
+   public static BlockState burn(BlockState s) {
       if (hardness(s) == -1.0F) {
          return null;
       }
@@ -132,7 +132,7 @@ enum Mat112 {
    }
 
    /** WorldGenIceDragonRoosts.burnGround (freezing) for one block, or null when it stays. */
-   static BlockState freeze(BlockState s, boolean sky) {
+   public static BlockState freeze(BlockState s, boolean sky) {
       if (hardness(s) == -1.0F) {
          return null;
       }
@@ -164,7 +164,7 @@ enum Mat112 {
    }
 
    /** getTranslationKey().contains("chared") / ("frozen") */
-   static boolean charred(BlockState s, boolean fire) {
+   public static boolean charred(BlockState s, boolean fire) {
       if (fire) {
          return s.is(RLGen.CHARED_DIRT.get()) || s.is(RLGen.CHARED_GRASS.get()) || s.is(RLGen.CHARED_STONE.get()) || s.is(RLGen.CHARED_COBBLESTONE.get())
             || s.is(RLGen.CHARED_GRAVEL.get()) || s.is(RLGen.CHARED_GRASS_PATH.get());

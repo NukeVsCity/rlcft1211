@@ -173,6 +173,45 @@ public final class RLGen {
    public static final DeferredHolder<net.minecraft.world.level.block.entity.BlockEntityType<?>, net.minecraft.world.level.block.entity.BlockEntityType<com.nukevscity.rlgen.iaf.CocoonBlockEntity>> COCOON_BE =
       BLOCK_ENTITIES.register("myrmex_cocoon", () -> net.minecraft.world.level.block.entity.BlockEntityType.Builder.of(
          com.nukevscity.rlgen.iaf.CocoonBlockEntity::new, DESERT_MYRMEX_COCOON.get(), JUNGLE_MYRMEX_COCOON.get()).build(null));
+   // Quark r1.6 world-gen blocks (crystal caves, speleothems, cave roots, monster boxes, underground biomes, blossom trees)
+   public static final java.util.List<DeferredBlock<net.minecraft.world.level.block.HalfTransparentBlock>> CRYSTALS = new java.util.ArrayList<>();
+   static {
+      for (String c : new String[]{"white", "red", "orange", "yellow", "green", "blue", "indigo", "violet", "black"}) {
+         CRYSTALS.add(BLOCKS.registerBlock("crystal_" + c, net.minecraft.world.level.block.HalfTransparentBlock::new,
+            BlockBehaviour.Properties.of().strength(0.3F).sound(SoundType.GLASS).lightLevel(s -> 11).noOcclusion()
+               .isViewBlocking((s, l, p) -> false).isSuffocating((s, l, p) -> false)));
+      }
+   }
+   public static final java.util.Map<String, DeferredBlock<com.nukevscity.rlgen.quark.SpeleothemBlock>> SPELEOTHEMS = new java.util.LinkedHashMap<>();
+   static {
+      for (String s : new String[]{"stone", "granite", "diorite", "andesite", "marble", "limestone", "jasper", "slate"}) {
+         SPELEOTHEMS.put(s, BLOCKS.registerBlock(s + "_speleothem", com.nukevscity.rlgen.quark.SpeleothemBlock::new,
+            BlockBehaviour.Properties.of().mapColor(MapColor.STONE).requiresCorrectToolForDrops().strength(1.5F).sound(SoundType.STONE).noOcclusion()));
+      }
+   }
+   private static BlockBehaviour.Properties roots() {
+      return BlockBehaviour.Properties.ofFullCopy(Blocks.VINE).mapColor(MapColor.DIRT);
+   }
+   public static final DeferredBlock<com.nukevscity.rlgen.quark.RootsBlock> ROOTS = BLOCKS.registerBlock("roots", com.nukevscity.rlgen.quark.RootsBlock::new, roots());
+   public static final DeferredBlock<com.nukevscity.rlgen.quark.RootsBlock> ROOTS_BLUE_FLOWER = BLOCKS.registerBlock("roots_blue_flower",
+      com.nukevscity.rlgen.quark.RootsBlock::new, roots());
+   public static final DeferredBlock<com.nukevscity.rlgen.quark.RootsBlock> ROOTS_BLACK_FLOWER = BLOCKS.registerBlock("roots_black_flower",
+      com.nukevscity.rlgen.quark.RootsBlock::new, roots());
+   public static final DeferredBlock<com.nukevscity.rlgen.quark.RootsBlock> ROOTS_WHITE_FLOWER = BLOCKS.registerBlock("roots_white_flower",
+      com.nukevscity.rlgen.quark.RootsBlock::new, roots());
+   public static final DeferredBlock<Block> MONSTER_BOX = BLOCKS.registerSimpleBlock("monster_box",
+      BlockBehaviour.Properties.of().mapColor(MapColor.METAL).requiresCorrectToolForDrops().strength(25.0F, 1200.0F).sound(SoundType.METAL).noOcclusion());
+   public static final DeferredBlock<Block> FIRE_STONE = stone("fire_stone", MapColor.COLOR_RED);
+   public static final DeferredBlock<Block> ICY_STONE = stone("icy_stone", MapColor.ICE);
+   public static final DeferredBlock<Block> COBBED_STONE = stone("cobbed_stone", MapColor.STONE);
+   public static final DeferredBlock<Block> ELDER_PRISMARINE = stone("elder_prismarine", MapColor.COLOR_LIGHT_GRAY);
+   public static final DeferredBlock<Block> ELDER_SEA_LANTERN = BLOCKS.registerSimpleBlock("elder_sea_lantern",
+      BlockBehaviour.Properties.ofFullCopy(Blocks.SEA_LANTERN));
+   public static final DeferredBlock<Block> GLOWCELIUM = BLOCKS.registerSimpleBlock("glowcelium",
+      BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_LIGHT_BLUE).strength(0.2F).sound(SoundType.GRASS).lightLevel(s -> 7));
+   public static final DeferredBlock<com.nukevscity.rlgen.quark.GlowshroomBlock> GLOWSHROOM = BLOCKS.registerBlock("glowshroom",
+      com.nukevscity.rlgen.quark.GlowshroomBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_MUSHROOM).lightLevel(s -> 14));
+   public static final DeferredBlock<LeavesBlock> SAKURA_LEAVES = leaves("sakura_leaves");
    // Quark's Revamp stone gen stones (generation only; their crafting variants are not ported).
    public static final DeferredBlock<Block> MARBLE = stone("marble", MapColor.QUARTZ);
    public static final DeferredBlock<Block> LIMESTONE = stone("limestone", MapColor.STONE);
@@ -240,13 +279,17 @@ public final class RLGen {
          ASH, CHARED_DIRT, CHARED_GRASS, CHARED_STONE, CHARED_COBBLESTONE, CHARED_GRAVEL, CHARED_GRASS_PATH, FROZEN_DIRT, FROZEN_GRASS, FROZEN_STONE,
          FROZEN_COBBLESTONE, FROZEN_GRAVEL, FROZEN_GRASS_PATH, FROZEN_SPLINTERS, GOLD_PILE, SILVER_PILE, SILVER_ORE, SAPPHIRE_ORE, FIRE_LILY, FROST_LILY,
          DESERT_MYRMEX_RESIN, JUNGLE_MYRMEX_RESIN, DESERT_MYRMEX_RESIN_STICKY, JUNGLE_MYRMEX_RESIN_STICKY, MYRMEX_DESERT_BIOLIGHT, MYRMEX_JUNGLE_BIOLIGHT,
-         DESERT_MYRMEX_COCOON, JUNGLE_MYRMEX_COCOON, PIXIE_HOUSE}) {
+         DESERT_MYRMEX_COCOON, JUNGLE_MYRMEX_COCOON, PIXIE_HOUSE,
+         ROOTS, ROOTS_BLUE_FLOWER, ROOTS_BLACK_FLOWER, ROOTS_WHITE_FLOWER, MONSTER_BOX, FIRE_STONE, ICY_STONE, COBBED_STONE, ELDER_PRISMARINE, ELDER_SEA_LANTERN,
+         GLOWCELIUM, GLOWSHROOM, SAKURA_LEAVES}) {
          ITEMS.registerSimpleBlockItem(b);
       }
       LOOSE_ROCKS.values().forEach(ITEMS::registerSimpleBlockItem);
       ITEMS.registerSimpleBlockItem(REEF);
       ITEMS.registerSimpleBlockItem(REEF_ROCK);
       CORALS.forEach(ITEMS::registerSimpleBlockItem);
+      CRYSTALS.forEach(ITEMS::registerSimpleBlockItem);
+      SPELEOTHEMS.values().forEach(ITEMS::registerSimpleBlockItem);
    }
 
    private static DeferredBlock<LegacyPlantBlock> plant(String name, java.util.function.Predicate<net.minecraft.world.level.block.state.BlockState> soil,

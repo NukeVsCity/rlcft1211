@@ -81,6 +81,8 @@ public final class LegacyPopulator {
             Gen.lake(w, rand, pos.offset(k2, j3, i4), true);
          }
       }
+      // PopulateChunkEvent DUNGEON: Quark's varied dungeons draw from the populate random first
+      com.nukevscity.rlgen.quark.QuarkGen.variedDungeons(w, rand, pos, cp.x, cp.z);
       for (int l2 = 0; l2 < 8; l2++) {
          int k3 = rand.nextInt(16) + 8;
          int j4 = rand.nextInt(256);
@@ -99,6 +101,7 @@ public final class LegacyPopulator {
       d.pre(w, r, pos, c);
       // generateOres (ChunkGeneratorSettings defaults); Quark's revamped stones ran from the DIRT ore event
       com.nukevscity.rlgen.quark.RevampStoneGen.generate(w, cp);
+      com.nukevscity.rlgen.quark.UndergroundBiomes.generate(w, cp.x, cp.z);
       ore(w, r, pos, 10, Blocks.DIRT.defaultBlockState(), 33, 0, 256);
       ore(w, r, pos, 8, Blocks.GRAVEL.defaultBlockState(), 33, 0, 256);
       ore(w, r, pos, GRANITE_DIORITE_ANDESITE, Blocks.DIORITE.defaultBlockState(), 33, 0, 80);
@@ -298,11 +301,18 @@ public final class LegacyPopulator {
       }
       d.post(w, r, pos);
       freeze(w, pos.offset(8, 0, 8));
-      // IWorldGenerators that ran after populate, by weight (Ice and Fire 0, Coral Reef 1, No Tree Punching 3, Quark fairy rings 5)
+      // IWorldGenerators that ran after populate, by weight: Ice and Fire 0 (with Quark's pirate ships 0 and crystal caves 1, planned),
+      // Quark clay and blossom trees 0, Coral Reef 1, No Tree Punching 3, Quark fairy rings 5, monster boxes 200, speleothems 1000,
+      // cave roots 2000, archaeologist houses 3000
       com.nukevscity.rlgen.iaf.IafGen.apply(w, cp);
+      com.nukevscity.rlgen.quark.QuarkGen.weight0(w, cp.x, cp.z);
       com.nukevscity.rlgen.coral.CoralReefs.generate(w, cp);
       com.nukevscity.rlgen.ntp.LooseRocks.generate(w, cp);
       com.nukevscity.rlgen.quark.FairyRings.generate(w, cp);
+      com.nukevscity.rlgen.quark.QuarkGen.monsterBoxes(w, cp.x, cp.z);
+      com.nukevscity.rlgen.quark.QuarkGen.speleothems(w, cp.x, cp.z);
+      com.nukevscity.rlgen.quark.QuarkGen.caveRoots(w, cp.x, cp.z);
+      com.nukevscity.rlgen.quark.QuarkGen.archaeologist(w, cp.x, cp.z);
    }
 
    /** The populate snow/ice pass over the decorated 16x16 (offset by 8, like population). */

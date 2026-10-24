@@ -32,7 +32,8 @@ Status: DONE = ported; PART = partly ported; TODO = to port; SKIP = deliberately
 | Vanilla BiomeDecorator + Traverse/Defiled decorate | | DONE |
 | Dynamic Trees (+ Traverse, Defiled add-ons) | trees | DONE |
 | Quark | revamp stone, fairy rings, swamp mushrooms | DONE |
-| Quark | underground biomes, crystal caves, speleothems, cave roots, monster boxes, clay, varied dungeons, pirate ships, buried treasure | TODO |
+| Quark | underground biomes (9, DIRT ore event), varied dungeons (DUNGEON populate event, populate random), clay, blossom trees, monster boxes, speleothems, cave roots, archaeologist houses (IWorldGenerators by weight); crystal caves and pirate ships planned with Ice and Fire's | DONE (`quark/`, `iaf/QuarkPlanned`); monster boxes don't spawn mobs yet, pirates/archaeologist not spawned |
+| Quark | buried treasure (treasure maps in loot, chest made when a player holds the map) | SKIP (gameplay, not world gen) |
 | **No Tree Punching** | loose rocks on the ground everywhere (WorldGenRocks, frequency 8, Quark marble/limestone rocks) | DONE (`ntp/`, rlgen:loose_rock_*) |
 | **Rustic** | herbs 0.04 (x8, surface + cave), wildberries 0.04 (x4); slate and beehives off; olive (0.02) / ironwood (0.01) are Dynamic Trees species spliced into the DT populator (weights 10 and 5 per 1000) | TODO (low: rare) |
 | **Snow! Real Magic!** | ReplaceSnowWorldGen: snow layers inside grass/flowers in snowy biomes | TODO |

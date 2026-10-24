@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "size=small": {
+      "model": "rlgen:block/andesite_speleothem_small"
+    },
+    "size=medium": {
+      "model": "rlgen:block/andesite_speleothem_medium"
+    },
+    "size=big": {
+      "model": "rlgen:block/andesite_speleothem_big"
+    }
+  }
+}
