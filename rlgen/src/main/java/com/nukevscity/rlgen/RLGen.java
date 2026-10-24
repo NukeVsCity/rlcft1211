@@ -87,6 +87,15 @@ public final class RLGen {
    // Traverse and Defiled Lands terrain blocks (plain blocks for now; the mods' behaviour comes later).
    public static final DeferredBlock<Block> RED_ROCK = stone("red_rock", MapColor.COLOR_ORANGE);
    public static final DeferredBlock<Block> BLUE_ROCK = stone("blue_rock", MapColor.COLOR_LIGHT_BLUE);
+   /** No Tree Punching loose rocks, by stone (andesite... limestone as Quark compat was on in RLCraft). */
+   public static final java.util.Map<String, DeferredBlock<com.nukevscity.rlgen.ntp.LooseRockBlock>> LOOSE_ROCKS = new java.util.LinkedHashMap<>();
+   static {
+      for (String s : new String[]{"stone", "andesite", "granite", "diorite", "sandstone", "red_sandstone", "marble", "limestone"}) {
+         LOOSE_ROCKS.put(s, BLOCKS.registerBlock("loose_rock_" + s, com.nukevscity.rlgen.ntp.LooseRockBlock::new,
+            BlockBehaviour.Properties.of().mapColor(MapColor.STONE).noCollission().instabreak().sound(SoundType.STONE).noOcclusion()
+               .pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)));
+      }
+   }
    // Quark's Revamp stone gen stones (generation only; their crafting variants are not ported).
    public static final DeferredBlock<Block> MARBLE = stone("marble", MapColor.QUARTZ);
    public static final DeferredBlock<Block> LIMESTONE = stone("limestone", MapColor.STONE);
@@ -153,6 +162,7 @@ public final class RLGen {
          HEPHAESTITE_ORE, UMBRIUM_ORE, SCARLITE_ORE, MARBLE, LIMESTONE, JASPER, SLATE, BLUE_ROCK_COBBLESTONE, CONJURING_ALTAR, DEAD_GRASS, COLD_GRASS, BLASTEM, SCURONOTTE, VILESPINE}) {
          ITEMS.registerSimpleBlockItem(b);
       }
+      LOOSE_ROCKS.values().forEach(ITEMS::registerSimpleBlockItem);
    }
 
    private static DeferredBlock<LegacyPlantBlock> plant(String name, java.util.function.Predicate<net.minecraft.world.level.block.state.BlockState> soil,

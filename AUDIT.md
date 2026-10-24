@@ -33,8 +33,8 @@ Status: DONE = ported; PART = partly ported; TODO = to port; SKIP = deliberately
 | Dynamic Trees (+ Traverse, Defiled add-ons) | trees | DONE |
 | Quark | revamp stone, fairy rings, swamp mushrooms | DONE |
 | Quark | underground biomes, crystal caves, speleothems, cave roots, monster boxes, clay, varied dungeons, pirate ships, buried treasure | TODO |
-| **No Tree Punching** | loose rocks on the ground everywhere (WorldGenRocks) | TODO |
-| **Rustic** | olive trees 0.02, ironwood 0.01, herbs 0.04 (x8), wildberries 0.04 (x4); beehives off | TODO |
+| **No Tree Punching** | loose rocks on the ground everywhere (WorldGenRocks, frequency 8, Quark marble/limestone rocks) | DONE (`ntp/`, rlgen:loose_rock_*) |
+| **Rustic** | herbs 0.04 (x8, surface + cave), wildberries 0.04 (x4); slate and beehives off; olive (0.02) / ironwood (0.01) are Dynamic Trees species spliced into the DT populator (weights 10 and 5 per 1000) | TODO (low: rare) |
 | **Snow! Real Magic!** | ReplaceSnowWorldGen: snow layers inside grass/flowers in snowy biomes | TODO |
 | **Coral Reef** | coral reefs and rocks in oceans | TODO |
 | **Charm** | VillageDecorations (inside/outside village decoration), AbandonedCrates; MoreVillageBiomes off; NetherGoldDeposits (nether, skip) | TODO |
