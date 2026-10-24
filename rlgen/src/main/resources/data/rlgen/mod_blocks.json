@@ -1,0 +1,272 @@
+[
+  {
+    "name": "nether_brick_tile_large",
+    "type": "cube",
+    "like": "nether_bricks",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "nether_brick_tile_small",
+    "type": "cube",
+    "like": "nether_bricks",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "nether_brick_tile_stairs",
+    "type": "stairs",
+    "like": "nether_brick_stairs",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "nether_brick_tile_slab",
+    "type": "slab",
+    "like": "nether_brick_slab",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "bone_tile",
+    "type": "cube",
+    "like": "bone_block",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "bone_wall",
+    "type": "wall",
+    "like": "cobblestone_wall",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "bone_stairs",
+    "type": "stairs",
+    "like": "stone_brick_stairs",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "bone_slab",
+    "type": "slab",
+    "like": "stone_brick_slab",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "reeds_block",
+    "type": "pillar",
+    "like": "bamboo_block",
+    "tool": "axe"
+  },
+  {
+    "name": "reeds_stairs",
+    "type": "stairs",
+    "like": "bamboo_stairs",
+    "tool": "axe"
+  },
+  {
+    "name": "reeds_fence",
+    "type": "fence",
+    "like": "bamboo_fence",
+    "tool": "axe"
+  },
+  {
+    "name": "reeds_ladder",
+    "type": "ladder",
+    "like": "ladder",
+    "tool": "axe"
+  },
+  {
+    "name": "stalagnate_planks",
+    "type": "cube",
+    "like": "oak_planks",
+    "tool": "axe"
+  },
+  {
+    "name": "stalagnate_bark",
+    "type": "pillar",
+    "like": "oak_wood",
+    "tool": "axe"
+  },
+  {
+    "name": "cincinnasite_forged",
+    "type": "cube",
+    "like": "gold_block",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "cincinnasite_stairs",
+    "type": "stairs",
+    "like": "sandstone_stairs",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "cincinnasite_pillar",
+    "type": "pillar",
+    "like": "quartz_pillar",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "cincinnasite_tile_small",
+    "type": "cube",
+    "like": "sandstone",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "cincinnasite_wall",
+    "type": "wall",
+    "like": "sandstone_wall",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "cincinnasite_slab",
+    "type": "slab",
+    "like": "sandstone_slab",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "cincinnasite_lantern",
+    "type": "cube",
+    "like": "glowstone",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "cincinnasite_pedestal",
+    "type": "cube",
+    "like": "chiseled_sandstone",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "quartz_glass_framed_pane",
+    "type": "pane",
+    "like": "glass_pane",
+    "tool": ""
+  },
+  {
+    "name": "carved_wood_oak",
+    "type": "cube",
+    "like": "oak_planks",
+    "tool": "axe"
+  },
+  {
+    "name": "carved_wood_spruce",
+    "type": "cube",
+    "like": "spruce_planks",
+    "tool": "axe"
+  },
+  {
+    "name": "carved_wood_birch",
+    "type": "cube",
+    "like": "birch_planks",
+    "tool": "axe"
+  },
+  {
+    "name": "carved_wood_jungle",
+    "type": "cube",
+    "like": "jungle_planks",
+    "tool": "axe"
+  },
+  {
+    "name": "carved_wood_acacia",
+    "type": "cube",
+    "like": "acacia_planks",
+    "tool": "axe"
+  },
+  {
+    "name": "carved_wood_dark_oak",
+    "type": "cube",
+    "like": "dark_oak_planks",
+    "tool": "axe"
+  },
+  {
+    "name": "duskbound_block",
+    "type": "cube",
+    "like": "purpur_block",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "duskbound_block_stairs",
+    "type": "stairs",
+    "like": "purpur_stairs",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "duskbound_block_slab",
+    "type": "slab",
+    "like": "purpur_slab",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "duskbound_lantern",
+    "type": "cube",
+    "like": "sea_lantern",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "quilted_wool_purple",
+    "type": "cube",
+    "like": "purple_wool",
+    "tool": ""
+  },
+  {
+    "name": "stained_clay_tiles_blue",
+    "type": "cube",
+    "like": "blue_terracotta",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "marble_smooth",
+    "type": "cube",
+    "like": "polished_diorite",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "marble_bricks",
+    "type": "cube",
+    "like": "stone_bricks",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "marble_bricks_wall",
+    "type": "wall",
+    "like": "stone_brick_wall",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "midori_block",
+    "type": "cube",
+    "like": "lime_terracotta",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "grate",
+    "type": "pane",
+    "like": "iron_bars",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "fir_planks",
+    "type": "cube",
+    "like": "spruce_planks",
+    "tool": "axe"
+  },
+  {
+    "name": "fir_stairs",
+    "type": "stairs",
+    "like": "spruce_stairs",
+    "tool": "axe"
+  },
+  {
+    "name": "blue_rock_slab",
+    "type": "slab",
+    "like": "stone_slab",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "tenebra_planks",
+    "type": "cube",
+    "like": "dark_oak_planks",
+    "tool": "axe"
+  },
+  {
+    "name": "tenebra_stairs",
+    "type": "stairs",
+    "like": "dark_oak_stairs",
+    "tool": "axe"
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "rlgen:block/duskbound_block_slab"
+    },
+    "type=double": {
+      "model": "rlgen:block/duskbound_block_slab_double"
+    },
+    "type=top": {
+      "model": "rlgen:block/duskbound_block_slab_top"
+    }
+  }
+}

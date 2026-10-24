@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "rlgen:block/betternether/stalagnate_bark_side",
+    "side": "rlgen:block/betternether/stalagnate_bark_side"
+  }
+}

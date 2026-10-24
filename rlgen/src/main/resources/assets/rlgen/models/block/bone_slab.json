@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "rlgen:block/betternether/bone_slab_top",
+    "top": "rlgen:block/betternether/bone_slab_top",
+    "side": "rlgen:block/betternether/bone_slab_side"
+  }
+}

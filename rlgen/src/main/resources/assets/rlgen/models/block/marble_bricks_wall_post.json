@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_wall_post",
+  "textures": {
+    "wall": "rlgen:block/quark/stone_marble_bricks"
+  }
+}

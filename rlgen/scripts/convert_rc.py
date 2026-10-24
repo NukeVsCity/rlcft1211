@@ -247,6 +247,74 @@ MOD_BLOCKS = {
     # waystones / bountiful (setblock commands)
     "waystones:waystone": st("lodestone"), "bountiful:bountyboard": st("lectern"),
 }
+
+# Real rlgen blocks for the modded blocks that have one (Ice and Fire / Quark world gen blocks, scripts/gen_mod_blocks.py)
+RLIKE_PROPS = {"stairs": ["facing", "half", "shape"], "slab": ["type"], "ladder": ["facing"], "pillar": ["axis"], "roots": ["north", "east", "south", "west", "up"]}
+def rlike(kind, vanilla_name, target):
+    return ("rlike", kind, vanilla_name, target)
+def rmeta(*targets):
+    return ("rlgen_meta", list(targets))
+QUARK_COLORS_RL = {10: "rlgen:quilted_wool_purple"}
+MOD_BLOCKS.update({
+    "iceandfire:ash": ("rlgen", "rlgen:ash"), "iceandfire:chared_cobblestone": ("rlgen", "rlgen:chared_cobblestone"),
+    "iceandfire:chared_stone": ("rlgen", "rlgen:chared_stone"), "iceandfire:chared_dirt": ("rlgen", "rlgen:chared_dirt"),
+    "iceandfire:chared_grass": ("rlgen", "rlgen:chared_grass"), "iceandfire:chared_gravel": ("rlgen", "rlgen:chared_gravel"),
+    "iceandfire:chared_grass_path": ("rlgen", "rlgen:chared_grass_path"), "iceandfire:frozen_cobblestone": ("rlgen", "rlgen:frozen_cobblestone"),
+    "iceandfire:frozen_stone": ("rlgen", "rlgen:frozen_stone"), "iceandfire:frozen_dirt": ("rlgen", "rlgen:frozen_dirt"),
+    "iceandfire:frozen_grass": ("rlgen", "rlgen:frozen_grass"), "iceandfire:frozen_gravel": ("rlgen", "rlgen:frozen_gravel"),
+    "iceandfire:frozen_grass_path": ("rlgen", "rlgen:frozen_grass_path"), "iceandfire:frozen_splinters": ("rlgen", "rlgen:frozen_splinters"),
+    "iceandfire:goldpile": rmeta(*[f"rlgen:gold_pile[layers={i + 1}]" for i in range(8)]),
+    "iceandfire:silverpile": rmeta(*[f"rlgen:silver_pile[layers={i + 1}]" for i in range(8)]),
+    "iceandfire:silver_ore": ("rlgen", "rlgen:silver_ore"), "iceandfire:sapphire_ore": ("rlgen", "rlgen:sapphire_ore"),
+    "iceandfire:fire_lily": ("rlgen", "rlgen:fire_lily"), "iceandfire:frost_lily": ("rlgen", "rlgen:frost_lily"),
+    "iceandfire:myrmex_resin": rmeta("rlgen:desert_myrmex_resin", "rlgen:jungle_myrmex_resin"),
+    "iceandfire:myrmex_resin_sticky": rmeta("rlgen:desert_myrmex_resin_sticky", "rlgen:jungle_myrmex_resin_sticky"),
+    "iceandfire:pixie_house": ("rlgen", "rlgen:pixie_house"),
+    "quark:crystal": rmeta(*[f"rlgen:crystal_{c}" for c in ["white", "red", "orange", "yellow", "green", "blue", "indigo", "violet", "black"]]),
+    "quark:marble": rmeta("rlgen:marble", "rlgen:marble_smooth"), "quark:limestone": rmeta("rlgen:limestone", "rlgen:limestone"),
+    "quark:jasper": rmeta("rlgen:jasper", "rlgen:jasper"), "quark:slate": rmeta("rlgen:slate", "rlgen:slate"),
+    "quark:biome_cobblestone": rmeta("rlgen:fire_stone", "rlgen:icy_stone", "rlgen:cobbed_stone"),
+    "quark:elder_prismarine": rmeta("rlgen:elder_prismarine", "minecraft:prismarine_bricks", "minecraft:dark_prismarine"),
+    "quark:elder_sea_lantern": ("rlgen", "rlgen:elder_sea_lantern"), "quark:glowcelium": ("rlgen", "rlgen:glowcelium"),
+    "quark:glowshroom": ("rlgen", "rlgen:glowshroom"), "quark:monster_box": ("rlgen", "rlgen:monster_box"),
+    "quark:roots": rlike("roots", "vine", "roots"),
+    "quark:variant_leaves": rmeta("minecraft:oak_leaves[persistent=true]", "rlgen:sakura_leaves[persistent=true]"),
+    "quark:carved_wood": rmeta(*[f"rlgen:carved_wood_{w}" for w in ["oak", "spruce", "birch", "jungle", "acacia", "dark_oak"]]),
+    "quark:duskbound_block": ("rlgen", "rlgen:duskbound_block"), "quark:duskbound_lantern": ("rlgen", "rlgen:duskbound_lantern"),
+    "quark:duskbound_block_stairs": rlike("stairs", "oak_stairs", "duskbound_block_stairs"),
+    "quark:duskbound_block_slab": rlike("slab", "stone_slab", "duskbound_block_slab"),
+    "quark:duskbound_block_slab_double": ("rlgen", "rlgen:duskbound_block_slab[type=double]"),
+    "quark:world_stone_bricks": rmeta("minecraft:polished_granite", "minecraft:polished_diorite", "minecraft:polished_andesite", "minecraft:polished_basalt",
+                                      "rlgen:marble_bricks", "minecraft:stone_bricks", "minecraft:stone_bricks", "minecraft:stone_bricks"),
+    "quark:stone_marble_bricks_wall": ("rlgen", "rlgen:marble_bricks_wall"),
+    "quark:midori_block": ("rlgen", "rlgen:midori_block"), "quark:grate": ("rlgen", "rlgen:grate"),
+    "quark:quilted_wool": rmeta(*[QUARK_COLORS_RL.get(i, f"minecraft:{COLORS[i]}_wool") for i in range(16)]),
+    "quark:stained_clay_tiles": rmeta(*["rlgen:stained_clay_tiles_blue" if i == 11 else f"minecraft:{COLORS[i]}_terracotta" for i in range(16)]),
+    "defiledlands:stone_defiled_decoration": rmeta("rlgen:stone_bricks_defiled", "rlgen:stone_bricks_defiled_cracked", "rlgen:stone_bricks_defiled_mossy",
+                                                   "rlgen:stone_defiled_mossy"),
+    "defiledlands:hephaestite_ore": ("rlgen", "rlgen:hephaestite_ore"), "defiledlands:umbrium_ore": ("rlgen", "rlgen:umbrium_ore"),
+    "defiledlands:scarlite_ore": ("rlgen", "rlgen:scarlite_ore"), "defiledlands:vilespine": ("rlgen", "rlgen:vilespine"),
+    "defiledlands:conjuring_altar": ("rlgen", "rlgen:conjuring_altar"),
+    "defiledlands:tenebra_planks": ("rlgen", "rlgen:tenebra_planks"), "defiledlands:tenebra_stairs": rlike("stairs", "oak_stairs", "tenebra_stairs"),
+    "traverse:fir_planks": ("rlgen", "rlgen:fir_planks"), "traverse:fir_stairs": rlike("stairs", "oak_stairs", "fir_stairs"),
+    "traverse:blue_rock_slab": rlike("slab", "stone_slab", "blue_rock_slab"),
+    "betternether:nether_brick_tile_large": ("rlgen", "rlgen:nether_brick_tile_large"),
+    "betternether:nether_brick_tile_small": ("rlgen", "rlgen:nether_brick_tile_small"),
+    "betternether:nether_brick_tile_stairs": rlike("stairs", "oak_stairs", "nether_brick_tile_stairs"),
+    "betternether:nether_brick_tile_slab_half": rlike("slab", "stone_slab", "nether_brick_tile_slab"),
+    "betternether:bone_tile": ("rlgen", "rlgen:bone_tile"), "betternether:bone_wall": ("rlgen", "rlgen:bone_wall"),
+    "betternether:bone_stairs": rlike("stairs", "oak_stairs", "bone_stairs"), "betternether:bone_slab_half": rlike("slab", "stone_slab", "bone_slab"),
+    "betternether:reeds_block": rlike("pillar", "hay_block", "reeds_block"), "betternether:reeds_stairs": rlike("stairs", "oak_stairs", "reeds_stairs"),
+    "betternether:reeds_fence": ("rlgen", "rlgen:reeds_fence"), "betternether:reeds_ladder": rlike("ladder", "ladder", "reeds_ladder"),
+    "betternether:stalagnate_planks": ("rlgen", "rlgen:stalagnate_planks"), "betternether:stalagnate_bark": rlike("pillar", "hay_block", "stalagnate_bark"),
+    "betternether:cincinnasite_forged": ("rlgen", "rlgen:cincinnasite_forged"),
+    "betternether:cincinnasite_stairs": rlike("stairs", "oak_stairs", "cincinnasite_stairs"),
+    "betternether:cincinnasite_bricks_pillar": rlike("pillar", "hay_block", "cincinnasite_pillar"),
+    "betternether:cincinnasite_tile_small": ("rlgen", "rlgen:cincinnasite_tile_small"), "betternether:cincinnasite_wall": ("rlgen", "rlgen:cincinnasite_wall"),
+    "betternether:cincinnasite_slab_half": rlike("slab", "stone_slab", "cincinnasite_slab"),
+    "betternether:cincinnasite_lantern": ("rlgen", "rlgen:cincinnasite_lantern"), "betternether:cincinnasite_pedestal": ("rlgen", "rlgen:cincinnasite_pedestal"),
+    "betternether:quartz_glass_framed_pane": ("rlgen", "rlgen:quartz_glass_framed_pane"),
+})
 RC_SPECIAL = {"reccomplex:generic_solid", "reccomplex:generic_space", "reccomplex:naturalFloor", "reccomplex:negativeSpace", "reccomplex:spawn_script"}
 LEGACY_RC = {"reccomplex:naturalFloor": "reccomplex:generic_solid", "reccomplex:negativeSpace": "reccomplex:generic_space"}
 
@@ -278,6 +346,12 @@ def convert_block(name, meta):
     if kind == "meta_choice":
         choices = m[1]
         return fmt_state(choices[meta % len(choices)], dict(m[2])), name
+    if kind == "rlike":
+        v = vanilla(m[2], meta)
+        props = {k: val for k, val in (dict(v[1]) if v else {}).items() if k in RLIKE_PROPS.get(m[1], [])}
+        return f"rlgen:{m[3]}" + ("[" + ",".join(f"{k}={val}" for k, val in sorted(props.items())) + "]" if props else ""), name
+    if kind == "rlgen_meta":
+        return m[1][meta % len(m[1])], name
     if kind == "like":
         v = vanilla(m[1], meta)
         props = dict(v[1]) if v else {}

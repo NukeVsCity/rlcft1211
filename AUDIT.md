@@ -58,8 +58,11 @@ Status: DONE = ported; PART = partly ported; TODO = to port; SKIP = deliberately
 | Chunk Animator | client effect | install 1.21 version |
 
 ## Blocks inside structures
-Modded blocks in RC / Roguelike / Ruins / village structures map to vanilla look-alikes now (Quark, Charm, Rustic, Inspirations,
-Varied Commodities, Ice and Fire, Lycanites, ...). TODO: real blocks for the most used ones (count usage first).
+Counted per block over the overworld RC structures. The most used now are real rlgen blocks with the mods' textures
+(`scripts/gen_mod_blocks.py`, data/rlgen/mod_blocks.json): BetterNether tiles/bone/reeds/stalagnate/cincinnasite, Quark carved wood,
+duskbound, marble, quilted wool, clay tiles, midori, grate, Traverse fir and blue rock slab, Defiled tenebra/bricks/ores, plus all the
+Ice and Fire and Quark world-gen blocks. Long tail (Rustic, Charm, Varied Commodities, Inspirations, Lycanites fluids) stays vanilla
+look-alikes (convert_rc.py MOD_BLOCKS). After changing the mapping: re-run convert_rc.py and gen_legacy_tables.py.
 
 ## Checker (run after every milestone)
 1. Re-run the jar scan; every jar with a hook must have a row above.

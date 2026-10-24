@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "rlgen:block/betternether/bone_block",
+    "top": "rlgen:block/betternether/bone_block",
+    "side": "rlgen:block/betternether/bone_block"
+  }
+}

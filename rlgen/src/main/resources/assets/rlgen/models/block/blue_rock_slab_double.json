@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "bottom": "rlgen:block/blue_rock",
+    "top": "rlgen:block/blue_rock",
+    "side": "rlgen:block/blue_rock"
+  }
+}

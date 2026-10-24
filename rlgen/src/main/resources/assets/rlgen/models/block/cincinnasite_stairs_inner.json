@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "rlgen:block/betternether/cincinnasite_forged",
+    "top": "rlgen:block/betternether/cincinnasite_forged",
+    "side": "rlgen:block/betternether/cincinnasite_forged"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "rlgen:block/betternether/bone_slab_top"
+  },
+  "render_type": "minecraft:cutout"
+}

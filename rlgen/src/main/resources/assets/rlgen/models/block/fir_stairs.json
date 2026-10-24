@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "rlgen:block/traverse/fir_planks",
+    "top": "rlgen:block/traverse/fir_planks",
+    "side": "rlgen:block/traverse/fir_planks"
+  }
+}

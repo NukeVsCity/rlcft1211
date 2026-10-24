@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "rlgen:block/quark/stone_marble_bricks"
+  },
+  "render_type": "minecraft:cutout"
+}

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "rlgen:block/nether_brick_tile_large"
+    }
+  }
+}

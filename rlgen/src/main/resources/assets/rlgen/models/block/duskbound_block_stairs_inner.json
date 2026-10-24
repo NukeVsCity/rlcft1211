@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "rlgen:block/quark/duskbound_block",
+    "top": "rlgen:block/quark/duskbound_block",
+    "side": "rlgen:block/quark/duskbound_block"
+  }
+}

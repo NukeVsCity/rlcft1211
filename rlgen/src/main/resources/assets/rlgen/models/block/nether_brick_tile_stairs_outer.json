@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "rlgen:block/betternether/nether_brick_tile_small",
+    "top": "rlgen:block/betternether/nether_brick_tile_small",
+    "side": "rlgen:block/betternether/nether_brick_tile_small"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "rlgen:block/reeds_ladder",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "rlgen:block/reeds_ladder"
+    },
+    "facing=south": {
+      "model": "rlgen:block/reeds_ladder",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "rlgen:block/reeds_ladder",
+      "y": 270
+    }
+  }
+}

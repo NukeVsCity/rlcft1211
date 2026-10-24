@@ -2,6 +2,22 @@
   "values": [
     "rlgen:fir_log",
     "rlgen:tenebra_log",
-    "rlgen:pixie_house"
+    "rlgen:pixie_house",
+    "rlgen:reeds_block",
+    "rlgen:reeds_stairs",
+    "rlgen:reeds_fence",
+    "rlgen:reeds_ladder",
+    "rlgen:stalagnate_planks",
+    "rlgen:stalagnate_bark",
+    "rlgen:carved_wood_oak",
+    "rlgen:carved_wood_spruce",
+    "rlgen:carved_wood_birch",
+    "rlgen:carved_wood_jungle",
+    "rlgen:carved_wood_acacia",
+    "rlgen:carved_wood_dark_oak",
+    "rlgen:fir_planks",
+    "rlgen:fir_stairs",
+    "rlgen:tenebra_planks",
+    "rlgen:tenebra_stairs"
   ]
 }

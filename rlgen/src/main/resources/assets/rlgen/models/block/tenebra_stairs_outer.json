@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "rlgen:block/defiledlands/planks_tenebra",
+    "top": "rlgen:block/defiledlands/planks_tenebra",
+    "side": "rlgen:block/defiledlands/planks_tenebra"
+  }
+}

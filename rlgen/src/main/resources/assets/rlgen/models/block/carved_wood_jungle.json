@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "rlgen:block/quark/carved_jungle_wood"
+  },
+  "render_type": "minecraft:cutout"
+}

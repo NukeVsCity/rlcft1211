@@ -212,6 +212,32 @@ public final class RLGen {
    public static final DeferredBlock<com.nukevscity.rlgen.quark.GlowshroomBlock> GLOWSHROOM = BLOCKS.registerBlock("glowshroom",
       com.nukevscity.rlgen.quark.GlowshroomBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_MUSHROOM).lightLevel(s -> 14));
    public static final DeferredBlock<LeavesBlock> SAKURA_LEAVES = leaves("sakura_leaves");
+   /** Modded building blocks from RLCraft's structures (data/rlgen/mod_blocks.json, made by scripts/gen_mod_blocks.py). */
+   public static final java.util.Map<String, DeferredBlock<Block>> MOD_BLOCKS = new java.util.LinkedHashMap<>();
+   static {
+      try (java.io.Reader r = new java.io.InputStreamReader(RLGen.class.getResourceAsStream("/data/rlgen/mod_blocks.json"), java.nio.charset.StandardCharsets.UTF_8)) {
+         for (com.google.gson.JsonElement e : com.google.gson.JsonParser.parseReader(r).getAsJsonArray()) {
+            com.google.gson.JsonObject o = e.getAsJsonObject();
+            String name = o.get("name").getAsString();
+            String type = o.get("type").getAsString();
+            net.minecraft.resources.ResourceLocation like = net.minecraft.resources.ResourceLocation.withDefaultNamespace(o.get("like").getAsString());
+            java.util.function.Supplier<Block> base = () -> net.minecraft.core.registries.BuiltInRegistries.BLOCK.get(like);
+            java.util.function.Function<BlockBehaviour.Properties, Block> make = switch (type) {
+               case "stairs" -> p -> new net.minecraft.world.level.block.StairBlock(base.get().defaultBlockState(), p);
+               case "slab" -> net.minecraft.world.level.block.SlabBlock::new;
+               case "wall" -> net.minecraft.world.level.block.WallBlock::new;
+               case "fence" -> net.minecraft.world.level.block.FenceBlock::new;
+               case "pane" -> net.minecraft.world.level.block.IronBarsBlock::new;
+               case "ladder" -> net.minecraft.world.level.block.LadderBlock::new;
+               case "pillar" -> RotatedPillarBlock::new;
+               default -> Block::new;
+            };
+            MOD_BLOCKS.put(name, BLOCKS.register(name, () -> make.apply(BlockBehaviour.Properties.ofFullCopy(base.get()))));
+         }
+      } catch (java.io.IOException | RuntimeException ex) {
+         throw new IllegalStateException("rlgen: could not read mod_blocks.json", ex);
+      }
+   }
    // Quark's Revamp stone gen stones (generation only; their crafting variants are not ported).
    public static final DeferredBlock<Block> MARBLE = stone("marble", MapColor.QUARTZ);
    public static final DeferredBlock<Block> LIMESTONE = stone("limestone", MapColor.STONE);
@@ -290,6 +316,7 @@ public final class RLGen {
       CORALS.forEach(ITEMS::registerSimpleBlockItem);
       CRYSTALS.forEach(ITEMS::registerSimpleBlockItem);
       SPELEOTHEMS.values().forEach(ITEMS::registerSimpleBlockItem);
+      MOD_BLOCKS.values().forEach(ITEMS::registerSimpleBlockItem);
    }
 
    private static DeferredBlock<LegacyPlantBlock> plant(String name, java.util.function.Predicate<net.minecraft.world.level.block.state.BlockState> soil,

@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "rlgen:block/cincinnasite_pillar_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "rlgen:block/cincinnasite_pillar"
+    },
+    "axis=z": {
+      "model": "rlgen:block/cincinnasite_pillar_horizontal",
+      "x": 90
+    }
+  }
+}

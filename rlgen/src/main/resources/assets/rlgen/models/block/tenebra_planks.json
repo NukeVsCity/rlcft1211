@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "rlgen:block/defiledlands/planks_tenebra"
+  },
+  "render_type": "minecraft:cutout"
+}

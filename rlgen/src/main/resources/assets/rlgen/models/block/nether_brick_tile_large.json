@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "rlgen:block/betternether/nether_brick_tile_large"
+  },
+  "render_type": "minecraft:cutout"
+}

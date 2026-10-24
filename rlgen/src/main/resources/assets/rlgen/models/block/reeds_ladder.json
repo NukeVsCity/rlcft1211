@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/ladder",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "texture": "rlgen:block/betternether/reeds_ladder",
+    "particle": "rlgen:block/betternether/reeds_ladder"
+  }
+}

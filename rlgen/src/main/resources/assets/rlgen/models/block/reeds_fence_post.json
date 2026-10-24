@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/fence_post",
+  "textures": {
+    "texture": "rlgen:block/betternether/reeds_fence_side"
+  }
+}
