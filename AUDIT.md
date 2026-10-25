@@ -42,7 +42,7 @@ Status: DONE = ported; PART = partly ported; TODO = to port; SKIP = deliberately
 | **Waystones** | waystones in villages (1.0) and anywhere (10/10000 per chunk), mossy | TODO |
 | Realistic Torches | generateLitTorches=false: no world-gen effect | NONE |
 | Lycanites Mobs | fluid lakes (weight 0): ooze (cold), poison (swamp/spooky), acid (wasteland/dead) 0.08 surface, 0.01 underground; moglava nether only | DONE (`lyc/`, rlgen:ooze/acid/poison fluids with Lycanites textures, no effects yet) |
-| Lycanites Mobs | dungeons (weight 1000, distance 45 chunks, towers) | TODO |
+| Lycanites Mobs | dungeons (distance 45 chunks, tower chance 0.1): aberrant station, desert crypts, lush tomb, shadow labyrinth, stream shrine (jar defaults + RLCraft overrides, scripts/gen_lyc_dungeons.py) | DONE: decompiled `com.lycanitesmobs.core.dungeon` + `lyc/dungeon` (planned as chunks are first generated, kept in rlgen_lyc_dungeons; theme blocks are rlgen blocks with Lycanites textures); spawners get zombies, bosses not spawned, Lycanites fires are vanilla fire |
 | Ice and Fire 1.7.1 | StructureGenerator (weight 0): fire/ice dragon roosts and dens, cyclops caves, siren islands, silver/sapphire ore, fire/frost lilies; mobs and dragon skeletons not spawned (their random draws kept) | DONE (`iaf/`, planned on 1.12 terrain, replayed after each populate area) |
 | Ice and Fire 1.7.1 | gorgon temples (template converted by scripts/convert_template112.py), myrmex hives (600 apart, saved in rlgen_myrmex) | DONE |
 | Ice and Fire 1.7.1 | pixie villages (pixie house as a block model), snow villages | DONE (`iaf/IafVillage`) |

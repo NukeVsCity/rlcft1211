@@ -73,6 +73,27 @@ public class World {
       this.actions.add(new BlockEntityAction(pos.immutable(), action));
    }
 
+   /** World.getTileEntity != null, for blocks placed in this run too. */
+   public boolean hasTileEntity(BlockPos pos) {
+      return this.getBlockState(pos).hasBlockEntity();
+   }
+
+   /** Chunk.getTopFilledSegment of the 1.12 terrain (the base y of the highest non-empty 16-block section). */
+   public int topFilledSegment(BlockPos pos) {
+      for (int y = 240; y >= 0; y -= 16) {
+         for (int x = pos.getX() & ~15; x < (pos.getX() & ~15) + 16; x++) {
+            for (int z = pos.getZ() & ~15; z < (pos.getZ() & ~15) + 16; z++) {
+               for (int dy = 15; dy >= 0; dy--) {
+                  if (!this.generator.legacyState(new BlockPos(x, y + dy, z)).isAir()) {
+                     return y;
+                  }
+               }
+            }
+         }
+      }
+      return 0;
+   }
+
    public void spawnEntity(Entity entity) {
       this.entities.add(entity);
    }

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "rlgen:block/lycanitesmobs/desertstone",
+    "top": "rlgen:block/lycanitesmobs/desertstone",
+    "side": "rlgen:block/lycanitesmobs/desertstone"
+  }
+}

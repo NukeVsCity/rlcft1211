@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "rlgen:block/lushstonepillar_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "rlgen:block/lushstonepillar"
+    },
+    "axis=z": {
+      "model": "rlgen:block/lushstonepillar_horizontal",
+      "x": 90
+    }
+  }
+}

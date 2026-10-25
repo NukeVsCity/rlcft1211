@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "rlgen:block/lycanitesmobs/lushstonetile",
+    "top": "rlgen:block/lycanitesmobs/lushstonetile",
+    "side": "rlgen:block/lycanitesmobs/lushstonetile"
+  }
+}

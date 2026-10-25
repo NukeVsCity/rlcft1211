@@ -268,5 +268,383 @@
     "type": "stairs",
     "like": "dark_oak_stairs",
     "tool": "axe"
+  },
+  {
+    "name": "aberrantstonebrick",
+    "type": "cube",
+    "like": "stone_bricks",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "aberrantstonechiseled",
+    "type": "cube",
+    "like": "chiseled_stone_bricks",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "aberrantstonepillar",
+    "type": "pillar",
+    "like": "quartz_pillar",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "aberrantstonepolished",
+    "type": "cube",
+    "like": "polished_andesite",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "aberrantstonetile",
+    "type": "cube",
+    "like": "stone_bricks",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "aberrantstone_stairs",
+    "type": "stairs",
+    "like": "stone_stairs",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "aberrantstonebrick_stairs",
+    "type": "stairs",
+    "like": "stone_brick_stairs",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "aberrantstonetile_stairs",
+    "type": "stairs",
+    "like": "stone_brick_stairs",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "aberrantcrystal",
+    "type": "cube",
+    "like": "glowstone",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "ashenstonebrick",
+    "type": "cube",
+    "like": "stone_bricks",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "ashenstonechiseled",
+    "type": "cube",
+    "like": "chiseled_stone_bricks",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "ashenstonepillar",
+    "type": "pillar",
+    "like": "quartz_pillar",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "ashenstonepolished",
+    "type": "cube",
+    "like": "polished_andesite",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "ashenstonetile",
+    "type": "cube",
+    "like": "stone_bricks",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "ashenstone_stairs",
+    "type": "stairs",
+    "like": "stone_stairs",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "ashenstonebrick_stairs",
+    "type": "stairs",
+    "like": "stone_brick_stairs",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "ashenstonetile_stairs",
+    "type": "stairs",
+    "like": "stone_brick_stairs",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "ashencrystal",
+    "type": "cube",
+    "like": "glowstone",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "demonstonebrick",
+    "type": "cube",
+    "like": "stone_bricks",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "demonstonechiseled",
+    "type": "cube",
+    "like": "chiseled_stone_bricks",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "demonstonepillar",
+    "type": "pillar",
+    "like": "quartz_pillar",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "demonstonepolished",
+    "type": "cube",
+    "like": "polished_andesite",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "demonstonetile",
+    "type": "cube",
+    "like": "stone_bricks",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "demonstone_stairs",
+    "type": "stairs",
+    "like": "stone_stairs",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "demonstonebrick_stairs",
+    "type": "stairs",
+    "like": "stone_brick_stairs",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "demonstonetile_stairs",
+    "type": "stairs",
+    "like": "stone_brick_stairs",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "demoncrystal",
+    "type": "cube",
+    "like": "glowstone",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "desertstonebrick",
+    "type": "cube",
+    "like": "stone_bricks",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "desertstonechiseled",
+    "type": "cube",
+    "like": "chiseled_stone_bricks",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "desertstonepillar",
+    "type": "pillar",
+    "like": "quartz_pillar",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "desertstonepolished",
+    "type": "cube",
+    "like": "polished_andesite",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "desertstonetile",
+    "type": "cube",
+    "like": "stone_bricks",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "desertstone_stairs",
+    "type": "stairs",
+    "like": "stone_stairs",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "desertstonebrick_stairs",
+    "type": "stairs",
+    "like": "stone_brick_stairs",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "desertstonetile_stairs",
+    "type": "stairs",
+    "like": "stone_brick_stairs",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "desertcrystal",
+    "type": "cube",
+    "like": "glowstone",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "lushstonebrick",
+    "type": "cube",
+    "like": "stone_bricks",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "lushstonechiseled",
+    "type": "cube",
+    "like": "chiseled_stone_bricks",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "lushstonepillar",
+    "type": "pillar",
+    "like": "quartz_pillar",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "lushstonepolished",
+    "type": "cube",
+    "like": "polished_andesite",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "lushstonetile",
+    "type": "cube",
+    "like": "stone_bricks",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "lushstone_stairs",
+    "type": "stairs",
+    "like": "stone_stairs",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "lushstonebrick_stairs",
+    "type": "stairs",
+    "like": "stone_brick_stairs",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "lushstonetile_stairs",
+    "type": "stairs",
+    "like": "stone_brick_stairs",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "lushcrystal",
+    "type": "cube",
+    "like": "glowstone",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "shadowstonebrick",
+    "type": "cube",
+    "like": "stone_bricks",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "shadowstonechiseled",
+    "type": "cube",
+    "like": "chiseled_stone_bricks",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "shadowstonepillar",
+    "type": "pillar",
+    "like": "quartz_pillar",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "shadowstonepolished",
+    "type": "cube",
+    "like": "polished_andesite",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "shadowstonetile",
+    "type": "cube",
+    "like": "stone_bricks",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "shadowstone_stairs",
+    "type": "stairs",
+    "like": "stone_stairs",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "shadowstonebrick_stairs",
+    "type": "stairs",
+    "like": "stone_brick_stairs",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "shadowstonetile_stairs",
+    "type": "stairs",
+    "like": "stone_brick_stairs",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "shadowcrystal",
+    "type": "cube",
+    "like": "glowstone",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "streamstonebrick",
+    "type": "cube",
+    "like": "stone_bricks",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "streamstonechiseled",
+    "type": "cube",
+    "like": "chiseled_stone_bricks",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "streamstonepillar",
+    "type": "pillar",
+    "like": "quartz_pillar",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "streamstonepolished",
+    "type": "cube",
+    "like": "polished_andesite",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "streamstonetile",
+    "type": "cube",
+    "like": "stone_bricks",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "streamstone_stairs",
+    "type": "stairs",
+    "like": "stone_stairs",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "streamstonebrick_stairs",
+    "type": "stairs",
+    "like": "stone_brick_stairs",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "streamstonetile_stairs",
+    "type": "stairs",
+    "like": "stone_brick_stairs",
+    "tool": "pickaxe"
+  },
+  {
+    "name": "streamcrystal",
+    "type": "cube",
+    "like": "glowstone",
+    "tool": "pickaxe"
   }
 ]

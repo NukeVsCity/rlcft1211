@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "rlgen:block/lycanitesmobs/lushstonepillar_top",
+    "side": "rlgen:block/lycanitesmobs/lushstonepillar"
+  }
+}

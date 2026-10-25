@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "rlgen:block/lycanitesmobs/demonstonebrick",
+    "top": "rlgen:block/lycanitesmobs/demonstonebrick",
+    "side": "rlgen:block/lycanitesmobs/demonstonebrick"
+  }
+}

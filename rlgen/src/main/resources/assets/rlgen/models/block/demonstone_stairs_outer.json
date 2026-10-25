@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "rlgen:block/lycanitesmobs/demonstone",
+    "top": "rlgen:block/lycanitesmobs/demonstone",
+    "side": "rlgen:block/lycanitesmobs/demonstone"
+  }
+}

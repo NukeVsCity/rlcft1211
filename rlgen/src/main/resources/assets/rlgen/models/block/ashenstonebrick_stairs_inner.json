@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "rlgen:block/lycanitesmobs/ashenstonebrick",
+    "top": "rlgen:block/lycanitesmobs/ashenstonebrick",
+    "side": "rlgen:block/lycanitesmobs/ashenstonebrick"
+  }
+}

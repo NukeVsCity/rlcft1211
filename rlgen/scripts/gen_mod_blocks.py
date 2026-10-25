@@ -55,6 +55,19 @@ SPECS = [
     ("tenebra_planks", "cube", "defiledlands:tenebra_planks", "dark_oak_planks", "axe"),
     ("tenebra_stairs", "stairs", "defiledlands:tenebra_stairs", "dark_oak_stairs", "axe"),
 ]
+# Lycanites Mobs dungeon theme blocks (aberrant station, ashen mausoleum, demonic temple, desert crypts, lush tomb, shadow labyrinth, stream shrine)
+for _t in ["aberrant", "ashen", "demon", "desert", "lush", "shadow", "stream"]:
+    SPECS += [
+        (f"{_t}stonebrick", "cube", f"lycanitesmobs:{_t}stonebrick", "stone_bricks", "pickaxe"),
+        (f"{_t}stonechiseled", "cube", f"lycanitesmobs:{_t}stonechiseled", "chiseled_stone_bricks", "pickaxe"),
+        (f"{_t}stonepillar", "pillar", f"lycanitesmobs:{_t}stonepillar", "quartz_pillar", "pickaxe"),
+        (f"{_t}stonepolished", "cube", f"lycanitesmobs:{_t}stonepolished", "polished_andesite", "pickaxe"),
+        (f"{_t}stonetile", "cube", f"lycanitesmobs:{_t}stonetile", "stone_bricks", "pickaxe"),
+        (f"{_t}stone_stairs", "stairs", f"lycanitesmobs:{_t}stone_stairs", "stone_stairs", "pickaxe"),
+        (f"{_t}stonebrick_stairs", "stairs", f"lycanitesmobs:{_t}stonebrick_stairs", "stone_brick_stairs", "pickaxe"),
+        (f"{_t}stonetile_stairs", "stairs", f"lycanitesmobs:{_t}stonetile_stairs", "stone_brick_stairs", "pickaxe"),
+        (f"{_t}crystal", "cube", f"lycanitesmobs:{_t}crystal", "glowstone", "pickaxe"),
+    ]
 
 ASSETS = {}
 for d in glob.glob(JARS + "/*/assets/*"):
