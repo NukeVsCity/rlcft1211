@@ -1343,6 +1343,10 @@ public class VillagePieces {
    public static class House4Garden extends VillagePieces.Village {
       private boolean isRoofAccessible;
 
+      public boolean roofAccessible() {
+         return this.isRoofAccessible;
+      }
+
       House4Garden(CompoundTag tag) {
          super(tag);
       }
@@ -1806,7 +1810,7 @@ public class VillagePieces {
    }
 
 
-   abstract static class Village extends StructurePiece {
+   public abstract static class Village extends StructurePiece {
       protected int averageGroundLvl = -1;
       private int villagersSpawned;
       protected int structureType;
@@ -1833,6 +1837,10 @@ public class VillagePieces {
          this.boundingBox = box;
       }
 
+      public boolean zombie() {
+         return this.isZombieInfested;
+      }
+
       /** StructureComponent.buildComponent */
       public void buildComponent(StructurePiece structurecomponent, List<StructurePiece> list, Random random) {
       }
@@ -1845,6 +1853,10 @@ public class VillagePieces {
                               BoundingBox box, ChunkPos chunkPos, BlockPos pivot) {
          try {
             this.addComponentParts(level, VillageRandom.forChunk(level.getSeed(), chunkPos), box);
+            // Charm VillageDecorations (StructureEventBase.Post after each piece)
+            if (chunkGenerator instanceof com.nukevscity.rlgen.world.LegacyChunkGenerator generator) {
+               com.nukevscity.rlgen.charm.Inner.decorate(this, level, box, generator);
+            }
          } catch (RuntimeException e) {
             LOGGER.error("rlgen: village piece {} failed in chunk {}", this.getClass().getSimpleName(), chunkPos, e);
          }

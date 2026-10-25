@@ -183,6 +183,21 @@ public final class RLGen {
    public static final DeferredHolder<net.minecraft.world.level.block.entity.BlockEntityType<?>, net.minecraft.world.level.block.entity.BlockEntityType<com.nukevscity.rlgen.iaf.CocoonBlockEntity>> COCOON_BE =
       BLOCK_ENTITIES.register("myrmex_cocoon", () -> net.minecraft.world.level.block.entity.BlockEntityType.Builder.of(
          com.nukevscity.rlgen.iaf.CocoonBlockEntity::new, DESERT_MYRMEX_COCOON.get(), JUNGLE_MYRMEX_COCOON.get()).build(null));
+   /** Charm crates and sealed crates (oak, spruce, birch, jungle, acacia, dark oak). */
+   public static final java.util.List<DeferredBlock<com.nukevscity.rlgen.charm.CrateBlock>> CRATES = new java.util.ArrayList<>();
+   public static final java.util.List<DeferredBlock<com.nukevscity.rlgen.charm.CrateBlock>> SEALED_CRATES = new java.util.ArrayList<>();
+   static {
+      for (String w : new String[]{"oak", "spruce", "birch", "jungle", "acacia", "dark_oak"}) {
+         CRATES.add(BLOCKS.registerBlock("crate_" + w, p -> new com.nukevscity.rlgen.charm.CrateBlock(false, p),
+            BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.0F).sound(SoundType.WOOD)));
+         SEALED_CRATES.add(BLOCKS.registerBlock("crate_sealed_" + w, p -> new com.nukevscity.rlgen.charm.CrateBlock(true, p),
+            BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.0F).sound(SoundType.WOOD)));
+      }
+   }
+   public static final DeferredHolder<net.minecraft.world.level.block.entity.BlockEntityType<?>, net.minecraft.world.level.block.entity.BlockEntityType<com.nukevscity.rlgen.charm.CrateBlockEntity>> CRATE_BE =
+      BLOCK_ENTITIES.register("crate", () -> net.minecraft.world.level.block.entity.BlockEntityType.Builder.of(
+         com.nukevscity.rlgen.charm.CrateBlockEntity::new, java.util.stream.Stream.concat(CRATES.stream(), SEALED_CRATES.stream()).map(DeferredBlock::get)
+            .toArray(net.minecraft.world.level.block.Block[]::new)).build(null));
    // Quark r1.6 world-gen blocks (crystal caves, speleothems, cave roots, monster boxes, underground biomes, blossom trees)
    public static final java.util.List<DeferredBlock<net.minecraft.world.level.block.HalfTransparentBlock>> CRYSTALS = new java.util.ArrayList<>();
    static {
@@ -325,6 +340,8 @@ public final class RLGen {
       ITEMS.registerSimpleBlockItem(REEF_ROCK);
       CORALS.forEach(ITEMS::registerSimpleBlockItem);
       CRYSTALS.forEach(ITEMS::registerSimpleBlockItem);
+      CRATES.forEach(ITEMS::registerSimpleBlockItem);
+      SEALED_CRATES.forEach(ITEMS::registerSimpleBlockItem);
       SPELEOTHEMS.values().forEach(ITEMS::registerSimpleBlockItem);
       MOD_BLOCKS.values().forEach(ITEMS::registerSimpleBlockItem);
    }

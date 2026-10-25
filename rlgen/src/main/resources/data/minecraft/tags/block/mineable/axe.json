@@ -18,6 +18,18 @@
     "rlgen:fir_planks",
     "rlgen:fir_stairs",
     "rlgen:tenebra_planks",
-    "rlgen:tenebra_stairs"
+    "rlgen:tenebra_stairs",
+    "rlgen:crate_oak",
+    "rlgen:crate_sealed_oak",
+    "rlgen:crate_spruce",
+    "rlgen:crate_sealed_spruce",
+    "rlgen:crate_birch",
+    "rlgen:crate_sealed_birch",
+    "rlgen:crate_jungle",
+    "rlgen:crate_sealed_jungle",
+    "rlgen:crate_acacia",
+    "rlgen:crate_sealed_acacia",
+    "rlgen:crate_dark_oak",
+    "rlgen:crate_sealed_dark_oak"
   ]
 }

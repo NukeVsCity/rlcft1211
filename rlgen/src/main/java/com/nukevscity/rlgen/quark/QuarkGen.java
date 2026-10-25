@@ -64,7 +64,7 @@ public final class QuarkGen {
       return new Random(seed ^ ((long)cx * 0x5DEECE66DL + (long)cz * 0x2545F491L) ^ salt);
    }
 
-   static LegacyChunkGenerator gen(DWorld w) {
+   public static LegacyChunkGenerator gen(DWorld w) {
       return w.level.getLevel().getChunkSource().getGenerator() instanceof LegacyChunkGenerator g ? g : null;
    }
 

@@ -23,12 +23,15 @@ public final class LegacyPopulator {
 
    /** Chunk (as a long) whose populate area a village reached, for the lake check; set before the decoration steps run. */
    private static final ThreadLocal<Long> VILLAGE = new ThreadLocal<>();
+   /** Whether that village is a zombie village (Charm's erosion and undead horses). */
+   private static final ThreadLocal<Boolean> ZOMBIE = new ThreadLocal<>();
 
    private LegacyPopulator() {
    }
 
-   public static void setVillage(ChunkPos cp, boolean village) {
+   public static void setVillage(ChunkPos cp, boolean village, boolean zombie) {
       VILLAGE.set(village ? cp.toLong() : null);
+      ZOMBIE.set(zombie);
    }
 
    private static boolean village(ChunkPos cp) {
@@ -182,6 +185,14 @@ public final class LegacyPopulator {
             Gen.bigMushroom(w, r, w.height(pos.offset(x, 0, z)), null);
          }
       }
+      // Charm VillageDecorations at the FLOWERS decorate event (DecorateBiomeEvent.Decorate), in chunks a village generated in
+      if (village(cp)) {
+         com.nukevscity.rlgen.world.LegacyChunkGenerator gen = com.nukevscity.rlgen.quark.QuarkGen.gen(w);
+         if (gen != null) {
+            com.nukevscity.rlgen.charm.Outer.decorate(w, pos, r, com.nukevscity.rlgen.charm.Charm.villageSeed(gen.legacyGenerator(), w.seed(), pos),
+               Boolean.TRUE.equals(ZOMBIE.get()));
+         }
+      }
       for (int l2 = 0; l2 < c.flowersPerChunk; l2++) {
          int x = r.nextInt(16) + 8;
          int z = r.nextInt(16) + 8;
@@ -302,7 +313,7 @@ public final class LegacyPopulator {
       d.post(w, r, pos);
       freeze(w, pos.offset(8, 0, 8));
       // IWorldGenerators that ran after populate, by weight: Ice and Fire 0 (with Quark's pirate ships 0 and crystal caves 1, planned),
-      // Quark clay and blossom trees 0, Lycanites fluid lakes 0, Coral Reef 1, No Tree Punching 3, Quark fairy rings 5, monster boxes 200, speleothems 1000,
+      // Quark clay and blossom trees 0, Lycanites fluid lakes 0, Coral Reef 1, No Tree Punching 3, Quark fairy rings 5, monster boxes 200, speleothems 1000, Charm abandoned crates 1000,
       // cave roots 2000, archaeologist houses 3000
       com.nukevscity.rlgen.iaf.IafGen.apply(w, cp);
       com.nukevscity.rlgen.quark.QuarkGen.weight0(w, cp.x, cp.z);
@@ -312,6 +323,7 @@ public final class LegacyPopulator {
       com.nukevscity.rlgen.quark.FairyRings.generate(w, cp);
       com.nukevscity.rlgen.quark.QuarkGen.monsterBoxes(w, cp.x, cp.z);
       com.nukevscity.rlgen.quark.QuarkGen.speleothems(w, cp.x, cp.z);
+      com.nukevscity.rlgen.charm.AbandonedCrates.generate(w, cp.x, cp.z);
       com.nukevscity.rlgen.quark.QuarkGen.caveRoots(w, cp.x, cp.z);
       com.nukevscity.rlgen.quark.QuarkGen.archaeologist(w, cp.x, cp.z);
    }

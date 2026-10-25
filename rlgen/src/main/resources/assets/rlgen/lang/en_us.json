@@ -312,5 +312,18 @@
   "block.rlgen.streamstone_stairs": "Streamstone Stairs",
   "block.rlgen.streamstonebrick_stairs": "Streamstonebrick Stairs",
   "block.rlgen.streamstonetile_stairs": "Streamstonetile Stairs",
-  "block.rlgen.streamcrystal": "Streamcrystal"
+  "block.rlgen.streamcrystal": "Streamcrystal",
+  "block.rlgen.crate_oak": "Oak Crate",
+  "block.rlgen.crate_sealed_oak": "Sealed Oak Crate",
+  "block.rlgen.crate_spruce": "Spruce Crate",
+  "block.rlgen.crate_sealed_spruce": "Sealed Spruce Crate",
+  "block.rlgen.crate_birch": "Birch Crate",
+  "block.rlgen.crate_sealed_birch": "Sealed Birch Crate",
+  "block.rlgen.crate_jungle": "Jungle Crate",
+  "block.rlgen.crate_sealed_jungle": "Sealed Jungle Crate",
+  "block.rlgen.crate_acacia": "Acacia Crate",
+  "block.rlgen.crate_sealed_acacia": "Sealed Acacia Crate",
+  "block.rlgen.crate_dark_oak": "Dark Oak Crate",
+  "block.rlgen.crate_sealed_dark_oak": "Sealed Dark Oak Crate",
+  "block.rlgen.crate": "Crate"
 }

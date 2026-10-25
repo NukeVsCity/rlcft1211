@@ -288,6 +288,7 @@ public final class LegacyChunkGenerator extends ChunkGenerator {
    public void applyBiomeDecoration(net.minecraft.world.level.WorldGenLevel level, ChunkAccess chunk, StructureManager structures) {
       ChunkPos cp = chunk.getPos();
       boolean village = false;
+      boolean zombie = false;
       net.minecraft.world.level.levelgen.structure.Structure structure =
          level.registryAccess().registryOrThrow(Registries.STRUCTURE).get(VILLAGE);
       if (structure != null) {
@@ -299,13 +300,14 @@ public final class LegacyChunkGenerator extends ChunkGenerator {
                for (net.minecraft.world.level.levelgen.structure.StructureStart start : structures.startsForStructure(sp, structure)) {
                   if (start.isValid() && start.getBoundingBox().intersects(minX, minZ, minX + 15, minZ + 15)) {
                      village = true;
+                     zombie = !start.getPieces().isEmpty() && start.getPieces().get(0) instanceof com.nukevscity.rlgen.village.VillagePieces.Village v && v.zombie();
                      break;
                   }
                }
             }
          }
       }
-      com.nukevscity.rlgen.deco.LegacyPopulator.setVillage(cp, village);
+      com.nukevscity.rlgen.deco.LegacyPopulator.setVillage(cp, village, zombie);
       super.applyBiomeDecoration(level, chunk, structures);
    }
 

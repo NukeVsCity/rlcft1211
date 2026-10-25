@@ -12,15 +12,16 @@ import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * The compat lists as RLCraft had them: Rustic (iron and golden lanterns, hanging), Charm (its lanterns are off when another mod has
- * lanterns), Varied Commodities (lamp and candle). Rustic's lanterns are 1.21 hanging lanterns, the lamp a standing lantern, the
+ * The compat lists as RLCraft had them: Rustic (iron and golden lanterns, hanging), Charm (iron and gold lanterns), Varied Commodities (lamp and candle). Rustic's lanterns are 1.21 hanging lanterns, the lamp a standing lantern, the
  * candle a lit candle.
  */
 public class Integrations {
     private static final BlockState RUSTIC_LANTERN = Blocks.LANTERN.defaultBlockState().setValue(LanternBlock.HANGING, true);
+    /** Charm's iron and gold lanterns (on in RLCraft: Future MC isn't installed), hanging. */
+    private static final BlockState CHARM_LANTERN = Blocks.LANTERN.defaultBlockState().setValue(LanternBlock.HANGING, true);
     private static final BlockState VC_LAMP = Blocks.LANTERN.defaultBlockState();
     private static final BlockState VC_CANDLE = Blocks.CANDLE.defaultBlockState().setValue(CandleBlock.LIT, true);
-    private static final List<BlockState> LANTERNS = List.of(RUSTIC_LANTERN, RUSTIC_LANTERN, VC_LAMP, VC_CANDLE);
+    private static final List<BlockState> LANTERNS = List.of(RUSTIC_LANTERN, RUSTIC_LANTERN, CHARM_LANTERN, CHARM_LANTERN, VC_LAMP, VC_CANDLE);
     private static final List<BlockState> LEFT_TORCHES = List.of(Blocks.WALL_TORCH.defaultBlockState().setValue(WallTorchBlock.FACING, Direction.EAST), VC_CANDLE);
     private static final List<BlockState> RIGHT_TORCHES = List.of(Blocks.WALL_TORCH.defaultBlockState().setValue(WallTorchBlock.FACING, Direction.WEST), VC_CANDLE);
     public static final VariedCommodities VARIED_COMMODITIES = new VariedCommodities();
