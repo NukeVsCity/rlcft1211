@@ -58,6 +58,21 @@ Status: DONE = ported; PART = partly ported; TODO = to port; SKIP = deliberately
 | SilentLib, FoamFix, Phosphor, RenderLib, RLMixins, BetterBiomeBlend, EntityCulling | libraries / rendering / chunk IO | NONE |
 | Chunk Animator | client effect | install 1.21 version |
 
+## Found in the v0.8.0 re-check
+| Mod | What | Status |
+|---|---|---|
+| Vanilla 1.12 structures | strongholds, desert/jungle temples, witch huts, igloos, ocean monuments, woodland mansions are the 1.21 versions at 1.21 positions; 1.21-only structures (trial chambers, trail ruins, pillager outposts, ruined portals, shipwrecks, ocean ruins, buried treasure) still spawn in rlgen biomes | TODO (port MapGenStronghold/ScatteredFeature/OceanMonument/WoodlandMansion, drop the 1.21-only tags) |
+| Recurrent Complex | decoration type big_mushroom (brown/red mushroom x2, weight 0.2 against vanilla 1) | TODO (small) |
+| Quark | Tree variants: swamp vine colour 0x6A7039 (client) | TODO (small) |
+| Recurrent Complex | 33 End structures (end megacity, ships, towers, islands, spikes...) and 7 nether (netherthorn x6, nether city church) | TODO (End / nether) |
+| Ruins | 11 End ("sky") and 5 nether ("hell") templates | TODO (End / nether) |
+| Lycanites Mobs | nether dungeons (ashen mausoleum, demonic temple), End/nether random aberrant station and shadow labyrinth; moglava lakes | TODO (End / nether) |
+| Doomlike Dungeons | nether dungeons (dimension -1 listed) | TODO (nether) |
+| Quark | nether: basalt, broken portals, nether fossils, obsidian spikes, smokers; End: biotite ore | TODO (End / nether) |
+| Loot | modded items in loot (Spartan, Ice and Fire, Baubles, etc.) and loot injections/LootTweaker scripts: those items don't exist yet, chests get vanilla stand-ins or nothing | TODO (needs the item mods) |
+| Mobs in structures | Lycanites/Ice and Fire spawners get zombie stand-ins, dragons/pirates/archaeologists/monster box mobs not spawned, RC summons of modded mobs dropped | TODO (needs the mob mods) |
+| RLMixins, Inspirations, Simple Difficulty, Fishing Made Better, BNBGamingLib, antiqueatlas | re-checked hits: trades, cauldrons, rain collector, fishing data, scripts, map markers | NONE |
+
 ## Blocks inside structures
 Counted per block over the overworld RC structures. The most used now are real rlgen blocks with the mods' textures
 (`scripts/gen_mod_blocks.py`, data/rlgen/mod_blocks.json): BetterNether tiles/bone/reeds/stalagnate/cincinnasite, Quark carved wood,
