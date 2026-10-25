@@ -120,6 +120,8 @@ def members(tag, seen=()):
 added = {}
 # 1.12 villages come from rlgen:village (MapGenVillage), so no 1.21 jigsaw villages in rlgen biomes
 SKIP_TAGS = {f"minecraft:has_structure/village_{t}" for t in ("plains", "desert", "savanna", "snowy", "taiga")}
+# Better Mineshafts replaced 1.12's mineshafts (rlgen:better_mineshaft)
+SKIP_TAGS |= {"minecraft:has_structure/mineshaft", "minecraft:has_structure/mineshaft_mesa"}
 for name in biomes:
     tmpl = "minecraft:" + TEMPLATE[name]
     for tag in tags:

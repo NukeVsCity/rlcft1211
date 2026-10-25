@@ -104,4 +104,8 @@ public final class BiomeDict {
       Map.entry("traverse:woodlands", Set.of("PLAINS")),
       Map.entry("void", Set.of("VOID"))
    );
+
+   public static boolean hasType(com.nukevscity.rlgen.legacy.biome.Biome biome, String type) {
+      return biome != null && TYPES.getOrDefault(biome.getRegistryName(), Set.of()).contains(type);
+   }
 }

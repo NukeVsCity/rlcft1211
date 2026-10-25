@@ -78,6 +78,15 @@ public enum Mat112 {
       return OTHER;
    }
 
+   /** Material.isSolid: false for air, liquids and the "logic" materials (plants, vines, snow layers, ...). */
+   public static boolean solid(BlockState s) {
+      return switch (of(s)) {
+         case AIR, WATER, LAVA, PLANTS, VINE, SNOW -> false;
+         case OTHER -> !s.liquid() && s.blocksMotion();
+         default -> true;
+      };
+   }
+
    public static float hardness(BlockState s) {
       return s.getDestroySpeed(EmptyBlockGetter.INSTANCE, BlockPos.ZERO);
    }

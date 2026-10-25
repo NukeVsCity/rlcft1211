@@ -70,6 +70,11 @@ public final class RLGen {
       STRUCTURE_TYPES.register("battle_tower", () -> () -> com.nukevscity.rlgen.towers.BattleTowerStructure.CODEC);
    public static final DeferredHolder<StructurePieceType, StructurePieceType> BATTLE_TOWER_PIECE =
       STRUCTURE_PIECES.register("battle_tower", () -> com.nukevscity.rlgen.towers.BattleTowerPiece::new);
+   /** YUNG's Better Mineshafts 2.2.1 (replaced 1.12's mineshafts). */
+   public static final DeferredHolder<StructureType<?>, StructureType<com.nukevscity.rlgen.bms.MineshaftStructure>> MINESHAFT =
+      STRUCTURE_TYPES.register("better_mineshaft", () -> () -> com.nukevscity.rlgen.bms.MineshaftStructure.CODEC);
+   public static final DeferredHolder<StructurePieceType, StructurePieceType> MINESHAFT_PIECE =
+      STRUCTURE_PIECES.register("better_mineshaft", () -> com.nukevscity.rlgen.bms.MineshaftHolderPiece::new);
    /** 1.12 MapGenVillage (with Recurrent Complex village pieces). */
    public static final DeferredHolder<StructureType<?>, StructureType<LegacyVillageStructure>> VILLAGE_STRUCTURE =
       STRUCTURE_TYPES.register("village", () -> () -> LegacyVillageStructure.CODEC);

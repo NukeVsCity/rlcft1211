@@ -1,0 +1,7 @@
+{
+  "type": "rlgen:better_mineshaft",
+  "biomes": "#minecraft:is_overworld",
+  "step": "raw_generation",
+  "spawn_overrides": {},
+  "terrain_adaptation": "none"
+}
