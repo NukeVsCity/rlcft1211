@@ -1,0 +1,8 @@
+{
+  "common_leaves": "rlgen:dt_ironwood",
+  "common_species": "rlgen:ironwood",
+  "primitive_log": "rlgen:ironwood_log",
+  "primitive_stripped_log": "minecraft:stripped_jungle_log",
+  "max_branch_radius": 24,
+  "generate_surface_root": true
+}

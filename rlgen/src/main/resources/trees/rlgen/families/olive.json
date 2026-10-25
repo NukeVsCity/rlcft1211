@@ -1,0 +1,7 @@
+{
+  "common_leaves": "rlgen:dt_olive",
+  "common_species": "rlgen:olive",
+  "primitive_log": "rlgen:olive_log",
+  "primitive_stripped_log": "minecraft:stripped_oak_log",
+  "max_branch_radius": 8
+}

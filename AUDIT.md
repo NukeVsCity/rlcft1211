@@ -35,11 +35,11 @@ Status: DONE = ported; PART = partly ported; TODO = to port; SKIP = deliberately
 | Quark | underground biomes (9, DIRT ore event), varied dungeons (DUNGEON populate event, populate random), clay, blossom trees, monster boxes, speleothems, cave roots, archaeologist houses (IWorldGenerators by weight); crystal caves and pirate ships planned with Ice and Fire's | DONE (`quark/`, `iaf/QuarkPlanned`); monster boxes don't spawn mobs yet, pirates/archaeologist not spawned |
 | Quark | buried treasure (treasure maps in loot, chest made when a player holds the map) | SKIP (gameplay, not world gen) |
 | **No Tree Punching** | loose rocks on the ground everywhere (WorldGenRocks, frequency 8, Quark marble/limestone rocks) | DONE (`ntp/`, rlgen:loose_rock_*) |
-| **Rustic** | herbs 0.04 (x8, surface + cave), wildberries 0.04 (x4); slate and beehives off; olive (0.02) / ironwood (0.01) are Dynamic Trees species spliced into the DT populator (weights 10 and 5 per 1000) | TODO (low: rare) |
+| **Rustic** | herbs 0.04 (x8, surface + cave), wildberries 0.04 (x4); slate and beehives off; olive (0.02) / ironwood (0.01) are Dynamic Trees species spliced into the DT populator (weights 10 and 5 per 1000) | DONE (`rustic/`): RusticGen ports WorldGeneratorRustic (fmlRandom); herbs/wildberry bush are rlgen blocks with Rustic textures; olive/ironwood are rlgen DT species spliced by scripts/gen_rustic_trees.py |
 | **Snow! Real Magic!** | ReplaceSnowWorldGen: snow layers inside grass/flowers in snowy biomes | DONE (freeze pass; the plant is replaced, not kept inside the snow) |
 | **Coral Reef** | coral reefs and rocks in oceans; biome list matches only "ocean" (quirk kept) | DONE (`coral/`, rlgen:reef, reef_rock, coral_1..6) |
 | **Charm** | VillageDecorations: inside (themes per vanilla piece: storage, beds, rugs, frames, stands, torches, lanterns) and outside (RLCraft: lights 1, mobs 0.5, barrels 0.4, zombie erosion; flowers/crops/trees/pumpkins/mushrooms 0) at the FLOWERS event with the decoration random; AbandonedCrates 0.1 (y 28..48); MoreVillageBiomes off | DONE (`charm/`): crates are rlgen:crate_*/crate_sealed_* with Charm's textures, barrels/composters/bookshelf chests are 1.21 barrels/composters/chiseled bookshelves, flavored cakes plain cakes; loot rlgen:charm/* (scripts/gen_charm_loot.py) |
-| **Waystones** | waystones in villages (1.0) and anywhere (10/10000 per chunk), mossy | TODO |
+| **Waystones** | waystones in villages (1.0) and anywhere (10/10000 per chunk), mossy | DONE: village piece (Waystones handler, alphabetical order) + WildWaystones; real waystones:mossy_waystone when Waystones 1.21 is installed, else mossy wall + chiseled stone brick stand-in |
 | Realistic Torches | generateLitTorches=false: no world-gen effect | NONE |
 | Lycanites Mobs | fluid lakes (weight 0): ooze (cold), poison (swamp/spooky), acid (wasteland/dead) 0.08 surface, 0.01 underground; moglava nether only | DONE (`lyc/`, rlgen:ooze/acid/poison fluids with Lycanites textures, no effects yet) |
 | Lycanites Mobs | dungeons (distance 45 chunks, tower chance 0.1): aberrant station, desert crypts, lush tomb, shadow labyrinth, stream shrine (jar defaults + RLCraft overrides, scripts/gen_lyc_dungeons.py) | DONE: decompiled `com.lycanitesmobs.core.dungeon` + `lyc/dungeon` (planned as chunks are first generated, kept in rlgen_lyc_dungeons; theme blocks are rlgen blocks with Lycanites textures); spawners get zombies, bosses not spawned, Lycanites fires are vanilla fire |
@@ -48,8 +48,8 @@ Status: DONE = ported; PART = partly ported; TODO = to port; SKIP = deliberately
 | Ice and Fire 1.7.1 | pixie villages (pixie house as a block model), snow villages | DONE (`iaf/IafVillage`) |
 | Recurrent Complex | all active structures | DONE |
 | Battle Towers / Roguelike / Doomlike / Ruins | | DONE |
-| Bountiful | bounty board in villages | TODO (small) |
-| Serene Seasons | season-dependent snow/colours at populate | TODO (install 1.21 version) |
+| Bountiful | bounty board in villages | DONE: village piece (templates in data/rlgen/structure/bountiful) with rlgen:bounty_board, or bountiful:bountyboard when Bountiful 1.21 is installed |
+| Serene Seasons | season-dependent snow/colours at populate | INSTALL the 1.21 version (not ported) |
 | RLTweaker | RecurrentHandler (RC populate), LostCities handler: no change to generated blocks | NONE |
 | Locks | locks on generated chests (game mechanic, needs the mod) | SKIP for now |
 | RLArtifacts | underground chests: chance 0 in config | NONE |

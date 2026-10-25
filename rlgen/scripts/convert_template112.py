@@ -38,6 +38,8 @@ pal = []
 for p in t["palette"]:
     k = key(p)
     meta = META.get(k)
+    if meta is None and not str(p["Name"]).startswith("minecraft:"):
+        meta = 0  # modded blocks map through convert_rc.MOD_BLOCKS
     if meta is None:
         raise SystemExit("unknown 1.12 state " + k)
     pal.append(parse(c.convert_block(str(p["Name"]), meta)[0]))

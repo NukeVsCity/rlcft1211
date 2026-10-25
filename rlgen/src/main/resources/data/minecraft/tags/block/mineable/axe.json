@@ -30,6 +30,9 @@
     "rlgen:crate_acacia",
     "rlgen:crate_sealed_acacia",
     "rlgen:crate_dark_oak",
-    "rlgen:crate_sealed_dark_oak"
+    "rlgen:crate_sealed_dark_oak",
+    "rlgen:bounty_board",
+    "rlgen:olive_log",
+    "rlgen:ironwood_log"
   ]
 }

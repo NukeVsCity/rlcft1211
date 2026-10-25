@@ -42,6 +42,7 @@ import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FurnaceBlock;
@@ -91,6 +92,8 @@ public class VillagePieces {
       LOADERS.put("Well", Well::new);
       LOADERS.put("WoodHut", WoodHut::new);
       LOADERS.put("RcVillagePiece", RcVillagePiece::new);
+      LOADERS.put("WaystonePiece", WaystonePiece::new);
+      LOADERS.put("BountyBoardPiece", BountyBoardPiece::new);
    }
 
    /** StructurePieceType loader for every village piece. */
@@ -236,9 +239,17 @@ public class VillagePieces {
       list.add(new VillagePieces.PieceWeight(VillagePieces.Field2.class, 3, randInt(random, 2 + i, 4 + i * 2)));
       list.add(new VillagePieces.PieceWeight(VillagePieces.House2.class, 15, randInt(random, 0, 1 + i)));
       list.add(new VillagePieces.PieceWeight(VillagePieces.House3.class, 8, randInt(random, 0 + i, 3 + i * 2)));
+      // the other mods' IVillageCreationHandlers (1.12 kept them in a HashMap by class; here alphabetical by class name):
+      // Ice and Fire's animal farm (limit i + nextInt(1), 0 here, so it never builds), Bountiful's board, Recurrent Complex, Waystones
+      random.nextInt(1);
+      if (random.nextFloat() <= 1.0F) {
+         list.add(new VillagePieces.PieceWeight(VillagePieces.BountyBoardPiece.class, 3, 1));
+      }
       for (RcHandler handler : rcHandlers()) {
          list.add(handler.weight(random, i));
       }
+      list.add(random.nextFloat() > 1.0F ? new VillagePieces.PieceWeight(VillagePieces.WaystonePiece.class, 0, 0)
+         : new VillagePieces.PieceWeight(VillagePieces.WaystonePiece.class, 3, 1));
       Iterator<PieceWeight> iterator = list.iterator();
 
       while (iterator.hasNext()) {
@@ -297,6 +308,10 @@ public class VillagePieces {
          structurevillagepieces$village = VillagePieces.House2.createPiece(structurevillagepieces$start, list, random, i, j, k, enumfacing, l);
       } else if (oclass == VillagePieces.House3.class) {
          structurevillagepieces$village = VillagePieces.House3.createPiece(structurevillagepieces$start, list, random, i, j, k, enumfacing, l);
+      } else if (oclass == VillagePieces.WaystonePiece.class) {
+         structurevillagepieces$village = VillagePieces.WaystonePiece.createPiece(structurevillagepieces$start, list, random, i, j, k, enumfacing, l);
+      } else if (oclass == VillagePieces.BountyBoardPiece.class) {
+         structurevillagepieces$village = VillagePieces.BountyBoardPiece.createPiece(structurevillagepieces$start, list, random, i, j, k, enumfacing, l);
       } else if (structurevillagepieces$pieceweight.rc != null) {
          structurevillagepieces$village = structurevillagepieces$pieceweight.rc.build(structurevillagepieces$pieceweight, structurevillagepieces$start, list, random, i, j, k, enumfacing, l);
       }
@@ -2391,6 +2406,192 @@ public class VillagePieces {
    }
 
    /** Recurrent Complex GenericVillagePiece. */
+   /** A block of another mod if it is installed (its own, working version), else null. */
+   @Nullable
+   static Block modBlock(String id) {
+      net.minecraft.resources.ResourceLocation rl = net.minecraft.resources.ResourceLocation.parse(id);
+      return net.minecraft.core.registries.BuiltInRegistries.BLOCK.containsKey(rl) ? net.minecraft.core.registries.BuiltInRegistries.BLOCK.get(rl) : null;
+   }
+
+   static BlockState withProperty(BlockState s, String name, String value) {
+      net.minecraft.world.level.block.state.properties.Property<?> p = s.getBlock().getStateDefinition().getProperty(name);
+      return p == null ? s : with(s, p, value);
+   }
+
+   private static <T extends Comparable<T>> BlockState with(BlockState s, net.minecraft.world.level.block.state.properties.Property<T> p, String value) {
+      return p.getValue(value).map(v -> s.setValue(p, v)).orElse(s);
+   }
+
+   /**
+    * Waystones 4.1.0 ComponentVillageWaystone: its 5x5 template, unrotated, at the corner of a 7x6x7 box on the ground, and a mossy
+    * waystone on the "Waystone" data block. With Waystones (1.21) installed that is its own mossy waystone, otherwise a stand-in.
+    */
+   public static class WaystonePiece extends VillagePieces.Village {
+      WaystonePiece(CompoundTag tag) {
+         super(tag);
+      }
+
+      WaystonePiece(VillagePieces.Start start, int type, BoundingBox box, Direction facing) {
+         super(start, type);
+         this.setBox(box);
+         this.setOrientation(facing);
+      }
+
+      @Nullable
+      public static WaystonePiece createPiece(VillagePieces.Start start, List<StructurePiece> pieces, Random random, int x, int y, int z, Direction facing, int type) {
+         BoundingBox box = BoundingBox.orientBox(x, y, z, 0, 0, 0, 7, 6, 7, facing);
+         return canVillageGoDeeper(box) && findIntersecting(pieces, box) == null ? new WaystonePiece(start, type, box, facing) : null;
+      }
+
+      @Override
+      public boolean addComponentParts(WorldGenLevel world, Random random, BoundingBox box) {
+         if (this.averageGroundLvl < 0) {
+            this.averageGroundLvl = this.getAverageGroundLevel(world, box);
+            if (this.averageGroundLvl < 0) {
+               return true;
+            }
+            this.boundingBox.move(0, this.averageGroundLvl - this.boundingBox.minY(), 0);
+         }
+         BlockPos pos = new BlockPos(this.boundingBox.minX(), this.boundingBox.minY(), this.boundingBox.minZ());
+         var template = world.getLevel().getStructureManager().get(net.minecraft.resources.ResourceLocation.parse(
+            this.structureType == 1 ? "rlgen:waystones/desert_village_waystone" : "rlgen:waystones/village_waystone")).orElse(null);
+         if (template == null) {
+            return true;
+         }
+         var settings = new net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings().setBoundingBox(box)
+            .addProcessor(net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor.STRUCTURE_BLOCK);
+         template.placeInWorld(world, pos, pos, settings, RandomSource.create(0L), 2);
+         for (var e : com.nukevscity.rlgen.quark.Templates.dataBlocks(template, pos, settings).entrySet()) {
+            if ("Waystone".equals(e.getValue())) {
+               BlockPos at = e.getKey();
+               Block waystone = modBlock("waystones:mossy_waystone");
+               if (waystone != null) {
+                  if (box.isInside(at)) {
+                     world.setBlock(at, withProperty(waystone.defaultBlockState(), "half", "lower"), 3);
+                  }
+                  if (box.isInside(at.above())) {
+                     world.setBlock(at.above(), withProperty(waystone.defaultBlockState(), "half", "upper"), 3);
+                  }
+               } else {
+                  if (box.isInside(at)) {
+                     world.setBlock(at, Blocks.MOSSY_STONE_BRICK_WALL.defaultBlockState(), 3);
+                  }
+                  if (box.isInside(at.above())) {
+                     world.setBlock(at.above(), Blocks.CHISELED_STONE_BRICKS.defaultBlockState(), 3);
+                  }
+               }
+            }
+         }
+         return true;
+      }
+   }
+
+   /**
+    * Bountiful 2.2.3 VillageBoardComponent: the village board template for the village type, rotated to the road, one below the
+    * ground level; its grass paths look down for the ground (VillageBoardProcessor). The board is Bountiful's (1.21) when installed.
+    */
+   public static class BountyBoardPiece extends VillagePieces.Village {
+      private Rotation boardRotation = Rotation.NONE;
+      private BlockPos boardShift = BlockPos.ZERO;
+
+      BountyBoardPiece(CompoundTag tag) {
+         super(tag);
+         this.setup(this.getOrientation());
+      }
+
+      BountyBoardPiece(VillagePieces.Start start, int type, BoundingBox box, Direction facing) {
+         super(start, type);
+         this.setBox(box);
+         this.setOrientation(facing);
+         this.setup(facing);
+      }
+
+      private void setup(@Nullable Direction facing) {
+         if (facing == Direction.SOUTH) {
+            this.boardRotation = Rotation.CLOCKWISE_180;
+            this.boardShift = new BlockPos(6, 0, 6);
+         } else if (facing == Direction.WEST) {
+            this.boardRotation = Rotation.COUNTERCLOCKWISE_90;
+            this.boardShift = new BlockPos(0, 0, 6);
+         } else if (facing == Direction.EAST) {
+            this.boardRotation = Rotation.CLOCKWISE_90;
+            this.boardShift = new BlockPos(6, 0, 0);
+         } else {
+            this.boardRotation = Rotation.NONE;
+            this.boardShift = BlockPos.ZERO;
+         }
+      }
+
+      @Nullable
+      public static BountyBoardPiece createPiece(VillagePieces.Start start, List<StructurePiece> pieces, Random random, int x, int y, int z, Direction facing, int type) {
+         BoundingBox box = BoundingBox.orientBox(x, y, z, 0, 0, 0, 7, 6, 7, facing);
+         return canVillageGoDeeper(box) && findIntersecting(pieces, box) == null ? new BountyBoardPiece(start, type, box, facing) : null;
+      }
+
+      @Override
+      public boolean addComponentParts(WorldGenLevel world, Random random, BoundingBox box) {
+         if (this.averageGroundLvl < 0) {
+            this.averageGroundLvl = this.getAverageGroundLevel(world, box);
+            if (this.averageGroundLvl < 0) {
+               return true;
+            }
+            this.boundingBox.move(0, this.averageGroundLvl - this.boundingBox.minY() - 1, 0);
+         }
+         BlockState pathState = this.getBiomeSpecificBlockState(Blocks.DIRT_PATH.defaultBlockState());
+         BlockState planksState = this.getBiomeSpecificBlockState(Blocks.OAK_PLANKS.defaultBlockState());
+         BlockState gravelState = this.getBiomeSpecificBlockState(Blocks.GRAVEL.defaultBlockState());
+         BlockState cobbleState = this.getBiomeSpecificBlockState(Blocks.COBBLESTONE.defaultBlockState());
+         String id = switch (this.structureType) {
+            case 1 -> "rlgen:bountiful/village_board_desert";
+            case 2 -> "rlgen:bountiful/village_board_savanna";
+            case 3 -> "rlgen:bountiful/village_board_taiga";
+            default -> "rlgen:bountiful/village_board";
+         };
+         var template = world.getLevel().getStructureManager().get(net.minecraft.resources.ResourceLocation.parse(id)).orElse(null);
+         if (template == null) {
+            return true;
+         }
+         BlockPos pos = new BlockPos(this.boundingBox.minX(), this.boundingBox.minY(), this.boundingBox.minZ()).offset(this.boardShift);
+         var settings = new net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings().setBoundingBox(box).setRotation(this.boardRotation);
+         List<BlockPos> paths = new ArrayList<>();
+         for (var info : template.filterBlocks(pos, settings, Blocks.DIRT_PATH)) {
+            paths.add(info.pos());
+         }
+         settings.addProcessor(new net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor(List.of(Blocks.DIRT_PATH, Blocks.STRUCTURE_VOID)));
+         template.placeInWorld(world, pos, pos, settings, RandomSource.create(0L), 2);
+         Block board = modBlock("bountiful:bountyboard");
+         if (board != null) {
+            for (var info : template.filterBlocks(pos, settings, com.nukevscity.rlgen.RLGen.BOUNTY_BOARD.get())) {
+               if (box.isInside(info.pos())) {
+                  world.setBlock(info.pos(), board.defaultBlockState(), 2);
+               }
+            }
+         }
+         // VillageBoardProcessor: a template path looks down from its spot (to sea level - 1) and sets the path spot itself
+         for (BlockPos p : paths) {
+            if (!box.isInside(p)) {
+               continue;
+            }
+            for (BlockPos q = p; q.getY() >= SEA_LEVEL - 1; q = q.below()) {
+               BlockState state = world.getBlockState(q);
+               if (state.is(Blocks.GRASS_BLOCK) || state.is(Blocks.DIRT)) {
+                  world.setBlock(p.above(), Blocks.AIR.defaultBlockState(), 3);
+                  world.setBlock(p, pathState, 3);
+                  break;
+               } else if (state.liquid()) {
+                  world.setBlock(p, planksState, 3);
+                  break;
+               } else if (state.is(Blocks.SAND) || state.is(Blocks.SANDSTONE) || state.is(Blocks.RED_SANDSTONE)) {
+                  BlockState below = world.getBlockState(p.below());
+                  world.setBlock(p, below.isAir() || below.liquid() ? cobbleState : gravelState, 3);
+                  break;
+               }
+            }
+         }
+         return true;
+      }
+   }
+
    public static class RcVillagePiece extends VillagePieces.Village {
       String structureID;
       String generationID;

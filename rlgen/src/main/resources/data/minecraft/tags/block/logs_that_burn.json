@@ -1,6 +1,8 @@
 {
   "values": [
     "rlgen:fir_log",
-    "rlgen:tenebra_log"
+    "rlgen:tenebra_log",
+    "rlgen:olive_log",
+    "rlgen:ironwood_log"
   ]
 }

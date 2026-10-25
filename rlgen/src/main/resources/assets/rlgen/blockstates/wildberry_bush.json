@@ -1,0 +1,79 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "rlgen:block/wildberry_bush"
+      }
+    },
+    {
+      "when": {
+        "berries": "true"
+      },
+      "apply": {
+        "model": "rlgen:block/wildberries_0"
+      }
+    },
+    {
+      "when": {
+        "berries": "true"
+      },
+      "apply": {
+        "model": "rlgen:block/wildberries_0",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "berries": "true"
+      },
+      "apply": {
+        "model": "rlgen:block/wildberries_0",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "berries": "true"
+      },
+      "apply": {
+        "model": "rlgen:block/wildberries_0",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "berries": "true"
+      },
+      "apply": {
+        "model": "rlgen:block/wildberries_1"
+      }
+    },
+    {
+      "when": {
+        "berries": "true"
+      },
+      "apply": {
+        "model": "rlgen:block/wildberries_1",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "berries": "true"
+      },
+      "apply": {
+        "model": "rlgen:block/wildberries_1",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "berries": "true"
+      },
+      "apply": {
+        "model": "rlgen:block/wildberries_1",
+        "y": 270
+      }
+    }
+  ]
+}

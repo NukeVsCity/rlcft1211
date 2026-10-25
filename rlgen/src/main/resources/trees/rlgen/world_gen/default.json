@@ -1351,5 +1351,781 @@
       "density": "noise() * 0.0",
       "chance": "standard"
     }
+  },
+  {
+    "select": {
+      "name": "rlgen:birch_forest"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:birch_forest_hills"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:extreme_hills"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:extreme_hills_with_trees"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:forest"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:forest_hills"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:ice_mountains"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 995,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:jungle"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 995,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:jungle_edge"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:jungle_hills"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 995,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_birch_forest"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_birch_forest_hills"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_extreme_hills"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_extreme_hills_with_trees"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_forest"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_jungle"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_jungle_edge"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 995,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_mesa"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 990,
+          "rlgen:olive": 10
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_mesa_clear_rock"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 990,
+          "rlgen:olive": 10
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_plains"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_redwood_taiga"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_redwood_taiga_hills"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_swampland"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 995,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_taiga"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mutated_taiga_cold"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 995,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:plains"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:redwood_taiga"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:redwood_taiga_hills"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:smaller_extreme_hills"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:swampland"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 995,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:taiga"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:taiga_cold"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 995,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:taiga_cold_hills"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 995,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:taiga_hills"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:arid_highland"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 990,
+          "rlgen:olive": 10
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:autumnal_wooded_hills"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:autumnal_woods"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:badlands"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 990,
+          "rlgen:olive": 10
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:birch_forested_hills"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:cliffs"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:forested_hills"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:glacier"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 995,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:glacier_spikes"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 995,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:green_swamp"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 995,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:meadow"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mini_jungle"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 995,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:mountainous_desert"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 990,
+          "rlgen:olive": 10
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:rocky_plains"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:rocky_plateau"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:snowy_coniferous_forest"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 995,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:temperate_rainforest"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:thicket"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
+  },
+  {
+    "select": {
+      "name": "rlgen:woodlands"
+    },
+    "apply": {
+      "species": {
+        "method": "splice_before",
+        "random": {
+          "...": 985,
+          "rlgen:olive": 10,
+          "rlgen:ironwood": 5
+        }
+      }
+    }
   }
 ]

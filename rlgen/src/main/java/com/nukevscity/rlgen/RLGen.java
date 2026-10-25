@@ -183,6 +183,9 @@ public final class RLGen {
    public static final DeferredHolder<net.minecraft.world.level.block.entity.BlockEntityType<?>, net.minecraft.world.level.block.entity.BlockEntityType<com.nukevscity.rlgen.iaf.CocoonBlockEntity>> COCOON_BE =
       BLOCK_ENTITIES.register("myrmex_cocoon", () -> net.minecraft.world.level.block.entity.BlockEntityType.Builder.of(
          com.nukevscity.rlgen.iaf.CocoonBlockEntity::new, DESERT_MYRMEX_COCOON.get(), JUNGLE_MYRMEX_COCOON.get()).build(null));
+   /** Bountiful's bounty board (decorative; the village piece uses Bountiful's own board when that mod is installed). */
+   public static final DeferredBlock<Block> BOUNTY_BOARD = BLOCKS.registerSimpleBlock("bounty_board",
+      BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.0F).sound(SoundType.WOOD));
    /** Charm crates and sealed crates (oak, spruce, birch, jungle, acacia, dark oak). */
    public static final java.util.List<DeferredBlock<com.nukevscity.rlgen.charm.CrateBlock>> CRATES = new java.util.ArrayList<>();
    public static final java.util.List<DeferredBlock<com.nukevscity.rlgen.charm.CrateBlock>> SEALED_CRATES = new java.util.ArrayList<>();
@@ -286,6 +289,11 @@ public final class RLGen {
    public static final DeferredBlock<LeavesBlock> YELLOW_AUTUMNAL_LEAVES = leaves("yellow_autumnal_leaves");
    public static final DeferredBlock<LeavesBlock> BROWN_AUTUMNAL_LEAVES = leaves("brown_autumnal_leaves");
    public static final DeferredBlock<LeavesBlock> TENEBRA_LEAVES = leaves("tenebra_leaves");
+   // Rustic olive and ironwood (Dynamic Trees species in 1.12 through Rustic's DT compat)
+   public static final DeferredBlock<RotatedPillarBlock> OLIVE_LOG = log("olive_log", MapColor.WOOD);
+   public static final DeferredBlock<RotatedPillarBlock> IRONWOOD_LOG = log("ironwood_log", MapColor.COLOR_GRAY);
+   public static final DeferredBlock<LeavesBlock> OLIVE_LEAVES = leaves("olive_leaves");
+   public static final DeferredBlock<LeavesBlock> IRONWOOD_LEAVES = leaves("ironwood_leaves");
 
    // Defiled Lands / Traverse blocks used by their 1.12 decoration
    public static final DeferredBlock<ColoredFallingBlock> GRAVEL_DEFILED = BLOCKS.registerBlock(
@@ -316,6 +324,26 @@ public final class RLGen {
       Block.box(2, 0, 2, 14, 14, 14));
    public static final DeferredBlock<LegacyPlantBlock> SCURONOTTE = plant("scuronotte", s -> s.isSolid() && !s.is(Blocks.ICE),
       Block.box(4, 0, 4, 12, 8.4, 12));
+   /** Rustic 1.1.7 herbs (fully grown, as its world gen places them) with their 1.12 EnumPlantType soil: Desert, Plains or Cave. */
+   public static final java.util.Map<String, DeferredBlock<LegacyPlantBlock>> RUSTIC_HERBS = new java.util.LinkedHashMap<>();
+   public static final DeferredBlock<com.nukevscity.rlgen.rustic.WildberryBushBlock> WILDBERRY_BUSH = BLOCKS.registerBlock("wildberry_bush",
+      com.nukevscity.rlgen.rustic.WildberryBushBlock::new, BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak()
+         .sound(SoundType.GRASS).noOcclusion().pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY));
+
+   static {
+      java.util.function.Predicate<net.minecraft.world.level.block.state.BlockState> desert = s -> s.is(BlockTags.SAND) || s.is(Blocks.TERRACOTTA)
+         || s.is(BlockTags.TERRACOTTA);
+      java.util.function.Predicate<net.minecraft.world.level.block.state.BlockState> plains = s -> s.is(Blocks.GRASS_BLOCK) || s.is(Blocks.DIRT)
+         || s.is(Blocks.COARSE_DIRT) || s.is(Blocks.PODZOL) || s.is(Blocks.FARMLAND);
+      java.util.function.Predicate<net.minecraft.world.level.block.state.BlockState> cave = s -> s.isSolid();
+      for (String n : new String[]{"aloe_vera", "blood_orchid", "chamomile", "cloudsbluff", "cohosh", "core_root", "ginseng", "horsetail",
+         "marsh_mallow", "mooncap_mushroom", "wind_thistle"}) {
+         var soil = n.equals("aloe_vera") ? desert : n.equals("core_root") || n.equals("mooncap_mushroom") ? cave : plains;
+         RUSTIC_HERBS.put(n, BLOCKS.registerBlock(n, p -> new LegacyPlantBlock(p, soil, Block.box(2, 0, 2, 14, 14, 14)),
+            BlockBehaviour.Properties.of().mapColor(MapColor.PLANT).noCollission().instabreak().sound(SoundType.CROP)
+               .pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)));
+      }
+   }
    public static final DeferredBlock<VilespineBlock> VILESPINE = BLOCKS.registerBlock("vilespine", p -> new VilespineBlock(p,
          s -> s.getBlock() == DIRT_DEFILED.get() || s.getBlock() == GRASS_DEFILED.get() || s.getBlock() == SAND_DEFILED.get()),
       BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).noCollission().strength(0.1F, 0.5F).sound(SoundType.GRASS).noOcclusion());
@@ -325,6 +353,7 @@ public final class RLGen {
       BIOME_SOURCES.register("legacy", () -> LegacyBiomeSource.CODEC);
       for (DeferredBlock<?> b : new DeferredBlock<?>[]{RED_ROCK, BLUE_ROCK, STONE_DEFILED, GRASS_DEFILED, DIRT_DEFILED, SAND_DEFILED,
          FIR_LOG, TENEBRA_LOG, FIR_LEAVES, RED_AUTUMNAL_LEAVES, ORANGE_AUTUMNAL_LEAVES, YELLOW_AUTUMNAL_LEAVES, BROWN_AUTUMNAL_LEAVES, TENEBRA_LEAVES,
+         OLIVE_LOG, IRONWOOD_LOG, OLIVE_LEAVES, IRONWOOD_LEAVES,
          GRAVEL_DEFILED, SANDSTONE_DEFILED, STONE_BRICKS_DEFILED, STONE_BRICKS_DEFILED_CRACKED, STONE_BRICKS_DEFILED_MOSSY, STONE_DEFILED_MOSSY,
          HEPHAESTITE_ORE, UMBRIUM_ORE, SCARLITE_ORE, MARBLE, LIMESTONE, JASPER, SLATE, BLUE_ROCK_COBBLESTONE, CONJURING_ALTAR, DEAD_GRASS, COLD_GRASS, BLASTEM, SCURONOTTE, VILESPINE,
          ASH, CHARED_DIRT, CHARED_GRASS, CHARED_STONE, CHARED_COBBLESTONE, CHARED_GRAVEL, CHARED_GRASS_PATH, FROZEN_DIRT, FROZEN_GRASS, FROZEN_STONE,
@@ -341,6 +370,9 @@ public final class RLGen {
       CORALS.forEach(ITEMS::registerSimpleBlockItem);
       CRYSTALS.forEach(ITEMS::registerSimpleBlockItem);
       CRATES.forEach(ITEMS::registerSimpleBlockItem);
+      ITEMS.registerSimpleBlockItem(BOUNTY_BOARD);
+      ITEMS.registerSimpleBlockItem(WILDBERRY_BUSH);
+      RUSTIC_HERBS.values().forEach(ITEMS::registerSimpleBlockItem);
       SEALED_CRATES.forEach(ITEMS::registerSimpleBlockItem);
       SPELEOTHEMS.values().forEach(ITEMS::registerSimpleBlockItem);
       MOD_BLOCKS.values().forEach(ITEMS::registerSimpleBlockItem);

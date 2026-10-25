@@ -1,0 +1,33 @@
+{
+  "family": "rlgen:ironwood",
+  "tapering": 0.4,
+  "signal_energy": 14.0,
+  "up_probability": 4,
+  "lowest_branch_height": 4,
+  "growth_rate": 1.0,
+  "max_branch_radius": 24,
+  "leaves_properties": "rlgen:dt_ironwood",
+  "preferred_climate": "temperate",
+  "climate_tolerance": 0.5,
+  "generate_seed": false,
+  "generate_sapling": false,
+  "acceptable_soils": [
+    "dirt_like"
+  ],
+  "features": [
+    {
+      "name": "clear_volume",
+      "properties": {
+        "height": 6
+      }
+    },
+    "bottom_flare",
+    {
+      "name": "mound",
+      "properties": {
+        "mound_cutoff_radius": 5
+      }
+    },
+    "roots"
+  ]
+}

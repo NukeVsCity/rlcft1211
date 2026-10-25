@@ -270,6 +270,7 @@ MOD_BLOCKS.update({
     "iceandfire:myrmex_resin": rmeta("rlgen:desert_myrmex_resin", "rlgen:jungle_myrmex_resin"),
     "iceandfire:myrmex_resin_sticky": rmeta("rlgen:desert_myrmex_resin_sticky", "rlgen:jungle_myrmex_resin_sticky"),
     "iceandfire:pixie_house": ("rlgen", "rlgen:pixie_house"),
+    "bountiful:bountyboard": ("rlgen", "rlgen:bounty_board"),
     "quark:crystal": rmeta(*[f"rlgen:crystal_{c}" for c in ["white", "red", "orange", "yellow", "green", "blue", "indigo", "violet", "black"]]),
     "quark:marble": rmeta("rlgen:marble", "rlgen:marble_smooth"), "quark:limestone": rmeta("rlgen:limestone", "rlgen:limestone"),
     "quark:jasper": rmeta("rlgen:jasper", "rlgen:jasper"), "quark:slate": rmeta("rlgen:slate", "rlgen:slate"),

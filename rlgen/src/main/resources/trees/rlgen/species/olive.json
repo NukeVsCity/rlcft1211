@@ -1,0 +1,16 @@
+{
+  "family": "rlgen:olive",
+  "tapering": 0.3,
+  "signal_energy": 12.0,
+  "up_probability": 2,
+  "lowest_branch_height": 3,
+  "growth_rate": 1.0,
+  "leaves_properties": "rlgen:dt_olive",
+  "preferred_climate": "temperate",
+  "climate_tolerance": 0.5,
+  "generate_seed": false,
+  "generate_sapling": false,
+  "acceptable_soils": [
+    "dirt_like"
+  ]
+}

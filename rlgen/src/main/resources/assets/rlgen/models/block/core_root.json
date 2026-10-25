@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "rlgen:block/rustic/core_root"
+  },
+  "render_type": "minecraft:cutout"
+}

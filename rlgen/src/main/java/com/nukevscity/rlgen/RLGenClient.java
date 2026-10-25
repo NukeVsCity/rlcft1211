@@ -14,6 +14,17 @@ final class RLGenClient {
       modBus.addListener((RegisterColorHandlersEvent.Block e) -> e.register(
          (state, level, pos, tint) -> level != null && pos != null ? BiomeColors.getAverageGrassColor(level, pos) : GrassColor.getDefaultColor(),
          RLGen.VILESPINE.get()));
+      // Rustic's wildberry bush leaves use tintindex 1 (foliage colour)
+      modBus.addListener((RegisterColorHandlersEvent.Block e) -> e.register(
+         (state, level, pos, tint) -> tint != 1 ? -1 : level != null && pos != null ? BiomeColors.getAverageFoliageColor(level, pos)
+            : net.minecraft.world.level.FoliageColor.getDefaultColor(),
+         RLGen.WILDBERRY_BUSH.get()));
+      modBus.addListener((RegisterColorHandlersEvent.Block e) -> e.register(
+         (state, level, pos, tint) -> level != null && pos != null ? BiomeColors.getAverageFoliageColor(level, pos)
+            : net.minecraft.world.level.FoliageColor.getDefaultColor(),
+         RLGen.OLIVE_LEAVES.get(), RLGen.IRONWOOD_LEAVES.get()));
+      modBus.addListener((RegisterColorHandlersEvent.Item e) -> e.register((stack, tint) -> net.minecraft.world.level.FoliageColor.getDefaultColor(),
+         RLGen.OLIVE_LEAVES.get(), RLGen.IRONWOOD_LEAVES.get()));
       modBus.addListener((net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent e) -> {
          for (com.nukevscity.rlgen.lyc.LycFluids.Kind k : com.nukevscity.rlgen.lyc.LycFluids.ALL) {
             net.minecraft.resources.ResourceLocation still = net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(RLGen.MODID, "block/" + k.name + "_still");

@@ -1,0 +1,7 @@
+{
+  "parent": "dynamictrees:item/branch",
+  "textures": {
+    "bark": "rlgen:block/olive_log",
+    "rings": "rlgen:block/olive_log_top"
+  }
+}

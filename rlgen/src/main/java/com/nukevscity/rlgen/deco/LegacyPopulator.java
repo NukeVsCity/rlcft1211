@@ -313,11 +313,13 @@ public final class LegacyPopulator {
       d.post(w, r, pos);
       freeze(w, pos.offset(8, 0, 8));
       // IWorldGenerators that ran after populate, by weight: Ice and Fire 0 (with Quark's pirate ships 0 and crystal caves 1, planned),
-      // Quark clay and blossom trees 0, Lycanites fluid lakes 0, Coral Reef 1, No Tree Punching 3, Quark fairy rings 5, monster boxes 200, speleothems 1000, Charm abandoned crates 1000,
+      // Quark clay and blossom trees 0, Lycanites fluid lakes 0, Waystones 0, Rustic herbs/berries 0, Coral Reef 1, No Tree Punching 3, Quark fairy rings 5, monster boxes 200, speleothems 1000, Charm abandoned crates 1000,
       // cave roots 2000, archaeologist houses 3000
       com.nukevscity.rlgen.iaf.IafGen.apply(w, cp);
       com.nukevscity.rlgen.quark.QuarkGen.weight0(w, cp.x, cp.z);
       com.nukevscity.rlgen.lyc.FluidLakes.generate(w, cp.x, cp.z);
+      com.nukevscity.rlgen.waystones.WildWaystones.generate(w, cp.x, cp.z);
+      com.nukevscity.rlgen.rustic.RusticGen.generate(w, cp.x, cp.z);
       com.nukevscity.rlgen.coral.CoralReefs.generate(w, cp);
       com.nukevscity.rlgen.ntp.LooseRocks.generate(w, cp);
       com.nukevscity.rlgen.quark.FairyRings.generate(w, cp);
