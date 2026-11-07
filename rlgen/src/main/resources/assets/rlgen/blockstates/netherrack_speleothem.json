@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "size=small": {
+      "model": "rlgen:block/netherrack_speleothem_small"
+    },
+    "size=medium": {
+      "model": "rlgen:block/netherrack_speleothem_medium"
+    },
+    "size=big": {
+      "model": "rlgen:block/netherrack_speleothem_big"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "size=small": {
+      "model": "rlgen:block/basalt_speleothem_small"
+    },
+    "size=medium": {
+      "model": "rlgen:block/basalt_speleothem_medium"
+    },
+    "size=big": {
+      "model": "rlgen:block/basalt_speleothem_big"
+    }
+  }
+}

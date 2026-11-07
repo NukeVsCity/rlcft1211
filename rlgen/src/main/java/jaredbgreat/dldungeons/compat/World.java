@@ -30,6 +30,7 @@ public final class World {
    public static final int HEIGHT = 256;
    private final long seed;
    private final LegacyChunkGenerator generator;
+   private final int dimension;
    private WorldGenLevel level;
    private int minX;
    private int minZ;
@@ -40,6 +41,18 @@ public final class World {
    public World(long seed, LegacyChunkGenerator generator) {
       this.seed = seed;
       this.generator = generator;
+      this.dimension = 0;
+   }
+
+   /** The 1.12 nether (dimension -1, all Hell) over the 1.21 nether terrain; outside the bound chunks it reads as air. */
+   public World(long seed, int dimension) {
+      this.seed = seed;
+      this.generator = null;
+      this.dimension = dimension;
+   }
+
+   public int getDimension() {
+      return this.dimension;
    }
 
    public void bind(WorldGenLevel level, int chunkX, int chunkZ) {
@@ -74,8 +87,9 @@ public final class World {
       return this.seed;
    }
 
+   /** WorldProvider.getActualHeight: 128 without sky light (the nether). */
    public int getActualHeight() {
-      return HEIGHT;
+      return this.generator == null ? 128 : HEIGHT;
    }
 
    public BlockPos getSpawnPoint() {
@@ -83,14 +97,17 @@ public final class World {
    }
 
    public Biome getBiome(BlockPos pos) {
-      return this.generator.legacyBiome(pos.getX(), pos.getZ());
+      return this.generator == null ? com.nukevscity.rlgen.legacy.biome.Biomes.HELL : this.generator.legacyBiome(pos.getX(), pos.getZ());
    }
 
    public BlockState getBlockState(BlockPos pos) {
       if (pos.getY() < 0 || pos.getY() >= HEIGHT) {
          return Blocks.AIR.defaultBlockState(); // 1.12 world: nothing outside 0..255
       }
-      return this.inLevel(pos) ? this.level.getBlockState(pos) : this.generator.legacyState(pos);
+      if (this.inLevel(pos)) {
+         return this.level.getBlockState(pos);
+      }
+      return this.generator == null ? Blocks.AIR.defaultBlockState() : this.generator.legacyState(pos);
    }
 
    public boolean isAirBlock(BlockPos pos) {

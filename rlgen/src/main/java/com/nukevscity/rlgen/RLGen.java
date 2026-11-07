@@ -419,5 +419,6 @@ public final class RLGen {
       BLOCK_ENTITIES.register(modBus);
       ITEMS.register(modBus);
       com.nukevscity.rlgen.lyc.LycFluids.register(modBus);
+      com.nukevscity.rlgen.nether.NetherGen.register(modBus);
    }
 }

@@ -176,7 +176,7 @@ public final class RegisteredBlock extends AbstractBlock {
       if (bs.isAir() || bs.is(BlockTags.ICE) || bs.is(BlockTags.SNOW) || bs.is(Blocks.SNOW) || bs.is(Blocks.SNOW_BLOCK)) {
          return false;
       }
-      return bs.is(BlockTags.MINEABLE_WITH_SHOVEL) || bs.is(BlockTags.MINEABLE_WITH_PICKAXE) && bs.isSolid();
+      return bs.is(BlockTags.MINEABLE_WITH_SHOVEL) || bs.is(BlockTags.MINEABLE_WITH_PICKAXE) && bs.isSolid() || bs.is(Blocks.BEDROCK); // bedrock: Material.ROCK
    }
 
    @Override
