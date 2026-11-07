@@ -5,20 +5,21 @@ import atomicstryker.ruins.common.RuinTemplate;
 import atomicstryker.ruins.common.RuinsTemplates;
 import atomicstryker.ruins.common.RuinsWorld;
 import com.mojang.logging.LogUtils;
-import com.nukevscity.rlgen.world.LegacyChunkGenerator;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.ChunkPos;
 import org.slf4j.Logger;
 
 /**
- * Ruins' RuinGenerator.generateNormal / createBuilding for the overworld. Every chunk makes its tries with the chunk random Forge gave
+ * Ruins' RuinGenerator.generateNormal / generateNether / createBuilding for the overworld, the nether and the End. Every chunk makes its tries with the chunk random Forge gave
  * IWorldGenerators; a ruin is tested (surface, spawn and min distances, leveling) the first time any chunk it covers is generated, and
- * that decision is kept with the world (RuinsSavedData), so a ruin is always built whole, like 1.12 building it in one go.
+ * that decision is kept with the world (RuinsSavedData, one per dimension like RuinsPositionsFile.txt), so a ruin is always built whole,
+ * like 1.12 building it in one go.
  */
 public final class RuinsGen {
    private static final Logger LOGGER = LogUtils.getLogger();
@@ -55,25 +56,29 @@ public final class RuinsGen {
       return new Random(xSeed * (long)cx + zSeed * (long)cz ^ seed);
    }
 
-   static List<Candidate> candidates(LegacyChunkGenerator gen, long seed, int cx, int cz) {
-      String k = seed + "/" + cx + "/" + cz;
+   static List<Candidate> candidates(RuinsTerrain gen, long seed, int cx, int cz) {
+      String k = gen.dim.name + "/" + seed + "/" + cx + "/" + cz;
       synchronized (CANDIDATES) {
          List<Candidate> c = CANDIDATES.get(k);
          if (c != null) {
             return c;
          }
       }
-      RuinsTemplates files = RuinsTemplates.get();
+      RuinsTemplates files = RuinsTemplates.get(gen.dim.name);
       Random random = chunkRandom(seed, cx, cz);
       List<Candidate> out = new ArrayList<>();
       int xBase = cx * 16;
       int zBase = cz * 16;
-      for (int c = 0; c < files.triesPerChunkNormal; c++) {
-         if (random.nextFloat() * 100.0F < files.chanceToSpawnNormal) {
+      // WorldProviderHell took generateNether, every other dimension (the End too) generateNormal
+      boolean nether = gen.dim == RuinsTerrain.Dim.NETHER;
+      int tries = nether ? files.triesPerChunkNether : files.triesPerChunkNormal;
+      float chance = nether ? files.chanceToSpawnNether : files.chanceToSpawnNormal;
+      for (int c = 0; c < tries; c++) {
+         if (random.nextFloat() * 100.0F < chance) {
             int x = xBase + random.nextInt(16);
             int z = zBase + random.nextInt(16);
             int rotate = random.nextInt(4);
-            String biomeID = RuinTemplate.pathOf(gen.legacyBiome(x, z));
+            String biomeID = gen.biome(x, z);
             if (files.useGeneric(random, biomeID)) {
                biomeID = "generic";
             }
@@ -91,8 +96,8 @@ public final class RuinsGen {
    }
 
    /** Candidates from nearby chunks whose build area could reach this chunk. */
-   static List<Candidate> reaching(LegacyChunkGenerator gen, long seed, ChunkPos cp) {
-      int r = (RuinsTemplates.get().maxRadius >> 4) + 1;
+   static List<Candidate> reaching(RuinsTerrain gen, long seed, ChunkPos cp) {
+      int r = (RuinsTemplates.get(gen.dim.name).maxRadius >> 4) + 1;
       List<Candidate> out = new ArrayList<>();
       for (int i = cp.x - r; i <= cp.x + r; i++) {
          for (int j = cp.z - r; j <= cp.z + r; j++) {
@@ -108,9 +113,9 @@ public final class RuinsGen {
    }
 
    /** The y the ruin is built at, or -1 if it is not built (decided once and remembered). */
-   static int decide(LegacyChunkGenerator gen, Candidate c) {
+   static int decide(RuinsTerrain gen, Candidate c) {
       synchronized (LOCK) {
-         RuinsSavedData data = RuinsSavedData.current();
+         RuinsSavedData data = RuinsSavedData.current(gen.dim.name);
          Integer known = data.decision(c.key());
          if (known != null) {
             return known;
@@ -124,14 +129,14 @@ public final class RuinsGen {
       }
    }
 
-   private static int test(LegacyChunkGenerator gen, Candidate c, RuinsSavedData data) {
+   private static int test(RuinsTerrain gen, Candidate c, RuinsSavedData data) {
       RuinTemplate t = c.template();
-      RuinsWorld world = new RuinsWorld(gen::legacyState);
-      int y = findSuitableY(world, t, c.x(), c.z());
+      RuinsWorld world = new RuinsWorld(gen::state, gen.dim.actualHeight);
+      int y = gen.dim == RuinsTerrain.Dim.NETHER ? findSuitableYNether(world, t, c.x(), c.z()) : findSuitableY(world, t, c.x(), c.z());
       if (y <= 0) {
          return -1;
       }
-      if (!checkMinDistance(t, t.getRuinData(c.x(), y, c.z(), c.rotate()), data)) {
+      if (!checkMinDistance(gen.dim, t, t.getRuinData(c.x(), y, c.z(), c.rotate()), data)) {
          return -1;
       }
       return t.checkArea(world, c.x(), y, c.z(), c.rotate());
@@ -147,16 +152,49 @@ public final class RuinsGen {
       return -1;
    }
 
-   /** RuinGenerator.checkMinDistance with the world spawn taken as 0, 0. */
-   private static boolean checkMinDistance(RuinTemplate ruinTemplate, RuinData ruinData, RuinsSavedData data) {
-      RuinsTemplates files = RuinsTemplates.get();
-      int min_distance = Math.max(files.anySpawnMinDistance, ruinTemplate.spawnMinDistance);
-      if (ruinData.xMin < min_distance && -ruinData.xMax < min_distance && ruinData.zMin < min_distance && -ruinData.zMax < min_distance) {
-         return false;
+   /**
+    * RuinGenerator.findSuitableY, nether branch: depending on x and z parity (Java %, so never "odd" for negative coordinates) from the
+    * ceiling down, testing the air block it started from as the surface (1.12 bug kept, so most of these land on the bedrock roof), or
+    * from the floor up to the first ignored block.
+    */
+   private static int findSuitableYNether(RuinsWorld world, RuinTemplate r, int x, int z) {
+      if ((x % 2 == 1) ^ (z % 2 == 1)) {
+         for (int y = 255; y > -1; y--) {
+            BlockState b = world.getBlockState(new BlockPos(x, y, z));
+            if (b.isAir()) {
+               for (; y > -1; y--) {
+                  if (!r.isIgnoredBlock(world.getBlockState(new BlockPos(x, y, z)))) {
+                     return r.isAcceptableSurface(b) ? y + 1 : -1;
+                  }
+               }
+            }
+         }
+      } else {
+         boolean accept = false;
+         for (int y = 0; y < 256; y++) {
+            BlockState b = world.getBlockState(new BlockPos(x, y, z));
+            if (!r.isIgnoredBlock(b)) {
+               accept = r.isAcceptableSurface(b);
+            } else {
+               return accept ? y : -1;
+            }
+         }
       }
-      int max_distance = Math.min(files.anySpawnMaxDistance, ruinTemplate.spawnMaxDistance);
-      if (ruinData.xMax > max_distance || -ruinData.xMin > max_distance || ruinData.zMax > max_distance || -ruinData.zMin > max_distance) {
-         return false;
+      return -1;
+   }
+
+   /** RuinGenerator.checkMinDistance; spawn distances only in the overworld, with the world spawn taken as 0, 0. */
+   private static boolean checkMinDistance(RuinsTerrain.Dim dim, RuinTemplate ruinTemplate, RuinData ruinData, RuinsSavedData data) {
+      RuinsTemplates files = RuinsTemplates.get(dim.name);
+      if (dim == RuinsTerrain.Dim.OVERWORLD) {
+         int min_distance = Math.max(files.anySpawnMinDistance, ruinTemplate.spawnMinDistance);
+         if (ruinData.xMin < min_distance && -ruinData.xMax < min_distance && ruinData.zMin < min_distance && -ruinData.zMax < min_distance) {
+            return false;
+         }
+         int max_distance = Math.min(files.anySpawnMaxDistance, ruinTemplate.spawnMaxDistance);
+         if (ruinData.xMax > max_distance || -ruinData.xMin > max_distance || ruinData.zMax > max_distance || -ruinData.zMin > max_distance) {
+            return false;
+         }
       }
       int self = (int)(ruinTemplate.uniqueMinDistance == 0 ? files.templateInstancesMinDistance : (float)ruinTemplate.uniqueMinDistance);
       int any = (int)files.anyRuinsMinDistance;
@@ -169,19 +207,20 @@ public final class RuinsGen {
       return new RuinData(d.xMin - by, d.xMax + by, d.yMin - by, d.yMax + by, d.zMin - by, d.zMax + by, d.name);
    }
 
-   static RuinsWorld built(LegacyChunkGenerator gen, Candidate c, int y) {
+   static RuinsWorld built(RuinsTerrain gen, Candidate c, int y) {
       synchronized (LOCK) {
-         RuinsWorld w = BUILT.get(c.key());
+         String k = gen.dim.name + "/" + c.key();
+         RuinsWorld w = BUILT.get(k);
          if (w == null) {
-            w = new RuinsWorld(gen::legacyState);
+            w = new RuinsWorld(gen::state, gen.dim.actualHeight);
             c.template().doBuild(w, new Random(c.buildSeed()), c.x(), y, c.z(), c.rotate(), false, false);
-            BUILT.put(c.key(), w);
+            BUILT.put(k, w);
          }
          return w;
       }
    }
 
-   static Candidate find(LegacyChunkGenerator gen, long seed, int cx, int cz, int index) {
+   static Candidate find(RuinsTerrain gen, long seed, int cx, int cz, int index) {
       for (Candidate c : candidates(gen, seed, cx, cz)) {
          if (c.index() == index) {
             return c;

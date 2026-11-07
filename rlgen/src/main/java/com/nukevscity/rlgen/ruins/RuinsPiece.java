@@ -4,7 +4,6 @@ import atomicstryker.ruins.common.RuinsWorld;
 import com.github.fnar.minecraft.block.spawner.SpawnPotentialMapper1_12;
 import com.mojang.logging.LogUtils;
 import com.nukevscity.rlgen.RLGen;
-import com.nukevscity.rlgen.world.LegacyChunkGenerator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -20,6 +19,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.boss.enderdragon.EndCrystal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ChunkPos;
@@ -51,13 +52,15 @@ import org.slf4j.Logger;
 /** The part of one ruin inside one chunk. */
 public final class RuinsPiece extends StructurePiece {
    private static final Logger LOGGER = LogUtils.getLogger();
+   private final RuinsTerrain.Dim dim;
    private final int srcX;
    private final int srcZ;
    private final int index;
    private final int y;
 
-   RuinsPiece(ChunkPos chunk, int srcX, int srcZ, int index, int y) {
+   RuinsPiece(ChunkPos chunk, RuinsTerrain.Dim dim, int srcX, int srcZ, int index, int y) {
       super(RLGen.RUINS_PIECE.get(), 0, new BoundingBox(chunk.getMinBlockX(), -64, chunk.getMinBlockZ(), chunk.getMaxBlockX(), 319, chunk.getMaxBlockZ()));
+      this.dim = dim;
       this.srcX = srcX;
       this.srcZ = srcZ;
       this.index = index;
@@ -66,6 +69,7 @@ public final class RuinsPiece extends StructurePiece {
 
    public RuinsPiece(StructurePieceSerializationContext context, CompoundTag tag) {
       super(RLGen.RUINS_PIECE.get(), tag);
+      this.dim = RuinsTerrain.Dim.byName(tag.getString("D"));
       this.srcX = tag.getInt("SX");
       this.srcZ = tag.getInt("SZ");
       this.index = tag.getInt("I");
@@ -74,6 +78,7 @@ public final class RuinsPiece extends StructurePiece {
 
    @Override
    protected void addAdditionalSaveData(StructurePieceSerializationContext context, CompoundTag tag) {
+      tag.putString("D", this.dim.name);
       tag.putInt("SX", this.srcX);
       tag.putInt("SZ", this.srcZ);
       tag.putInt("I", this.index);
@@ -87,7 +92,8 @@ public final class RuinsPiece extends StructurePiece {
    @Override
    public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator chunkGenerator, RandomSource randomSource, BoundingBox box,
                            ChunkPos chunkPos, BlockPos pivot) {
-      if (!(chunkGenerator instanceof LegacyChunkGenerator generator)) {
+      RuinsTerrain generator = RuinsStructure.terrain(this.dim, level.getSeed(), chunkGenerator, level.getLevel(), level.getLevel().getChunkSource().randomState());
+      if (generator == null) {
          return;
       }
       try {
@@ -123,6 +129,16 @@ public final class RuinsPiece extends StructurePiece {
             BlockPos p = BlockPos.of(e.getKey());
             if ((p.getX() >> 4) == chunkPos.x && (p.getZ() >> 4) == chunkPos.z) {
                this.applyTile(level, p, e.getValue());
+            }
+         }
+         // RuinTemplateRule.spawnEnderCrystal: at the bedrock block itself, with a random yaw
+         for (BlockPos p : built.crystals) {
+            if ((p.getX() >> 4) == chunkPos.x && (p.getZ() >> 4) == chunkPos.z) {
+               EndCrystal crystal = EntityType.END_CRYSTAL.create(level.getLevel());
+               if (crystal != null) {
+                  crystal.moveTo(p.getX() + 0.5, p.getY(), p.getZ() + 0.5, randomSource.nextFloat() * 360.0F, 0.0F);
+                  level.addFreshEntity(crystal);
+               }
             }
          }
       } catch (RuntimeException e) {

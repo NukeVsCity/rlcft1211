@@ -1,0 +1,8 @@
+{
+  "type": "rlgen:ruins",
+  "dimension": "the_nether",
+  "biomes": "#minecraft:is_nether",
+  "step": "top_layer_modification",
+  "spawn_overrides": {},
+  "terrain_adaptation": "none"
+}

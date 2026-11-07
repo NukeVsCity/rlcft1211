@@ -16,7 +16,10 @@ import net.minecraft.world.level.block.state.BlockState;
 public final class RuinsWorld {
    public static final int HEIGHT = 256;
    private final Function<BlockPos, BlockState> terrain;
+   private final int actualHeight;
    public final Map<Long, BlockState> blocks = new LinkedHashMap<>();
+   /** EntityEnderCrystal spawned by an "EnderCrystal" rule (x, y, z of its bedrock). */
+   public final java.util.List<BlockPos> crystals = new java.util.ArrayList<>();
    public final Map<Long, Tile> tiles = new HashMap<>();
 
    /** What a tile entity was given: chest contents, a loot table to roll, the mob of a spawner, a skull. */
@@ -49,7 +52,13 @@ public final class RuinsWorld {
    }
 
    public RuinsWorld(Function<BlockPos, BlockState> terrain) {
+      this(terrain, HEIGHT);
+   }
+
+   /** World.getActualHeight: 128 in the nether, 256 elsewhere. */
+   public RuinsWorld(Function<BlockPos, BlockState> terrain, int actualHeight) {
       this.terrain = terrain;
+      this.actualHeight = actualHeight;
    }
 
    public BlockState getBlockState(BlockPos pos) {
@@ -77,6 +86,6 @@ public final class RuinsWorld {
    }
 
    public int getActualHeight() {
-      return HEIGHT;
+      return this.actualHeight;
    }
 }

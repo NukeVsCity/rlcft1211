@@ -19,19 +19,24 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 
 /**
- * rlgen: Ruins' FileHandler for the overworld, reading RLCraft's config/ruins_config and ruins.txt from the jar
+ * rlgen: Ruins' FileHandler (one per dimension), reading RLCraft's config/ruins_config and ruins.txt from the jar
  * (data/rlgen/ruins, index.txt lists the templates).
  */
 public final class RuinsTemplates {
    private static final Logger LOGGER = LogUtils.getLogger();
    private static final String ROOT = "/data/rlgen/ruins/";
    private static final Pattern patternSpecificBiome = Pattern.compile("specific_([^=]++)=(.++)");
-   private static volatile RuinsTemplates instance;
+   private static final Map<String, RuinsTemplates> INSTANCES = new java.util.concurrent.ConcurrentHashMap<>();
+
+   /** DimensionType name ("overworld", "the_nether", "the_end"): the FileHandler of that dimension keeps the templates accepting it. */
+   private final String dimension;
 
    private final HashMap<String, HashSet<RuinTemplate>> templates = new HashMap<>();
    private final HashMap<String, double[]> vars = new HashMap<>();
    public int triesPerChunkNormal = 6;
+   public int triesPerChunkNether = 6;
    public float chanceToSpawnNormal = 10.0F;
+   public float chanceToSpawnNether = 10.0F;
    public float templateInstancesMinDistance = 256.0F;
    public float anyRuinsMinDistance = 64.0F;
    public int anySpawnMinDistance = 32;
@@ -39,19 +44,20 @@ public final class RuinsTemplates {
    /** Largest half width of any template plus leveling buffer, for finding the ruins that reach a chunk. */
    public int maxRadius;
 
+   private RuinsTemplates(String dimension) {
+      this.dimension = dimension;
+   }
+
    public static RuinsTemplates get() {
-      RuinsTemplates t = instance;
-      if (t == null) {
-         synchronized (RuinsTemplates.class) {
-            t = instance;
-            if (t == null) {
-               t = new RuinsTemplates();
-               t.load();
-               instance = t;
-            }
-         }
-      }
-      return t;
+      return get("overworld");
+   }
+
+   public static RuinsTemplates get(String dimension) {
+      return INSTANCES.computeIfAbsent(dimension, d -> {
+         RuinsTemplates t = new RuinsTemplates(d);
+         t.load();
+         return t;
+      });
    }
 
    public RuinTemplate getTemplate(Random random, String biome) {
@@ -116,7 +122,7 @@ public final class RuinsTemplates {
       for (HashSet<RuinTemplate> s : this.templates.values()) {
          count += s.size();
       }
-      LOGGER.info("rlgen: ruins templates loaded ({} biome entries)", count);
+      LOGGER.info("rlgen: ruins templates loaded for {} ({} biome entries)", this.dimension, count);
    }
 
    private void addRuins(PrintWriter pw, List<String> files, String name, HashSet<RuinTemplate> targetList) {
@@ -124,7 +130,7 @@ public final class RuinsTemplates {
          try {
             String simple = f.substring(f.lastIndexOf('/') + 1);
             RuinTemplate r = new RuinTemplate(pw, ROOT + f, simple);
-            if (r.acceptsDimension("overworld")) {
+            if (r.acceptsDimension(this.dimension)) {
                targetList.add(r);
                this.maxRadius = Math.max(this.maxRadius, r.radius());
 
@@ -153,6 +159,10 @@ public final class RuinsTemplates {
             this.triesPerChunkNormal = Integer.parseInt(check[1]);
          } else if (check[0].equals("chance_to_spawn_normal")) {
             this.chanceToSpawnNormal = Float.parseFloat(check[1]);
+         } else if (check[0].equals("tries_per_chunk_nether")) {
+            this.triesPerChunkNether = Integer.parseInt(check[1]);
+         } else if (check[0].equals("chance_to_spawn_nether")) {
+            this.chanceToSpawnNether = Float.parseFloat(check[1]);
          } else if (check[0].equals("templateInstancesMinDistance")) {
             this.templateInstancesMinDistance = Float.parseFloat(check[1]);
          } else if (check[0].equals("anyRuinsMinDistance")) {

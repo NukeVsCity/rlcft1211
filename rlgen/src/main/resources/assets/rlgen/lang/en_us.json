@@ -351,5 +351,7 @@
   "block.rlgen.stripped_ironwood_branch": "Stripped Ironwood Tree",
   "block.rlgen.dt_ironwood_leaves": "Ironwood Leaves",
   "species.rlgen.ironwood": "Ironwood",
-  "block.rlgen.ironwood_root": "Ironwood Root"
+  "block.rlgen.ironwood_root": "Ironwood Root",
+  "block.rlgen.biotite_ore": "Ender Biotite Ore",
+  "item.rlgen.biotite": "Biotite"
 }
