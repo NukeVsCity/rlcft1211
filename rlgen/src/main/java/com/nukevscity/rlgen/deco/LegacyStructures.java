@@ -30,7 +30,7 @@ public final class LegacyStructures {
    static Step VILLAGE = NONE;
 
    // ---- stronghold (MapGenStronghold)
-   static Step STRONGHOLD = NONE;
+   static Step STRONGHOLD = com.nukevscity.rlgen.stronghold.Strongholds::generate;
 
    // ---- scattered features: desert pyramid, jungle temple, witch hut, igloo (MapGenScatteredFeature)
    static Step SCATTERED = NONE;

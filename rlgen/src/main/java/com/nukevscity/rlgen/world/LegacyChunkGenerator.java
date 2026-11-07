@@ -106,6 +106,15 @@ public final class LegacyChunkGenerator extends ChunkGenerator {
       return super.createState(structureSets, randomState, seed);
    }
 
+   /** 1.12 strongholds are not on a 1.21 ring placement: /locate and eyes of ender ask MapGenStronghold.getNearestStructurePos. */
+   @Override
+   public com.mojang.datafixers.util.Pair<BlockPos, Holder<net.minecraft.world.level.levelgen.structure.Structure>> findNearestMapStructure(
+      net.minecraft.server.level.ServerLevel level, net.minecraft.core.HolderSet<net.minecraft.world.level.levelgen.structure.Structure> structures,
+      BlockPos pos, int searchRadius, boolean skipKnownStructures) {
+      var stronghold = com.nukevscity.rlgen.stronghold.Strongholds.locate(this, structures, pos);
+      return stronghold != null ? stronghold : super.findNearestMapStructure(level, structures, pos, searchRadius, skipKnownStructures);
+   }
+
    private synchronized void init(long seed) {
       LegacyGenerator g = this.legacy;
       if (g == null || g.getSeed() != seed) {

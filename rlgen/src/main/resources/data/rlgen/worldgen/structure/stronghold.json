@@ -1,0 +1,7 @@
+{
+  "type": "rlgen:stronghold",
+  "biomes": "#minecraft:is_overworld",
+  "step": "strongholds",
+  "spawn_overrides": {},
+  "terrain_adaptation": "none"
+}
