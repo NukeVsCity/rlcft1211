@@ -56,9 +56,11 @@
     ],
     [],
     [],
-    [],
     [
       "rlgen:legacy_plants"
+    ],
+    [
+      "rlgen:legacy_late"
     ]
   ],
   "has_precipitation": false,

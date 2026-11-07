@@ -104,6 +104,7 @@ public final class RLGen {
       FEATURES.register("legacy_lakes", () -> new LegacyDecorationFeature(LegacyDecorationFeature.Step.LAKES));
       FEATURES.register("legacy_ores", () -> new LegacyDecorationFeature(LegacyDecorationFeature.Step.ORES));
       FEATURES.register("legacy_plants", () -> new LegacyDecorationFeature(LegacyDecorationFeature.Step.PLANTS));
+      FEATURES.register("legacy_late", () -> new LegacyDecorationFeature(LegacyDecorationFeature.Step.LATE));
    }
    private static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
    private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);

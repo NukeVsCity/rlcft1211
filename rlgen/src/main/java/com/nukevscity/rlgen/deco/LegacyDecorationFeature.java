@@ -15,7 +15,8 @@ public final class LegacyDecorationFeature extends Feature<NoneFeatureConfigurat
    public enum Step {
       LAKES,
       ORES,
-      PLANTS
+      PLANTS,
+      LATE
    }
 
    private final Step step;
@@ -37,6 +38,7 @@ public final class LegacyDecorationFeature extends Feature<NoneFeatureConfigurat
             case LAKES -> LegacyPopulator.lakes(w, cp, generator.legacyGenerator());
             case ORES -> LegacyPopulator.ores(w, cp);
             case PLANTS -> LegacyPopulator.plants(w, cp);
+            case LATE -> LegacyPopulator.late(w, cp);
          }
       } catch (RuntimeException e) {
          LOGGER.error("rlgen: 1.12 decoration ({}) failed in chunk {}", this.step, cp, e);

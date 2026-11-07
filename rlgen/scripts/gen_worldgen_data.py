@@ -59,7 +59,7 @@ COLOURS = {
 }
 DEFILED_COLOURS = (4468548, 7035752, 2228275, 7035752)
 
-LEGACY_FEATURES = [[], ["rlgen:legacy_lakes"], ["rlgen:underground/amethyst_geode"], ["minecraft:monster_room_deep"], [], [], ["rlgen:legacy_ores", "minecraft:ore_tuff", "rlgen:underground/ore_iron", "rlgen:underground/ore_gold", "minecraft:ore_gold_lower", "rlgen:underground/ore_redstone", "minecraft:ore_redstone_lower", "rlgen:underground/ore_diamond", "minecraft:ore_diamond_medium", "rlgen:underground/ore_lapis", "rlgen:underground/ore_copper"], [], [], [], ["rlgen:legacy_plants"]]
+LEGACY_FEATURES = [[], ["rlgen:legacy_lakes"], ["rlgen:underground/amethyst_geode"], ["minecraft:monster_room_deep"], [], [], ["rlgen:legacy_ores", "minecraft:ore_tuff", "rlgen:underground/ore_iron", "rlgen:underground/ore_gold", "minecraft:ore_gold_lower", "rlgen:underground/ore_redstone", "minecraft:ore_redstone_lower", "rlgen:underground/ore_diamond", "minecraft:ore_diamond_medium", "rlgen:underground/ore_lapis", "rlgen:underground/ore_copper"], [], [], ["rlgen:legacy_plants"], ["rlgen:legacy_late"]]  # plants before Dynamic Trees (VEGETAL_DECORATION), weight>20 generators after
 
 def rl(name):
     return "rlgen:" + name.split(":")[-1]

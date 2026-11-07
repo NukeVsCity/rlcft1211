@@ -180,7 +180,8 @@ public final class LegacyPopulator {
       }
    }
 
-   /** Step TOP_LAYER_MODIFICATION: the rest of Biome.decorate (Dynamic Trees grew in between), then the snow and ice pass. */
+   /** Step VEGETAL_DECORATION, before the Dynamic Trees feature: the rest of Biome.decorate, the snow and ice pass, then the
+    * IWorldGenerators below Dynamic Trees' weight 20 (in 1.12 DT grew its trees after all of population). */
    public static void plants(DWorld w, ChunkPos cp) {
       State s = state(w, cp);
       STATE.remove();
@@ -323,7 +324,7 @@ public final class LegacyPopulator {
       d.post(w, r, pos);
       freeze(w, pos.offset(8, 0, 8));
       // IWorldGenerators that ran after populate, by weight: Ice and Fire 0 (with Quark's pirate ships 0 and crystal caves 1, planned),
-      // Quark clay and blossom trees 0, Lycanites fluid lakes 0, Waystones 0, Rustic herbs/berries 0, Coral Reef 1, No Tree Punching 3, Quark fairy rings 5, monster boxes 200, speleothems 1000, Charm abandoned crates 1000,
+      // Quark clay and blossom trees 0, Lycanites fluid lakes 0, Waystones 0, Rustic herbs/berries 0, Coral Reef 1, No Tree Punching 3, Quark fairy rings 5, (Dynamic Trees 20: its feature runs next), monster boxes 200, speleothems 1000, Charm abandoned crates 1000,
       // cave roots 2000, archaeologist houses 3000
       com.nukevscity.rlgen.iaf.IafGen.apply(w, cp);
       com.nukevscity.rlgen.quark.QuarkGen.weight0(w, cp.x, cp.z);
@@ -333,6 +334,13 @@ public final class LegacyPopulator {
       com.nukevscity.rlgen.coral.CoralReefs.generate(w, cp);
       com.nukevscity.rlgen.ntp.LooseRocks.generate(w, cp);
       com.nukevscity.rlgen.quark.FairyRings.generate(w, cp);
+   }
+
+   /**
+    * Step LATE (TOP_LAYER_MODIFICATION, after the Dynamic Trees feature in VEGETAL_DECORATION): the IWorldGenerators that ran after
+    * Dynamic Trees' own (weight 20) in 1.12.
+    */
+   public static void late(DWorld w, ChunkPos cp) {
       com.nukevscity.rlgen.quark.QuarkGen.monsterBoxes(w, cp.x, cp.z);
       com.nukevscity.rlgen.quark.QuarkGen.speleothems(w, cp.x, cp.z);
       com.nukevscity.rlgen.charm.AbandonedCrates.generate(w, cp.x, cp.z);
