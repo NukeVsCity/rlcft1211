@@ -85,6 +85,10 @@ public final class RLGen {
       STRUCTURE_TYPES.register("village", () -> () -> LegacyVillageStructure.CODEC);
    public static final DeferredHolder<StructurePieceType, StructurePieceType> VILLAGE_PIECE =
       STRUCTURE_PIECES.register("village", () -> com.nukevscity.rlgen.village.VillagePieces::load);
+   public static final DeferredHolder<StructureType<?>, StructureType<com.nukevscity.rlgen.stronghold.StrongholdStructure>> STRONGHOLD =
+      STRUCTURE_TYPES.register("stronghold", () -> () -> com.nukevscity.rlgen.stronghold.StrongholdStructure.CODEC);
+   public static final DeferredHolder<StructurePieceType, StructurePieceType> STRONGHOLD_PIECE =
+      STRUCTURE_PIECES.register("stronghold", () -> com.nukevscity.rlgen.stronghold.StrongholdStructure.Holder::new);
    private static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(Registries.FEATURE, MODID);
    static {
       FEATURES.register("legacy_lakes", () -> new LegacyDecorationFeature(LegacyDecorationFeature.Step.LAKES));
@@ -409,6 +413,7 @@ public final class RLGen {
             com.nukevscity.rlgen.ruins.RuinsSavedData.attach(sl);
             com.nukevscity.rlgen.iaf.MyrmexSavedData.attach(sl);
             com.nukevscity.rlgen.lyc.dungeon.LycDungeons.attach(sl);
+            com.nukevscity.rlgen.stronghold.StrongholdSavedData.attach(sl);
          }
       });
       if (net.neoforged.fml.loading.FMLEnvironment.dist.isClient()) {
