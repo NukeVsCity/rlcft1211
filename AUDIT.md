@@ -58,20 +58,24 @@ Status: DONE = ported; PART = partly ported; TODO = to port; SKIP = deliberately
 | SilentLib, FoamFix, Phosphor, RenderLib, RLMixins, BetterBiomeBlend, EntityCulling | libraries / rendering / chunk IO | NONE |
 | Chunk Animator | client effect | install 1.21 version |
 
-## Found in the v0.8.0 re-check
+## Found in the v0.8.0 re-check (all done in v0.9.0)
 | Mod | What | Status |
 |---|---|---|
-| Vanilla 1.12 structures | strongholds, desert/jungle temples, witch huts, igloos, ocean monuments, woodland mansions are the 1.21 versions at 1.21 positions; 1.21-only structures (trial chambers, trail ruins, pillager outposts, ruined portals, shipwrecks, ocean ruins, buried treasure) still spawn in rlgen biomes | TODO (port MapGenStronghold/ScatteredFeature/OceanMonument/WoodlandMansion, drop the 1.21-only tags) |
-| Recurrent Complex | decoration type big_mushroom (brown/red mushroom x2, weight 0.2 against vanilla 1) | TODO (small) |
-| Quark | Tree variants: swamp vine colour 0x6A7039 (client) | TODO (small) |
-| Recurrent Complex | 33 End structures (end megacity, ships, towers, islands, spikes...) and 7 nether (netherthorn x6, nether city church) | TODO (End / nether) |
-| Ruins | 11 End ("sky") and 5 nether ("hell") templates | TODO (End / nether) |
-| Lycanites Mobs | nether dungeons (ashen mausoleum, demonic temple), End/nether random aberrant station and shadow labyrinth; moglava lakes | TODO (End / nether) |
-| Doomlike Dungeons | nether dungeons (dimension -1 listed) | TODO (nether) |
-| Quark | nether: basalt, broken portals, nether fossils, obsidian spikes, smokers; End: biotite ore | TODO (End / nether) |
-| Loot | modded items in loot (Spartan, Ice and Fire, Baubles, etc.) and loot injections/LootTweaker scripts: those items don't exist yet, chests get vanilla stand-ins or nothing | TODO (needs the item mods) |
-| Mobs in structures | Lycanites/Ice and Fire spawners get zombie stand-ins, dragons/pirates/archaeologists/monster box mobs not spawned, RC summons of modded mobs dropped | TODO (needs the mob mods) |
+| Vanilla 1.12 structures | strongholds, desert/jungle temples, witch huts, igloos, ocean monuments, woodland mansions | DONE (`stronghold/`, `scattered/`, `vanilla/monument`, `vanilla/mansion`): built in the 1.12 populate order with the shared populate random (`deco/LegacyStructures`), 1.21 marker structures for /locate, eyes of ender, maps, spawns |
+| 1.21-only structures | trial chambers, trail ruins, outposts, ruined portals, shipwrecks, ocean ruins, buried treasure, 1.21 mineshafts/villages | REMOVED (`world/VanillaStructureFilter`: only minecraft:ancient_cities stays, below Y 0); no pillager patrols in rlgen biomes |
+| Populate random sync | mineshafts and villages built in populate (`bms/MineshaftPopulate`, `village/VillagePopulate`); Recurrent Complex decorate-event draws, Dynamic Trees denials (`deco/DecorateEvents`); Dynamic Trees grows after population (legacy_plants in VEGETAL_DECORATION before DT, weight>20 generators in legacy_late) | DONE |
+| Recurrent Complex | big_mushroom decoration (`rc/RcDecoration`); RC ALLOWs decorate events in roofed forests, so vanilla dark oaks/birch/oak and big mushrooms grow there besides DT (`deco/VanillaTrees`) | DONE |
+| Quark | swamp vine colour | DONE (client) |
+| Recurrent Complex | 33 End structures + end megacity, 7 nether | DONE (`rc/RcDim`, `world/DimensionOracle`, structures recurrent_complex_end/_nether) |
+| Ruins | End ("sky") and nether ("hell") | DONE (per-dimension templates and saved data) |
+| Lycanites Mobs | nether/End dungeons, moglava lakes | DONE |
+| Doomlike Dungeons | nether | DONE (`nether/`) |
+| Quark | nether basalt, broken portals, fossils, obsidian spikes, smokers, nether speleothems; biotite (by dragon kill, natural gen off in config) | DONE (`nether/`, `quark/BiotiteGen`) |
+| Loot | modded items in loot (Spartan, Ice and Fire, Baubles, ...) | TODO (needs the item mods) |
+| Mobs in structures | Lycanites/IaF spawners get stand-ins, dragons/pirates/monster box mobs not spawned | TODO (needs the mob mods) |
 | RLMixins, Inspirations, Simple Difficulty, Fishing Made Better, BNBGamingLib, antiqueatlas | re-checked hits: trades, cauldrons, rain collector, fishing data, scripts, map markers | NONE |
+
+Comparison with a real 1.12 save: `rlgen/scripts/compare112.py` (+ `gen_compare_world.sh` for our side), needs the save's region files and level.dat.
 
 ## Blocks inside structures
 Counted per block over the overworld RC structures. The most used now are real rlgen blocks with the mods' textures
