@@ -1,0 +1,8 @@
+{
+  "type": "rlgen:ruins",
+  "dimension": "the_end",
+  "biomes": "#minecraft:is_end",
+  "step": "top_layer_modification",
+  "spawn_overrides": {},
+  "terrain_adaptation": "none"
+}

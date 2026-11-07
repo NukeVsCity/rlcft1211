@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "ingredient": {
+    "item": "rlgen:biotite_ore"
+  },
+  "result": {
+    "count": 1,
+    "id": "rlgen:biotite"
+  },
+  "experience": 1.0,
+  "cookingtime": 200
+}

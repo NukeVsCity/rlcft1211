@@ -477,7 +477,9 @@ public class RuinTemplateRule {
                System.err.println("Ruins Mod could not determine what IInventory block to spawn for [" + s[1] + "] in Ruin template: " + this.owner.getName());
             }
          } else if (dataString.equals("EnderCrystal")) {
-            this.realizeBlock(world, x, y, z, "minecraft:bedrock", -1, 0); // rlgen: the crystal entity itself is not spawned
+            // spawnEnderCrystal: the crystal is spawned when the chunk is built
+            this.realizeBlock(world, x, y, z, "minecraft:bedrock", -1, 0);
+            world.crystals.add(new BlockPos(x, y, z));
          } else if (dataString.startsWith("Skull:")) {
             Tile tes = this.realizeBlock(world, x, y, z, "minecraft:skull", blocknum, rotate);
             if (tes != null) {

@@ -260,6 +260,11 @@ public final class RLGen {
    public static final DeferredBlock<com.nukevscity.rlgen.quark.GlowshroomBlock> GLOWSHROOM = BLOCKS.registerBlock("glowshroom",
       com.nukevscity.rlgen.quark.GlowshroomBlock::new, BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_MUSHROOM).lightLevel(s -> 14));
    public static final DeferredBlock<LeavesBlock> SAKURA_LEAVES = leaves("sakura_leaves");
+   // Quark Biotite: hardness 3.2, resistance 15 (explosion 9), drops biotite (fortune like ores, 2-5 xp), the dragon cannot break it
+   public static final DeferredBlock<Block> BIOTITE_ORE = BLOCKS.registerBlock("biotite_ore",
+      p -> new net.minecraft.world.level.block.DropExperienceBlock(net.minecraft.util.valueproviders.UniformInt.of(2, 5), p),
+      BlockBehaviour.Properties.of().mapColor(MapColor.SAND).requiresCorrectToolForDrops().strength(3.2F, 9.0F).sound(SoundType.STONE));
+   public static final net.neoforged.neoforge.registries.DeferredItem<net.minecraft.world.item.Item> BIOTITE = ITEMS.registerSimpleItem("biotite");
    /** Modded building blocks from RLCraft's structures (data/rlgen/mod_blocks.json, made by scripts/gen_mod_blocks.py). */
    public static final java.util.Map<String, DeferredBlock<Block>> MOD_BLOCKS = new java.util.LinkedHashMap<>();
    static {
@@ -396,6 +401,7 @@ public final class RLGen {
       SEALED_CRATES.forEach(ITEMS::registerSimpleBlockItem);
       SPELEOTHEMS.values().forEach(ITEMS::registerSimpleBlockItem);
       MOD_BLOCKS.values().forEach(ITEMS::registerSimpleBlockItem);
+      ITEMS.registerSimpleBlockItem(BIOTITE_ORE);
    }
 
    private static DeferredBlock<LegacyPlantBlock> plant(String name, java.util.function.Predicate<net.minecraft.world.level.block.state.BlockState> soil,
@@ -424,9 +430,12 @@ public final class RLGen {
       STRUCTURE_TYPES.register(modBus);
       FEATURES.register(modBus);
       NeoForge.EVENT_BUS.addListener((RegisterCommandsEvent e) -> RcCommand.register(e.getDispatcher()));
+      NeoForge.EVENT_BUS.addListener(com.nukevscity.rlgen.quark.BiotiteGen::onEntityTick);
       NeoForge.EVENT_BUS.addListener((net.neoforged.neoforge.event.level.LevelEvent.Load e) -> {
-         if (e.getLevel() instanceof net.minecraft.server.level.ServerLevel sl && sl.dimension() == net.minecraft.world.level.Level.OVERWORLD) {
+         if (e.getLevel() instanceof net.minecraft.server.level.ServerLevel sl) {
             com.nukevscity.rlgen.ruins.RuinsSavedData.attach(sl);
+         }
+         if (e.getLevel() instanceof net.minecraft.server.level.ServerLevel sl && sl.dimension() == net.minecraft.world.level.Level.OVERWORLD) {
             com.nukevscity.rlgen.iaf.MyrmexSavedData.attach(sl);
             com.nukevscity.rlgen.lyc.dungeon.LycDungeons.attach(sl);
             com.nukevscity.rlgen.stronghold.StrongholdSavedData.attach(sl);

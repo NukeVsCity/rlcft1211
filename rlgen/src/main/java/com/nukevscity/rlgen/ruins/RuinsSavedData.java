@@ -15,17 +15,28 @@ import net.minecraft.world.level.saveddata.SavedData;
 /** Ruins' RuinsPositionsFile.txt: every ruin built in this world, plus every try already turned down, so neither is decided twice. */
 public final class RuinsSavedData extends SavedData {
    private static final String NAME = "rlgen_ruins";
-   private static volatile RuinsSavedData current = new RuinsSavedData();
+   private static final Map<String, RuinsSavedData> CURRENT = new java.util.concurrent.ConcurrentHashMap<>();
    private final Map<String, Integer> decisions = new HashMap<>();
    private final List<RuinData> registered = new ArrayList<>();
 
-   public static RuinsSavedData current() {
-      return current;
+   /** The data of a dimension (by its 1.12 DimensionType name), kept in that dimension's data folder like RuinsPositionsFile.txt. */
+   public static RuinsSavedData current(String dimension) {
+      return CURRENT.computeIfAbsent(dimension, d -> new RuinsSavedData());
    }
 
-   /** Called when the overworld loads. */
-   public static void attach(ServerLevel overworld) {
-      current = overworld.getDataStorage().computeIfAbsent(new SavedData.Factory<>(RuinsSavedData::new, RuinsSavedData::load, null), NAME);
+   /** Called when a level loads: the overworld, the nether and the End each have their own. */
+   public static void attach(ServerLevel level) {
+      String dim;
+      if (level.dimension() == net.minecraft.world.level.Level.OVERWORLD) {
+         dim = RuinsTerrain.Dim.OVERWORLD.name;
+      } else if (level.dimension() == net.minecraft.world.level.Level.NETHER) {
+         dim = RuinsTerrain.Dim.NETHER.name;
+      } else if (level.dimension() == net.minecraft.world.level.Level.END) {
+         dim = RuinsTerrain.Dim.END.name;
+      } else {
+         return;
+      }
+      CURRENT.put(dim, level.getDataStorage().computeIfAbsent(new SavedData.Factory<>(RuinsSavedData::new, RuinsSavedData::load, null), NAME));
    }
 
    Integer decision(String key) {
