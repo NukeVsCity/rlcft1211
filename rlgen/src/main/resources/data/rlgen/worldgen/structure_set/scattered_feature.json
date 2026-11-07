@@ -1,0 +1,9 @@
+{
+  "structures": [
+    {"structure": "rlgen:desert_pyramid", "weight": 1},
+    {"structure": "rlgen:jungle_pyramid", "weight": 1},
+    {"structure": "rlgen:swamp_hut", "weight": 1},
+    {"structure": "rlgen:igloo", "weight": 1}
+  ],
+  "placement": {"type": "minecraft:random_spread", "salt": 14357617, "spacing": 32, "separation": 8}
+}
