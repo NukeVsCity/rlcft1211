@@ -25,6 +25,11 @@ final class RLGenClient {
          RLGen.OLIVE_LEAVES.get(), RLGen.IRONWOOD_LEAVES.get()));
       modBus.addListener((RegisterColorHandlersEvent.Item e) -> e.register((stack, tint) -> net.minecraft.world.level.FoliageColor.getDefaultColor(),
          RLGen.OLIVE_LEAVES.get(), RLGen.IRONWOOD_LEAVES.get()));
+      // Quark TreeVariants "Change vine color in swamps": 0x6A7039 in the 1.12 swampland biome (not blended), else the vanilla vine colour
+      modBus.addListener((RegisterColorHandlersEvent.Block e) -> e.register(
+         (state, level, pos, tint) -> level != null && pos != null && QuarkVineColor.inSwampland(level, pos) ? 0x6A7039
+            : level != null && pos != null ? BiomeColors.getAverageFoliageColor(level, pos) : net.minecraft.world.level.FoliageColor.getDefaultColor(),
+         net.minecraft.world.level.block.Blocks.VINE));
       modBus.addListener((net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent e) -> {
          for (com.nukevscity.rlgen.lyc.LycFluids.Kind k : com.nukevscity.rlgen.lyc.LycFluids.ALL) {
             net.minecraft.resources.ResourceLocation still = net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(RLGen.MODID, "block/" + k.name + "_still");

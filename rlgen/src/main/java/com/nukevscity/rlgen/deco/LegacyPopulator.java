@@ -193,13 +193,13 @@ public final class LegacyPopulator {
          c.treesPerChunk++;
       }
       DecorateEvents.tree(w, r, pos);
-      // BIG_SHROOM (no placement position, so Quark's swamp mushrooms don't take it): denied by Dynamic Trees in vanilla/Traverse corners
-      if (DecorateEvents.bigShroomOrCactus(w, pos)) {
-         for (int k2 = 0; k2 < c.bigMushroomsPerChunk; k2++) {
-            int x = r.nextInt(16) + 8;
-            int z = r.nextInt(16) + 8;
-            Gen.bigMushroom(w, r, w.height(pos.offset(x, 0, z)), null);
-         }
+      // BIG_SHROOM (no placement position, so Quark's swamp mushrooms don't take it): Dynamic Trees denies it in vanilla/Traverse
+      // corners, then Recurrent Complex's handler (registered after DT's) lets its mushroom structures replace some
+      int bigMushrooms = DecorateEvents.bigShroom(w, r, cp, s.biome, pos, c.bigMushroomsPerChunk);
+      for (int k2 = 0; k2 < bigMushrooms; k2++) {
+         int x = r.nextInt(16) + 8;
+         int z = r.nextInt(16) + 8;
+         Gen.bigMushroom(w, r, w.height(pos.offset(x, 0, z)), null);
       }
       flowersEvent(w, r, pos);
       for (int l2 = 0; l2 < c.flowersPerChunk; l2++) {

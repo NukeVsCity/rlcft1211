@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "rlgen:jungle",
-    "rlgen:jungle_hills",
-    "rlgen:mini_jungle",
-    "rlgen:mutated_jungle"
-  ]
-}

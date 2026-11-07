@@ -122,11 +122,16 @@ added = {}
 SKIP_TAGS = {f"minecraft:has_structure/village_{t}" for t in ("plains", "desert", "savanna", "snowy", "taiga")}
 # Better Mineshafts replaced 1.12's mineshafts (rlgen:better_mineshaft)
 SKIP_TAGS |= {"minecraft:has_structure/mineshaft", "minecraft:has_structure/mineshaft_mesa"}
+# no 1.21 overworld structures at all (1.12 strongholds/temples/monuments/mansions are rlgen structures,
+# the rest never existed in 1.12); the deep dark ancient city below Y 0 uses the minecraft:deep_dark biome
+SKIP_TAGS |= {t for t in tags if t.startswith("minecraft:has_structure/")}
 for name in biomes:
     tmpl = "minecraft:" + TEMPLATE[name]
     for tag in tags:
         if tag not in SKIP_TAGS and tmpl in members(tag):
             added.setdefault(tag, []).append(rl(name))
+# 1.12 had no pillager patrols (PatrolSpawner only checks this tag, not outposts)
+added["minecraft:without_patrol_spawns"] = [rl(n) for n in biomes]
 # rlgen biomes must never be in the 1.21 overworld noise list, keep everything else
 for tag, vals in added.items():
     ns, path = tag.split(":")

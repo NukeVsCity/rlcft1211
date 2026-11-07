@@ -103,7 +103,7 @@ public final class LegacyChunkGenerator extends ChunkGenerator {
    @Override
    public ChunkGeneratorStructureState createState(HolderLookup<StructureSet> structureSets, RandomState randomState, long seed) {
       this.init(seed);
-      return super.createState(structureSets, randomState, seed);
+      return super.createState(new VanillaStructureFilter(structureSets), randomState, seed);
    }
 
    private synchronized void init(long seed) {

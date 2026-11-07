@@ -111,6 +111,8 @@ public final class RcStructureDef {
    public final boolean blocking;
    public final RcTransformers.Multi transformer;
    public final List<NaturalGen> natural = new ArrayList<>();
+   /** VanillaDecorationGeneration ("decoration"): category is the DecorationType id (big_mushroom, tree, ...). */
+   public final List<NaturalGen> decoration = new ArrayList<>();
    public final List<ListGen> lists = new ArrayList<>();
    public final List<VanillaGen> vanilla = new ArrayList<>();
    public final List<com.nukevscity.rlgen.rc.maze.MazeRc.MazeGen> mazeGens = new ArrayList<>();
@@ -168,6 +170,13 @@ public final class RcStructureDef {
             JsonObject info = g.has("generationInfo") ? g.getAsJsonObject("generationInfo") : new JsonObject();
             if (type.equals("natural")) {
                this.natural.add(parseNatural(info, reg));
+            } else if (type.equals("decoration")) {
+               // VanillaDecorationGeneration.Serializer: the spawn shift is read and dropped, no "placer" means surfacePlacer(0)
+               NaturalGen d = parseNatural(info, reg);
+               d.category = RcTransformers.str(info, "type", "tree");
+               d.placer = info.has("placer") && info.get("placer").isJsonObject() ? RcPlacer.parse(info.getAsJsonObject("placer"), reg) :
+                  new RcPlacer(RcPlacer.parseFactors(reg.placerPreset("surface")), 0, "!(air | reccomplex:generic_space)");
+               this.decoration.add(d);
             } else if (type.equals("structureList")) {
                Direction front = Direction.byName(RcTransformers.str(info, "front", "NORTH").toLowerCase(Locale.ROOT));
                this.lists.add(new ListGen(RcTransformers.str(info, "id", ""), RcTransformers.str(info, "listID", ""),
