@@ -99,6 +99,11 @@ public final class RLGen {
       STRUCTURE_TYPES.register("ocean_monument", () -> () -> com.nukevscity.rlgen.vanilla.monument.MonumentStructure.CODEC);
    public static final DeferredHolder<StructurePieceType, StructurePieceType> MONUMENT_PIECE =
       STRUCTURE_PIECES.register("ocean_monument", () -> com.nukevscity.rlgen.vanilla.monument.MonumentStructure.Piece::new);
+   /** 1.12 MapGenScatteredFeature: desert pyramid, jungle temple, witch hut, igloo (blocks placed at populate time). */
+   public static final DeferredHolder<StructureType<?>, StructureType<com.nukevscity.rlgen.scattered.ScatteredStructure>> SCATTERED_FEATURE =
+      STRUCTURE_TYPES.register("scattered_feature", () -> () -> com.nukevscity.rlgen.scattered.ScatteredStructure.CODEC);
+   public static final DeferredHolder<StructurePieceType, StructurePieceType> SCATTERED_FEATURE_PIECE =
+      STRUCTURE_PIECES.register("scattered_feature", () -> com.nukevscity.rlgen.scattered.ScatteredStructure.MarkerPiece::new);
    private static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(Registries.FEATURE, MODID);
    static {
       FEATURES.register("legacy_lakes", () -> new LegacyDecorationFeature(LegacyDecorationFeature.Step.LAKES));
@@ -425,6 +430,7 @@ public final class RLGen {
             com.nukevscity.rlgen.iaf.MyrmexSavedData.attach(sl);
             com.nukevscity.rlgen.lyc.dungeon.LycDungeons.attach(sl);
             com.nukevscity.rlgen.stronghold.StrongholdSavedData.attach(sl);
+            com.nukevscity.rlgen.scattered.ScatteredFeature.Data.attach(sl);
          }
          if (e.getLevel() instanceof net.minecraft.server.level.ServerLevel sl && sl.dimension() != net.minecraft.world.level.Level.OVERWORLD) {
             com.nukevscity.rlgen.lyc.dungeon.LycDungeons.attachDimension(sl);
