@@ -36,7 +36,7 @@ public final class LegacyStructures {
    static Step SCATTERED = NONE;
 
    // ---- ocean monument (StructureOceanMonument)
-   static Step MONUMENT = NONE;
+   static Step MONUMENT = com.nukevscity.rlgen.vanilla.monument.OceanMonument::generate;
 
    // ---- woodland mansion (WoodlandMansion)
    static Step MANSION = NONE;
