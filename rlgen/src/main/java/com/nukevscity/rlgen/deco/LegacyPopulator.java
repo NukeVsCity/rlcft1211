@@ -66,6 +66,7 @@ public final class LegacyPopulator {
       long j1 = rand.nextLong() / 2L * 2L + 1L;
       rand.setSeed((long)cp.x * i1 + (long)cp.z * j1 ^ w.seed);
       RcGenerator.consumeSelection(rand, cp.x, cp.z, legacy);
+      LegacyStructures.generate(w, rand, cp, legacy);
       BiomeDeco deco = BiomeDeco.of(biome);
       STATE.set(new State(cp.toLong(), rand, biome, deco, deco.counts()));
       String name = biome.getRegistryName();
