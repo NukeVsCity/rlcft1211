@@ -50,6 +50,10 @@ public final class RcGenerator {
    /** Terrain and biomes of the 1.12 world (the legacy generator), for planning. */
    public interface Oracle extends RcWorldView {
       Biome biome(int x, int z);
+
+      default RcDim dim() {
+         return RcDim.OVERWORLD;
+      }
    }
 
    // ------------------------------------------------------------------ instances
@@ -111,14 +115,19 @@ public final class RcGenerator {
 
    /** The structures RC would generate when populating this chunk. */
    public static List<Planned> planChunk(long worldSeed, int cx, int cz, Oracle oracle) {
-      RcRegistry reg = RcRegistry.get();
       // ChunkGeneratorOverworld.populate's random, as handed to PopulateChunkEvent.Pre
       Random rand = new Random(worldSeed);
       long k = rand.nextLong() / 2L * 2L + 1L;
       long l = rand.nextLong() / 2L * 2L + 1L;
       rand.setSeed((long)cx * k + (long)cz * l ^ worldSeed);
+      return planChunk(rand, cx, cz, oracle);
+   }
+
+   /** WorldGenStructures.decorate with the populate random of the chunk's dimension (spawn distance check only in dimension 0). */
+   public static List<Planned> planChunk(Random rand, int cx, int cz, Oracle oracle) {
+      RcRegistry reg = RcRegistry.get();
       Biome biomeGen = oracle.biome(cx * 16 + 8, cz * 16 + 8);
-      RcRegistry.Selector selector = reg.selector(biomeGen);
+      RcRegistry.Selector selector = reg.selector(oracle.dim(), biomeGen);
       List<Planned> out = new ArrayList<>();
       if (selector.isEmpty()) {
          return out;
@@ -190,7 +199,7 @@ public final class RcGenerator {
       BoundingBox surfaceBB = new BoundingBox(lower0.getX(), 0, lower0.getZ(), lower0.getX() + size[0] - 1, size[1] - 1, lower0.getZ() + size[2] - 1);
       BlockPos c = center(surfaceBB);
       Biome biome = oracle.biome(c.getX(), c.getZ());
-      if (checkBiome && gen.weight(biome) <= 0.0) {
+      if (checkBiome && gen.weight(oracle.dim(), biome) <= 0.0) {
          return fail(def, "biome edge " + biome);
       }
       int y = gen.placer.place(new RcPlacer.PlaceCtx(def, t, lower0, size, new Random(seed ^ PLACE_SEED), oracle));
@@ -210,7 +219,7 @@ public final class RcGenerator {
             }
          }
       }
-      RcEnv env = new RcEnv(biome, "natural", gen.id, null);
+      RcEnv env = new RcEnv(biome, "natural", gen.id, null).in(oracle.dim());
       Instance inst;
       try {
          inst = prepare(def, gen.id, seed, t, lower, env, oracle, 0, true);
@@ -250,7 +259,7 @@ public final class RcGenerator {
       }
       int[] size = t.applySize(def.size);
       BlockPos c = new BlockPos(lower.getX() + size[0] / 2, 0, lower.getZ() + size[2] / 2);
-      RcEnv env = new RcEnv(oracle.biome(c.getX(), c.getZ()), "natural", genId, null);
+      RcEnv env = new RcEnv(oracle.biome(c.getX(), c.getZ()), "natural", genId, null).in(oracle.dim());
       try {
          return prepare(def, genId, seed, t, lower, env, oracle, 0, true);
       } catch (Maze.TimeoutException e) {

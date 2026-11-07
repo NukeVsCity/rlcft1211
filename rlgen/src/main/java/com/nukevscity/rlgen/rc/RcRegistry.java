@@ -35,6 +35,7 @@ public final class RcRegistry {
    private final Map<String, Optional<Category>> categories = new ConcurrentHashMap<>();
    private final Map<String, Optional<RcLoot.Table>> loot = new ConcurrentHashMap<>();
    private final Map<Biome, Selector> selectors = new ConcurrentHashMap<>();
+   private final Map<RcDim, Map<Biome, Selector>> otherSelectors = new ConcurrentHashMap<>();
 
    public static RcRegistry get() {
       RcRegistry r = instance;
@@ -133,13 +134,13 @@ public final class RcRegistry {
       float spawnDistanceMultiplier;
       float spawnDistanceMultiplierCap = 1.0F;
 
-      record RcEnvChance(RcExpr<Biome> biome, boolean dimension, double[] chances) {
+      record RcEnvChance(RcExpr<Biome> biome, RcExpr<RcDim> dimension, double[] chances) {
       }
 
-      double[] spawnChance(Biome biome) {
+      double[] spawnChance(RcDim dim, Biome biome) {
          double[] am = this.defaultChances;
          for (RcEnvChance info : this.infos) {
-            if (info.biome.test(biome) && info.dimension) {
+            if (info.biome.test(biome) && info.dimension.test(dim)) {
                am = info.chances;
             }
          }
@@ -147,10 +148,10 @@ public final class RcRegistry {
       }
 
       /** SimpleCategory.structuresInBiome (distance to spawn unknown here: multiplier 1). */
-      int structuresInBiome(Biome biome, double totalWeight, Random random) {
+      int structuresInBiome(RcDim dim, Biome biome, double totalWeight, Random random) {
          double amount = Math.min(totalWeight / this.structureMinCap, 1.0);
          int n = 0;
-         for (double chance : this.spawnChance(biome)) {
+         for (double chance : this.spawnChance(dim, biome)) {
             if (random.nextDouble() < chance * amount) {
                n++;
             }
@@ -189,7 +190,7 @@ public final class RcRegistry {
             for (JsonElement ie : o.getAsJsonArray("generationInfos")) {
                JsonObject i = ie.getAsJsonObject();
                c.infos.add(new Category.RcEnvChance(RcEnv.biomeExpr(RcTransformers.str(i, "biomeMatcher", "")),
-                  RcEnv.dimension(RcTransformers.str(i, "dimensionMatcher", "")), chances(i, "spawnChance", "spawnChances")));
+                  RcEnv.dimExpr(RcTransformers.str(i, "dimensionMatcher", "")), chances(i, "spawnChance", "spawnChances")));
             }
          }
          return Optional.of(c);
@@ -209,6 +210,11 @@ public final class RcRegistry {
       /** Category name -> weighted entries. 1.12 iterated categories in identity-hash order; we use name order. */
       final Map<String, List<Entry>> byCategory = new TreeMap<>();
       final Map<String, Double> totals = new TreeMap<>();
+      final RcDim dim;
+
+      Selector(RcDim dim) {
+         this.dim = dim;
+      }
 
       public boolean isEmpty() {
          return this.byCategory.isEmpty();
@@ -216,11 +222,17 @@ public final class RcRegistry {
    }
 
    public Selector selector(Biome biome) {
-      return this.selectors.computeIfAbsent(biome, b -> {
-         Selector s = new Selector();
+      return this.selector(RcDim.OVERWORLD, biome);
+   }
+
+   /** NaturalGeneration.selectors(...).get(biome, provider) */
+   public Selector selector(RcDim dim, Biome biome) {
+      Map<Biome, Selector> map = dim == RcDim.OVERWORLD ? this.selectors : this.otherSelectors.computeIfAbsent(dim, k -> new ConcurrentHashMap<>());
+      return map.computeIfAbsent(biome, b -> {
+         Selector s = new Selector(dim);
          for (RcStructureDef def : this.structures.values()) {
             for (RcStructureDef.NaturalGen gen : def.natural) {
-               double w = gen.weight(b);
+               double w = gen.weight(dim, b);
                if (w > 0.0) {
                   s.byCategory.computeIfAbsent(gen.category, k -> new ArrayList<>()).add(new Entry(def, gen, w));
                   s.totals.merge(gen.category, w, Double::sum);
@@ -236,7 +248,7 @@ public final class RcRegistry {
       List<Entry> out = new ArrayList<>();
       for (Map.Entry<String, List<Entry>> e : s.byCategory.entrySet()) {
          Category cat = this.category(e.getKey());
-         int n = cat != null ? cat.structuresInBiome(biome, s.totals.get(e.getKey()), random) : 0;
+         int n = cat != null ? cat.structuresInBiome(s.dim, biome, s.totals.get(e.getKey()), random) : 0;
          for (int i = 0; i < n; i++) {
             out.add(selectWeighted(random, e.getValue(), Entry::weight, s.totals.get(e.getKey())));
          }

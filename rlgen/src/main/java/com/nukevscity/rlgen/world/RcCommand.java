@@ -33,7 +33,13 @@ public final class RcCommand {
 
    private static int place(CommandSourceStack source, String id) {
       ServerLevel level = source.getLevel();
-      if (!(level.getChunkSource().getGenerator() instanceof LegacyChunkGenerator generator)) {
+      RcGenerator.Oracle oracle;
+      if (level.getChunkSource().getGenerator() instanceof LegacyChunkGenerator generator) {
+         oracle = generator.oracle();
+      } else if (level.dimension() == net.minecraft.world.level.Level.END || level.dimension() == net.minecraft.world.level.Level.NETHER) {
+         oracle = new DimensionOracle(level.dimension() == net.minecraft.world.level.Level.END ? com.nukevscity.rlgen.rc.RcDim.END
+            : com.nukevscity.rlgen.rc.RcDim.NETHER, level.getChunkSource().getGenerator(), level, level.getChunkSource().randomState());
+      } else {
          source.sendFailure(Component.literal("Not an RLCraft Legacy world"));
          return 0;
       }
@@ -44,7 +50,6 @@ public final class RcCommand {
       }
       BlockPos at = BlockPos.containing(source.getPosition());
       long seed = new Random().nextLong();
-      RcGenerator.Oracle oracle = generator.oracle();
       RcGenerator.Instance inst = RcGenerator.planAt(def, at, seed, oracle);
       if (inst == null) {
          source.sendFailure(Component.literal(def.id + " found no place here (its placer or ensure rules refused)"));
@@ -58,7 +63,7 @@ public final class RcCommand {
                cp.getMaxBlockZ());
             RcPiece.LiveView view = new RcPiece.LiveView(level, cp, oracle);
             long s = cp.equals(new ChunkPos(at)) ? seed : RcGenerator.chunkSeed(seed, cp);
-            RcGenerator.spawn(inst, view, box, s, new RcEnv(inst.env().biome, "natural", inst.genId, null));
+            RcGenerator.spawn(inst, view, box, s, new RcEnv(inst.env().biome, "natural", inst.genId, null).in(oracle.dim()));
             view.finish();
          }
       }

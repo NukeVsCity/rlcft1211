@@ -2,6 +2,7 @@ package com.nukevscity.rlgen.world;
 
 import com.mojang.logging.LogUtils;
 import com.nukevscity.rlgen.RLGen;
+import com.nukevscity.rlgen.rc.RcDim;
 import com.nukevscity.rlgen.rc.RcEnv;
 import com.nukevscity.rlgen.rc.RcGenerator;
 import com.nukevscity.rlgen.rc.RcTransform;
@@ -52,9 +53,11 @@ public final class RcPiece extends StructurePiece {
    private final BlockPos lower;
    private final int originX;
    private final int originZ;
+   private final RcDim dim;
 
-   RcPiece(RcGenerator.Planned p, ChunkPos origin, BoundingBox extent) {
+   RcPiece(RcGenerator.Planned p, ChunkPos origin, BoundingBox extent, RcDim dim) {
       super(RLGen.RC_PIECE.get(), 0, extent);
+      this.dim = dim;
       this.structure = p.structure();
       this.genId = p.genId();
       this.seed = p.seed();
@@ -76,6 +79,7 @@ public final class RcPiece extends StructurePiece {
       this.lower = new BlockPos(tag.getInt("LX"), tag.getInt("LY"), tag.getInt("LZ"));
       this.originX = tag.getInt("OX");
       this.originZ = tag.getInt("OZ");
+      this.dim = RcDim.byName(tag.getString("Dim"));
    }
 
    @Override
@@ -90,13 +94,24 @@ public final class RcPiece extends StructurePiece {
       tag.putInt("LZ", this.lower.getZ());
       tag.putInt("OX", this.originX);
       tag.putInt("OZ", this.originZ);
+      if (this.dim != RcDim.OVERWORLD) {
+         tag.putString("Dim", this.dim == RcDim.END ? "end" : "nether");
+      }
    }
 
    private String key() {
-      return this.structure + "|" + this.seed + "|" + this.lower.asLong() + "|" + this.transform;
+      return this.structure + "|" + this.seed + "|" + this.lower.asLong() + "|" + this.transform + "|" + this.dim;
    }
 
-   private RcGenerator.Instance instance(LegacyChunkGenerator generator) {
+   /** The terrain RC planned on: the 1.12 oracle in the overworld, the dimension's own base terrain in the End and the nether. */
+   private RcGenerator.Oracle oracle(WorldGenLevel level, ChunkGenerator chunkGenerator) {
+      if (this.dim == RcDim.OVERWORLD) {
+         return chunkGenerator instanceof LegacyChunkGenerator generator ? generator.oracle() : null;
+      }
+      return new DimensionOracle(this.dim, chunkGenerator, level, level.getLevel().getChunkSource().randomState());
+   }
+
+   private RcGenerator.Instance instance(RcGenerator.Oracle oracle) {
       String key = this.key();
       synchronized (CACHE) {
          RcGenerator.Instance inst = CACHE.get(key);
@@ -104,7 +119,7 @@ public final class RcPiece extends StructurePiece {
             return inst;
          }
       }
-      RcGenerator.Instance inst = RcGenerator.prepareRoot(this.structure, this.genId, this.seed, this.transform, this.lower, generator.oracle());
+      RcGenerator.Instance inst = RcGenerator.prepareRoot(this.structure, this.genId, this.seed, this.transform, this.lower, oracle);
       if (inst != null) {
          synchronized (CACHE) {
             CACHE.put(key, inst);
@@ -116,17 +131,18 @@ public final class RcPiece extends StructurePiece {
    @Override
    public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator chunkGenerator, RandomSource random, BoundingBox box,
                            ChunkPos chunkPos, BlockPos pivot) {
-      if (!(chunkGenerator instanceof LegacyChunkGenerator generator)) {
+      RcGenerator.Oracle oracle = this.oracle(level, chunkGenerator);
+      if (oracle == null) {
          return;
       }
       try {
-         RcGenerator.Instance inst = this.instance(generator);
+         RcGenerator.Instance inst = this.instance(oracle);
          if (inst == null) {
             return;
          }
-         LiveView view = new LiveView(level, chunkPos, generator.oracle());
+         LiveView view = new LiveView(level, chunkPos, oracle);
          long s = chunkPos.x == this.originX && chunkPos.z == this.originZ ? this.seed : RcGenerator.chunkSeed(this.seed, chunkPos);
-         RcGenerator.spawn(inst, view, box, s, new RcEnv(inst.env().biome, "natural", this.genId, null));
+         RcGenerator.spawn(inst, view, box, s, new RcEnv(inst.env().biome, "natural", this.genId, null).in(this.dim));
          view.finish();
       } catch (RuntimeException e) {
          LOGGER.error("rlgen: RC structure {} failed in chunk {}", this.structure, chunkPos, e);

@@ -45,7 +45,7 @@ public final class RcStructureDef {
    public record WeightedBiome(RcExpr<Biome> expr, Double weight) {
    }
 
-   public record WeightedDim(boolean matches, Double weight) {
+   public record WeightedDim(RcExpr<RcDim> expr, Double weight) {
    }
 
    public static final class NaturalGen {
@@ -62,6 +62,11 @@ public final class RcStructureDef {
 
       /** NaturalGeneration.getGenerationWeight (overworld). */
       public double weight(Biome biome) {
+         return this.weight(RcDim.OVERWORLD, biome);
+      }
+
+      /** NaturalGeneration.getGenerationWeight */
+      public double weight(RcDim dim, Biome biome) {
          double b = 0.0;
          for (WeightedBiome w : this.biomes) {
             if (w.expr.test(biome)) {
@@ -71,7 +76,7 @@ public final class RcStructureDef {
          }
          double d = 0.0;
          for (WeightedDim w : this.dimensions) {
-            if (w.matches) {
+            if (w.expr.test(dim)) {
                d = w.weight != null ? w.weight : 1.0;
                break;
             }
@@ -225,7 +230,7 @@ public final class RcStructureDef {
       }
       for (JsonElement e : dims.getAsJsonArray()) {
          JsonObject d = e.getAsJsonObject();
-         n.dimensions.add(new WeightedDim(RcEnv.dimension(RcTransformers.str(d, "dimensions", "")), d.has("weight") ? d.get("weight").getAsDouble() : null));
+         n.dimensions.add(new WeightedDim(RcEnv.dimExpr(RcTransformers.str(d, "dimensions", "")), d.has("weight") ? d.get("weight").getAsDouble() : null));
       }
       n.placer = RcPlacer.parse(info, reg);
       return n;
