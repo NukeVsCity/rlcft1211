@@ -168,7 +168,8 @@ public class BiomeDeco {
          case "traverse:mini_jungle" -> miniJungle();
          case "traverse:meadow" -> meadow();
          case "traverse:green_swamp" -> lushSwamp();
-         case "traverse:red_desert", "traverse:desert_shrubland", "traverse:arid_highland" -> noFalls(desert());
+         case "traverse:red_desert", "traverse:desert_shrubland" -> noFalls(desert());
+         case "traverse:arid_highland" -> noFalls(aridHighland());
          case "traverse:temperate_rainforest", "traverse:snowy_coniferous_forest" -> coniferous();
          case "traverse:badlands" -> badlands();
          case "traverse:mountainous_desert" -> mountainousDesert();
@@ -213,6 +214,7 @@ public class BiomeDeco {
                doublePlants(w, r, pos, Blocks.TALL_GRASS, 7);
             }
             if (sunflowers) {
+               LegacyPopulator.flowersEvent(w, r, pos);
                doublePlants(w, r, pos, Blocks.SUNFLOWER, 10);
             }
          }
@@ -230,11 +232,13 @@ public class BiomeDeco {
       BiomeDeco d = new BiomeDeco() {
          @Override
          void post(DWorld w, Random r, BlockPos pos) {
+            DecorateEvents.desertWell(w, r, pos);
             if (r.nextInt(1000) == 0) {
                int i = r.nextInt(16) + 8;
                int j = r.nextInt(16) + 8;
                Gen.desertWell(w, r, w.height(pos.offset(i, 0, j)).above());
             }
+            DecorateEvents.fossil(w, r, pos);
             if (r.nextInt(64) == 0) {
                Gen.fossil(w, pos);
             }
@@ -278,18 +282,22 @@ public class BiomeDeco {
          @Override
          void pre(DWorld w, Random r, BlockPos pos, Counts c) {
             if (type == Forest.ROOFED) {
-               // addMushrooms: the dark oaks themselves come from Dynamic Trees; 1 in 20 spots is a huge mushroom
+               // addMushrooms: 1 in 20 spots fires BIG_SHROOM (Quark in swamps, else denied by Dynamic Trees), the others or a denied
+               // one fire TREE (denied; the dark oaks themselves come from Dynamic Trees)
                for (int i = 0; i < 4; i++) {
                   for (int j = 0; j < 4; j++) {
                      int k = i * 4 + 1 + 8 + r.nextInt(3);
                      int l = j * 4 + 1 + 8 + r.nextInt(3);
                      BlockPos b = w.height(pos.offset(k, 0, l));
-                     if (r.nextInt(20) == 0) {
+                     if (r.nextInt(20) == 0 && DecorateEvents.bigShroomAt(w, r, pos, b)) {
                         Gen.bigMushroom(w, r, b, null);
+                     } else {
+                        DecorateEvents.tree(w, r, pos);
                      }
                   }
                }
             }
+            LegacyPopulator.flowersEvent(w, r, pos);
             int n = r.nextInt(5) - 3;
             if (type == Forest.FLOWER) {
                n += 2;
@@ -343,6 +351,7 @@ public class BiomeDeco {
                   Gen.blockBlob(w, r, w.height(pos.offset(k, 0, l)), Blocks.MOSSY_COBBLESTONE.defaultBlockState(), 0, Gen.BLOB_GROUND);
                }
             }
+            LegacyPopulator.flowersEvent(w, r, pos);
             doublePlants(w, r, pos, Blocks.LARGE_FERN, 7);
          }
 
@@ -372,6 +381,7 @@ public class BiomeDeco {
 
          @Override
          void post(DWorld w, Random r, BlockPos pos) {
+            DecorateEvents.fossil(w, r, pos);
             if (r.nextInt(64) == 0) {
                Gen.fossil(w, pos);
             }
@@ -474,6 +484,11 @@ public class BiomeDeco {
    static BiomeDeco woodlands() {
       BiomeDeco d = new BiomeDeco() {
          @Override
+         void pre(DWorld w, Random r, BlockPos pos, Counts c) {
+            DecorateEvents.tree(w, r, pos);
+         }
+
+         @Override
          BlockState flower(Random r, BlockPos pos) {
             return plainsFlower(r, pos, -0.8, 4);
          }
@@ -531,6 +546,7 @@ public class BiomeDeco {
 
          @Override
          void post(DWorld w, Random r, BlockPos pos) {
+            DecorateEvents.fossil(w, r, pos);
             if (r.nextInt(64) == 0) {
                Gen.fossil(w, pos);
             }
@@ -556,6 +572,7 @@ public class BiomeDeco {
       BiomeDeco d = new BiomeDeco() {
          @Override
          void pre(DWorld w, Random r, BlockPos pos, Counts c) {
+            DecorateEvents.tree(w, r, pos);
             boulder(w, r, pos, 5, Blocks.COBBLESTONE, 1);
             chance(w, r, pos, 12, (w2, r2, at) -> Gen.lake(w2, r2, at, true));
             doublePlants(w, r, pos, Blocks.TALL_GRASS, 7);
@@ -581,6 +598,27 @@ public class BiomeDeco {
          }
       };
       d.treesPerChunk = -999;
+      d.deadBushPerChunk = 2;
+      d.reedsPerChunk = 50;
+      d.cactiPerChunk = 10;
+      return d;
+   }
+
+   /** BiomeAridHighland: a TREE event (denied, so no shrub roll), then BiomeDesert.decorate. */
+   static BiomeDeco aridHighland() {
+      BiomeDeco desert = desert();
+      BiomeDeco d = new BiomeDeco() {
+         @Override
+         void pre(DWorld w, Random r, BlockPos pos, Counts c) {
+            DecorateEvents.tree(w, r, pos);
+         }
+
+         @Override
+         void post(DWorld w, Random r, BlockPos pos) {
+            desert.post(w, r, pos);
+         }
+      };
+      d.treesPerChunk = 1;
       d.deadBushPerChunk = 2;
       d.reedsPerChunk = 50;
       d.cactiPerChunk = 10;
@@ -674,7 +712,9 @@ public class BiomeDeco {
          void pre(DWorld w, Random r, BlockPos pos, Counts c) {
             chance(w, r, pos, 4, (w2, r2, at) -> Gen.patch(w2, r2, at, Blocks.PODZOL.defaultBlockState(), 6, PATCH_DEFAULT, true));
             chance(w, r, pos, 5, (w2, r2, at) -> Gen.patch(w2, r2, at, Blocks.GRAVEL.defaultBlockState(), 4, PATCH_DEFAULT, false));
+            DecorateEvents.tree(w, r, pos);
             doublePlants(w, r, pos, Blocks.TALL_GRASS, 7);
+            DecorateEvents.tree(w, r, pos);
          }
       };
       counts(d, 35, 0, 3);
@@ -689,6 +729,7 @@ public class BiomeDeco {
          void pre(DWorld w, Random r, BlockPos pos, Counts c) {
             chance(w, r, pos, 4, (w2, r2, at) -> Gen.patch(w2, r2, at, Blocks.STONE.defaultBlockState(), 5, PATCH_DEFAULT, false));
             boulder(w, r, pos, 4, Blocks.COBBLESTONE, 1);
+            DecorateEvents.tree(w, r, pos);
             plains.pre(w, r, pos, c);
          }
 

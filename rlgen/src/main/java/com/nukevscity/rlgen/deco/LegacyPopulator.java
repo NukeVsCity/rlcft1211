@@ -25,6 +25,8 @@ public final class LegacyPopulator {
    private static final ThreadLocal<Long> VILLAGE = new ThreadLocal<>();
    /** Whether that village is a zombie village (Charm's erosion and undead horses). */
    private static final ThreadLocal<Boolean> ZOMBIE = new ThreadLocal<>();
+   /** Chunk whose first FLOWERS decorate event already ran Charm's village decorations (VillageDecorations then forgot the chunk). */
+   private static final ThreadLocal<Long> CHARM_DONE = new ThreadLocal<>();
 
    private LegacyPopulator() {
    }
@@ -66,6 +68,7 @@ public final class LegacyPopulator {
       long j1 = rand.nextLong() / 2L * 2L + 1L;
       rand.setSeed((long)cp.x * i1 + (long)cp.z * j1 ^ w.seed);
       RcGenerator.consumeSelection(rand, cp.x, cp.z, legacy);
+      CHARM_DONE.remove();
       LegacyStructures.generate(w, rand, cp, legacy);
       BiomeDeco deco = BiomeDeco.of(biome);
       STATE.set(new State(cp.toLong(), rand, biome, deco, deco.counts()));
@@ -140,6 +143,24 @@ public final class LegacyPopulator {
       }
    }
 
+   /**
+    * A FLOWERS decorate event: Charm VillageDecorations runs its outer decorators at the first one of a chunk a village generated in
+    * (forests, taigas and sunflower plains fire one before the decorator's), with the decoration random.
+    */
+   static void flowersEvent(DWorld w, Random r, BlockPos pos) {
+      ChunkPos cp = new ChunkPos(pos);
+      Long done = CHARM_DONE.get();
+      if (!village(cp) || done != null && done == cp.toLong()) {
+         return;
+      }
+      CHARM_DONE.set(cp.toLong());
+      com.nukevscity.rlgen.world.LegacyChunkGenerator gen = com.nukevscity.rlgen.quark.QuarkGen.gen(w);
+      if (gen != null) {
+         com.nukevscity.rlgen.charm.Outer.decorate(w, pos, r, com.nukevscity.rlgen.charm.Charm.villageSeed(gen.legacyGenerator(), w.seed(), pos),
+            Boolean.TRUE.equals(ZOMBIE.get()));
+      }
+   }
+
    /** BiomeDecorator.genStandardOre1 */
    static void ore(DWorld w, Random r, BlockPos pos, int count, BlockState ore, int size, int min, int max) {
       if (max < min) {
@@ -167,33 +188,20 @@ public final class LegacyPopulator {
       BlockPos pos = origin(cp);
       BiomeDeco d = s.deco;
       BiomeDeco.Counts c = s.counts;
-      // trees: the extra-tree roll still happened, the TREE event was denied by Dynamic Trees
+      // trees: the extra-tree roll still happened, then the TREE event (Recurrent Complex's draw; Dynamic Trees denied it)
       if (r.nextFloat() < c.extraTreeChance) {
          c.treesPerChunk++;
       }
-      // Quark "Big mushrooms generate in swamps" (0.5 per chunk) took the BIG_SHROOM event in swamps, by the biome at the chunk corner
-      String corner = w.biome(pos).getRegistryName();
-      if (corner.equals("swampland") || corner.equals("mutated_swampland")) {
-         if (!(r.nextDouble() > 0.5)) {
-            int x = r.nextInt(16) + 8;
-            int z = r.nextInt(16) + 8;
-            Gen.bigMushroom(w, r, w.height(pos.offset(x, 0, z)), null);
-         }
-      } else {
+      DecorateEvents.tree(w, r, pos);
+      // BIG_SHROOM (no placement position, so Quark's swamp mushrooms don't take it): denied by Dynamic Trees in vanilla/Traverse corners
+      if (DecorateEvents.bigShroomOrCactus(w, pos)) {
          for (int k2 = 0; k2 < c.bigMushroomsPerChunk; k2++) {
             int x = r.nextInt(16) + 8;
             int z = r.nextInt(16) + 8;
             Gen.bigMushroom(w, r, w.height(pos.offset(x, 0, z)), null);
          }
       }
-      // Charm VillageDecorations at the FLOWERS decorate event (DecorateBiomeEvent.Decorate), in chunks a village generated in
-      if (village(cp)) {
-         com.nukevscity.rlgen.world.LegacyChunkGenerator gen = com.nukevscity.rlgen.quark.QuarkGen.gen(w);
-         if (gen != null) {
-            com.nukevscity.rlgen.charm.Outer.decorate(w, pos, r, com.nukevscity.rlgen.charm.Charm.villageSeed(gen.legacyGenerator(), w.seed(), pos),
-               Boolean.TRUE.equals(ZOMBIE.get()));
-         }
-      }
+      flowersEvent(w, r, pos);
       for (int l2 = 0; l2 < c.flowersPerChunk; l2++) {
          int x = r.nextInt(16) + 8;
          int z = r.nextInt(16) + 8;
@@ -289,7 +297,8 @@ public final class LegacyPopulator {
             Gen.pumpkin(w, r, pos.offset(x, r.nextInt(h), z));
          }
       }
-      for (int j5 = 0; j5 < c.cactiPerChunk; j5++) {
+      // CACTUS: denied by Dynamic Trees (vanillaCactusWorldGen=false) in vanilla/Traverse corners
+      for (int j5 = 0; DecorateEvents.bigShroomOrCactus(w, pos) && j5 < c.cactiPerChunk; j5++) {
          int x = r.nextInt(16) + 8;
          int z = r.nextInt(16) + 8;
          int h = w.height(pos.getX() + x, pos.getZ() + z) * 2;

@@ -62,12 +62,14 @@ final class DefiledDeco extends BiomeDeco {
 
    @Override
    void post(DWorld w, Random r, BlockPos pos) {
+      DecorateEvents.desertWell(w, r, pos);
       if (w.chunkRandom(pos, 119432789L).nextInt(50) == 0) {
          int i = r.nextInt(16) + 8;
          int j = r.nextInt(16) + 8;
          altar(w, r, w.height(pos.offset(i, 0, j)).above());
       }
-      for (int j5 = 0; j5 < this.vilespinePerChunk; j5++) {
+      // CACTUS event: denied by Dynamic Trees when the chunk corner is a vanilla or Traverse biome
+      for (int j5 = 0; DecorateEvents.bigShroomOrCactus(w, pos) && j5 < this.vilespinePerChunk; j5++) {
          int x = r.nextInt(16) + 8;
          int z = r.nextInt(16) + 8;
          int h = w.height(pos.getX() + x, pos.getZ() + z) * 2;
