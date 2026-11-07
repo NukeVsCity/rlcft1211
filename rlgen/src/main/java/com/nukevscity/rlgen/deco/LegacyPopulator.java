@@ -180,7 +180,9 @@ public final class LegacyPopulator {
             Gen.bigMushroom(w, r, w.height(pos.offset(x, 0, z)), null);
          }
       } else {
-         for (int k2 = 0; k2 < c.bigMushroomsPerChunk; k2++) {
+         // Recurrent Complex's BIG_SHROOM handler (after Quark's): its mushroom structures replace some of them
+         int bigMushrooms = com.nukevscity.rlgen.rc.RcDecoration.bigMushrooms(w, r, cp, s.biome, c.bigMushroomsPerChunk);
+         for (int k2 = 0; k2 < bigMushrooms; k2++) {
             int x = r.nextInt(16) + 8;
             int z = r.nextInt(16) + 8;
             Gen.bigMushroom(w, r, w.height(pos.offset(x, 0, z)), null);

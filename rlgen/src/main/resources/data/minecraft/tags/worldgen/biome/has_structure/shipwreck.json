@@ -1,8 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "rlgen:deep_ocean",
-    "rlgen:frozen_ocean",
-    "rlgen:ocean"
-  ]
-}

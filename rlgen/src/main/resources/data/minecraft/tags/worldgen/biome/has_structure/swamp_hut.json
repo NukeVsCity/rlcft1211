@@ -1,9 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "rlgen:green_swamp",
-    "rlgen:mutated_swampland",
-    "rlgen:swamp_defiled",
-    "rlgen:swampland"
-  ]
-}
