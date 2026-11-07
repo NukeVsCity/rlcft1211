@@ -1,0 +1,8 @@
+{
+  "type": "rlgen:recurrent_complex",
+  "biomes": "#minecraft:is_end",
+  "dimension": "end",
+  "step": "surface_structures",
+  "spawn_overrides": {},
+  "terrain_adaptation": "none"
+}

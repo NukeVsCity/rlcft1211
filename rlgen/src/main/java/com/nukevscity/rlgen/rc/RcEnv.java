@@ -9,14 +9,13 @@ import java.util.function.Predicate;
 
 /** RC Environment (biome, generation type, variables) and the Biome/Dimension/Environment expressions. */
 public final class RcEnv {
-   /** DimensionDictionary types of the overworld (DimensionDictionary.registerDefaults, dimension 0). */
-   private static final Set<String> OVERWORLD = Set.of("MC_DEFAULT", "REAL", "INFINITE", "NO_TOP_LIMIT", "BOTTOM_LIMIT", "PLANET_SURFACE", "EARTH");
-
    public final Biome biome;
    public final String genType;
    public final String genId;
    public final Integer villageType;
    public final Map<String, Boolean> variables = new HashMap<>();
+   /** The world's dimension (overworld unless set). */
+   public RcDim dim = RcDim.OVERWORLD;
 
    public RcEnv(Biome biome, String genType, String genId, Integer villageType) {
       this.biome = biome;
@@ -27,7 +26,12 @@ public final class RcEnv {
 
    /** Environment.child(): same biome and generation, fresh variables. */
    public RcEnv child() {
-      return new RcEnv(this.biome, this.genType, this.genId, this.villageType);
+      return new RcEnv(this.biome, this.genType, this.genId, this.villageType).in(this.dim);
+   }
+
+   public RcEnv in(RcDim dim) {
+      this.dim = dim;
+      return this;
    }
 
    // ---------------- BiomeExpression
@@ -62,23 +66,23 @@ public final class RcEnv {
       return b -> biomeId(b).equals(id);
    }
 
-   // ---------------- DimensionExpression (always evaluated for the overworld)
+   // ---------------- DimensionExpression
 
-   public static boolean dimension(String s) {
-      return RcExpr.parse(s, RcEnv::dimVar).test(Boolean.TRUE);
+   public static RcExpr<RcDim> dimExpr(String s) {
+      return RcExpr.parse(s, RcEnv::dimVar);
    }
 
-   static Predicate<Boolean> dimVar(String t) {
+   static Predicate<RcDim> dimVar(String t) {
       String v;
       if ((v = RcExpr.strip(t, "type=")) != null || (v = RcExpr.strip(t, "$")) != null) {
-         boolean has = OVERWORLD.contains(v.toUpperCase(Locale.ROOT));
-         return d -> has;
+         String type = v.toUpperCase(Locale.ROOT);
+         return d -> d.hasType(type);
       }
       if ((v = RcExpr.strip(t, "id=")) == null) {
          v = t;
       }
-      boolean zero = v.trim().equals("0");
-      return d -> zero;
+      String id = v.trim();
+      return d -> id.equals(Integer.toString(d.id));
    }
 
    // ---------------- EnvironmentExpression
@@ -94,8 +98,8 @@ public final class RcEnv {
          return e -> p.test(e.biome);
       }
       if ((v = RcExpr.strip(t, "dimension.")) != null || (v = RcExpr.strip(t, "dim.")) != null) {
-         boolean d = dimVar(v).test(Boolean.TRUE);
-         return e -> d;
+         Predicate<RcDim> d = dimVar(v);
+         return e -> d.test(e.dim);
       }
       if (t.startsWith("dependency.") || t.startsWith("dep.")) {
          return e -> true; // every mod RLCraft's structures depend on was installed
