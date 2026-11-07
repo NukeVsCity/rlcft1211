@@ -85,6 +85,11 @@ public final class RLGen {
       STRUCTURE_TYPES.register("village", () -> () -> LegacyVillageStructure.CODEC);
    public static final DeferredHolder<StructurePieceType, StructurePieceType> VILLAGE_PIECE =
       STRUCTURE_PIECES.register("village", () -> com.nukevscity.rlgen.village.VillagePieces::load);
+   /** 1.12 woodland mansions (placed in the populate step; the structure is for /locate and explorer maps). */
+   public static final DeferredHolder<StructureType<?>, StructureType<com.nukevscity.rlgen.vanilla.mansion.MansionStructure>> MANSION =
+      STRUCTURE_TYPES.register("mansion", () -> () -> com.nukevscity.rlgen.vanilla.mansion.MansionStructure.CODEC);
+   public static final DeferredHolder<StructurePieceType, StructurePieceType> MANSION_PIECE =
+      STRUCTURE_PIECES.register("mansion", () -> com.nukevscity.rlgen.vanilla.mansion.MansionPiece::new);
    private static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(Registries.FEATURE, MODID);
    static {
       FEATURES.register("legacy_lakes", () -> new LegacyDecorationFeature(LegacyDecorationFeature.Step.LAKES));
