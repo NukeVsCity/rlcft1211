@@ -39,7 +39,7 @@ public final class LegacyStructures {
    static Step MONUMENT = NONE;
 
    // ---- woodland mansion (WoodlandMansion)
-   static Step MANSION = NONE;
+   static Step MANSION = com.nukevscity.rlgen.vanilla.mansion.MansionGen::generate;
 
    public static void generate(DWorld w, Random rand, ChunkPos cp, LegacyGenerator legacy) {
       MINESHAFT.generate(w, rand, cp, legacy);
