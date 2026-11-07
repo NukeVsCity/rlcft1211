@@ -15,7 +15,8 @@ import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Biome.decorate + BiomeDecorator settings of every 1.12 biome RLCraft had: vanilla, Traverse 1.6.0 and Defiled Lands 1.4.3.
- * Tree generation is left to Dynamic Trees (it denied the TREE decorate event in 1.12, so tree-gated extras never ran).
+ * Tree generation is left to Dynamic Trees (it denied the TREE decorate event in 1.12, so tree-gated extras never ran), except the
+ * roofed forest grid where Recurrent Complex allowed it ({@link VanillaTrees}).
  */
 public class BiomeDeco {
    static final NoiseGeneratorPerlin GRASS_COLOR_NOISE = new NoiseGeneratorPerlin(new Random(2345L), 1);
@@ -282,8 +283,9 @@ public class BiomeDeco {
          @Override
          void pre(DWorld w, Random r, BlockPos pos, Counts c) {
             if (type == Forest.ROOFED) {
-               // addMushrooms: 1 in 20 spots fires BIG_SHROOM (Quark in swamps, else denied by Dynamic Trees), the others or a denied
-               // one fire TREE (denied; the dark oaks themselves come from Dynamic Trees)
+               // addMushrooms: 1 in 20 spots fires BIG_SHROOM (Quark in swamps), the others or a denied one fire TREE. Where the biome
+               // at the chunk corner + 16 is a roofed forest, Recurrent Complex allows both over Dynamic Trees' DENY, so the vanilla
+               // canopy/birch/big oak/oak trees and big mushrooms grow here besides the Dynamic Trees ones that come later
                for (int i = 0; i < 4; i++) {
                   for (int j = 0; j < 4; j++) {
                      int k = i * 4 + 1 + 8 + r.nextInt(3);
@@ -291,6 +293,8 @@ public class BiomeDeco {
                      BlockPos b = w.height(pos.offset(k, 0, l));
                      if (r.nextInt(20) == 0 && DecorateEvents.bigShroomAt(w, r, pos, b)) {
                         Gen.bigMushroom(w, r, b, null);
+                     } else if (DecorateEvents.roofedForest(w, pos)) {
+                        VanillaTrees.roofedForestTree(w, r, b);
                      } else {
                         DecorateEvents.tree(w, r, pos);
                      }

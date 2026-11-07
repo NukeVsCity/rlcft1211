@@ -30,7 +30,7 @@ public final class DecorateEvents {
       return !n.contains(":") || n.startsWith("traverse:");
    }
 
-   /** The biome RC looks at (getPos() + 16) is a roofed forest: RC allows the event and draws nothing. */
+   /** The biome RC looks at (getPos() + 16) is a roofed forest: RC allows the event and draws nothing (vanilla trees then grow). */
    static boolean roofedForest(DWorld w, BlockPos corner) {
       String n = w.biome(corner.offset(16, 0, 16)).getRegistryName();
       return n.equals("roofed_forest") || n.equals("mutated_roofed_forest");
@@ -53,7 +53,10 @@ public final class DecorateEvents {
       return left;
    }
 
-   /** TREE: RC re-rolls the extra-tree chance; Dynamic Trees (or Defiled Lands' add-on) denies it, so no vanilla tree grows. */
+   /**
+    * TREE outside a roofed forest: RC re-rolls the extra-tree chance; Dynamic Trees (or Defiled Lands' add-on) denies it, so no vanilla
+    * tree grows. In a roofed forest the caller grows the vanilla tree ({@link VanillaTrees}).
+    */
    static void tree(DWorld w, Random r, BlockPos corner) {
       if (!roofedForest(w, corner)) {
          r.nextFloat();
