@@ -1,3 +1,4 @@
 rlgen-*.jar
 *_seed_map.png
 __pycache__/
+.claude/worktrees/
