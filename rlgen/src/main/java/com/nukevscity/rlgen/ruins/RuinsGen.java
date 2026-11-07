@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 public final class RuinsGen {
    private static final Logger LOGGER = LogUtils.getLogger();
    static final Object LOCK = new Object();
+   private static final boolean DEBUG = Boolean.getBoolean("rlgen.rcdebug");
 
    /** One try that picked a template: the 1.12 x, z, rotation and template, and a seed for its build. */
    record Candidate(int chunkX, int chunkZ, int index, RuinTemplate template, int x, int z, int rotate, long buildSeed) {
@@ -123,7 +124,11 @@ public final class RuinsGen {
          int y = test(gen, c, data);
          data.decide(c.key(), y, y >= 0 ? c.template().getRuinData(c.x(), y, c.z(), c.rotate()) : null);
          if (y >= 0) {
-            LOGGER.debug("rlgen: ruin {} at {} {} {}", c.template().getName(), c.x(), y, c.z());
+            if (DEBUG) {
+               LOGGER.info("rlgen: ruin {} in {} at {} {} {}", c.template().getName(), gen.dim.name, c.x(), y, c.z());
+            } else {
+               LOGGER.debug("rlgen: ruin {} at {} {} {}", c.template().getName(), c.x(), y, c.z());
+            }
          }
          return y;
       }
