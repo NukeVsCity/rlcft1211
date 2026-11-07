@@ -9,11 +9,11 @@ import net.minecraft.world.level.block.Blocks;
 
 /**
  * Theme block ids as 1.21 blocks: Lycanites stone sets and crystals are rlgen blocks with Lycanites' textures, its fluids are the
- * rlgen fluids (moglava is lava), its fires are vanilla fire (they don't keep burning like Lycanites' did), clouds are air.
+ * rlgen fluids, its fires are vanilla fire (they don't keep burning like Lycanites' did), clouds are air.
  */
 public final class LycBlocks {
    private static final Map<String, String> SPECIAL = Map.ofEntries(
-      Map.entry("lycanitesmobs:moglava", "minecraft:lava"),
+      Map.entry("minecraft:magma", "minecraft:magma_block"),
       Map.entry("lycanitesmobs:scorchfire", "minecraft:fire"),
       Map.entry("lycanitesmobs:hellfire", "minecraft:fire"),
       Map.entry("lycanitesmobs:primefire", "minecraft:fire"),
@@ -36,6 +36,8 @@ public final class LycBlocks {
             return LycFluids.POISON.block.get();
          case "lycanitesmobs:acid":
             return LycFluids.ACID.block.get();
+         case "lycanitesmobs:moglava":
+            return LycFluids.MOGLAVA.block.get();
          default:
       }
       String mapped = SPECIAL.get(id);

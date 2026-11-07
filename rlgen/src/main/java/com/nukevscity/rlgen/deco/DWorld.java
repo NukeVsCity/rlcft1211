@@ -30,6 +30,14 @@ public final class DWorld {
       this.center = center;
    }
 
+   /** On a dimension without 1.12 terrain (the 1.21 nether and End): no 1.12 biomes, only blocks. */
+   public DWorld(WorldGenLevel level, long seed, ChunkPos center) {
+      this.level = level;
+      this.legacy = null;
+      this.seed = seed;
+      this.center = center;
+   }
+
    public long seed() {
       return this.seed;
    }

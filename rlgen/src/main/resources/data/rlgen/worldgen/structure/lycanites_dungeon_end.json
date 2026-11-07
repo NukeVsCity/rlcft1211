@@ -1,0 +1,8 @@
+{
+  "type": "rlgen:lycanites_dungeon",
+  "dimension": 1,
+  "biomes": "#minecraft:is_end",
+  "step": "top_layer_modification",
+  "spawn_overrides": {},
+  "terrain_adaptation": "none"
+}

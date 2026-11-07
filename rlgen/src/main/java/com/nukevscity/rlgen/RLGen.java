@@ -410,6 +410,9 @@ public final class RLGen {
             com.nukevscity.rlgen.iaf.MyrmexSavedData.attach(sl);
             com.nukevscity.rlgen.lyc.dungeon.LycDungeons.attach(sl);
          }
+         if (e.getLevel() instanceof net.minecraft.server.level.ServerLevel sl && sl.dimension() != net.minecraft.world.level.Level.OVERWORLD) {
+            com.nukevscity.rlgen.lyc.dungeon.LycDungeons.attachDimension(sl);
+         }
       });
       if (net.neoforged.fml.loading.FMLEnvironment.dist.isClient()) {
          RLGenClient.init(modBus);

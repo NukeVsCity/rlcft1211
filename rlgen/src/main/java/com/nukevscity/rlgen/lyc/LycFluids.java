@@ -19,7 +19,10 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
-/** Lycanites Mobs' ooze, acid and poison: water-material fluids with the Lycanites textures (only what world gen needs, no effects yet). */
+/**
+ * Lycanites Mobs' ooze, acid and poison (water material) and moglava (lava material, luminosity 15, density 3000, viscosity 5000,
+ * temperature 1100) with the Lycanites textures (only what world gen needs, no effects yet).
+ */
 public final class LycFluids {
    private static final DeferredRegister<FluidType> TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, RLGen.MODID);
    private static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, RLGen.MODID);
@@ -29,6 +32,7 @@ public final class LycFluids {
    public static final Kind OOZE = new Kind("ooze", MapColor.COLOR_LIGHT_BLUE, 10);
    public static final Kind ACID = new Kind("acid", MapColor.COLOR_LIGHT_GREEN, 10);
    public static final Kind POISON = new Kind("poison", MapColor.COLOR_PURPLE, 0);
+   public static final Kind MOGLAVA = new Kind("moglava", MapColor.FIRE, 15, true);
 
    public static final class Kind {
       public final String name;
@@ -38,15 +42,25 @@ public final class LycFluids {
       public final DeferredBlock<LiquidBlock> block;
 
       Kind(String name, MapColor color, int light) {
+         this(name, color, light, false);
+      }
+
+      Kind(String name, MapColor color, int light, boolean lava) {
          this.name = name;
-         this.type = TYPES.register(name, () -> new FluidType(FluidType.Properties.create().descriptionId("block.rlgen." + name)
-            .canSwim(true).canDrown(true).canExtinguish(true).supportsBoating(true).lightLevel(light)));
-         Supplier<BaseFlowingFluid.Properties> props = () -> new BaseFlowingFluid.Properties(this.type, this.source(), this.flowing())
-            .block(this.block()).slopeFindDistance(4).levelDecreasePerBlock(1);
+         this.type = TYPES.register(name, () -> new FluidType(lava
+            ? FluidType.Properties.create().descriptionId("block.rlgen." + name).canSwim(false).canDrown(false).canExtinguish(false)
+               .pathType(net.minecraft.world.level.pathfinder.PathType.LAVA).adjacentPathType(null).lightLevel(light).density(3000).viscosity(5000)
+               .temperature(1100)
+            : FluidType.Properties.create().descriptionId("block.rlgen." + name)
+               .canSwim(true).canDrown(true).canExtinguish(true).supportsBoating(true).lightLevel(light)));
+         // Forge BlockFluidBase: tickRate = viscosity / 200
+         Supplier<BaseFlowingFluid.Properties> props = () -> lava
+            ? new BaseFlowingFluid.Properties(this.type, this.source(), this.flowing()).block(this.block()).slopeFindDistance(2).levelDecreasePerBlock(2).tickRate(25)
+            : new BaseFlowingFluid.Properties(this.type, this.source(), this.flowing()).block(this.block()).slopeFindDistance(4).levelDecreasePerBlock(1);
          this.source = FLUIDS.register(name, () -> new BaseFlowingFluid.Source(props.get()));
          this.flowing = FLUIDS.register("flowing_" + name, () -> new BaseFlowingFluid.Flowing(props.get()));
          this.block = BLOCKS.registerBlock(name, p -> new LiquidBlock((FlowingFluid)this.source.get(), p),
-            BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).mapColor(color).lightLevel(s -> light));
+            BlockBehaviour.Properties.ofFullCopy(lava ? Blocks.LAVA : Blocks.WATER).mapColor(color).lightLevel(s -> light));
          ALL.add(this);
       }
 
@@ -70,5 +84,6 @@ public final class LycFluids {
       TYPES.register(modBus);
       FLUIDS.register(modBus);
       BLOCKS.register(modBus);
+      MoglavaLakes.register(modBus);
    }
 }
