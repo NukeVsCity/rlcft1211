@@ -21,10 +21,14 @@ import net.minecraft.world.level.saveddata.SavedData;
  * no dungeon within 90 chunks, four dungeons are planned 45 chunks north, south, east and west of it (so where dungeons end up
  * depends on where the world was explored first, like 1.12). The dungeons are kept with the world (rlgen_lyc_dungeons) and their
  * layouts are rebuilt from their seeds. world.rand (schematic and seed) is replaced by a random seeded from the chunk.
+ * 1.12 ran the same generator in every dimension with one ExtendedWorld each: the nether and End have their own list
+ * (rlgen_lyc_dungeons in their data folders) and are planned on the 1.21 terrain there.
  */
 public final class LycDungeons extends SavedData {
    private static final String NAME = "rlgen_lyc_dungeons";
    private static volatile LycDungeons current = new LycDungeons();
+   private static volatile LycDungeons nether;
+   private static volatile LycDungeons end;
 
    private record Entry(BlockPos origin, String schematic, long seed) {
    }
@@ -37,8 +41,29 @@ public final class LycDungeons extends SavedData {
       current = overworld.getDataStorage().computeIfAbsent(new SavedData.Factory<>(LycDungeons::new, LycDungeons::load, null), NAME);
    }
 
-   private static World planWorld(LegacyChunkGenerator generator) {
-      return new World(null, generator, null);
+   /** The nether and End lists, only in worlds whose overworld is the 1.12 one. */
+   public static void attachDimension(ServerLevel level) {
+      if (!(level.getServer().overworld().getChunkSource().getGenerator() instanceof LegacyChunkGenerator)) {
+         return;
+      }
+      LycDungeons d = level.getDataStorage().computeIfAbsent(new SavedData.Factory<>(LycDungeons::new, LycDungeons::load, null), NAME);
+      if (level.dimension() == net.minecraft.world.level.Level.NETHER) {
+         d.dimension = -1;
+         nether = d;
+      } else if (level.dimension() == net.minecraft.world.level.Level.END) {
+         d.dimension = 1;
+         end = d;
+      }
+   }
+
+   private static LycDungeons of(int dimension) {
+      return dimension == 0 ? current : dimension == -1 ? nether : end;
+   }
+
+   private int dimension;
+
+   private World planWorld(LegacyChunkGenerator generator) {
+      return this.dimension == 0 ? new World(null, generator, null) : new LycWorld(null, null, this.dimension);
    }
 
    /** The planned dungeons (layouts built on first use). */
@@ -54,7 +79,7 @@ public final class LycDungeons extends SavedData {
          d.schematic = DungeonManager.getInstance().getSchematic(e.schematic);
          d.setSeed(e.seed);
          if (d.schematic != null) {
-            d.init(planWorld(generator), new Random(e.seed));
+            d.init(this.planWorld(generator), new Random(e.seed));
          }
          this.instances.add(d);
       }
@@ -63,7 +88,15 @@ public final class LycDungeons extends SavedData {
 
    /** WorldGeneratorDungeon.generate for a newly generated chunk, then the dungeons whose sectors 1.12 built from chunks around it. */
    public static synchronized List<Integer> reaching(LegacyChunkGenerator generator, long seed, ChunkPos chunkPos) {
-      LycDungeons d = current;
+      return reaching(0, generator, seed, chunkPos);
+   }
+
+   /** generator is null in the nether and End. */
+   public static synchronized List<Integer> reaching(int dimension, LegacyChunkGenerator generator, long seed, ChunkPos chunkPos) {
+      LycDungeons d = of(dimension);
+      if (d == null) {
+         return List.of();
+      }
       List<DungeonInstance> all = d.instances(generator);
       boolean nearby = false;
       for (DungeonInstance i : all) {
@@ -73,7 +106,8 @@ public final class LycDungeons extends SavedData {
          }
       }
       if (!nearby) {
-         Random worldRand = new Random(seed ^ chunkPos.toLong() * 0x9E3779B97F4A7C15L);
+         // each dimension had its own world.rand
+         Random worldRand = new Random(seed ^ chunkPos.toLong() * 0x9E3779B97F4A7C15L ^ (long)dimension * 0x632BE59BD9B4E019L);
          // a layout that runs out of connectors throws; WorldGeneratorDungeon caught it, which ended the loop for this chunk
          try {
          for (int x = -1; x <= 1; x++) {
@@ -82,10 +116,11 @@ public final class LycDungeons extends SavedData {
                   DungeonInstance instance = new DungeonInstance();
                   BlockPos origin = new ChunkPos(chunkPos.x + Lyc.DUNGEON_DISTANCE * x, chunkPos.z + Lyc.DUNGEON_DISTANCE * z).getBlockAt(7, 64, 7);
                   instance.setOrigin(origin);
-                  if (instance.init(planWorld(generator), worldRand)) {
+                  if (instance.init(d.planWorld(generator), worldRand)) {
                      d.entries.add(new Entry(origin, instance.schematic.name, instance.getSeed()));
                      d.instances.add(instance);
-                     com.mojang.logging.LogUtils.getLogger().info("rlgen: Lycanites dungeon {} at {} (from chunk {})", instance.schematic.name, instance.originPos, chunkPos);
+                     com.mojang.logging.LogUtils.getLogger().info("rlgen: Lycanites dungeon {} at {} in dimension {} (from chunk {})", instance.schematic.name,
+                        instance.originPos, dimension, chunkPos);
                      // the UUID 1.12 gave it
                      worldRand.nextLong();
                      worldRand.nextLong();
@@ -116,8 +151,12 @@ public final class LycDungeons extends SavedData {
       return out;
    }
 
-   static synchronized DungeonInstance instance(LegacyChunkGenerator generator, int index) {
-      List<DungeonInstance> all = current.instances(generator);
+   static synchronized DungeonInstance instance(int dimension, LegacyChunkGenerator generator, int index) {
+      LycDungeons d = of(dimension);
+      if (d == null) {
+         return null;
+      }
+      List<DungeonInstance> all = d.instances(generator);
       return index < all.size() ? all.get(index) : null;
    }
 

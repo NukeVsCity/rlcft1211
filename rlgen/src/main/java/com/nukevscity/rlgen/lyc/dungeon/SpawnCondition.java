@@ -8,7 +8,7 @@ import java.util.List;
 import net.minecraft.core.BlockPos;
 
 /**
- * Lycanites' WorldSpawnCondition as dungeon schematics use it: dimension ids (always the overworld, 0, here) and biome ids/tags with
+ * Lycanites' WorldSpawnCondition as dungeon schematics use it: dimension ids (0, or the nether/End of a LycWorld) and biome ids/tags with
  * white- or blacklists. Times, weather and difficulty don't appear in RLCraft's dungeon schematics.
  */
 public class SpawnCondition {
@@ -45,9 +45,10 @@ public class SpawnCondition {
 
    public boolean isMet(World world, Object player, BlockPos position) {
       if (this.dimensionIds.length > 0) {
+         int dimension = world instanceof LycWorld w ? w.dimension : 0;
          boolean found = false;
          for (int id : this.dimensionIds) {
-            if (id == 0) {
+            if (id == dimension) {
                found = true;
                break;
             }

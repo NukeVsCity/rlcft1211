@@ -28,29 +28,39 @@ import org.slf4j.Logger;
 public final class LycDungeonPiece extends StructurePiece {
    private static final Logger LOGGER = LogUtils.getLogger();
    private final int dungeon;
+   /** 1.12 dimension id: 0, -1 (nether) or 1 (End). */
+   private final int dimension;
 
-   LycDungeonPiece(ChunkPos chunk, int dungeon) {
-      super(RLGen.LYC_DUNGEON_PIECE.get(), 0, new BoundingBox(chunk.getMinBlockX(), -64, chunk.getMinBlockZ(), chunk.getMaxBlockX(), 319, chunk.getMaxBlockZ()));
+   LycDungeonPiece(ChunkPos chunk, int dungeon, int dimension) {
+      super(RLGen.LYC_DUNGEON_PIECE.get(), 0, dimension == 0
+         ? new BoundingBox(chunk.getMinBlockX(), -64, chunk.getMinBlockZ(), chunk.getMaxBlockX(), 319, chunk.getMaxBlockZ())
+         : new BoundingBox(chunk.getMinBlockX(), 0, chunk.getMinBlockZ(), chunk.getMaxBlockX(), 255, chunk.getMaxBlockZ()));
       this.dungeon = dungeon;
+      this.dimension = dimension;
    }
 
    public LycDungeonPiece(StructurePieceSerializationContext context, CompoundTag tag) {
       super(RLGen.LYC_DUNGEON_PIECE.get(), tag);
       this.dungeon = tag.getInt("D");
+      this.dimension = tag.getInt("Dim");
    }
 
    @Override
    protected void addAdditionalSaveData(StructurePieceSerializationContext context, CompoundTag tag) {
       tag.putInt("D", this.dungeon);
+      if (this.dimension != 0) {
+         tag.putInt("Dim", this.dimension);
+      }
    }
 
    @Override
    public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator chunkGenerator, RandomSource randomSource, BoundingBox box,
                            ChunkPos chunkPos, BlockPos pivot) {
-      if (!(chunkGenerator instanceof LegacyChunkGenerator generator)) {
+      LegacyChunkGenerator generator = chunkGenerator instanceof LegacyChunkGenerator g ? g : null;
+      if (generator == null && this.dimension == 0) {
          return;
       }
-      DungeonInstance instance = LycDungeons.instance(generator, this.dungeon);
+      DungeonInstance instance = LycDungeons.instance(this.dimension, generator, this.dungeon);
       if (instance == null || instance.layout == null) {
          return;
       }
@@ -60,7 +70,7 @@ public final class LycDungeonPiece extends StructurePiece {
             if (!instance.layout.sectorChunkMap.containsKey(p)) {
                continue;
             }
-            World world = new World(level, generator, chunkPos);
+            World world = this.dimension == 0 ? new World(level, generator, chunkPos) : new LycWorld(level, chunkPos, this.dimension);
             // world.rand in 1.12
             Random random = new Random(instance.getSeed() ^ p.toLong() * 0x2545F4914F6CDD1DL);
             try {
