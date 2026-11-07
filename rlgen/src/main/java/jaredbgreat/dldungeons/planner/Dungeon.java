@@ -113,12 +113,12 @@ public class Dungeon implements IHaveCoords {
    }
 
    public Dungeon(Biome biome, World world, int chunkX, int chunkZ) throws Throwable {
-      this.coords = new Coords(chunkX, chunkZ, 0);
+      this.coords = new Coords(chunkX, chunkZ, world.getDimension());
       DoomlikeDungeons.profiler.startTask("Planning Dungeon");
       DoomlikeDungeons.profiler.startTask("Layout dungeon (rough draft)");
-      this.random = SpatialHash.randomFromSeed(world.getSeed(), chunkX, chunkZ, 0);
+      this.random = SpatialHash.randomFromSeed(world.getSeed(), chunkX, chunkZ, world.getDimension());
       this.biome = biome;
-      this.theme = BiomeSets.getTheme(biome, this.random, 0);
+      this.theme = BiomeSets.getTheme(biome, this.random, world.getDimension());
       if (this.theme != null) {
          this.applyTheme();
          this.entrancePref = this.random.nextInt(3);
@@ -167,9 +167,9 @@ public class Dungeon implements IHaveCoords {
       int chunkZ = coords.getZ();
       DoomlikeDungeons.profiler.startTask("Planning Dungeon");
       DoomlikeDungeons.profiler.startTask("Layout dungeon (rough draft)");
-      this.random = SpatialHash.randomFromSeed(world.getSeed(), chunkX, chunkZ, 0);
+      this.random = SpatialHash.randomFromSeed(world.getSeed(), chunkX, chunkZ, world.getDimension());
       this.biome = world.getBiome(new BlockPos(chunkX * 16, 64, chunkZ * 16));
-      this.theme = BiomeSets.getTheme(this.biome, this.random, 0);
+      this.theme = BiomeSets.getTheme(this.biome, this.random, world.getDimension());
       if (this.theme != null) {
          this.applyTheme();
          this.entrancePref = this.random.nextInt(3);

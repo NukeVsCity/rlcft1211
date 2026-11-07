@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_nether",
+  "features": "rlgen:nether_world_generators",
+  "step": "top_layer_modification"
+}

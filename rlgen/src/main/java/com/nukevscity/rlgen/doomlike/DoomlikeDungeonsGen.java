@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.level.WorldGenLevel;
 import org.slf4j.Logger;
@@ -37,14 +38,17 @@ public final class DoomlikeDungeonsGen {
 
    /** Centres whose dungeon has a part in this chunk, in the order 1.12 built them (Coords.HashCompare). */
    static List<Coords> centresFor(LegacyChunkGenerator generator, long seed, int chunkX, int chunkZ) {
+      return centresFor(new World(seed, generator), seed, chunkX, chunkZ, 0);
+   }
+
+   private static List<Coords> centresFor(World world, long seed, int chunkX, int chunkZ, int dim) {
       DoomlikeDungeons.init();
-      World world = new World(seed, generator);
       List<Coords> out = new ArrayList<>();
       int r = Sizes.HUGE.chunkRadius;
       for (int i = chunkX - r; i <= chunkX + r; i++) {
          for (int j = chunkZ - r; j <= chunkZ + r; j++) {
-            if (GenerationHandler.isDungeonCenter(world, seed, i, j, 0)) {
-               out.add(new Coords(i, j, 0));
+            if (GenerationHandler.isDungeonCenter(world, seed, i, j, dim)) {
+               out.add(new Coords(i, j, dim));
             }
          }
       }
@@ -52,19 +56,36 @@ public final class DoomlikeDungeonsGen {
       return out;
    }
 
+   /** GenerationHandler.generate in dimension -1 (RLCraft lists dimensions 0 and -1): plans and builds on the 1.21 nether terrain. */
+   public static void netherChunk(WorldGenLevel level, int chunkX, int chunkZ) {
+      long seed = level.getSeed();
+      List<Coords> centres;
+      synchronized (LOCK) {
+         centres = centresFor(new World(seed, -1), seed, chunkX, chunkZ, -1);
+      }
+      for (Coords c : centres) {
+         build(level, () -> new World(seed, -1), -1, c.getX(), c.getZ(), chunkX, chunkZ);
+      }
+   }
+
    static void buildInChunk(WorldGenLevel level, LegacyChunkGenerator generator, int centreX, int centreZ, int chunkX, int chunkZ) {
+      long seed = level.getSeed();
+      build(level, () -> new World(seed, generator), 0, centreX, centreZ, chunkX, chunkZ);
+   }
+
+   private static void build(WorldGenLevel level, Supplier<World> worlds, int dim, int centreX, int centreZ, int chunkX, int chunkZ) {
       long seed = level.getSeed();
       RegistryAccess access = level.registryAccess();
       synchronized (LOCK) {
          DoomlikeDungeons.init();
          Mc.setAccess(access);
-         String key = seed + "/" + centreX + "/" + centreZ;
+         String key = seed + "/" + dim + "/" + centreX + "/" + centreZ;
          Dungeon dungeon = CACHE.get(key);
          if (dungeon == null) {
             try {
-               dungeon = new Dungeon(new World(seed, generator), new Coords(centreX, centreZ, 0));
+               dungeon = new Dungeon(worlds.get(), new Coords(centreX, centreZ, dim));
                if (dungeon.theme != null) {
-                  LOGGER.info("rlgen: doomlike dungeon at chunk {} {}: theme {}, size {}", centreX, centreZ, dungeon.theme.name, dungeon.size);
+                  LOGGER.info("rlgen: doomlike dungeon at chunk {} {} (dim {}): theme {}, size {}", centreX, centreZ, dim, dungeon.theme.name, dungeon.size);
                }
             } catch (Throwable e) {
                LOGGER.error("rlgen: doomlike dungeon at chunk {} {} failed to plan", centreX, centreZ, e);
