@@ -628,6 +628,8 @@ public final class RcGenerator {
          t.putInt("x", pos.getX());
          t.putInt("y", pos.getY());
          t.putInt("z", pos.getZ());
+         // 1.12 inventories could hold "minecraft:air" stacks (empty slots); 1.21 rejects them with an error per slot
+         t.getList("Items", Tag.TAG_COMPOUND).removeIf(i -> i instanceof CompoundTag it && it.getString("id").equals("minecraft:air"));
          try {
             be.loadWithComponents(t, level.registryAccess());
          } catch (RuntimeException ex) {
