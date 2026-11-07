@@ -23,6 +23,8 @@ public class World {
    public final WorldGenLevel level;
    private final LegacyChunkGenerator generator;
    private final ChunkPos chunk;
+   /** Keep every write inside the 1.21 region (3x3 chunks) instead of only the decorated chunk (a whole 1.12 populate area at once). */
+   private final boolean wholeRegion;
    private final Long2ObjectLinkedOpenHashMap<BlockState> blocks = new Long2ObjectLinkedOpenHashMap<>();
    private final List<BlockEntityAction> actions = new ArrayList<>();
    private final List<Entity> entities = new ArrayList<>();
@@ -31,13 +33,22 @@ public class World {
    }
 
    public World(WorldGenLevel level, LegacyChunkGenerator generator, ChunkPos chunk) {
+      this(level, generator, chunk, false);
+   }
+
+   public World(WorldGenLevel level, LegacyChunkGenerator generator, ChunkPos chunk, boolean wholeRegion) {
       this.level = level;
       this.generator = generator;
       this.chunk = chunk;
+      this.wholeRegion = wholeRegion;
    }
 
    public boolean inChunk(BlockPos pos) {
       return (pos.getX() >> 4) == this.chunk.x && (pos.getZ() >> 4) == this.chunk.z;
+   }
+
+   private boolean kept(BlockPos pos) {
+      return this.wholeRegion ? this.readable(pos) : this.inChunk(pos);
    }
 
    /** The 1.21 region reaches one chunk around the decorated one; anything further reads as the 1.12 terrain. */
@@ -107,18 +118,18 @@ public class World {
       return this.generator.legacyState(pos);
    }
 
-   /** Writes what landed in the decorated chunk; returns the positions written. */
+   /** Writes what landed in the decorated chunk (or the whole region); returns the positions written. */
    public List<BlockPos> flush() {
       List<BlockPos> placed = new ArrayList<>();
       for (var e : this.blocks.long2ObjectEntrySet()) {
          BlockPos p = BlockPos.of(e.getLongKey());
-         if (this.inChunk(p)) {
+         if (this.kept(p)) {
             this.level.setBlock(p, e.getValue(), 2);
             placed.add(p);
          }
       }
       for (BlockEntityAction a : this.actions) {
-         if (this.inChunk(a.pos)) {
+         if (this.kept(a.pos)) {
             BlockEntity be = this.level.getBlockEntity(a.pos);
             if (be != null) {
                a.action.accept(be);
@@ -127,7 +138,7 @@ public class World {
          }
       }
       for (Entity e : this.entities) {
-         if (this.inChunk(e.blockPosition())) {
+         if (this.kept(e.blockPosition())) {
             this.level.addFreshEntity(e);
          }
       }

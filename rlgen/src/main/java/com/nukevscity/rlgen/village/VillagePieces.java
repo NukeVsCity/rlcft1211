@@ -1866,14 +1866,23 @@ public class VillagePieces {
       @Override
       public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator chunkGenerator, RandomSource randomSource,
                               BoundingBox box, ChunkPos chunkPos, BlockPos pivot) {
+         // while decorating, the VILLAGE populate step (VillagePopulate) builds the pieces with the shared populate random
+         if (com.nukevscity.rlgen.world.PopulateStarts.decorating()) {
+            return;
+         }
+         this.place(level, VillageRandom.forChunk(level.getSeed(), chunkPos), box,
+            chunkGenerator instanceof com.nukevscity.rlgen.world.LegacyChunkGenerator generator ? generator : null);
+      }
+
+      /** StructureStart.generateStructure for this component: addComponentParts, then Charm VillageDecorations (StructureEventBase.Post). */
+      void place(WorldGenLevel level, Random random, BoundingBox box, @Nullable com.nukevscity.rlgen.world.LegacyChunkGenerator generator) {
          try {
-            this.addComponentParts(level, VillageRandom.forChunk(level.getSeed(), chunkPos), box);
-            // Charm VillageDecorations (StructureEventBase.Post after each piece)
-            if (chunkGenerator instanceof com.nukevscity.rlgen.world.LegacyChunkGenerator generator) {
+            this.addComponentParts(level, random, box);
+            if (generator != null) {
                com.nukevscity.rlgen.charm.Inner.decorate(this, level, box, generator);
             }
          } catch (RuntimeException e) {
-            LOGGER.error("rlgen: village piece {} failed in chunk {}", this.getClass().getSimpleName(), chunkPos, e);
+            LOGGER.error("rlgen: village piece {} failed in {}", this.getClass().getSimpleName(), box, e);
          }
       }
 
@@ -2660,11 +2669,10 @@ public class VillagePieces {
       }
 
       @Override
-      public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator chunkGenerator, RandomSource randomSource,
-                              BoundingBox box, ChunkPos chunkPos, BlockPos pivot) {
-         if (chunkGenerator instanceof LegacyChunkGenerator generator) {
+      void place(WorldGenLevel level, Random random, BoundingBox box, @Nullable LegacyChunkGenerator generator) {
+         if (generator != null) {
             this.generator = generator;
-            super.postProcess(level, structureManager, chunkGenerator, randomSource, box, chunkPos, pivot);
+            super.place(level, random, box, generator);
          }
       }
 
@@ -2695,7 +2703,8 @@ public class VillagePieces {
             inst = this.instance;
          }
          if (inst != null) {
-            RcPiece.LiveView view = new RcPiece.LiveView(world, new ChunkPos(box.getCenter()), this.generator.oracle());
+            // the chunk being decorated: the box is that 1.21 chunk, or the 1.12 populate area starting 8 blocks into it
+            RcPiece.LiveView view = new RcPiece.LiveView(world, new ChunkPos(box.minX() >> 4, box.minZ() >> 4), this.generator.oracle());
             RcGenerator.spawn(inst, view, box, this.seed, this.env());
             view.finish();
          }

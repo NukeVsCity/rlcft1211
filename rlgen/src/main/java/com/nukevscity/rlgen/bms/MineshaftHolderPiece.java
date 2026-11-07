@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import com.nukevscity.rlgen.RLGen;
 import com.nukevscity.rlgen.rc.RcGenerator;
 import com.nukevscity.rlgen.world.LegacyChunkGenerator;
+import com.nukevscity.rlgen.world.PopulateStarts;
 import com.yungnickyoung.minecraft.bettermineshafts.mc.StructureBoundingBox;
 import com.yungnickyoung.minecraft.bettermineshafts.mc.StructureComponent;
 import com.yungnickyoung.minecraft.bettermineshafts.mc.World;
@@ -28,9 +29,9 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import org.slf4j.Logger;
 
 /**
- * A whole Better Mineshaft as one 1.21 piece. Its 1.12 components are rebuilt from the seed whenever needed; for each 1.12 populate
- * area (chunk + 8) overlapping the decorated chunk, they are placed like MapGenStructure.generateStructure did, with that chunk's
- * populate random (which Recurrent Complex had drawn from first, in PopulateChunkEvent.Pre).
+ * A whole Better Mineshaft as one 1.21 piece (for /locate and the chunk references). World generation builds it in the MINESHAFT populate
+ * step ({@link MineshaftPopulate}); outside decoration (/place) its 1.12 components are rebuilt from the seed and, for each 1.12 populate
+ * area (chunk + 8) overlapping the chunk, placed like MapGenStructure.generateStructure did, with a fresh populate random of that chunk.
  */
 public final class MineshaftHolderPiece extends StructurePiece {
    private static final Logger LOGGER = LogUtils.getLogger();
@@ -62,7 +63,8 @@ public final class MineshaftHolderPiece extends StructurePiece {
    @Override
    public void postProcess(WorldGenLevel level, StructureManager structureManager, ChunkGenerator chunkGenerator, RandomSource randomSource, BoundingBox box,
                            ChunkPos chunkPos, BlockPos pivot) {
-      if (!(chunkGenerator instanceof LegacyChunkGenerator generator)) {
+      // while decorating, the MINESHAFT populate step (MineshaftPopulate) builds the pieces with the shared populate random
+      if (!(chunkGenerator instanceof LegacyChunkGenerator generator) || PopulateStarts.decorating()) {
          return;
       }
       long seed = level.getSeed();
@@ -86,21 +88,25 @@ public final class MineshaftHolderPiece extends StructurePiece {
                   }
                }
                if (world != null) {
-                  List<BlockPos> placed = world.flush();
-                  for (BlockPos p : placed) {
-                     BlockState s = level.getBlockState(p);
-                     if (needsShape(s.getBlock())) {
-                        BlockState u = Block.updateFromNeighbourShapes(s, level, p);
-                        if (u != s && !u.isAir()) {
-                           level.setBlock(p, u, 2 | 16);
-                        }
-                     }
-                  }
+                  fixShapes(level, world.flush());
                }
             }
          }
       } catch (RuntimeException e) {
          LOGGER.error("rlgen: mineshaft {} {} failed in chunk {}", this.startX, this.startZ, chunkPos, e);
+      }
+   }
+
+   /** 1.12 worked out fence/pane/stair connections when drawing; 1.21 stores them in the block. */
+   static void fixShapes(WorldGenLevel level, List<BlockPos> placed) {
+      for (BlockPos p : placed) {
+         BlockState s = level.getBlockState(p);
+         if (needsShape(s.getBlock())) {
+            BlockState u = Block.updateFromNeighbourShapes(s, level, p);
+            if (u != s && !u.isAir()) {
+               level.setBlock(p, u, 2 | 16);
+            }
+         }
       }
    }
 

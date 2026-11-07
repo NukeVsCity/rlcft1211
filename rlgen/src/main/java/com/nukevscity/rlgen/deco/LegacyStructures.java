@@ -24,10 +24,10 @@ public final class LegacyStructures {
    };
 
    // ---- mineshaft (Better Mineshafts replaces MapGenMineshaft)
-   static Step MINESHAFT = NONE;
+   static Step MINESHAFT = com.nukevscity.rlgen.bms.MineshaftPopulate::generate;
 
    // ---- village (MapGenVillage)
-   static Step VILLAGE = NONE;
+   static Step VILLAGE = com.nukevscity.rlgen.village.VillagePopulate::generate;
 
    // ---- stronghold (MapGenStronghold)
    static Step STRONGHOLD = NONE;
