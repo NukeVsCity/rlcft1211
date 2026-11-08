@@ -12,7 +12,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 neoForge {
     version = project.neo_version
     runs {
-        client { client() }
+        client { client(); if (project.hasProperty('clientArgs')) { programArguments.addAll(project.property('clientArgs').toString().split(' ').toList()) } }
         server { server(); programArgument '--nogui'; systemProperty 'rlgen.rcdebug', 'true' }
     }
     mods {
