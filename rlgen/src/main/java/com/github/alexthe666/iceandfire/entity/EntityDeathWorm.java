@@ -777,6 +777,11 @@ public class EntityDeathWorm extends TamableAnimal implements IBlacklistedFromSt
          com.github.alexthe666.iceandfire.client.LandClientHooks.deathWormControls(this);
       }
 
+      if (EntityGorgon.DEBUG && !this.level().isClientSide && this.tickCount % 20 == 0) {
+         com.mojang.logging.LogUtils.getLogger().info("[worm] pos {} sand {} strict {} nav {} done {} target {} scale {}", this.position(), this.isInSand(), this.isInSandStrict(),
+            this.navigation.getClass().getSimpleName(), this.navigation.isDone(), this.getTarget(), this.getScaleForAge());
+      }
+
       AnimationHandler.INSTANCE.updateAnimations(this);
    }
 
