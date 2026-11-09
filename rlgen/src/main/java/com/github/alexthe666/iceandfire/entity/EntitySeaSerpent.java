@@ -928,6 +928,26 @@ public class EntitySeaSerpent extends Animal implements IAnimatedEntity, IMultip
       return LOOT;
    }
 
+   /**
+    * loot table sea_serpent with CustomizeToSeaSerpent: one stack of this serpent's scales (1 + rand(1 + ceil(scale * 3 * ancient)))
+    * and one of fangs (1 + rand(1 + ceil(scale * 2 * ancient))), ancient = 2 for ancient serpents.
+    */
+   @Override
+   protected void dropFromLootTable(DamageSource source, boolean hitByPlayer) {
+      java.util.Random random = new java.util.Random();
+      int ancientModifier = this.isAncient() ? 2 : 1;
+      ItemStack scales = new ItemStack(AirWaterRefs.item("sea_serpent_scales_" + this.getVariantName()));
+      if (!scales.isEmpty()) {
+         scales.setCount(1 + random.nextInt(1 + (int)Math.ceil((double)(this.getSeaSerpentScale() * 3.0F * (float)ancientModifier))));
+         this.spawnAtLocation(scales);
+      }
+      ItemStack fang = new ItemStack(AirWaterRefs.item("sea_serpent_fang"));
+      if (!fang.isEmpty()) {
+         fang.setCount(1 + random.nextInt(1 + (int)Math.ceil((double)(this.getSeaSerpentScale() * 2.0F * (float)ancientModifier))));
+         this.spawnAtLocation(fang);
+      }
+   }
+
    @Override
    public void travel(Vec3 move) {
       if (this.isEffectiveAi()) {

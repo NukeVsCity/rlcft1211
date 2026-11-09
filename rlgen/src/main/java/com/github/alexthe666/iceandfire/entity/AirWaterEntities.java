@@ -94,6 +94,7 @@ public final class AirWaterEntities {
    public static void register(IEventBus modBus) {
       EntitySnowVillager.register(modBus);
       modBus.addListener(AirWaterEntities::attributes);
+      modBus.addListener(AirWaterEntities::spawnPlacements);
       hooks();
       modBus.addListener(AirWaterNetwork::register);
       NeoForge.EVENT_BUS.register(AirWaterEvents.class);
@@ -134,6 +135,17 @@ public final class AirWaterEntities {
       if (FMLEnvironment.dist.isClient()) {
          ModEntityHooks.pixieParticle = (level, x, y, z, r, g, b) -> spawnParticle("if_pixie", level, x, y, z, r, g, b);
       }
+   }
+
+   /**
+    * natural spawns (biome modifiers spawn_hippogryph / spawn_amphithere): hippogryphs use EntityAnimal.getCanSpawnHere (grass, light),
+    * amphitheres EntityAmphithere.getCanSpawnHere (the block above sees the sky).
+    */
+   private static void spawnPlacements(net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent event) {
+      event.register(HIPPOGRYPH.get(), net.minecraft.world.entity.SpawnPlacementTypes.ON_GROUND, net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+         net.minecraft.world.entity.animal.Animal::checkAnimalSpawnRules, net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent.Operation.REPLACE);
+      event.register(AMPHITHERE.get(), net.minecraft.world.entity.SpawnPlacementTypes.ON_GROUND, net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+         (type, level, reason, pos, random) -> level.canSeeSky(pos.above()), net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent.Operation.REPLACE);
    }
 
    private static void attributes(EntityAttributeCreationEvent event) {

@@ -1,0 +1,30 @@
+{
+  "replace": false,
+  "values": [
+    "rlgen:arid_highland",
+    "rlgen:autumnal_wooded_hills",
+    "rlgen:birch_forest_hills",
+    "rlgen:birch_forested_hills",
+    "rlgen:cliffs",
+    "rlgen:desert_hills",
+    "rlgen:extreme_hills",
+    "rlgen:forest_hills",
+    "rlgen:forested_hills",
+    "rlgen:hills_defiled",
+    "rlgen:jungle_hills",
+    "rlgen:lush_hills",
+    "rlgen:mutated_birch_forest",
+    "rlgen:mutated_forest",
+    "rlgen:mutated_ice_flats",
+    "rlgen:mutated_jungle_edge",
+    "rlgen:mutated_mesa_rock",
+    "rlgen:mutated_redwood_taiga_hills",
+    "rlgen:mutated_savanna_rock",
+    "rlgen:mutated_swampland",
+    "rlgen:redwood_taiga_hills",
+    "rlgen:rocky_plains",
+    "rlgen:taiga_cold_hills",
+    "rlgen:taiga_hills",
+    "#minecraft:is_hill"
+  ]
+}
