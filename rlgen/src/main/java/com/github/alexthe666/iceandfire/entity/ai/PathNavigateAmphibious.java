@@ -17,6 +17,6 @@ public class PathNavigateAmphibious extends GroundPathNavigation {
 
    @Override
    protected boolean canUpdatePath() {
-      return this.mob.onGround() || this.canFloat() && this.isInLiquid() || this.mob.isPassenger();
+      return this.mob.onGround() || this.canFloat() && (this.mob.isInWater() || this.mob.isInLava()) || this.mob.isPassenger();
    }
 }

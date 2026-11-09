@@ -178,7 +178,11 @@ public class EntitySiren extends Monster implements IAnimatedEntity {
    }
 
    @Override
-   public boolean canBreatheUnderwater() {
+   public boolean canDrownInFluidType(net.neoforged.neoforge.fluids.FluidType type) {
+      return false;
+   }
+
+   public boolean canBreatheUnderwaterIaf() {
       return true;
    }
 

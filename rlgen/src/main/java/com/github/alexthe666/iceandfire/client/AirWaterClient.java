@@ -39,6 +39,14 @@ public final class AirWaterClient {
       ((IFChainBuffer)buffer).calculateChainFlapBuffer(maxAngle, bufferTime, angleDecrement, entity);
    }
 
+   public static void flapBuffer(Object buffer, float maxAngle, int bufferTime, float angleDecrement, float divisor, LivingEntity entity) {
+      ((IFChainBuffer)buffer).calculateChainFlapBuffer(maxAngle, bufferTime, angleDecrement, divisor, entity);
+   }
+
+   public static void waveBuffer(Object buffer, float maxAngle, int bufferTime, float angleDecrement, float divisor, LivingEntity entity) {
+      ((IFChainBuffer)buffer).calculateChainWaveBuffer(maxAngle, bufferTime, angleDecrement, divisor, entity);
+   }
+
    public static void swingBuffer(Object buffer, float maxAngle, int bufferTime, float angleDecrement, LivingEntity entity) {
       ((IFChainBuffer)buffer).calculateChainSwingBuffer(maxAngle, bufferTime, angleDecrement, entity);
    }
@@ -111,16 +119,6 @@ public final class AirWaterClient {
       }
    }
 
-   /** llibrary's EntityProperties sync of SirenEntityProperties */
-   public static void onSirenCharm(int entityId, boolean charmed, int sirenId) {
-      Minecraft mc = Minecraft.getInstance();
-      if (mc.level != null && mc.level.getEntity(entityId) instanceof LivingEntity living) {
-         SirenEntityProperties props = SirenEntityProperties.get(living);
-         props.isCharmed = charmed;
-         props.sirenID = sirenId;
-      }
-   }
-
    private static final ResourceLocation SIREN_SHADER = ResourceLocation.fromNamespaceAndPath("iceandfire", "shaders/post/siren.json");
    private static final java.util.Random rand = new java.util.Random();
 
@@ -130,6 +128,9 @@ public final class AirWaterClient {
          return;
       }
       SirenEntityProperties sirenProps = SirenEntityProperties.get(player);
+      if (sirenProps == null) {
+         return;
+      }
       GameRenderer renderer = Minecraft.getInstance().gameRenderer;
       EntitySiren siren = sirenProps.getSiren(player.level());
       if (siren == null) {

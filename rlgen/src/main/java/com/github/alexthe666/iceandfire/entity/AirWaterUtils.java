@@ -215,18 +215,6 @@ public final class AirWaterUtils {
       }
    }
 
-   /** DragonUtils.getBlockInTargetsViewSeaSerpent */
-   public static BlockPos getBlockInTargetsViewSeaSerpent(EntitySeaSerpent serpent, LivingEntity target) {
-      float radius = 10.0F * serpent.getSeaSerpentScale() + (float)serpent.getRandom().nextInt(10);
-      serpent.getRandom().nextBoolean();
-      float angle = (float)(Math.PI / 180.0) * target.yHeadRot;
-      double extraX = (double)(radius * Mth.sin((float)(Math.PI + (double)angle)));
-      double extraZ = (double)(radius * Mth.cos(angle));
-      BlockPos radialPos = BlockPos.containing(target.getX() + extraX, 0.0, target.getZ() + extraZ);
-      BlockPos ground = getHeight(target.level(), radialPos);
-      return distanceSqToCenter(serpent, ground) > 30.0 ? ground : pos(target);
-   }
-
    /** EventLiving.updateRotation */
    public static float updateRotation(float angle, float targetAngle, float maxIncrease) {
       float f = Mth.wrapDegrees(targetAngle - angle);

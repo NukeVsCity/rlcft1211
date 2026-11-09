@@ -44,10 +44,7 @@ public final class AirWaterEvents {
       }
       if (living instanceof Player || living instanceof Villager || living instanceof IHearsSiren) {
          SirenEntityProperties sirenProps = SirenEntityProperties.get(living);
-         if (!living.level().isClientSide && living instanceof ServerPlayer player && living.tickCount % sirenProps.getTrackingTime() == 0) {
-            PacketDistributor.sendToPlayer(player, new AirWaterNetwork.SirenCharm(player.getId(), sirenProps.isCharmed, sirenProps.sirenID));
-         }
-         if (sirenProps.sirenID != 0) {
+         if (sirenProps != null && sirenProps.sirenID != 0) {
             EntitySiren closestSiren = sirenProps.getSiren(living.level());
             if (closestSiren != null && closestSiren.isActuallySinging()) {
                if (!EntitySiren.isWearingEarplugs(living) && sirenProps.singTime <= AirWaterConfig.sirenMaxSingTime) {

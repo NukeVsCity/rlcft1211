@@ -54,10 +54,19 @@ public final class AirWaterEntities {
       () -> EntityType.Builder.<EntitySiren>of(EntitySiren::new, MobCategory.MONSTER).sized(1.6F, 0.9F).clientTrackingRange(4).updateInterval(1)
          .build("siren"));
 
+   public static final DeferredHolder<EntityType<?>, EntityType<EntityPixie>> PIXIE = IafRegistries.ENTITY_TYPES.register("if_pixie",
+      () -> EntityType.Builder.<EntityPixie>of(EntityPixie::new, MobCategory.CREATURE).sized(0.4F, 0.8F).clientTrackingRange(4).updateInterval(1)
+         .build("if_pixie"));
+
+   public static final DeferredHolder<EntityType<?>, EntityType<EntityAmphithere>> AMPHITHERE = IafRegistries.ENTITY_TYPES.register("amphithere",
+      () -> EntityType.Builder.<EntityAmphithere>of(EntityAmphithere::new, MobCategory.CREATURE).sized(2.5F, 1.25F).clientTrackingRange(4)
+         .updateInterval(1).build("amphithere"));
+
    public static final DeferredHolder<MenuType<?>, MenuType<ContainerHippogryph>> HIPPOGRYPH_MENU = IafRegistries.MENUS.register("hippogryph",
       () -> IMenuTypeExtension.create(ContainerHippogryph::fromNetwork));
 
    public static void register(IEventBus modBus) {
+      net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler.INSTANCE.registerProperties(SirenEntityProperties.class);
       modBus.addListener(AirWaterEntities::attributes);
       modBus.addListener(AirWaterNetwork::register);
       NeoForge.EVENT_BUS.register(AirWaterEvents.class);
@@ -70,6 +79,8 @@ public final class AirWaterEntities {
       event.put(HIPPOGRYPH.get(), EntityHippogryph.createAttributes().build());
       event.put(STYMPHALIAN_BIRD.get(), EntityStymphalianBird.createAttributes().build());
       event.put(SIREN.get(), EntitySiren.createAttributes().build());
+      event.put(PIXIE.get(), EntityPixie.createAttributes().build());
+      event.put(AMPHITHERE.get(), EntityAmphithere.createAttributes().build());
    }
 
    public static ResourceKey<LootTable> loot(String name) {
@@ -81,6 +92,19 @@ public final class AirWaterEntities {
       ItemStack stack = new ItemStack(AirWaterRefs.item("hippogryph_egg"));
       CompoundTag tag = new CompoundTag();
       tag.putInt("Variant", type.ordinal());
+      stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
+      return stack;
+   }
+
+   /** new ItemStack(ModBlocks.jar_pixie, 1, color): jar_pixie_<color> if the blocks part split the meta, else jar_pixie with "PixieType". */
+   public static ItemStack pixieJar(int color) {
+      net.minecraft.world.item.Item split = AirWaterRefs.item("jar_pixie_" + color);
+      if (split != net.minecraft.world.item.Items.AIR) {
+         return new ItemStack(split);
+      }
+      ItemStack stack = new ItemStack(AirWaterRefs.item("jar_pixie"));
+      CompoundTag tag = new CompoundTag();
+      tag.putInt("PixieType", color);
       stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
       return stack;
    }
@@ -111,8 +135,18 @@ public final class AirWaterEntities {
 
    /** client: ChainBuffer.calculateChainWaveBuffer */
    public static void waveBuffer(Object buffer, float maxAngle, int bufferTime, float angleDecrement, LivingEntity entity) {
+      waveBuffer(buffer, maxAngle, bufferTime, angleDecrement, 1.0F, entity);
+   }
+
+   public static void waveBuffer(Object buffer, float maxAngle, int bufferTime, float angleDecrement, float divisor, LivingEntity entity) {
       if (buffer != null) {
-         com.github.alexthe666.iceandfire.client.AirWaterClient.waveBuffer(buffer, maxAngle, bufferTime, angleDecrement, entity);
+         com.github.alexthe666.iceandfire.client.AirWaterClient.waveBuffer(buffer, maxAngle, bufferTime, angleDecrement, divisor, entity);
+      }
+   }
+
+   public static void flapBuffer(Object buffer, float maxAngle, int bufferTime, float angleDecrement, float divisor, LivingEntity entity) {
+      if (buffer != null) {
+         com.github.alexthe666.iceandfire.client.AirWaterClient.flapBuffer(buffer, maxAngle, bufferTime, angleDecrement, divisor, entity);
       }
    }
 

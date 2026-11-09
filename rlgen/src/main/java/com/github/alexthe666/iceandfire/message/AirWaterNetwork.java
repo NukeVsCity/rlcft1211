@@ -21,7 +21,6 @@ public final class AirWaterNetwork {
       PayloadRegistrar r = event.registrar("iceandfire_airwater").versioned("1");
       r.playToServer(MobControl.TYPE, MobControl.CODEC, AirWaterNetwork::handleControl);
       r.playToClient(SirenSong.TYPE, SirenSong.CODEC, (msg, ctx) -> ctx.enqueueWork(() -> ClientHandlers.sirenSong(msg)));
-      r.playToClient(SirenCharm.TYPE, SirenCharm.CODEC, (msg, ctx) -> ctx.enqueueWork(() -> ClientHandlers.sirenCharm(msg)));
    }
 
    /**
@@ -70,29 +69,10 @@ public final class AirWaterNetwork {
       }
    }
 
-   /** SirenEntityProperties sync (llibrary tracked it every 20 ticks): who charms this player. */
-   public record SirenCharm(int entityId, boolean charmed, int sirenId) implements CustomPacketPayload {
-      public static final Type<SirenCharm> TYPE = new Type<>(AirWaterRefs.id("siren_charm"));
-      public static final StreamCodec<FriendlyByteBuf, SirenCharm> CODEC = StreamCodec.of((buf, m) -> {
-         buf.writeInt(m.entityId);
-         buf.writeBoolean(m.charmed);
-         buf.writeInt(m.sirenId);
-      }, buf -> new SirenCharm(buf.readInt(), buf.readBoolean(), buf.readInt()));
-
-      @Override
-      public Type<? extends CustomPacketPayload> type() {
-         return TYPE;
-      }
-   }
-
    /** Client-side handlers (only loaded on the client). */
    static final class ClientHandlers {
       static void sirenSong(SirenSong msg) {
          com.github.alexthe666.iceandfire.client.AirWaterClient.onSirenSong(msg.sirenId(), msg.singing());
-      }
-
-      static void sirenCharm(SirenCharm msg) {
-         com.github.alexthe666.iceandfire.client.AirWaterClient.onSirenCharm(msg.entityId(), msg.charmed(), msg.sirenId());
       }
    }
 }
