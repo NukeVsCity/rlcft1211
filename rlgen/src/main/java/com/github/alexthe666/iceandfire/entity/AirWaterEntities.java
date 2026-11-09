@@ -91,6 +91,26 @@ public final class AirWaterEntities {
    public static final DeferredHolder<MenuType<?>, MenuType<ContainerHippogryph>> HIPPOGRYPH_MENU = IafRegistries.MENUS.register("hippogryph",
       () -> IMenuTypeExtension.create(ContainerHippogryph::fromNetwork));
 
+   /** 1.12 CommonProxy.registerSpawnable spawn eggs (minecraft:spawn_egg with the entity id there; one item per mob here), 1.12 colours */
+   private static net.neoforged.neoforge.registries.DeferredItem<net.neoforged.neoforge.common.DeferredSpawnEggItem> egg(String name,
+         DeferredHolder<EntityType<?>, ? extends EntityType<? extends net.minecraft.world.entity.Mob>> type, int primary, int secondary) {
+      net.neoforged.neoforge.registries.DeferredItem<net.neoforged.neoforge.common.DeferredSpawnEggItem> item = IafRegistries.ITEMS.register(
+         name + "_spawn_egg", () -> new net.neoforged.neoforge.common.DeferredSpawnEggItem(type, primary, secondary, new net.minecraft.world.item.Item.Properties()));
+      com.github.alexthe666.iceandfire.misc.CreativeTab.EXTRA.add(item);
+      return item;
+   }
+
+   static {
+      egg("snowvillager", SNOW_VILLAGER, 3942947, 7385551);
+      egg("hippogryph", HIPPOGRYPH, 14211288, 13743453);
+      egg("if_pixie", PIXIE, 16744329, 14863586);
+      egg("siren", SIREN, 9365194, 15917000);
+      egg("hippocampus", HIPPOCAMPUS, 4493767, 5227883);
+      egg("stymphalianbird", STYMPHALIAN_BIRD, 7622455, 10382411);
+      egg("amphithere", AMPHITHERE, 5862709, 43672);
+      egg("seaserpent", SEA_SERPENT, 33433, 12969703);
+   }
+
    public static void register(IEventBus modBus) {
       EntitySnowVillager.register(modBus);
       modBus.addListener(AirWaterEntities::attributes);
@@ -132,6 +152,7 @@ public final class AirWaterEntities {
          }
       };
       ModEntityHooks.PIXIE_PARTICLE_RGB = EntityPixie.PARTICLE_RGB;
+      com.github.alexthe666.iceandfire.loot.CustomizeToDragon.SEA_SERPENT = EntitySeaSerpent::customizeLoot;
       if (FMLEnvironment.dist.isClient()) {
          ModEntityHooks.pixieParticle = (level, x, y, z, r, g, b) -> spawnParticle("if_pixie", level, x, y, z, r, g, b);
       }

@@ -1,0 +1,11 @@
+{
+  "parent": "iceandfire:block/desert_myrmex_resin_sticky",
+  "overrides": [
+    {
+      "predicate": {
+        "iceandfire:meta": 1
+      },
+      "model": "iceandfire:item/jungle_myrmex_resin_sticky"
+    }
+  ]
+}

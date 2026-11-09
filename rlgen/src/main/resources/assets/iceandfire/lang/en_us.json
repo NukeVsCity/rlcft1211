@@ -507,5 +507,13 @@
  "achievement.jarPixie": "That's Unethical!",
  "achievement.jarPixie.desc": "Put a pixie in a jar.",
  "tc.aspect.mythus": "Mythological Creature, Legendary Being, Cryptid, Fearsome Critter",
- "tc.aspect.draco": "Dragon"
+ "tc.aspect.draco": "Dragon",
+ "item.iceandfire.snowvillager_spawn_egg": "Spawn Snow Villager",
+ "item.iceandfire.hippogryph_spawn_egg": "Spawn Hippogryph",
+ "item.iceandfire.if_pixie_spawn_egg": "Spawn Pixie",
+ "item.iceandfire.siren_spawn_egg": "Spawn Siren",
+ "item.iceandfire.hippocampus_spawn_egg": "Spawn Hippocampus",
+ "item.iceandfire.stymphalianbird_spawn_egg": "Spawn Stymphalian Bird",
+ "item.iceandfire.amphithere_spawn_egg": "Spawn Amphithere",
+ "item.iceandfire.seaserpent_spawn_egg": "Spawn Sea Serpent"
 }

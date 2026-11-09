@@ -929,23 +929,24 @@ public class EntitySeaSerpent extends Animal implements IAnimatedEntity, IMultip
    }
 
    /**
-    * loot table sea_serpent with CustomizeToSeaSerpent: one stack of this serpent's scales (1 + rand(1 + ceil(scale * 3 * ancient)))
-    * and one of fangs (1 + rand(1 + ceil(scale * 2 * ancient))), ancient = 2 for ancient serpents.
+    * 1.12 CustomizeToSeaSerpent.apply (loot table sea_serpent, function iceandfire:customize_to_sea_serpent): the scales become this
+    * serpent's colour, 1 + rand(1 + ceil(scale * 3 * ancient)); fangs 1 + rand(1 + ceil(scale * 2 * ancient)), ancient = 2 if ancient.
     */
-   @Override
-   protected void dropFromLootTable(DamageSource source, boolean hitByPlayer) {
-      java.util.Random random = new java.util.Random();
-      int ancientModifier = this.isAncient() ? 2 : 1;
-      ItemStack scales = new ItemStack(AirWaterRefs.item("sea_serpent_scales_" + this.getVariantName()));
-      if (!scales.isEmpty()) {
-         scales.setCount(1 + random.nextInt(1 + (int)Math.ceil((double)(this.getSeaSerpentScale() * 3.0F * (float)ancientModifier))));
-         this.spawnAtLocation(scales);
+   public static ItemStack customizeLoot(ItemStack stack, net.minecraft.world.entity.Entity looted) {
+      if (!stack.isEmpty() && looted instanceof EntitySeaSerpent seaSerpent) {
+         java.util.Random random = new java.util.Random();
+         int ancientModifier = seaSerpent.isAncient() ? 2 : 1;
+         net.minecraft.resources.ResourceLocation id = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem());
+         if (id.getPath().startsWith("sea_serpent_scales_")) {
+            stack.setCount(1 + random.nextInt(1 + (int)Math.ceil((double)(seaSerpent.getSeaSerpentScale() * 3.0F * (float)ancientModifier))));
+            return new ItemStack(AirWaterRefs.item("sea_serpent_scales_" + seaSerpent.getVariantName()), stack.getCount());
+         }
+         if (id.getPath().equals("sea_serpent_fang")) {
+            stack.setCount(1 + random.nextInt(1 + (int)Math.ceil((double)(seaSerpent.getSeaSerpentScale() * 2.0F * (float)ancientModifier))));
+            return stack;
+         }
       }
-      ItemStack fang = new ItemStack(AirWaterRefs.item("sea_serpent_fang"));
-      if (!fang.isEmpty()) {
-         fang.setCount(1 + random.nextInt(1 + (int)Math.ceil((double)(this.getSeaSerpentScale() * 2.0F * (float)ancientModifier))));
-         this.spawnAtLocation(fang);
-      }
+      return stack;
    }
 
    @Override

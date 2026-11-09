@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "S S",
+    "S S"
+  ],
+  "key": {
+    "S": {
+      "item": "iceandfire:dragonscales_bronze"
+    }
+  },
+  "result": {
+    "id": "iceandfire:armor_bronze_leggings",
+    "count": 1
+  }
+}

@@ -65,7 +65,51 @@ public final class AirWaterRenderers {
       };
    }
 
+   private static final ModelPixie TILE_PIXIE = new ModelPixie();
+
+   /**
+    * 1.12 RenderJar / RenderPixieHouse pixie part (after the translate/rotate the core renderers do): texture RenderPixie.TEXTURE_type;
+    * jar: translate 0.9 (produced) or 0.6, interpolated jar yaw, scale 0.5, blend ONE/ONE at full light, animateInJar(hasProduced);
+    * house: blend ONE/CONSTANT_ALPHA (constant colour 0 = opaque) at full light, animateInHouse.
+    */
+   private static void tilePixie(com.mojang.blaze3d.vertex.PoseStack pose, net.minecraft.client.renderer.MultiBufferSource buffers, int light,
+         int overlay, int type, boolean inHouse, Object tile) {
+      ResourceLocation texture = tex("pixie/pixie_" + type);
+      pose.pushPose();
+      if (inHouse) {
+         net.ilexiconn.llibrary.client.model.legacy.LegacyRender.push(pose,
+            buffers.getBuffer(net.minecraft.client.renderer.RenderType.entityCutoutNoCull(texture)), light, overlay, -1);
+         try {
+            TILE_PIXIE.animateInHouse((com.github.alexthe666.iceandfire.entity.tile.TileEntityPixieHouse)tile);
+         } finally {
+            net.ilexiconn.llibrary.client.model.legacy.LegacyRender.pop();
+         }
+      } else {
+         com.github.alexthe666.iceandfire.entity.tile.TileEntityJar jar = (com.github.alexthe666.iceandfire.entity.tile.TileEntityJar)tile;
+         pose.translate(0.0F, jar.hasProduced ? 0.9F : 0.6F, 0.0F);
+         float partial = net.minecraft.client.Minecraft.getInstance().getTimer().getGameTimeDeltaPartialTick(false);
+         float f = jar.rotationYaw - jar.prevRotationYaw;
+         while (f < -180.0F) {
+            f += 360.0F;
+         }
+         while (f >= 180.0F) {
+            f -= 360.0F;
+         }
+         pose.mulPose(com.mojang.math.Axis.YP.rotationDegrees(jar.prevRotationYaw + partial * f));
+         pose.scale(0.5F, 0.5F, 0.5F);
+         net.ilexiconn.llibrary.client.model.legacy.LegacyRender.push(pose,
+            buffers.getBuffer(net.minecraft.client.renderer.RenderType.eyes(texture)), light, overlay, -1);
+         try {
+            TILE_PIXIE.animateInJar(jar.hasProduced, jar, 0.0F);
+         } finally {
+            net.ilexiconn.llibrary.client.model.legacy.LegacyRender.pop();
+         }
+      }
+      pose.popPose();
+   }
+
    private static void renderers(EntityRenderersEvent.RegisterRenderers event) {
+      com.github.alexthe666.iceandfire.client.render.tile.IafRenderHooks.pixie = AirWaterRenderers::tilePixie;
       // RenderHippogryph: 1.2 scale, saddle / bridle (ridden) / chest / armor layers
       event.registerEntityRenderer(AirWaterEntities.HIPPOGRYPH.get(), ctx -> new LegacyMobRenderer<EntityHippogryph>(ctx, new ModelHippogryph(), 0.8F, 1.2F,
             e -> e.isBlinking() ? e.getEnumVariant().TEXTURE_BLINK : e.getEnumVariant().TEXTURE)

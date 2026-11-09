@@ -3,6 +3,9 @@ package com.github.alexthe666.iceandfire.client;
 import com.github.alexthe666.iceandfire.client.gui.GuiLectern;
 import com.github.alexthe666.iceandfire.client.gui.GuiMyrmexCocoon;
 import com.github.alexthe666.iceandfire.client.gui.GuiPodium;
+import com.github.alexthe666.iceandfire.client.gui.bestiary.GuiBestiary;
+import com.github.alexthe666.iceandfire.item.ItemBestiary;
+import net.minecraft.client.Minecraft;
 import com.github.alexthe666.iceandfire.core.IafMeta;
 import com.github.alexthe666.iceandfire.core.ModBlocks;
 import com.github.alexthe666.iceandfire.core.ModItems;
@@ -29,6 +32,8 @@ public final class IafCoreClient {
       modBus.addListener(IafCoreClient::screens);
       modBus.addListener(IafCoreClient::setup);
       IafCoreClientExtras.init(modBus);
+      ItemBestiary.openGui = stack -> Minecraft.getInstance().setScreen(new GuiBestiary(stack));
+      net.neoforged.neoforge.common.NeoForge.EVENT_BUS.register(new com.github.alexthe666.iceandfire.event.EventClient());
    }
 
    private static void screens(RegisterMenuScreensEvent event) {
