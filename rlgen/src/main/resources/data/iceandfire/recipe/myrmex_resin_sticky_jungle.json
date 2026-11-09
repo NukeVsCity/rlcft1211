@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "iceandfire:myrmex_jungle_resin"
+    },
+    {
+      "type": "neoforge:components",
+      "items": "iceandfire:myrmex_resin",
+      "components": {
+        "iceandfire:meta": 1
+      },
+      "strict": false
+    }
+  ],
+  "result": {
+    "id": "iceandfire:myrmex_resin_sticky",
+    "count": 1,
+    "components": {
+      "iceandfire:meta": 1
+    }
+  }
+}

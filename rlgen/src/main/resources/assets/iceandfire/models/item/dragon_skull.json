@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "iceandfire:items/dragon_skull_fire"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "iceandfire:meta": 1
+      },
+      "model": "iceandfire:item/dragon_skull_ice"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S",
+    "T",
+    "T"
+  ],
+  "key": {
+    "S": {
+      "item": "iceandfire:dragonbone"
+    },
+    "T": {
+      "tag": "iceandfire:bones/wither"
+    }
+  },
+  "result": {
+    "id": "iceandfire:dragonbone_shovel",
+    "count": 1
+  }
+}

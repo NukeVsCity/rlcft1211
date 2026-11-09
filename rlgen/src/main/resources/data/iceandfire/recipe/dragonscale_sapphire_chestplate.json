@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S S",
+    "SSS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "iceandfire:dragonscales_sapphire"
+    }
+  },
+  "result": {
+    "id": "iceandfire:armor_sapphire_chestplate",
+    "count": 1
+  }
+}

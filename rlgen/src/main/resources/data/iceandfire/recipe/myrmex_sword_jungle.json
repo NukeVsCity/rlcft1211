@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "C",
+    "C",
+    "B"
+  ],
+  "key": {
+    "C": {
+      "item": "iceandfire:myrmex_jungle_chitin"
+    },
+    "B": {
+      "tag": "iceandfire:bones/wither"
+    }
+  },
+  "result": {
+    "id": "iceandfire:myrmex_jungle_sword",
+    "count": 1
+  }
+}

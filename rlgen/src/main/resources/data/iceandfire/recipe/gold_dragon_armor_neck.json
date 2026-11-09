@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "DDD",
+    " DD"
+  ],
+  "key": {
+    "D": {
+      "tag": "c:storage_blocks/gold"
+    }
+  },
+  "result": {
+    "id": "iceandfire:dragonarmor_gold",
+    "count": 1,
+    "components": {
+      "iceandfire:meta": 1
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "   ",
+    "DDD",
+    " DD"
+  ],
+  "key": {
+    "D": {
+      "tag": "c:storage_blocks/iron"
+    }
+  },
+  "result": {
+    "id": "iceandfire:dragonarmor_iron",
+    "count": 1,
+    "components": {
+      "iceandfire:meta": 1
+    }
+  }
+}

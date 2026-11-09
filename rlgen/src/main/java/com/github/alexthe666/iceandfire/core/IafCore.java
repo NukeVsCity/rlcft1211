@@ -29,6 +29,7 @@ public final class IafCore {
       ModBlocks.init();
       ModItems.init(modBus);
       IafMeta.register(modBus);
+      com.github.alexthe666.iceandfire.loot.CustomizeToDragon.register(modBus);
       CreativeTab.init();
       EntityPropertiesHandler.INSTANCE.registerProperties(StoneEntityProperties.class);
       EntityPropertiesHandler.INSTANCE.registerProperties(MiscPlayerProperties.class);

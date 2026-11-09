@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "iceandfire:blocks/frost_lily"
+  },
+  "render_type": "minecraft:cutout"
+}
