@@ -284,6 +284,16 @@ public abstract class EntityDragonBase extends TamableAnimal
       }
    }
 
+   /**
+    * IMultipartEntity.getParts(): 1.7.1 never overrode vanilla 1.12 Entity.getParts(), which returned null, so the dragon
+    * parts were invisible to world queries and could not be hit. Same here (and isMultipartEntity() stays false).
+    */
+   @Nullable
+   @Override
+   public net.neoforged.neoforge.entity.PartEntity<?>[] getParts() {
+      return null;
+   }
+
    /** The ten 1.12 hitbox parts (head, neck, wings, tail). Like in 1.12 they are not part of world queries. */
    public EntityDragonPart[] getDragonParts() {
       return new EntityDragonPart[]{
@@ -343,7 +353,7 @@ public abstract class EntityDragonBase extends TamableAnimal
             || dragonArmorNeck != this.getIntFromArmor(this.dragonInv.getItem(1))
             || dragonArmorBody != this.getIntFromArmor(this.dragonInv.getItem(2))
             || dragonArmorTail != this.getIntFromArmor(this.dragonInv.getItem(3))) {
-            this.playSound(SoundEvents.HORSE_ARMOR.value(), 0.5F, 1.0F);
+            this.playSound(SoundEvents.HORSE_ARMOR, 0.5F, 1.0F);
          }
       }
       this.updateDragonSlots();

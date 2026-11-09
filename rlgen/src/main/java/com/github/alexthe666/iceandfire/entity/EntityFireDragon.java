@@ -152,7 +152,7 @@ public class EntityFireDragon extends EntityDragonBase {
    }
 
    /** 1.12 EntityFireDragon/EntityIceDragon.attackEntityAsMob: bite, grab and shake small prey, tail whack or wing blast. */
-   static boolean dragonAttack(EntityDragonBase dragon, Entity entityIn) {
+   static boolean dragonAttack(EntityDragonBase dragon, Entity entityIn, boolean wingBlastResult) {
       if (dragon.getAnimation() == ANIMATION_WINGBLAST) {
          return false;
       } else {
@@ -197,7 +197,7 @@ public class EntityFireDragon extends EntityDragonBase {
                if (dragon.onGround() && !dragon.isHovering() && !dragon.isFlying() && dragon.getDragonStage() > 2) {
                   if (dragon.getAnimation() != ANIMATION_WINGBLAST) {
                      dragon.setAnimation(ANIMATION_WINGBLAST);
-                     return true;
+                     return wingBlastResult; // fire dragon true, ice dragon false
                   }
                } else {
                   return bite(dragon, entityIn);
@@ -213,7 +213,7 @@ public class EntityFireDragon extends EntityDragonBase {
 
    @Override
    public boolean attackEntityAsMob(Entity entityIn) {
-      return dragonAttack(this, entityIn);
+      return dragonAttack(this, entityIn, true);
    }
 
    public void moveEntityTowards(Entity entity, double x, double y, double z, float velocity, float inaccuracy) {

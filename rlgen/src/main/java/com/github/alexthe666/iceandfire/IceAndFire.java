@@ -10,8 +10,10 @@ import net.neoforged.fml.common.Mod;
 @Mod(IceAndFire.MODID)
 public final class IceAndFire {
    public static final String MODID = "iceandfire";
+   public static IceAndFireConfig CONFIG = new IceAndFireConfig(); // STUB(iaf/core)
 
    public IceAndFire(IEventBus modBus) {
       IafRegistries.register(modBus);
+      com.github.alexthe666.iceandfire.entity.IafDragonEntities.init(modBus);
    }
 }

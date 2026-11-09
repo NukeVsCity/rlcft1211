@@ -295,8 +295,8 @@ public abstract class LegacyFireball extends Entity implements IEntityWithComple
    @Override
    protected void addAdditionalSaveData(CompoundTag tag) {
       Vec3 motion = this.getDeltaMovement();
-      tag.put("direction", this.newDoubleList(motion.x, motion.y, motion.z));
-      tag.put("power", this.newDoubleList(this.accelerationX, this.accelerationY, this.accelerationZ));
+      tag.put("direction", this.doubleList(motion.x, motion.y, motion.z));
+      tag.put("power", this.doubleList(this.accelerationX, this.accelerationY, this.accelerationZ));
       tag.putInt("life", this.ticksAlive);
       if (this.shootingEntityId != null) {
          tag.putUUID("Shooter", this.shootingEntityId);
@@ -326,7 +326,7 @@ public abstract class LegacyFireball extends Entity implements IEntityWithComple
       }
    }
 
-   private ListTag newDoubleList(double... values) {
+   private ListTag doubleList(double... values) {
       ListTag list = new ListTag();
       for (double d : values) {
          list.add(DoubleTag.valueOf(d));

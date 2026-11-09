@@ -1,6 +1,6 @@
 package com.github.alexthe666.iceandfire.api;
 
-import net.minecraft.food.FoodProperties;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.Entity;

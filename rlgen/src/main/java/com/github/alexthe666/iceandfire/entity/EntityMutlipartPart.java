@@ -27,10 +27,6 @@ public class EntityMutlipartPart extends PartEntity {
       return this.parent.hurt(source, damage * this.damageMultiplier);
    }
 
-   public LivingEntity getParent() {
-      return this.parent;
-   }
-
    public void resize(float width, float height) {
       this.setSize(width, height);
    }

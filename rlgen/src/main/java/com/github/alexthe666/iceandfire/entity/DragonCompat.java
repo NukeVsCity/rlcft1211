@@ -132,6 +132,13 @@ public final class DragonCompat {
    public static void setFrozenFor(Entity entity, int ticks) {
    }
 
+   /**
+    * 1.12 EntityDragonEgg in water: sets TileEntityEggInIce.type and ownerUUID of the egg-in-ice block just placed.
+    * STUB(iaf/core): the egg-in-ice block entity (it hatches the ice dragon) belongs to iaf/core.
+    */
+   public static void onEggInIce(net.minecraft.world.level.Level level, BlockPos pos, com.github.alexthe666.iceandfire.enums.EnumDragonEgg type, @javax.annotation.Nullable java.util.UUID owner) {
+   }
+
    /** MiscPlayerProperties.hasDismountedDragon (kept in the player's persistent data). */
    public static void setDismountedDragon(Player player, boolean value) {
       player.getPersistentData().putBoolean("iceandfire_hasDismountedDragon", value);
