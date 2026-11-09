@@ -96,8 +96,6 @@ public final class IafLandMobs {
    }
 
    public static void init(IEventBus modBus) {
-      StoneEntityProperties.init();
-      ChickenEntityProperties.init();
       modBus.addListener(IafLandMobs::spawnPlacements);
       modBus.addListener(IafLandMobs::attributes);
       modBus.addListener(IafLandMobs::payloads);

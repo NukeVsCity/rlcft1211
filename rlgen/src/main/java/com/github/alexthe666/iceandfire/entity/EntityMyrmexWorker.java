@@ -219,7 +219,7 @@ public class EntityMyrmexWorker extends EntityMyrmexBase {
 
    @Override
    public boolean hurt(DamageSource source, float amount) {
-      if ((double)amount >= 1.0 && !this.level().isClientSide && this.getRandom().nextInt(3) == 0 && !this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !StoneEntityProperties.isStone(this)) {
+      if ((double)amount >= 1.0 && !this.level().isClientSide && this.getRandom().nextInt(3) == 0 && !this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() && !LandUtils.isStone(this)) {
          this.spawnAtLocation(this.getItemInHand(InteractionHand.MAIN_HAND), 0.0F);
          this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
       }

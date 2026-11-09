@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S",
+    "S",
+    "T"
+  ],
+  "key": {
+    "S": {
+      "tag": "c:ingots/silver"
+    },
+    "T": {
+      "tag": "c:rods/wooden"
+    }
+  },
+  "result": {
+    "id": "iceandfire:silver_sword",
+    "count": 1
+  }
+}

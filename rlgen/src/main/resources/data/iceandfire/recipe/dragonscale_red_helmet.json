@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "S S"
+  ],
+  "key": {
+    "S": {
+      "item": "iceandfire:dragonscales_red"
+    }
+  },
+  "result": {
+    "id": "iceandfire:armor_red_helmet",
+    "count": 1
+  }
+}

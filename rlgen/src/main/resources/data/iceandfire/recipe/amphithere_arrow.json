@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X",
+    "#",
+    "Y"
+  ],
+  "key": {
+    "#": {
+      "tag": "c:rods/wooden"
+    },
+    "X": {
+      "item": "minecraft:flint"
+    },
+    "Y": {
+      "item": "iceandfire:amphithere_feather"
+    }
+  },
+  "result": {
+    "id": "iceandfire:amphithere_arrow",
+    "count": 4
+  }
+}

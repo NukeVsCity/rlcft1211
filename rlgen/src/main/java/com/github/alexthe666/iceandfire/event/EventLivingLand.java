@@ -1,7 +1,6 @@
 package com.github.alexthe666.iceandfire.event;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
-import com.github.alexthe666.iceandfire.entity.ChickenEntityProperties;
 import com.github.alexthe666.iceandfire.entity.EntityCockatrice;
 import com.github.alexthe666.iceandfire.entity.EntityCyclops;
 import com.github.alexthe666.iceandfire.entity.EntityStoneStatue;
@@ -54,7 +53,7 @@ public class EventLivingLand {
 
    @SubscribeEvent
    public void onEntityDrop(LivingDropsEvent event) {
-      if (StoneEntityProperties.isStone(event.getEntity())) {
+      if (LandUtils.isStone(event.getEntity())) {
          event.setCanceled(true);
       }
    }
@@ -71,7 +70,7 @@ public class EventLivingLand {
 
    @SubscribeEvent
    public void onEntityDespawn(MobDespawnEvent event) {
-      if (StoneEntityProperties.isStone(event.getEntity())) {
+      if (LandUtils.isStone(event.getEntity())) {
          event.setResult(MobDespawnEvent.Result.DENY);
       }
    }
@@ -191,39 +190,18 @@ public class EventLivingLand {
       }
    }
 
-   /** LivingUpdateEvent: rotten eggs from chickens, stone mobs stay still. */
+   /** LivingUpdateEvent: stone mobs stay still. */
    @SubscribeEvent
    public void onEntityUpdate(EntityTickEvent.Pre event) {
       if (!(event.getEntity() instanceof LivingEntity entity)) {
          return;
       }
 
-      if (IceAndFire.CONFIG.chickensLayRottenEggs
-         && !entity.level().isClientSide
-         && LandUtils.isAnimaniaChicken(entity)
-         && !entity.isBaby()
-         && entity instanceof Animal) {
-         ChickenEntityProperties chickenProps = entity.getData(ChickenEntityProperties.TYPE);
-         if (chickenProps.timeUntilNextEgg < 0) {
-            chickenProps.timeUntilNextEgg = 0;
-         }
-
-         if (chickenProps.timeUntilNextEgg == 0) {
-            if (entity.getRandom().nextInt(IceAndFire.CONFIG.cockatriceEggChance + 1) == 0 && entity.tickCount > 30) {
-               entity.playSound(SoundEvents.CHICKEN_HURT, 2.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
-               entity.playSound(SoundEvents.CHICKEN_EGG, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
-               entity.spawnAtLocation(IafLand.item("rotten_egg"), 0);
-            }
-
-            chickenProps.timeUntilNextEgg = chickenProps.generateTime();
-         } else if (chickenProps.timeUntilNextEgg > 0) {
-            chickenProps.timeUntilNextEgg--;
-         }
-      }
+      // rotten eggs from chickens: iaf/core EventLiving
 
       if (entity instanceof Mob living) {
          boolean stonePlayer = living instanceof EntityStoneStatue;
-         if (StoneEntityProperties.isStone(living) || stonePlayer) {
+         if (LandUtils.isStone(living) || stonePlayer) {
             if (!living.getPassengers().isEmpty()) {
                for (Entity e : new ArrayList<>(living.getPassengers())) {
                   e.stopRiding();
@@ -271,7 +249,7 @@ public class EventLivingLand {
    /** LLibrary sent tracked EntityProperties to a player starting to track the entity. */
    @SubscribeEvent
    public void onStartTracking(PlayerEvent.StartTracking event) {
-      if (event.getEntity() instanceof ServerPlayer player && StoneEntityProperties.isStone(event.getTarget())) {
+      if (event.getEntity() instanceof ServerPlayer player && LandUtils.isStone(event.getTarget())) {
          PacketDistributor.sendToPlayer(player, new MessageStoneStatue(event.getTarget().getId(), true));
       }
    }

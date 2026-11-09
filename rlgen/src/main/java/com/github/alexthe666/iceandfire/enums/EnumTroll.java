@@ -1,49 +1,60 @@
 package com.github.alexthe666.iceandfire.enums;
 
-import com.github.alexthe666.iceandfire.entity.IafLand;
-import com.github.alexthe666.iceandfire.world.LegacyBiomeTypes;
+import com.github.alexthe666.iceandfire.core.ModItems;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.biome.Biome;
 
 /**
- * 1.12 EnumTroll, entity side: the biome type each troll spawns in, its weapons and textures. The armour material and the
- * leather/armour/weapon items belong to the items part and are looked up by their 1.12 names.
+ * 1.12 EnumTroll. spawnBiome is the 1.12 BiomeDictionary type as the matching c: biome tag (FOREST c:is_forest, SNOWY c:is_snowy,
+ * MOUNTAIN c:is_mountain). material/leather/armor are set by ModItems at registration; Weapon.item too.
  */
 public enum EnumTroll {
-   FOREST("FOREST", Weapon.TRUNK, Weapon.COLUMN_FOREST, Weapon.AXE, Weapon.HAMMER),
-   FROST("SNOWY", Weapon.COLUMN_FROST, Weapon.TRUNK_FROST, Weapon.AXE, Weapon.HAMMER),
-   MOUNTAIN("MOUNTAIN", Weapon.COLUMN, Weapon.AXE, Weapon.HAMMER);
+   FOREST("is_forest", () -> ModItems.troll_forest, Weapon.TRUNK, Weapon.COLUMN_FOREST, Weapon.AXE, Weapon.HAMMER),
+   FROST("is_snowy", () -> ModItems.troll_frost, Weapon.COLUMN_FROST, Weapon.TRUNK_FROST, Weapon.AXE, Weapon.HAMMER),
+   MOUNTAIN("is_mountain", () -> ModItems.troll_mountain, Weapon.COLUMN, Weapon.AXE, Weapon.HAMMER);
 
-   public final ResourceLocation TEXTURE;
-   public final ResourceLocation TEXTURE_STONE;
-   public final ResourceLocation TEXTURE_EYES;
-   /** BiomeDictionary.Type name */
-   public final String spawnBiome;
-   private final Weapon[] weapons;
+   public ResourceLocation TEXTURE;
+   public ResourceLocation TEXTURE_STONE;
+   public ResourceLocation TEXTURE_EYES;
+   public TagKey<Biome> spawnBiome;
+   private final Supplier<Holder<ArmorMaterial>> materialSupplier;
+   private Weapon[] weapons;
+   public Item leather;
+   public Item helmet;
+   public Item chestplate;
+   public Item leggings;
+   public Item boots;
 
-   EnumTroll(String biome, Weapon... weapons) {
-      this.spawnBiome = biome;
+   private EnumTroll(String biomeTag, Supplier<Holder<ArmorMaterial>> material, Weapon... weapons) {
+      this.spawnBiome = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", biomeTag));
       this.weapons = weapons;
-      this.TEXTURE = IafLand.rl("textures/models/troll/troll_" + this.name().toLowerCase() + ".png");
-      this.TEXTURE_STONE = IafLand.rl("textures/models/troll/troll_" + this.name().toLowerCase() + "_stone.png");
-      this.TEXTURE_EYES = IafLand.rl("textures/models/troll/troll_" + this.name().toLowerCase() + "_eyes.png");
+      this.materialSupplier = material;
+      this.TEXTURE = ResourceLocation.parse("iceandfire:textures/models/troll/troll_" + this.name().toLowerCase() + ".png");
+      this.TEXTURE_STONE = ResourceLocation.parse("iceandfire:textures/models/troll/troll_" + this.name().toLowerCase() + "_stone.png");
+      this.TEXTURE_EYES = ResourceLocation.parse("iceandfire:textures/models/troll/troll_" + this.name().toLowerCase() + "_eyes.png");
    }
 
+   public Holder<ArmorMaterial> material() {
+      return this.materialSupplier.get();
+   }
+
+   /** 1.12 getBiomeType: a random troll type whose biome type the biome has, else any type. */
    public static EnumTroll getBiomeType(Holder<Biome> biome) {
       List<EnumTroll> types = new ArrayList<>();
-
       for (EnumTroll type : values()) {
-         if (LegacyBiomeTypes.hasType(biome, type.spawnBiome)) {
+         if (biome.is(type.spawnBiome)) {
             types.add(type);
          }
       }
-
       return types.isEmpty() ? values()[new Random().nextInt(values().length)] : types.get(new Random().nextInt(types.size()));
    }
 
@@ -60,12 +71,7 @@ public enum EnumTroll {
       TRUNK,
       TRUNK_FROST;
 
-      public final ResourceLocation TEXTURE = IafLand.rl("textures/models/troll/weapon/weapon_" + this.name().toLowerCase() + ".png");
-
-      /** ItemTrollWeapon, 1.12 registry name "troll_weapon.<weapon>" */
-      public Item item() {
-         Item i = IafLand.item("troll_weapon." + this.name().toLowerCase());
-         return i != Items.AIR ? i : IafLand.item("troll_weapon_" + this.name().toLowerCase());
-      }
+      public ResourceLocation TEXTURE = ResourceLocation.parse("iceandfire:textures/models/troll/weapon/weapon_" + this.name().toLowerCase() + ".png");
+      public Item item;
    }
 }

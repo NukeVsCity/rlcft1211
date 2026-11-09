@@ -209,7 +209,7 @@ public class EntityTroll extends Monster implements IAnimatedEntity, IVillagerFe
       super.tickDeath();
       if (this.deathTime == 20 && !this.level().isClientSide && IceAndFire.CONFIG.trollsDropWeapon) {
          if (this.getRandom().nextInt(3) == 0) {
-            ItemStack weaponStack = new ItemStack(this.getWeaponType().item(), 1);
+            ItemStack weaponStack = new ItemStack(this.getWeaponType().item == null ? Items.AIR : this.getWeaponType().item, 1);
             int dmg = this.getRandom().nextInt(250);
             if (weaponStack.isDamageableItem()) {
                weaponStack.setDamageValue(Math.min(weaponStack.getMaxDamage(), weaponStack.getDamageValue() + dmg));
@@ -301,7 +301,7 @@ public class EntityTroll extends Monster implements IAnimatedEntity, IVillagerFe
          if (f > 0.5F && this.level().canSeeSky(blockpos)) {
             StoneEntityProperties properties = StoneEntityProperties.get(this);
             if (properties != null && !properties.isStone) {
-               StoneEntityProperties.setStone(this, true);
+               LandUtils.setStone(this, true);
                this.setDeltaMovement(Vec3.ZERO);
                this.setAnimation(NO_ANIMATION);
                this.playSound(IafLand.sound("gorgon_turn_stone"), 1.0F, 1.0F);

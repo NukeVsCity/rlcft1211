@@ -28,6 +28,23 @@ public final class LandUtils {
    private LandUtils() {
    }
 
+   /** EntityGorgon.isStoneMob without the Mob check: the StoneEntityProperties flag. */
+   public static boolean isStone(@Nullable Entity entity) {
+      StoneEntityProperties p = entity == null ? null : StoneEntityProperties.get(entity);
+      return p != null && p.isStone;
+   }
+
+   /** properties.isStone = stone; then MessageStoneStatue to the tracking clients (LLibrary also re-syncs every 20 ticks). */
+   public static void setStone(Entity entity, boolean stone) {
+      StoneEntityProperties p = StoneEntityProperties.get(entity);
+      if (p != null) {
+         p.isStone = stone;
+         if (!entity.level().isClientSide) {
+            net.neoforged.neoforge.network.PacketDistributor.sendToPlayersTrackingEntity(entity, new com.github.alexthe666.iceandfire.message.MessageStoneStatue(entity.getId(), stone));
+         }
+      }
+   }
+
    /** DragonUtils.isAlive */
    public static boolean isAlive(@Nullable LivingEntity entity) {
       return !(entity instanceof IDeadMob) || !((IDeadMob)entity).isMobDead();

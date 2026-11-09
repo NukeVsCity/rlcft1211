@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "B  ",
+    " B ",
+    "  I"
+  ],
+  "key": {
+    "B": {
+      "item": "iceandfire:dragonbone"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    }
+  },
+  "result": {
+    "id": "iceandfire:dragon_flute",
+    "count": 1
+  }
+}

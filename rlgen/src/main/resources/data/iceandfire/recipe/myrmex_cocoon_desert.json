@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RSR",
+    "S S",
+    "RSR"
+  ],
+  "key": {
+    "S": {
+      "type": "neoforge:components",
+      "items": "iceandfire:myrmex_resin_sticky",
+      "components": {},
+      "strict": true
+    },
+    "R": {
+      "type": "neoforge:components",
+      "items": "iceandfire:myrmex_resin",
+      "components": {},
+      "strict": true
+    }
+  },
+  "result": {
+    "id": "iceandfire:desert_myrmex_cocoon",
+    "count": 1
+  }
+}

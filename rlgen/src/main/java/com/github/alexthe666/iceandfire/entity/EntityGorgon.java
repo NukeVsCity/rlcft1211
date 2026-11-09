@@ -68,7 +68,7 @@ public class EntityGorgon extends Monster implements IAnimatedEntity, IVillagerF
    }
 
    public static boolean isStoneMob(LivingEntity mob) {
-      return mob instanceof Mob && StoneEntityProperties.isStone(mob);
+      return mob instanceof Mob && LandUtils.isStone(mob);
    }
 
    @Override
@@ -262,7 +262,7 @@ public class EntityGorgon extends Monster implements IAnimatedEntity, IVillagerF
                   StoneEntityProperties properties = StoneEntityProperties.get(target);
                   Mob attackTarget = (Mob)target;
                   if (properties != null || !properties.isStone) {
-                     StoneEntityProperties.setStone(attackTarget, true);
+                     LandUtils.setStone(attackTarget, true);
                      this.playSound(IafLand.sound("gorgon_turn_stone"), 1.0F, 1.0F);
                      this.setTarget(null);
                   }
