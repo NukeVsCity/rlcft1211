@@ -2,23 +2,25 @@ package com.github.alexthe666.iceandfire.core;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import org.lwjgl.glfw.GLFW;
 
-/**
- * 1.12 ModKeys (client only). Same keys and categories as 1.12: LWJGL2 key codes 19 (R), 34 (G), 45 (X), 65 (F7) are the GLFW
- * keys R, G, X, F7. Registered from {@code DragonClient} (RegisterKeyMappingsEvent).
- */
-public class ModKeys {
-   public static KeyMapping dragon_fireAttack;
-   public static KeyMapping dragon_strike;
-   public static KeyMapping dragon_down;
-   public static KeyMapping dragon_change_view;
+/** Ice and Fire 1.7.1 ModKeys (client only): R breath, G strike, X down, F7 dragon camera view. */
+@EventBusSubscriber(modid = "iceandfire", value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
+public final class ModKeys {
+   private ModKeys() {
+   }
 
-   public static void init(RegisterKeyMappingsEvent event) {
-      dragon_fireAttack = new KeyMapping("key.dragon_fireAttack", InputConstants.KEY_R, "key.categories.gameplay");
-      dragon_strike = new KeyMapping("key.dragon_strike", InputConstants.KEY_G, "key.categories.gameplay");
-      dragon_down = new KeyMapping("key.dragon_down", InputConstants.KEY_X, "key.categories.gameplay");
-      dragon_change_view = new KeyMapping("key.dragon_change_view", InputConstants.KEY_F7, "key.categories.misc");
+   public static final KeyMapping dragon_fireAttack = new KeyMapping("key.dragon_fireAttack", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_R, "key.categories.gameplay");
+   public static final KeyMapping dragon_strike = new KeyMapping("key.dragon_strike", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_G, "key.categories.gameplay");
+   public static final KeyMapping dragon_down = new KeyMapping("key.dragon_down", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_X, "key.categories.gameplay");
+   public static final KeyMapping dragon_change_view = new KeyMapping("key.dragon_change_view", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_F7, "key.categories.misc");
+
+   @SubscribeEvent
+   public static void register(RegisterKeyMappingsEvent event) {
       event.register(dragon_fireAttack);
       event.register(dragon_strike);
       event.register(dragon_down);
