@@ -47,8 +47,8 @@ public class ModelDragonEgg extends AdvancedModelBase {
    public void renderFrozen(TileEntityEggInIce tile) {
       this.Egg1.rotateAngleX = (float)Math.toRadians(-180.0);
       ModelUtils.renderAll(this.boxList);
-      this.walk(this.Egg1, 0.3F, 0.1F, true, 1.0F, 0.0F, (float)tile.tickCount, 1.0F);
-      this.flap(this.Egg1, 0.3F, 0.1F, false, 0.0F, 0.0F, (float)tile.tickCount, 1.0F);
+      this.walk(this.Egg1, 0.3F, 0.1F, true, 1.0F, 0.0F, (float)tile.ticksExisted, 1.0F);
+      this.flap(this.Egg1, 0.3F, 0.1F, false, 0.0F, 0.0F, (float)tile.ticksExisted, 1.0F);
    }
 
    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {

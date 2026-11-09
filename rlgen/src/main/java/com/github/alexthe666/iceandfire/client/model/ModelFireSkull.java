@@ -81,7 +81,7 @@ public class ModelFireSkull extends AdvancedModelBase {
 
    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
       this.resetToDefaultPose();
-      if (entity instanceof EntityDragonSkull && ((EntityDragonSkull)entity).getSkullType() == 1) {
+      if (entity instanceof EntityDragonSkull && ((EntityDragonSkull)entity).getDragonType() == 1) {
          RenderDragonSkull.ICE_SKULL_MODEL.render(entity, f, f1, f2, f3, f4, f5);
       } else {
          if (entity instanceof EntityDragonSkull) {

@@ -26,11 +26,11 @@ public class RenderDragonSkull extends MobRenderer<EntityDragonSkull, EntityMode
    protected void scale(EntityDragonSkull skull, PoseStack poseStack, float partialTicks) {
       poseStack.scale(skull.getDragonSize(), 1.0F, skull.getDragonSize());
       poseStack.scale(1.0F, -skull.getDragonSize(), 1.0F);
-      poseStack.mulPose(Axis.YP.rotationDegrees(skull.getYaw()));
+      poseStack.mulPose(Axis.YP.rotationDegrees(skull.getDragonYaw()));
    }
 
    @Override
    public ResourceLocation getTextureLocation(EntityDragonSkull entity) {
-      return entity.getSkullType() == 0 ? SKULL_FIRE : SKULL_ICE;
+      return entity.getDragonType() == 0 ? SKULL_FIRE : SKULL_ICE;
    }
 }
