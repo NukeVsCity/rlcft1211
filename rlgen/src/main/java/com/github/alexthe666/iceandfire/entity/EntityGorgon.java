@@ -40,7 +40,6 @@ public class EntityGorgon extends Monster implements IAnimatedEntity, IVillagerF
    private GorgonAIStareAttack aiStare;
    private EntityAIAttackMelee aiMelee;
    private boolean dropXpNow;
-   static final boolean DEBUG = true; // TEMP
 
    public EntityGorgon(EntityType<? extends EntityGorgon> type, Level worldIn) {
       super(type, worldIn);
@@ -227,12 +226,6 @@ public class EntityGorgon extends Monster implements IAnimatedEntity, IVillagerF
          if (!blindness && this.deathTime == 0 && this.getTarget() instanceof Mob && !(this.getTarget() instanceof Player)) {
             this.forcePreyToLook((Mob)this.getTarget());
          }
-      }
-
-      if (DEBUG && !this.level().isClientSide && this.tickCount % 20 == 0) {
-         com.mojang.logging.LogUtils.getLogger().info("[gorgon] target {} looking {} {} anim {} {}", this.getTarget(),
-            this.getTarget() != null && isEntityLookingAt(this, this.getTarget(), 0.4), this.getTarget() != null && isEntityLookingAt(this.getTarget(), this, 0.4),
-            this.getAnimation() == ANIMATION_SCARE, this.getAnimationTick());
       }
 
       if (this.getTarget() != null && isEntityLookingAt(this, this.getTarget(), 0.4) && isEntityLookingAt(this.getTarget(), this, 0.4)) {
