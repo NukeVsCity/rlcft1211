@@ -56,19 +56,12 @@ public final class MyrmexTrades {
 
    /** ItemMyrmexEgg with metadata = caste */
    public static ItemStack egg(boolean jungle, int caste) {
-      ItemStack stack = new ItemStack(IafLand.item(jungle ? "myrmex_jungle_egg" : "myrmex_desert_egg"));
-      if (!stack.isEmpty()) {
-         CompoundTag tag = new CompoundTag();
-         tag.putInt("MyrmexCaste", caste);
-         CustomData.set(DataComponents.CUSTOM_DATA, stack, tag);
-      }
-      return stack;
+      return com.github.alexthe666.iceandfire.core.IafMeta.stack(IafLand.item(jungle ? "myrmex_jungle_egg" : "myrmex_desert_egg"), 1, caste);
    }
 
    /** The metadata (caste) of a myrmex egg stack. */
    public static int eggCaste(ItemStack stack) {
-      CustomData data = stack.get(DataComponents.CUSTOM_DATA);
-      return data == null ? 0 : data.copyTag().getInt("MyrmexCaste");
+      return com.github.alexthe666.iceandfire.core.IafMeta.getMetadata(stack);
    }
 
    public static boolean isMyrmexEgg(ItemStack stack) {

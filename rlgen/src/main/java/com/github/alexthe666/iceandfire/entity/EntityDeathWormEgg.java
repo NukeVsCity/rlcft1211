@@ -32,7 +32,7 @@ public class EntityDeathWormEgg extends ThrowableItemProjectile {
 
    @Override
    protected Item getDefaultItem() {
-      return IafLand.item("deathworm_egg");
+      return IafLand.item("iceandfire.deathworm_egg");
    }
 
    @Override
@@ -46,7 +46,7 @@ public class EntityDeathWormEgg extends ThrowableItemProjectile {
          for (int i = 0; i < 8; i++) {
             this.level()
                .addParticle(
-                  new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(IafLand.item("deathworm_egg"))),
+                  new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(IafLand.item("iceandfire.deathworm_egg"))),
                   this.getX(),
                   this.getY(),
                   this.getZ(),

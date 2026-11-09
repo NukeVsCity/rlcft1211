@@ -97,6 +97,8 @@ public final class IafLandMobs {
 
    public static void init(IEventBus modBus) {
       modBus.addListener(IafLandMobs::spawnPlacements);
+      LandHooks.install();
+      com.github.alexthe666.iceandfire.world.IafLandSpawns.register(modBus);
       modBus.addListener(IafLandMobs::attributes);
       modBus.addListener(IafLandMobs::payloads);
       NeoForge.EVENT_BUS.register(new EventLivingLand());

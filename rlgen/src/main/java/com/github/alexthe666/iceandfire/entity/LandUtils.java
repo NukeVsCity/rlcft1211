@@ -202,6 +202,19 @@ public final class LandUtils {
       }
    }
 
+   /** IDropArmor.dropArmor() (dragons) */
+   public static void dropArmor(Entity e) {
+      for (Class<?> i : e.getClass().getInterfaces()) {
+         if (i.getSimpleName().equals("IDropArmor")) {
+            call(e, "dropArmor");
+            return;
+         }
+      }
+      if (isDragon(e)) {
+         call(e, "dropArmor");
+      }
+   }
+
    @Nullable
    private static Field findField(Class<?> c, String name) {
       for (; c != null; c = c.getSuperclass()) {
