@@ -166,8 +166,13 @@ public final class AirWaterEntities {
    }
 
    /** client: new IFChainBuffer() */
-   public static Object clientChainBuffer() {
-      return FMLEnvironment.dist.isClient() ? com.github.alexthe666.iceandfire.client.AirWaterClient.newChainBuffer() : null;
+   public static com.github.alexthe666.iceandfire.client.model.IFChainBuffer clientChainBuffer() {
+      return FMLEnvironment.dist.isClient() ? new com.github.alexthe666.iceandfire.client.model.IFChainBuffer() : null;
+   }
+
+   /** client: new ChainBuffer() (llibrary) */
+   public static net.ilexiconn.llibrary.client.model.tools.ChainBuffer clientLLibraryChainBuffer() {
+      return FMLEnvironment.dist.isClient() ? new net.ilexiconn.llibrary.client.model.tools.ChainBuffer() : null;
    }
 
    /** client: IFChainBuffer.calculateChainFlapBuffer */

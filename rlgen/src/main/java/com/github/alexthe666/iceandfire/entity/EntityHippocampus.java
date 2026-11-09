@@ -65,7 +65,7 @@ public class EntityHippocampus extends TamableAnimal implements IAnimatedEntity,
    public float onLandProgress;
    private boolean isLandNavigator;
    /** client only: ChainBuffer */
-   public Object tail_buffer;
+   public net.ilexiconn.llibrary.client.model.tools.ChainBuffer tail_buffer;
    private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntityHippocampus.class, EntityDataSerializers.INT);
    private static final EntityDataAccessor<Boolean> SADDLE = SynchedEntityData.defineId(EntityHippocampus.class, EntityDataSerializers.BOOLEAN);
    private static final EntityDataAccessor<Integer> ARMOR = SynchedEntityData.defineId(EntityHippocampus.class, EntityDataSerializers.INT);
@@ -92,7 +92,7 @@ public class EntityHippocampus extends TamableAnimal implements IAnimatedEntity,
       this.tasks.addTask(4, new EntityAIMate(this, 1.0));
       this.goalSelector.addGoal(0, new LegacyTasksGoal(this, this.targetTasks, this.tasks));
       if (level.isClientSide) {
-         this.tail_buffer = AirWaterEntities.clientChainBuffer();
+         this.tail_buffer = AirWaterEntities.clientLLibraryChainBuffer();
       }
       this.initHippocampusInv();
    }

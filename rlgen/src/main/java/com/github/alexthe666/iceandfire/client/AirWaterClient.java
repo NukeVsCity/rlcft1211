@@ -49,7 +49,11 @@ public final class AirWaterClient {
    }
 
    public static void swingBuffer(Object buffer, float maxAngle, int bufferTime, float angleDecrement, LivingEntity entity) {
-      ((IFChainBuffer)buffer).calculateChainSwingBuffer(maxAngle, bufferTime, angleDecrement, entity);
+      if (buffer instanceof IFChainBuffer b) {
+         b.calculateChainSwingBuffer(maxAngle, bufferTime, angleDecrement, entity);
+      } else if (buffer instanceof net.ilexiconn.llibrary.client.model.tools.ChainBuffer b) {
+         b.calculateChainSwingBuffer(maxAngle, bufferTime, angleDecrement, entity);
+      }
    }
 
    public static void waveBuffer(Object buffer, float maxAngle, int bufferTime, float angleDecrement, LivingEntity entity) {

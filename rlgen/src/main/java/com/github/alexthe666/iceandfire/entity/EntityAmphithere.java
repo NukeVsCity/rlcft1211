@@ -80,9 +80,9 @@ public class EntityAmphithere extends TamableAnimal implements IAnimatedEntity, 
    private boolean isFlying;
    private boolean isLandNavigator = true;
    /** client only: IFChainBuffer */
-   public Object roll_buffer;
-   public Object tail_buffer;
-   public Object pitch_buffer;
+   public com.github.alexthe666.iceandfire.client.model.IFChainBuffer roll_buffer;
+   public com.github.alexthe666.iceandfire.client.model.IFChainBuffer tail_buffer;
+   public com.github.alexthe666.iceandfire.client.model.IFChainBuffer pitch_buffer;
    protected FlightBehavior flightBehavior = FlightBehavior.WANDER;
    private boolean changedFlightBehavior = false;
    @Nullable

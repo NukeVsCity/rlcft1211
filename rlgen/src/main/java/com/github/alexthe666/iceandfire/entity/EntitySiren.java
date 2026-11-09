@@ -67,7 +67,7 @@ public class EntitySiren extends Monster implements IAnimatedEntity {
    private static final EntityDataAccessor<Boolean> CHARMED = SynchedEntityData.defineId(EntitySiren.class, EntityDataSerializers.BOOLEAN);
    private static final EntityDataAccessor<Byte> CLIMBING = SynchedEntityData.defineId(EntitySiren.class, EntityDataSerializers.BYTE);
    /** client only: ChainBuffer */
-   public Object tail_buffer;
+   public net.ilexiconn.llibrary.client.model.tools.ChainBuffer tail_buffer;
    public float singProgress;
    private boolean isSinging;
    private boolean isSwimming;
@@ -101,7 +101,7 @@ public class EntitySiren extends Monster implements IAnimatedEntity {
       this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, Villager.class, 0, true, false, entity -> this.isAgressive()));
       this.goalSelector.addGoal(0, new LegacyTasksGoal(this, this.targetTasks, this.tasks));
       if (level.isClientSide) {
-         this.tail_buffer = AirWaterEntities.clientChainBuffer();
+         this.tail_buffer = AirWaterEntities.clientLLibraryChainBuffer();
       }
    }
 

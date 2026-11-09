@@ -91,7 +91,7 @@ public class EntityHippogryph extends TamableAnimal implements IAnimatedEntity, 
    public EntityAISit aiSit;
    public SimpleContainer hippogryphInventory;
    /** client only: IFChainBuffer */
-   public Object roll_buffer;
+   public com.github.alexthe666.iceandfire.client.model.IFChainBuffer roll_buffer;
    public float sitProgress;
    public float hoverProgress;
    public float flyProgress;

@@ -79,10 +79,10 @@ public class EntitySeaSerpent extends Animal implements IAnimatedEntity, IMultip
    private int ticksCircling;
    public float orbitRadius = 0.0F;
    /** client only: IFChainBuffer */
-   public Object roll_buffer;
-   public Object tail_buffer;
-   public Object head_buffer;
-   public Object pitch_buffer;
+   public com.github.alexthe666.iceandfire.client.model.IFChainBuffer roll_buffer;
+   public com.github.alexthe666.iceandfire.client.model.IFChainBuffer tail_buffer;
+   public com.github.alexthe666.iceandfire.client.model.IFChainBuffer head_buffer;
+   public com.github.alexthe666.iceandfire.client.model.IFChainBuffer pitch_buffer;
    @Nullable
    public BlockPos orbitPos = null;
    public static final Animation ANIMATION_BITE = Animation.create(15);
