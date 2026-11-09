@@ -1,5 +1,6 @@
 package com.github.alexthe666.iceandfire.entity.ai.legacy;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
@@ -7,14 +8,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.Path;
 
-/** 1.12.2 EntityAIAttackMelee */
+/** 1.12.2 net.minecraft.entity.ai.EntityAIAttackMelee. attackEntityAsMob is the mob's doHurtTarget. */
 public class EntityAIAttackMelee extends EntityAIBase {
-   protected Level world;
+   Level world;
    protected PathfinderMob attacker;
    protected int attackTick;
-   protected double speedTowardsTarget;
-   protected boolean longMemory;
-   protected Path path;
+   double speedTowardsTarget;
+   boolean longMemory;
+   Path path;
    private int delayCounter;
    private double targetX;
    private double targetY;
@@ -54,9 +55,9 @@ public class EntityAIAttackMelee extends EntityAIBase {
       } else if (!this.longMemory) {
          return !this.attacker.getNavigation().isDone();
       } else {
-         return !this.attacker.isWithinRestriction(target.blockPosition())
+         return !this.attacker.isWithinRestriction(BlockPos.containing(target.position()))
             ? false
-            : !(target instanceof Player p) || !p.isSpectator() && !p.isCreative();
+            : !(target instanceof Player) || !((Player)target).isSpectator() && !((Player)target).isCreative();
       }
    }
 
@@ -69,9 +70,10 @@ public class EntityAIAttackMelee extends EntityAIBase {
    @Override
    public void resetTask() {
       LivingEntity target = this.attacker.getTarget();
-      if (target instanceof Player p && (p.isSpectator() || p.isCreative())) {
+      if (target instanceof Player && (((Player)target).isSpectator() || ((Player)target).isCreative())) {
          this.attacker.setTarget(null);
       }
+
       this.attacker.getNavigation().stop();
    }
 
@@ -79,16 +81,18 @@ public class EntityAIAttackMelee extends EntityAIBase {
    public void updateTask() {
       LivingEntity target = this.attacker.getTarget();
       if (target == null) {
-         return;
+         return; // 1.12 threw here; a target cleared by onLivingUpdate between the checks is skipped instead
       }
       this.attacker.getLookControl().setLookAt(target, 30.0F, 30.0F);
       double d0 = this.attacker.distanceToSqr(target.getX(), target.getBoundingBox().minY, target.getZ());
       this.delayCounter--;
       if ((this.longMemory || this.attacker.getSensing().hasLineOfSight(target))
          && this.delayCounter <= 0
-         && (this.targetX == 0.0 && this.targetY == 0.0 && this.targetZ == 0.0
-            || target.distanceToSqr(this.targetX, this.targetY, this.targetZ) >= 1.0
-            || this.attacker.getRandom().nextFloat() < 0.05F)) {
+         && (
+            this.targetX == 0.0 && this.targetY == 0.0 && this.targetZ == 0.0
+               || target.distanceToSqr(this.targetX, this.targetY, this.targetZ) >= 1.0
+               || this.attacker.getRandom().nextFloat() < 0.05F
+         )) {
          this.targetX = target.getX();
          this.targetY = target.getBoundingBox().minY;
          this.targetZ = target.getZ();
@@ -98,6 +102,7 @@ public class EntityAIAttackMelee extends EntityAIBase {
          } else if (d0 > 256.0) {
             this.delayCounter += 5;
          }
+
          if (!this.attacker.getNavigation().moveTo(target, this.speedTowardsTarget)) {
             this.delayCounter += 15;
          }
@@ -107,16 +112,16 @@ public class EntityAIAttackMelee extends EntityAIBase {
       this.checkAndPerformAttack(target, d0);
    }
 
-   protected void checkAndPerformAttack(LivingEntity enemy, double distToEnemySqr) {
-      double d0 = this.getAttackReachSqr(enemy);
-      if (distToEnemySqr <= d0 && this.attackTick <= 0) {
+   protected void checkAndPerformAttack(LivingEntity target, double distSq) {
+      double d0 = this.getAttackReachSqr(target);
+      if (distSq <= d0 && this.attackTick <= 0) {
          this.attackTick = 20;
          this.attacker.swing(InteractionHand.MAIN_HAND);
-         this.attacker.doHurtTarget(enemy);
+         this.attacker.doHurtTarget(target);
       }
    }
 
-   protected double getAttackReachSqr(LivingEntity attackTarget) {
-      return (double)(this.attacker.getBbWidth() * 2.0F * this.attacker.getBbWidth() * 2.0F + attackTarget.getBbWidth());
+   protected double getAttackReachSqr(LivingEntity target) {
+      return (double)(this.attacker.getBbWidth() * 2.0F * this.attacker.getBbWidth() * 2.0F + target.getBbWidth());
    }
 }

@@ -5,11 +5,11 @@ import com.github.alexthe666.iceandfire.entity.ai.FlyingAITarget;
 import com.github.alexthe666.iceandfire.entity.ai.PathNavigateAmphibious;
 import com.github.alexthe666.iceandfire.entity.ai.SeaSerpentAIAttackMelee;
 import com.github.alexthe666.iceandfire.entity.ai.SeaSerpentAIGetInWater;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIHurtByTarget;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.LegacyMoveControl;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.LegacyTasksGoal;
+import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIBase;
+import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIHurtByTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAITasks;
+import com.github.alexthe666.iceandfire.entity.ai.legacy112.LegacyMoveControl;
+import com.github.alexthe666.iceandfire.entity.ai.legacy112.LegacyTasksGoal;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import net.ilexiconn.llibrary.server.animation.Animation;
@@ -876,7 +876,7 @@ public class EntitySeaSerpent extends Animal implements IAnimatedEntity, IMultip
    }
 
    public static boolean isWaterBlock(Level world, BlockPos pos) {
-      return com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112.isWaterMaterial(world.getBlockState(pos));
+      return com.github.alexthe666.iceandfire.entity.ai.legacy112.Legacy112.isWaterMaterial(world.getBlockState(pos));
    }
 
    public boolean isAtSurface() {

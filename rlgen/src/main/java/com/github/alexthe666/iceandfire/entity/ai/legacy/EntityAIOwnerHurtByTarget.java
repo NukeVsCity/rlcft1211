@@ -3,7 +3,7 @@ package com.github.alexthe666.iceandfire.entity.ai.legacy;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
 
-/** 1.12.2 EntityAIOwnerHurtByTarget */
+/** 1.12.2 net.minecraft.entity.ai.EntityAIOwnerHurtByTarget. */
 public class EntityAIOwnerHurtByTarget extends EntityAITarget {
    TamableAnimal tameable;
    LivingEntity attacker;
@@ -38,6 +38,7 @@ public class EntityAIOwnerHurtByTarget extends EntityAITarget {
       if (owner != null) {
          this.timestamp = owner.getLastHurtByMobTimestamp();
       }
+
       super.startExecuting();
    }
 }

@@ -1,31 +1,42 @@
 package com.github.alexthe666.iceandfire.entity.ai.legacy;
 
+import com.google.common.collect.Sets;
+import java.util.EnumSet;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.Set;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.GoalSelector;
 
-/** 1.12.2 net.minecraft.entity.ai.EntityAITasks: tasks are (re)considered every 3rd tick, running ones are checked every tick. */
+/**
+ * 1.12.2 net.minecraft.entity.ai.EntityAITasks (tickRate 3, LinkedHashSet order). It is driven by one flagless 1.21 goal
+ * per selector ({@link #install}), so 1.21's Mob.serverAiStep calls the target tasks, then the tasks, every tick before the
+ * navigation, move, look and jump controls, like 1.12 EntityLiving.updateEntityActionState.
+ */
 public class EntityAITasks {
-   private final Set<EntityAITaskEntry> taskEntries = new LinkedHashSet<>();
-   private final Set<EntityAITaskEntry> executingTaskEntries = new LinkedHashSet<>();
+   private final Set<EntityAITasks.EntityAITaskEntry> taskEntries = Sets.newLinkedHashSet();
+   private final Set<EntityAITasks.EntityAITaskEntry> executingTaskEntries = Sets.newLinkedHashSet();
    private int tickCount;
-   private final int tickRate = 3;
+   private int tickRate = 3;
    private int disabledControlFlags;
 
    public void addTask(int priority, EntityAIBase task) {
-      this.taskEntries.add(new EntityAITaskEntry(priority, task));
+      this.taskEntries.add(new EntityAITasks.EntityAITaskEntry(priority, task));
    }
 
    public void removeTask(EntityAIBase task) {
-      Iterator<EntityAITaskEntry> iterator = this.taskEntries.iterator();
+      Iterator<EntityAITasks.EntityAITaskEntry> iterator = this.taskEntries.iterator();
+
       while (iterator.hasNext()) {
-         EntityAITaskEntry entry = iterator.next();
-         if (entry.action == task) {
+         EntityAITasks.EntityAITaskEntry entry = iterator.next();
+         EntityAIBase action = entry.action;
+         if (action == task) {
             if (entry.using) {
                entry.using = false;
                entry.action.resetTask();
                this.executingTaskEntries.remove(entry);
             }
+
             iterator.remove();
             return;
          }
@@ -34,7 +45,7 @@ public class EntityAITasks {
 
    public void onUpdateTasks() {
       if (this.tickCount++ % this.tickRate == 0) {
-         for (EntityAITaskEntry entry : this.taskEntries) {
+         for (EntityAITasks.EntityAITaskEntry entry : this.taskEntries) {
             if (entry.using) {
                if (!this.canUse(entry) || !this.canContinue(entry)) {
                   entry.using = false;
@@ -48,9 +59,10 @@ public class EntityAITasks {
             }
          }
       } else {
-         Iterator<EntityAITaskEntry> iterator = this.executingTaskEntries.iterator();
+         Iterator<EntityAITasks.EntityAITaskEntry> iterator = this.executingTaskEntries.iterator();
+
          while (iterator.hasNext()) {
-            EntityAITaskEntry entry = iterator.next();
+            EntityAITasks.EntityAITaskEntry entry = iterator.next();
             if (!this.canContinue(entry)) {
                entry.using = false;
                entry.action.resetTask();
@@ -60,26 +72,35 @@ public class EntityAITasks {
       }
 
       if (!this.executingTaskEntries.isEmpty()) {
-         for (EntityAITaskEntry entry : this.executingTaskEntries) {
+         for (EntityAITasks.EntityAITaskEntry entry : this.executingTaskEntries) {
             entry.action.updateTask();
          }
       }
    }
 
-   private boolean canContinue(EntityAITaskEntry entry) {
+   public boolean isExecuting(EntityAIBase task) {
+      for (EntityAITasks.EntityAITaskEntry entry : this.executingTaskEntries) {
+         if (entry.action == task) {
+            return true;
+         }
+      }
+      return false;
+   }
+
+   private boolean canContinue(EntityAITasks.EntityAITaskEntry entry) {
       return entry.action.shouldContinueExecuting();
    }
 
-   private boolean canUse(EntityAITaskEntry entry) {
+   private boolean canUse(EntityAITasks.EntityAITaskEntry entry) {
       if (this.executingTaskEntries.isEmpty()) {
          return true;
       } else if (this.isControlFlagDisabled(entry.action.getMutexBits())) {
          return false;
       } else {
-         for (EntityAITaskEntry other : this.executingTaskEntries) {
+         for (EntityAITasks.EntityAITaskEntry other : this.executingTaskEntries) {
             if (other != entry) {
                if (entry.priority >= other.priority) {
-                  if (!areTasksCompatible(entry, other)) {
+                  if (!this.areTasksCompatible(entry, other)) {
                      return false;
                   }
                } else if (!other.action.isInterruptible()) {
@@ -87,16 +108,17 @@ public class EntityAITasks {
                }
             }
          }
+
          return true;
       }
    }
 
-   private static boolean areTasksCompatible(EntityAITaskEntry a, EntityAITaskEntry b) {
+   private boolean areTasksCompatible(EntityAITasks.EntityAITaskEntry a, EntityAITasks.EntityAITaskEntry b) {
       return (a.action.getMutexBits() & b.action.getMutexBits()) == 0;
    }
 
-   public boolean isControlFlagDisabled(int flags) {
-      return (this.disabledControlFlags & flags) > 0;
+   public boolean isControlFlagDisabled(int flag) {
+      return (this.disabledControlFlags & flag) > 0;
    }
 
    public void disableControlFlag(int flag) {
@@ -115,36 +137,71 @@ public class EntityAITasks {
       }
    }
 
-   public boolean isExecuting(EntityAIBase task) {
-      for (EntityAITaskEntry entry : this.executingTaskEntries) {
-         if (entry.action == task) {
-            return true;
-         }
-      }
-      return false;
+   /** Runs {@code targetTasks} from the 1.21 target selector and {@code tasks} from the goal selector of {@code mob}. */
+   public static void install(Mob mob, GoalSelector goalSelector, EntityAITasks tasks, GoalSelector targetSelector, EntityAITasks targetTasks) {
+      targetSelector.addGoal(0, new Driver(mob, targetTasks));
+      goalSelector.addGoal(0, new Driver(mob, tasks));
    }
 
-   static final class EntityAITaskEntry {
-      final EntityAIBase action;
-      final int priority;
-      boolean using;
+   class EntityAITaskEntry {
+      public final EntityAIBase action;
+      public final int priority;
+      public boolean using;
 
-      EntityAITaskEntry(int priority, EntityAIBase action) {
+      public EntityAITaskEntry(int priority, EntityAIBase task) {
          this.priority = priority;
-         this.action = action;
+         this.action = task;
       }
 
       @Override
-      public boolean equals(Object o) {
-         if (this == o) {
+      public boolean equals(Object other) {
+         if (this == other) {
             return true;
+         } else {
+            return other != null && this.getClass() == other.getClass() && this.action.equals(((EntityAITasks.EntityAITaskEntry)other).action);
          }
-         return o != null && this.getClass() == o.getClass() && this.action.equals(((EntityAITaskEntry)o).action);
       }
 
       @Override
       public int hashCode() {
          return this.action.hashCode();
+      }
+   }
+
+   /** Flagless 1.21 goal that ticks a 1.12 task list once per server tick while the mob's AI runs. */
+   private static final class Driver extends Goal {
+      private final Mob mob;
+      private final EntityAITasks tasks;
+
+      Driver(Mob mob, EntityAITasks tasks) {
+         this.mob = mob;
+         this.tasks = tasks;
+         this.setFlags(EnumSet.noneOf(Goal.Flag.class));
+      }
+
+      @Override
+      public boolean canUse() {
+         return true;
+      }
+
+      @Override
+      public boolean canContinueToUse() {
+         return true;
+      }
+
+      @Override
+      public boolean isInterruptable() {
+         return false;
+      }
+
+      @Override
+      public boolean requiresUpdateEveryTick() {
+         return true;
+      }
+
+      @Override
+      public void tick() {
+         this.tasks.onUpdateTasks();
       }
    }
 }

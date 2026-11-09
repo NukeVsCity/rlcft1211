@@ -1,8 +1,11 @@
 package com.github.alexthe666.iceandfire.entity.ai.legacy;
 
 import javax.annotation.Nullable;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -11,7 +14,7 @@ import net.minecraft.world.level.pathfinder.Node;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.scores.Team;
 
-/** 1.12.2 EntityAITarget */
+/** 1.12.2 net.minecraft.entity.ai.EntityAITarget. */
 public abstract class EntityAITarget extends EntityAIBase {
    protected final PathfinderMob taskOwner;
    protected boolean shouldCheckSight;
@@ -61,7 +64,7 @@ public abstract class EntityAITarget extends EntityAIBase {
                   }
                }
 
-               if (living instanceof Player player && player.getAbilities().invulnerable) {
+               if (living instanceof Player && ((Player)living).getAbilities().invulnerable) {
                   return false;
                } else {
                   this.taskOwner.setTarget(living);
@@ -73,8 +76,8 @@ public abstract class EntityAITarget extends EntityAIBase {
    }
 
    protected double getTargetDistance() {
-      AttributeInstance attr = this.taskOwner.getAttribute(Attributes.FOLLOW_RANGE);
-      return attr == null ? 16.0 : attr.getValue();
+      AttributeInstance attribute = this.taskOwner.getAttribute(Attributes.FOLLOW_RANGE);
+      return attribute == null ? 16.0 : attribute.getValue();
    }
 
    @Override
@@ -90,23 +93,54 @@ public abstract class EntityAITarget extends EntityAIBase {
       this.target = null;
    }
 
-   protected boolean isSuitableTarget(@Nullable LivingEntity target, boolean includeInvincibles) {
-      if (!Legacy112.isSuitableTarget(this.taskOwner, target, includeInvincibles, this.shouldCheckSight)) {
+   public static boolean isSuitableTarget(Mob attacker, @Nullable LivingEntity target, boolean includeInvincibles, boolean checkSight) {
+      if (target == null) {
          return false;
-      } else if (!this.taskOwner.isWithinRestriction(target.blockPosition())) {
+      } else if (target == attacker) {
+         return false;
+      } else if (!target.isAlive()) {
+         return false;
+      } else if (!attacker.canAttackType(target.getType())) {
+         return false;
+      } else if (attacker.isAlliedTo(target)) {
+         return false;
+      } else {
+         if (attacker instanceof OwnableEntity && ((OwnableEntity)attacker).getOwnerUUID() != null) {
+            if (target instanceof OwnableEntity && ((OwnableEntity)attacker).getOwnerUUID().equals(((OwnableEntity)target).getOwnerUUID())) {
+               return false;
+            }
+
+            if (target == ((OwnableEntity)attacker).getOwner()) {
+               return false;
+            }
+         } else if (target instanceof Player && !includeInvincibles && ((Player)target).getAbilities().invulnerable) {
+            return false;
+         }
+
+         return !checkSight || attacker.getSensing().hasLineOfSight(target);
+      }
+   }
+
+   protected boolean isSuitableTarget(@Nullable LivingEntity target, boolean includeInvincibles) {
+      if (!isSuitableTarget(this.taskOwner, target, includeInvincibles, this.shouldCheckSight)) {
+         return false;
+      } else if (!this.taskOwner.isWithinRestriction(BlockPos.containing(target.position()))) {
          return false;
       } else {
          if (this.nearbyOnly) {
             if (--this.targetSearchDelay <= 0) {
                this.targetSearchStatus = 0;
             }
+
             if (this.targetSearchStatus == 0) {
                this.targetSearchStatus = this.canEasilyReach(target) ? 1 : 2;
             }
+
             if (this.targetSearchStatus == 2) {
                return false;
             }
          }
+
          return true;
       }
    }

@@ -3,17 +3,19 @@ package com.github.alexthe666.iceandfire.entity.ai.legacy;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
 
-/** 1.12.2 EntityAISit. The tameable's 1.12 setSitting is {@link Sittable#setSitting}. */
+/** 1.12.2 net.minecraft.entity.ai.EntityAISit. The mob's 1.12 setSitting goes through {@link Sitter}. */
 public class EntityAISit extends EntityAIBase {
-   public interface Sittable {
+   public interface Sitter {
       void setSitting(boolean sitting);
    }
 
    private final TamableAnimal tameable;
+   private final Sitter sitter;
    private boolean isSitting;
 
-   public EntityAISit(TamableAnimal tameable) {
+   public <T extends TamableAnimal & Sitter> EntityAISit(T tameable) {
       this.tameable = tameable;
+      this.sitter = tameable;
       this.setMutexBits(5);
    }
 
@@ -38,20 +40,12 @@ public class EntityAISit extends EntityAIBase {
    @Override
    public void startExecuting() {
       this.tameable.getNavigation().stop();
-      this.sit(true);
+      this.sitter.setSitting(true);
    }
 
    @Override
    public void resetTask() {
-      this.sit(false);
-   }
-
-   private void sit(boolean sitting) {
-      if (this.tameable instanceof Sittable s) {
-         s.setSitting(sitting);
-      } else {
-         this.tameable.setInSittingPose(sitting);
-      }
+      this.sitter.setSitting(false);
    }
 
    public void setSitting(boolean sitting) {

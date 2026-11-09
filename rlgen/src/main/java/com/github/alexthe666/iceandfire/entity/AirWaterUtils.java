@@ -192,7 +192,7 @@ public final class AirWaterUtils {
 
    private static BlockPos getStymphalianFearPos(EntityStymphalianBird bird, BlockPos fallback) {
       if (bird.getVictor() != null && bird.getVictor() instanceof PathfinderMob victor) {
-         Vec3 vec3d = com.github.alexthe666.iceandfire.entity.ai.legacy.RandomPositionGenerator.findRandomTargetBlockAwayFrom(victor, 16,
+         Vec3 vec3d = com.github.alexthe666.iceandfire.entity.ai.legacy112.RandomPositionGenerator.findRandomTargetBlockAwayFrom(victor, 16,
             com.github.alexthe666.iceandfire.IceAndFire.CONFIG.stymphalianBirdFlightHeight, victor.position());
          if (vec3d != null) {
             BlockPos p = BlockPos.containing(vec3d);

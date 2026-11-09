@@ -2,8 +2,8 @@ package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.AirWaterRefs;
 import com.github.alexthe666.iceandfire.entity.EntityPixie;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAINearestAttackableTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAITarget;
 import java.util.List;
 import java.util.function.Predicate;
 import net.minecraft.world.entity.Entity;

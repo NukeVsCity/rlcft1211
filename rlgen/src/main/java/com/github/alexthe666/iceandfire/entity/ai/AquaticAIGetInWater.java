@@ -1,8 +1,8 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntitySiren;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIBase;
+import com.github.alexthe666.iceandfire.entity.ai.legacy112.Legacy112;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;

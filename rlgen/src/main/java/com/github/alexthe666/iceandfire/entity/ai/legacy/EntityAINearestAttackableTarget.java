@@ -1,26 +1,22 @@
 package com.github.alexthe666.iceandfire.entity.ai.legacy;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.monster.Creeper;
-import net.minecraft.world.entity.monster.Skeleton;
-import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.AABB;
 
-/** 1.12.2 EntityAINearestAttackableTarget */
+/** 1.12.2 net.minecraft.entity.ai.EntityAINearestAttackableTarget (living targets; the player-only branch is not needed). */
 public class EntityAINearestAttackableTarget<T extends LivingEntity> extends EntityAITarget {
    protected final Class<T> targetClass;
    private final int targetChance;
-   protected final Sorter sorter;
+   protected final EntityAINearestAttackableTarget.Sorter sorter;
    protected final Predicate<T> targetEntitySelector;
    protected T targetEntity;
 
@@ -32,26 +28,26 @@ public class EntityAINearestAttackableTarget<T extends LivingEntity> extends Ent
       this(creature, classTarget, 10, checkSight, onlyNearby, null);
    }
 
-   public EntityAINearestAttackableTarget(PathfinderMob creature, Class<T> classTarget, int chance, boolean checkSight, boolean onlyNearby,
-         @Nullable Predicate<? super T> targetSelector) {
+   public EntityAINearestAttackableTarget(
+      PathfinderMob creature, Class<T> classTarget, int chance, boolean checkSight, boolean onlyNearby, @Nullable final Predicate<? super T> targetSelector
+   ) {
       super(creature, checkSight, onlyNearby);
       this.targetClass = classTarget;
       this.targetChance = chance;
-      this.sorter = new Sorter(creature);
+      this.sorter = new EntityAINearestAttackableTarget.Sorter(creature);
       this.setMutexBits(1);
-      this.targetEntitySelector = e -> {
-         if (e == null) {
+      this.targetEntitySelector = entity -> {
+         if (entity == null) {
             return false;
-         } else if (targetSelector != null && !targetSelector.test(e)) {
+         } else if (targetSelector != null && !targetSelector.test(entity)) {
             return false;
          } else {
-            return !Legacy112.notSpectating(e) ? false : this.isSuitableTarget(e, false);
+            return !EntitySelector.NO_SPECTATORS.test(entity) ? false : this.isSuitableTarget(entity, false);
          }
       };
    }
 
    @Override
-   @SuppressWarnings("unchecked")
    public boolean shouldExecute() {
       if (this.targetChance > 0 && this.taskOwner.getRandom().nextInt(this.targetChance) != 0) {
          return false;
@@ -60,19 +56,28 @@ public class EntityAINearestAttackableTarget<T extends LivingEntity> extends Ent
          if (list.isEmpty()) {
             return false;
          } else {
-            list.sort(this.sorter);
+            Collections.sort(list, this.sorter);
             this.targetEntity = list.get(0);
             return true;
          }
       } else {
-         this.targetEntity = (T)Legacy112.getNearestAttackablePlayer(this.taskOwner.level(), this.taskOwner.getX(), this.taskOwner.getEyeY(),
-            this.taskOwner.getZ(), this.getTargetDistance(), this.getTargetDistance(), player -> {
-               ItemStack head = player.getItemBySlot(EquipmentSlot.HEAD);
-               boolean skull = head.is(Items.SKELETON_SKULL) && this.taskOwner instanceof Skeleton;
-               boolean zombie = head.is(Items.ZOMBIE_HEAD) && this.taskOwner instanceof Zombie;
-               boolean creeper = head.is(Items.CREEPER_HEAD) && this.taskOwner instanceof Creeper;
-               return skull || zombie || creeper ? 0.5 : 1.0;
-            }, p -> this.targetEntitySelector.test((T)p));
+         double range = this.getTargetDistance();
+         Player best = null;
+         double bestDist = -1.0;
+         for (Player player : this.taskOwner.level().players()) {
+            @SuppressWarnings("unchecked")
+            T asT = (T)player;
+            if (this.targetEntitySelector.test(asT)) {
+               double d = player.distanceToSqr(this.taskOwner.getX(), this.taskOwner.getY() + (double)this.taskOwner.getEyeHeight(), this.taskOwner.getZ());
+               if (d < range * range && (bestDist == -1.0 || d < bestDist)) {
+                  bestDist = d;
+                  best = player;
+               }
+            }
+         }
+         @SuppressWarnings("unchecked")
+         T found = (T)best;
+         this.targetEntity = found;
          return this.targetEntity != null;
       }
    }

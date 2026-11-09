@@ -26,6 +26,8 @@ public final class IceAndFire {
       IafRegistries.register(modBus);
       NetworkHandler.INSTANCE.injectNetworkWrapper(IceAndFire.class, MODID);
       com.github.alexthe666.iceandfire.core.IafCore.init(modBus);
+      com.github.alexthe666.iceandfire.entity.IafDragonEntities.init(modBus);
+      com.github.alexthe666.iceandfire.client.particle.DragonParticles.init();
       com.github.alexthe666.iceandfire.entity.AirWaterEntities.register(modBus);
    }
 }

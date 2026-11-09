@@ -1,10 +1,15 @@
 package com.github.alexthe666.iceandfire.client.model;
 
 import com.github.alexthe666.iceandfire.entity.IFlapable;
+import net.ilexiconn.llibrary.LLibrary;
+import net.ilexiconn.llibrary.client.model.legacy.ModelRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 
-// STUB(iaf/dragon-client): the calculate half of Ice and Fire 1.7.1 IFChainBuffer; the apply* methods come with the llibrary models.
+/**
+ * 1.12 IFChainBuffer (Ice and Fire 1.7.1). The calculate methods run in the entity tick (both sides in 1.12, the fields are just
+ * floats), the apply methods only on the client while posing a model.
+ */
 public class IFChainBuffer {
    private int yawTimer;
    private float yawVariation;
@@ -30,6 +35,7 @@ public class IFChainBuffer {
       if (!this.compareDouble(entity.yBodyRot, entity.yBodyRotO) && Math.abs(this.yawVariation) < maxAngle) {
          this.yawVariation = this.yawVariation + Mth.clamp((entity.yBodyRotO - entity.yBodyRot) / divisor, -maxAngle, maxAngle);
       }
+
       this.decay(bufferTime, angleDecrement);
    }
 
@@ -42,13 +48,15 @@ public class IFChainBuffer {
       this.prevYawVariation = this.yawVariation;
       if (!this.compareDouble(entity.yBodyRot, entity.yBodyRotO) && Math.abs(this.yawVariation) < maxAngle) {
          this.yawVariation = this.yawVariation + Mth.clamp((entity.yBodyRotO - entity.yBodyRot) / divisor, -maxAngle, maxAngle);
-         if (entity instanceof IFlapable flapable && (double)Math.abs(entity.yBodyRotO - entity.yBodyRot) > 15.0) {
-            flapable.flapWings();
+         if (entity instanceof IFlapable && (double)Math.abs(entity.yBodyRotO - entity.yBodyRot) > 15.0) {
+            ((IFlapable)entity).flapWings();
          }
       }
+
       this.decay(bufferTime, angleDecrement);
    }
 
+   // shared tail of calculateChainSwingBuffer / calculateChainFlapBuffer (identical in 1.12)
    private void decay(int bufferTime, float angleDecrement) {
       if (this.yawVariation > 1.0F * angleDecrement) {
          if (this.yawTimer > bufferTime) {
@@ -85,11 +93,43 @@ public class IFChainBuffer {
       this.calculateChainFlapBuffer(maxAngle, bufferTime, angleDecrement, 1.0F, entity);
    }
 
-   public float getYaw(float partialTicks) {
-      return this.prevYawVariation + (this.yawVariation - this.prevYawVariation) * partialTicks;
+   private static float lerp(float prev, float cur) {
+      // llibrary ClientUtils.interpolate(prev, cur, LLibrary.PROXY.getPartialTicks())
+      return prev + (cur - prev) * LLibrary.PROXY.getPartialTicks();
    }
 
-   public float getPitch(float partialTicks) {
-      return this.prevPitchVariation + (this.pitchVariation - this.prevPitchVariation) * partialTicks;
+   public void applyChainSwingBuffer(ModelRenderer... boxes) {
+      float rotateAmount = (float)(Math.PI / 180.0) * lerp(this.prevYawVariation, this.yawVariation) / (float)boxes.length;
+      for (ModelRenderer box : boxes) {
+         box.rotateAngleY += rotateAmount;
+      }
+   }
+
+   public void applyChainWaveBuffer(ModelRenderer... boxes) {
+      float rotateAmount = (float)(Math.PI / 180.0) * lerp(this.prevPitchVariation, this.pitchVariation) / (float)boxes.length;
+      for (ModelRenderer box : boxes) {
+         box.rotateAngleX += rotateAmount;
+      }
+   }
+
+   public void applyChainFlapBuffer(ModelRenderer... boxes) {
+      float rotateAmount = (float)(Math.PI / 180.0) * lerp(this.prevYawVariation, this.yawVariation) / (float)boxes.length;
+      for (ModelRenderer box : boxes) {
+         box.rotateAngleZ += rotateAmount;
+      }
+   }
+
+   public void applyChainFlapBufferReverse(ModelRenderer... boxes) {
+      float rotateAmount = (float)(Math.PI / 180.0) * lerp(this.prevYawVariation, this.yawVariation) / (float)boxes.length;
+      for (ModelRenderer box : boxes) {
+         box.rotateAngleZ -= rotateAmount * 0.5F;
+      }
+   }
+
+   public void applyChainSwingBufferReverse(ModelRenderer... boxes) {
+      float rotateAmount = (float)(Math.PI / 180.0) * lerp(this.prevYawVariation, this.yawVariation) / (float)boxes.length;
+      for (ModelRenderer box : boxes) {
+         box.rotateAngleY -= rotateAmount;
+      }
    }
 }

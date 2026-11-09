@@ -2,7 +2,7 @@ package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.AirWaterUtils;
 import com.github.alexthe666.iceandfire.entity.EntityStymphalianBird;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAINearestAttackableTarget;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.animal.Animal;

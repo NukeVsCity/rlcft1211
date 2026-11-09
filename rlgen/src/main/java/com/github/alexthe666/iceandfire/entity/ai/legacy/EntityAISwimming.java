@@ -4,17 +4,17 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 
-/** 1.12.2 EntityAISwimming */
+/** 1.12.2 net.minecraft.entity.ai.EntityAISwimming. */
 public class EntityAISwimming extends EntityAIBase {
    private final Mob entity;
 
    public EntityAISwimming(Mob entity) {
       this.entity = entity;
       this.setMutexBits(4);
-      if (entity.getNavigation() instanceof GroundPathNavigation ground) {
-         ground.setCanFloat(true);
-      } else if (entity.getNavigation() instanceof FlyingPathNavigation flying) {
-         flying.setCanFloat(true);
+      if (entity.getNavigation() instanceof GroundPathNavigation) {
+         ((GroundPathNavigation)entity.getNavigation()).setCanFloat(true);
+      } else if (entity.getNavigation() instanceof FlyingPathNavigation) {
+         ((FlyingPathNavigation)entity.getNavigation()).setCanFloat(true);
       }
    }
 
