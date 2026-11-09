@@ -119,7 +119,20 @@ public final class AirWaterClient {
       }
    }
 
+   /**
+    * ClientProxy.spawnParticle: if_pixie = ParticlePixieDust (a full bright redstone dust of the pixie colour), siren_music =
+    * ParticleSirenMusic (a note), serpent_bubble = ParticleSerpentBubble (a bubble). siren_appearance (the siren drawn in front of the
+    * charmed player like the elder guardian) is not drawn.
+    */
    public static void spawnParticle(String name, net.minecraft.world.level.Level level, double x, double y, double z, double vx, double vy, double vz) {
+      switch (name) {
+         case "if_pixie" -> level.addParticle(new net.minecraft.core.particles.DustParticleOptions(new org.joml.Vector3f((float)vx, (float)vy, (float)vz), 1.0F),
+            x, y, z, 0.0, 0.0, 0.0);
+         case "siren_music" -> level.addParticle(net.minecraft.core.particles.ParticleTypes.NOTE, x, y, z, vx, vy, vz);
+         case "serpent_bubble" -> level.addParticle(net.minecraft.core.particles.ParticleTypes.BUBBLE, x, y, z, vx, vy, vz);
+         default -> {
+         }
+      }
    }
 
    /** MessageSirenSong.onClientReceived */
