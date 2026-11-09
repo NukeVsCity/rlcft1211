@@ -60,8 +60,11 @@ public class EntityAITasks {
       }
 
       if (!this.executingTaskEntries.isEmpty()) {
-         for (EntityAITaskEntry entry : this.executingTaskEntries) {
-            entry.action.updateTask();
+         // a copy: 1.12 iterated the set itself, so a task removed by another task's updateTask (EntityPixie.flipAI) could throw
+         for (EntityAITaskEntry entry : new java.util.ArrayList<>(this.executingTaskEntries)) {
+            if (entry.using) {
+               entry.action.updateTask();
+            }
          }
       }
    }

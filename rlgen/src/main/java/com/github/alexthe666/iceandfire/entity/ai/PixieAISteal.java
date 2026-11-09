@@ -88,7 +88,9 @@ public class PixieAISteal extends EntityAIBase {
          this.temptedEntity.flipAI(true);
          this.temptedEntity.playSound(AirWaterRefs.sound("pixie_taunt"), 1.0F, 1.0F);
          this.temptedEntity.getLegacyMoveControl().setWait();
-         this.temptingPlayer.addEffect(new MobEffectInstance(this.temptedEntity.negativePotions[this.temptedEntity.getColor()], 100));
+         if (this.temptingPlayer != null) {
+            this.temptingPlayer.addEffect(new MobEffectInstance(this.temptedEntity.negativePotions[this.temptedEntity.getColor()], 100));
+         }
       } else {
          this.temptedEntity.getMoveControl().setWantedPosition(this.temptingPlayer.getX(), this.temptingPlayer.getY() + 1.5, this.temptingPlayer.getZ(), 1.0);
       }
