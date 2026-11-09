@@ -1,6 +1,7 @@
 package com.github.alexthe666.iceandfire.client.model;
 
 import com.github.alexthe666.iceandfire.entity.IFlapable;
+import net.ilexiconn.llibrary.LLibrary;
 import net.ilexiconn.llibrary.client.model.legacy.ModelRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
@@ -94,7 +95,7 @@ public class IFChainBuffer {
 
    private static float lerp(float prev, float cur) {
       // llibrary ClientUtils.interpolate(prev, cur, LLibrary.PROXY.getPartialTicks())
-      return prev + (cur - prev) * PartialTicks.get();
+      return prev + (cur - prev) * LLibrary.PROXY.getPartialTicks();
    }
 
    public void applyChainSwingBuffer(ModelRenderer... boxes) {

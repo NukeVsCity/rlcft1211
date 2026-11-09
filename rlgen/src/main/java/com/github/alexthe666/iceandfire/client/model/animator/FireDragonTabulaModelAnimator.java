@@ -5,7 +5,7 @@ import com.github.alexthe666.iceandfire.client.model.util.IIceAndFireTabulaModel
 import com.github.alexthe666.iceandfire.client.model.util.IceAndFireTabulaModel;
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import com.github.alexthe666.iceandfire.entity.EntityFireDragon;
-import com.github.alexthe666.iceandfire.client.model.PartialTicks;
+import net.ilexiconn.llibrary.LLibrary;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 
 public class FireDragonTabulaModelAnimator extends IceAndFireTabulaModelAnimator implements IIceAndFireTabulaModelAnimator<EntityFireDragon> {
@@ -49,7 +49,7 @@ public class FireDragonTabulaModelAnimator extends IceAndFireTabulaModelAnimator
 
       IceAndFireTabulaModel prevPosition = walking ? walkPoses[prevIndex] : flyPoses[prevIndex];
       IceAndFireTabulaModel currentPosition = walking ? walkPoses[currentIndex] : flyPoses[currentIndex];
-      float delta = (float)(walking ? entity.walkCycle : entity.flightCycle) / 10.0F % 1.0F + PartialTicks.get() / 10.0F;
+      float delta = (float)(walking ? entity.walkCycle : entity.flightCycle) / 10.0F % 1.0F + LLibrary.PROXY.getPartialTicks() / 10.0F;
       AdvancedModelRenderer[] neckParts = new AdvancedModelRenderer[]{
          model.getCube("Neck1"), model.getCube("Neck2"), model.getCube("Neck3"), model.getCube("Neck3"), model.getCube("Head")
       };
