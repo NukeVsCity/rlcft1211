@@ -2,6 +2,7 @@ package com.github.alexthe666.iceandfire.entity;
 
 import com.github.alexthe666.iceandfire.IafRegistries;
 import com.github.alexthe666.iceandfire.IceAndFire;
+import com.github.alexthe666.iceandfire.core.ModEntityHooks;
 import com.github.alexthe666.iceandfire.enums.EnumHippogryphTypes;
 import com.github.alexthe666.iceandfire.inventory.ContainerHippocampus;
 import com.github.alexthe666.iceandfire.inventory.ContainerHippogryph;
@@ -81,19 +82,57 @@ public final class AirWaterEntities {
       () -> EntityType.Builder.<EntitySnowVillager>of(EntitySnowVillager::new, MobCategory.MISC).sized(0.6F, 1.95F).eyeHeight(1.62F)
          .clientTrackingRange(4).updateInterval(1).build("snowvillager"));
 
+   public static final DeferredHolder<EntityType<?>, EntityType<EntityAmphithereArrow>> AMPHITHERE_ARROW = IafRegistries.ENTITY_TYPES.register(
+      "amphitherearrow", () -> EntityType.Builder.<EntityAmphithereArrow>of(EntityAmphithereArrow::new, MobCategory.MISC).sized(0.5F, 0.5F)
+         .clientTrackingRange(4).updateInterval(1).build("amphitherearrow"));
+
    public static final DeferredHolder<MenuType<?>, MenuType<ContainerHippocampus>> HIPPOCAMPUS_MENU = IafRegistries.MENUS.register("hippocampus",
       () -> IMenuTypeExtension.create(ContainerHippocampus::fromNetwork));
    public static final DeferredHolder<MenuType<?>, MenuType<ContainerHippogryph>> HIPPOGRYPH_MENU = IafRegistries.MENUS.register("hippogryph",
       () -> IMenuTypeExtension.create(ContainerHippogryph::fromNetwork));
 
    public static void register(IEventBus modBus) {
-      net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler.INSTANCE.registerProperties(SirenEntityProperties.class);
       EntitySnowVillager.register(modBus);
       modBus.addListener(AirWaterEntities::attributes);
+      hooks();
       modBus.addListener(AirWaterNetwork::register);
       NeoForge.EVENT_BUS.register(AirWaterEvents.class);
       if (FMLEnvironment.dist.isClient()) {
          com.github.alexthe666.iceandfire.client.AirWaterClient.register(modBus);
+      }
+   }
+
+   /** the item/block hooks of the core part (ItemHippogryphEgg, the arrows, TileEntityJar / TileEntityPixieHouse.releasePixie) */
+   private static void hooks() {
+      ModEntityHooks.throwHippogryphEgg = (level, player, stack) -> {
+         EntityHippogryphEgg egg = new EntityHippogryphEgg(level, player, stack);
+         egg.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, 1.5F, 1.0F);
+         level.addFreshEntity(egg);
+      };
+      ModEntityHooks.stymphalianArrow = (level, shooter, x, y, z, ammo) -> shooter != null
+         ? new EntityStymphalianArrow(level, shooter, ammo.copyWithCount(1), null) : new EntityStymphalianArrow(level, x, y, z, ammo.copyWithCount(1), null);
+      ModEntityHooks.amphithereArrow = (level, shooter, x, y, z, ammo) -> shooter != null
+         ? new EntityAmphithereArrow(level, shooter, ammo.copyWithCount(1), null) : new EntityAmphithereArrow(level, x, y, z, ammo.copyWithCount(1), null);
+      ModEntityHooks.seaSerpentArrow = (level, shooter, x, y, z, ammo) -> shooter != null
+         ? new EntitySeaSerpentArrow(level, shooter, ammo.copyWithCount(1), null) : new EntitySeaSerpentArrow(level, x, y, z, ammo.copyWithCount(1), null);
+      ModEntityHooks.releasePixie = (level, x, y, z, held, color, tamed, owner) -> {
+         EntityPixie pixie = PIXIE.get().create(level);
+         if (pixie == null) {
+            return;
+         }
+         pixie.moveTo(x, y, z, (float)new java.util.Random().nextInt(360), 0.0F);
+         pixie.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, held);
+         pixie.setColor(color);
+         pixie.ticksUntilHouseAI = 500;
+         pixie.setTame(tamed, false);
+         pixie.setOwnerUUID(owner);
+         if (!level.isClientSide) {
+            level.addFreshEntity(pixie);
+         }
+      };
+      ModEntityHooks.PIXIE_PARTICLE_RGB = EntityPixie.PARTICLE_RGB;
+      if (FMLEnvironment.dist.isClient()) {
+         ModEntityHooks.pixieParticle = (level, x, y, z, r, g, b) -> spawnParticle("if_pixie", level, x, y, z, r, g, b);
       }
    }
 
@@ -112,31 +151,18 @@ public final class AirWaterEntities {
       return ResourceKey.create(Registries.LOOT_TABLE, AirWaterRefs.id(name));
    }
 
-   /** ItemHippogryphEgg stack of a type (1.12 metadata = type ordinal, kept as custom data "Variant"). */
+   /** ItemHippogryphEgg.createEggStack: new ItemStack(hippogryph_egg, 1, type ordinal) */
    public static ItemStack hippogryphEgg(EnumHippogryphTypes type) {
-      ItemStack stack = new ItemStack(AirWaterRefs.item("hippogryph_egg"));
-      CompoundTag tag = new CompoundTag();
-      tag.putInt("Variant", type.ordinal());
-      stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
-      return stack;
-   }
-
-   /** new ItemStack(ModBlocks.jar_pixie, 1, color): jar_pixie_<color> if the blocks part split the meta, else jar_pixie with "PixieType". */
-   public static ItemStack pixieJar(int color) {
-      net.minecraft.world.item.Item split = AirWaterRefs.item("jar_pixie_" + color);
-      if (split != net.minecraft.world.item.Items.AIR) {
-         return new ItemStack(split);
-      }
-      ItemStack stack = new ItemStack(AirWaterRefs.item("jar_pixie"));
-      CompoundTag tag = new CompoundTag();
-      tag.putInt("PixieType", color);
-      stack.set(DataComponents.CUSTOM_DATA, CustomData.of(tag));
-      return stack;
+      return com.github.alexthe666.iceandfire.core.IafMeta.stack(AirWaterRefs.item("hippogryph_egg"), 1, type.ordinal());
    }
 
    public static int hippogryphEggVariant(ItemStack stack) {
-      CustomData data = stack.get(DataComponents.CUSTOM_DATA);
-      return data == null ? 0 : data.copyTag().getInt("Variant");
+      return com.github.alexthe666.iceandfire.core.IafMeta.getMetadata(stack);
+   }
+
+   /** new ItemStack(ModBlocks.jar_pixie, 1, color) */
+   public static ItemStack pixieJar(int color) {
+      return com.github.alexthe666.iceandfire.core.IafMeta.stack(AirWaterRefs.item("jar_pixie"), 1, color);
    }
 
    /** client: new IFChainBuffer() */

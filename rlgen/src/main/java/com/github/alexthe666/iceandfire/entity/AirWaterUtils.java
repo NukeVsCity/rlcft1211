@@ -74,10 +74,10 @@ public final class AirWaterUtils {
 
    /**
     * StoneEntityProperties.isStone / EntityGorgon.isStoneMob (gorgon stone statues).
-    * STUB(iaf/mobs-land): hook the gorgon port's stone attachment here; no mob is ever stone until then.
     */
    public static boolean isStone(Entity entity) {
-      return false;
+      StoneEntityProperties p = net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler.INSTANCE.getProperties(entity, StoneEntityProperties.class);
+      return p != null && p.isStone;
    }
 
    /** 1.12 World.getHeight(pos): the column top (blocks that stop light/motion), as a BlockPos with that y. */
@@ -152,9 +152,9 @@ public final class AirWaterUtils {
          BlockPos ground = getHeight(hippo.level(), pos(hippo));
          int distFromGround = (int)hippo.getY() - ground.getY();
          for (int i = 0; i < 10; i++) {
-            int home = AirWaterConfig.dragonWanderFromHomeDistance;
+            int home = com.github.alexthe666.iceandfire.IceAndFire.CONFIG.dragonWanderFromHomeDistance;
             BlockPos p = new BlockPos(hippo.homePos.getX() + hippo.getRandom().nextInt(home) - home,
-               distFromGround > 16 ? (int)Math.min((double)AirWaterConfig.maxDragonFlight, hippo.getY() + (double)hippo.getRandom().nextInt(16) - 8.0)
+               distFromGround > 16 ? (int)Math.min((double)com.github.alexthe666.iceandfire.IceAndFire.CONFIG.maxDragonFlight, hippo.getY() + (double)hippo.getRandom().nextInt(16) - 8.0)
                   : (int)hippo.getY() + hippo.getRandom().nextInt(16) + 1,
                hippo.homePos.getZ() + hippo.getRandom().nextInt(home * 2) - home);
             if (!hippo.isTargetBlocked(Vec3.atLowerCornerOf(p)) && distanceSqToCenter(hippo, p) > 6.0) {
@@ -167,7 +167,7 @@ public final class AirWaterUtils {
       BlockPos ground = getHeight(hippo.level(), radialPos);
       int distFromGround = (int)hippo.getY() - ground.getY();
       BlockPos newPos = radialPos.above(distFromGround > 16
-         ? (int)Math.min((double)AirWaterConfig.maxDragonFlight, hippo.getY() + (double)hippo.getRandom().nextInt(16) - 8.0)
+         ? (int)Math.min((double)com.github.alexthe666.iceandfire.IceAndFire.CONFIG.maxDragonFlight, hippo.getY() + (double)hippo.getRandom().nextInt(16) - 8.0)
          : (int)hippo.getY() + hippo.getRandom().nextInt(16) + 1);
       return !hippo.isTargetBlocked(Vec3.atLowerCornerOf(newPos)) && distanceSqToCenter(hippo, newPos) > 6.0 ? newPos : null;
    }
@@ -184,7 +184,7 @@ public final class AirWaterUtils {
       BlockPos radialPos = getStymphalianFearPos(bird, BlockPos.containing(bird.getX() + extraX, 0.0, bird.getZ() + extraZ));
       BlockPos ground = getHeight(bird.level(), radialPos);
       int distFromGround = (int)bird.getY() - ground.getY();
-      int flightHeight = Math.min(AirWaterConfig.stymphalianBirdFlightHeight,
+      int flightHeight = Math.min(com.github.alexthe666.iceandfire.IceAndFire.CONFIG.stymphalianBirdFlightHeight,
          bird.flock != null && !bird.flock.isLeader(bird) ? ground.getY() + bird.getRandom().nextInt(16) : ground.getY() + bird.getRandom().nextInt(16));
       BlockPos newPos = radialPos.above(distFromGround > 16 ? flightHeight : (int)bird.getY() + bird.getRandom().nextInt(16) + 1);
       return !bird.isTargetBlocked(Vec3.atLowerCornerOf(newPos)) && distanceSqToCenter(bird, newPos) > 6.0 ? newPos : null;
@@ -193,7 +193,7 @@ public final class AirWaterUtils {
    private static BlockPos getStymphalianFearPos(EntityStymphalianBird bird, BlockPos fallback) {
       if (bird.getVictor() != null && bird.getVictor() instanceof PathfinderMob victor) {
          Vec3 vec3d = com.github.alexthe666.iceandfire.entity.ai.legacy.RandomPositionGenerator.findRandomTargetBlockAwayFrom(victor, 16,
-            AirWaterConfig.stymphalianBirdFlightHeight, victor.position());
+            com.github.alexthe666.iceandfire.IceAndFire.CONFIG.stymphalianBirdFlightHeight, victor.position());
          if (vec3d != null) {
             BlockPos p = BlockPos.containing(vec3d);
             return new BlockPos(p.getX(), 0, p.getZ());

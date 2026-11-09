@@ -1,6 +1,5 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
-import com.github.alexthe666.iceandfire.entity.AirWaterConfig;
 import com.github.alexthe666.iceandfire.entity.AirWaterRefs;
 import com.github.alexthe666.iceandfire.entity.EntityPixie;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
@@ -31,7 +30,7 @@ public class PixieAISteal extends EntityAIBase {
 
    @Override
    public boolean shouldExecute() {
-      if (!AirWaterConfig.pixiesStealItems) {
+      if (!com.github.alexthe666.iceandfire.IceAndFire.CONFIG.pixiesStealItems) {
          return false;
       } else if (this.temptedEntity.getRandom().nextInt(3) == 0) {
          return false;

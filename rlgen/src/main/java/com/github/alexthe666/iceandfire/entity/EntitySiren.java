@@ -109,7 +109,7 @@ public class EntitySiren extends Monster implements IAnimatedEntity {
       return Monster.createMonsterAttributes()
          .add(Attributes.MOVEMENT_SPEED, 0.25)
          .add(Attributes.ATTACK_DAMAGE, 6.0)
-         .add(Attributes.MAX_HEALTH, AirWaterConfig.sirenMaxHealth)
+         .add(Attributes.MAX_HEALTH, com.github.alexthe666.iceandfire.IceAndFire.CONFIG.sirenMaxHealth)
          .add(Attributes.STEP_HEIGHT, 2.0);
    }
 

@@ -45,9 +45,9 @@ public final class AirWaterEvents {
       if (living instanceof Player || living instanceof Villager || living instanceof IHearsSiren) {
          SirenEntityProperties sirenProps = SirenEntityProperties.get(living);
          if (sirenProps != null && sirenProps.sirenID != 0) {
-            EntitySiren closestSiren = sirenProps.getSiren(living.level());
+            EntitySiren closestSiren = (EntitySiren)sirenProps.getSiren(living.level());
             if (closestSiren != null && closestSiren.isActuallySinging()) {
-               if (!EntitySiren.isWearingEarplugs(living) && sirenProps.singTime <= AirWaterConfig.sirenMaxSingTime) {
+               if (!EntitySiren.isWearingEarplugs(living) && sirenProps.singTime <= com.github.alexthe666.iceandfire.IceAndFire.CONFIG.sirenMaxSingTime) {
                   sirenProps.isCharmed = true;
                   sirenProps.singTime++;
                   if (rand.nextInt(7) == 0) {
@@ -84,7 +84,7 @@ public final class AirWaterEvents {
                      sirenProps.isCharmed = false;
                      sirenProps.sirenID = 0;
                      sirenProps.singTime = 0;
-                     closestSiren.singCooldown = AirWaterConfig.sirenTimeBetweenSongs;
+                     closestSiren.singCooldown = com.github.alexthe666.iceandfire.IceAndFire.CONFIG.sirenTimeBetweenSongs;
                      closestSiren.setSinging(false);
                      closestSiren.setTarget(living);
                      closestSiren.setAggressive(true);
@@ -100,7 +100,7 @@ public final class AirWaterEvents {
                   sirenProps.isCharmed = false;
                   sirenProps.sirenID = 0;
                   sirenProps.singTime = 0;
-                  closestSiren.singCooldown = AirWaterConfig.sirenTimeBetweenSongs;
+                  closestSiren.singCooldown = com.github.alexthe666.iceandfire.IceAndFire.CONFIG.sirenTimeBetweenSongs;
                }
             }
          }
@@ -125,7 +125,7 @@ public final class AirWaterEvents {
    }
 
    private static void signalAmphithereAlarm(LivingEntity villager, LivingEntity attacker) {
-      float d0 = AirWaterConfig.amphithereVillagerSearchLength;
+      float d0 = com.github.alexthe666.iceandfire.IceAndFire.CONFIG.amphithereVillagerSearchLength;
       List<EntityAmphithere> list = villager.level().getEntitiesOfClass(EntityAmphithere.class,
          new AABB(villager.getX() - 1.0, villager.getY() - 1.0, villager.getZ() - 1.0, villager.getX() + 1.0, villager.getY() + 1.0,
             villager.getZ() + 1.0).inflate(d0, d0, d0));

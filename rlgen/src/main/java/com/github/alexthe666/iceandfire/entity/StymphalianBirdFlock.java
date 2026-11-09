@@ -39,7 +39,7 @@ public class StymphalianBirdFlock {
 
    @Nullable
    public static StymphalianBirdFlock getNearbyFlock(EntityStymphalianBird bird) {
-      float d0 = (float)AirWaterConfig.stymphalianBirdFlockLength;
+      float d0 = (float)com.github.alexthe666.iceandfire.IceAndFire.CONFIG.stymphalianBirdFlockLength;
       List<Entity> list = bird.level().getEntities(bird,
          new AABB(bird.getX(), bird.getY(), bird.getZ(), bird.getX() + 1.0, bird.getY() + 1.0, bird.getZ() + 1.0).inflate(d0, 10.0, d0),
          e -> e instanceof EntityStymphalianBird);

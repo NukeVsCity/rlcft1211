@@ -87,7 +87,7 @@ public class EntityStymphalianBird extends PathfinderMob implements IAnimatedEnt
          .add(Attributes.MOVEMENT_SPEED, 0.3)
          .add(Attributes.MAX_HEALTH, 24.0)
          .add(Attributes.ATTACK_DAMAGE, 4.0)
-         .add(Attributes.FOLLOW_RANGE, (double)Math.min(2048, AirWaterConfig.stymphalianBirdTargetSearchLength))
+         .add(Attributes.FOLLOW_RANGE, (double)Math.min(2048, com.github.alexthe666.iceandfire.IceAndFire.CONFIG.stymphalianBirdTargetSearchLength))
          .add(Attributes.ARMOR, 4.0);
    }
 
@@ -203,7 +203,7 @@ public class EntityStymphalianBird extends PathfinderMob implements IAnimatedEnt
    @Override
    protected void tickDeath() {
       super.tickDeath();
-      if (this.deathTime == 20 && !this.level().isClientSide && AirWaterConfig.stymphalianBirdsOreDictDrops) {
+      if (this.deathTime == 20 && !this.level().isClientSide && com.github.alexthe666.iceandfire.IceAndFire.CONFIG.stymphalianBirdsOreDictDrops) {
          ItemStack bronze = firstOre(BRONZE);
          if (!bronze.isEmpty()) {
             bronze.setCount(1 + this.getRandom().nextInt(3));
@@ -418,8 +418,8 @@ public class EntityStymphalianBird extends PathfinderMob implements IAnimatedEnt
       }
 
       AnimationHandler.INSTANCE.updateAnimations(this);
-      if (this.getY() > (double)AirWaterConfig.stymphalianBirdFlightHeight) {
-         this.setPos(this.getX(), (double)AirWaterConfig.stymphalianBirdFlightHeight, this.getZ());
+      if (this.getY() > (double)com.github.alexthe666.iceandfire.IceAndFire.CONFIG.stymphalianBirdFlightHeight) {
+         this.setPos(this.getX(), (double)com.github.alexthe666.iceandfire.IceAndFire.CONFIG.stymphalianBirdFlightHeight, this.getZ());
       }
    }
 
@@ -569,6 +569,6 @@ public class EntityStymphalianBird extends PathfinderMob implements IAnimatedEnt
 
    @Override
    public boolean shouldAnimalsFear(Entity entity) {
-      return AirWaterConfig.stympahlianBirdAttackAnimals;
+      return com.github.alexthe666.iceandfire.IceAndFire.CONFIG.stympahlianBirdAttackAnimals;
    }
 }

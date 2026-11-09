@@ -16,15 +16,15 @@ public class EntityStymphalianFeather extends AbstractArrow {
 
    public EntityStymphalianFeather(Level level, LivingEntity shooter) {
       super(AirWaterEntities.STYMPHALIAN_FEATHER.get(), shooter, level, new ItemStack(AirWaterRefs.item("stymphalian_bird_feather")), null);
-      this.setBaseDamage(AirWaterConfig.stymphalianBirdFeatherAttackStength);
+      this.setBaseDamage(com.github.alexthe666.iceandfire.IceAndFire.CONFIG.stymphalianBirdFeatherAttackStength);
    }
 
    @Override
    public void remove(RemovalReason reason) {
       boolean dead = !this.isRemoved() && (reason == RemovalReason.KILLED || reason == RemovalReason.DISCARDED);
       super.remove(reason);
-      if (dead && AirWaterConfig.stymphalianBirdFeatherDropChance > 0 && !this.level().isClientSide
-         && this.random.nextInt(AirWaterConfig.stymphalianBirdFeatherDropChance) == 0) {
+      if (dead && com.github.alexthe666.iceandfire.IceAndFire.CONFIG.stymphalianBirdFeatherDropChance > 0 && !this.level().isClientSide
+         && this.random.nextInt(com.github.alexthe666.iceandfire.IceAndFire.CONFIG.stymphalianBirdFeatherDropChance) == 0) {
          this.spawnAtLocation(this.getDefaultPickupItem(), 0.1F);
       }
    }

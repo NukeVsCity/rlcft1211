@@ -2,7 +2,6 @@ package com.github.alexthe666.iceandfire.client;
 
 import com.github.alexthe666.iceandfire.client.model.IFChainBuffer;
 import com.github.alexthe666.iceandfire.entity.AirWaterEntities;
-import com.github.alexthe666.iceandfire.entity.AirWaterConfig;
 import com.github.alexthe666.iceandfire.entity.EntityAmphithere;
 import com.github.alexthe666.iceandfire.entity.EntityHippocampus;
 import com.github.alexthe666.iceandfire.entity.EntityHippogryph;
@@ -180,7 +179,7 @@ public final class AirWaterClient {
          return;
       }
       GameRenderer renderer = Minecraft.getInstance().gameRenderer;
-      EntitySiren siren = sirenProps.getSiren(player.level());
+      EntitySiren siren = (EntitySiren)sirenProps.getSiren(player.level());
       if (siren == null) {
          sirenProps.isCharmed = false;
       }
@@ -188,11 +187,11 @@ public final class AirWaterClient {
          if (rand.nextInt(40) == 0) {
             spawnParticle("siren_appearance", player.level(), player.getX(), player.getY(), player.getZ(), 0.0, 0.0, 0.0);
          }
-         if (AirWaterConfig.useSirenShader && renderer.currentEffect() == null) {
+         if (com.github.alexthe666.iceandfire.IceAndFire.CONFIG.sirenShader && renderer.currentEffect() == null) {
             renderer.loadEffect(SIREN_SHADER);
          }
       }
-      if (AirWaterConfig.useSirenShader && !sirenProps.isCharmed && renderer.currentEffect() != null
+      if (com.github.alexthe666.iceandfire.IceAndFire.CONFIG.sirenShader && !sirenProps.isCharmed && renderer.currentEffect() != null
          && SIREN_SHADER.toString().equals(renderer.currentEffect().getName())) {
          renderer.shutdownEffect();
       }

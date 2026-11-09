@@ -141,7 +141,7 @@ public class EntitySeaSerpent extends Animal implements IAnimatedEntity, IMultip
          .add(Attributes.ATTACK_DAMAGE, 1.0)
          .add(Attributes.MOVEMENT_SPEED, 0.15)
          .add(Attributes.ARMOR, 3.0)
-         .add(Attributes.FOLLOW_RANGE, (double)Math.min(2048, AirWaterConfig.dragonTargetSearchLength));
+         .add(Attributes.FOLLOW_RANGE, (double)Math.min(2048, com.github.alexthe666.iceandfire.IceAndFire.CONFIG.dragonTargetSearchLength));
    }
 
    @Override
@@ -328,9 +328,9 @@ public class EntitySeaSerpent extends Animal implements IAnimatedEntity, IMultip
 
    private void updateAttributes() {
       this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(Math.min(0.25, 0.15 * (double)this.getSeaSerpentScale() * (double)this.getAncientModifier()));
-      this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(Math.max(4.0, AirWaterConfig.seaSerpentAttackStrength * (double)this.getSeaSerpentScale()
+      this.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(Math.max(4.0, com.github.alexthe666.iceandfire.IceAndFire.CONFIG.seaSerpentAttackStrength * (double)this.getSeaSerpentScale()
          * (double)this.getAncientModifier()));
-      this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(Math.max(10.0, AirWaterConfig.seaSerpentBaseHealth * (double)this.getSeaSerpentScale()
+      this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(Math.max(10.0, com.github.alexthe666.iceandfire.IceAndFire.CONFIG.seaSerpentBaseHealth * (double)this.getSeaSerpentScale()
          * (double)this.getAncientModifier()));
       this.heal(30.0F * this.getSeaSerpentScale());
    }
@@ -673,7 +673,7 @@ public class EntitySeaSerpent extends Animal implements IAnimatedEntity, IMultip
 
    /** breaks Material.PLANTS blocks around it (flowers, grass, crops; not leaves) */
    public void breakBlock() {
-      if (AirWaterConfig.seaSerpentGriefing) {
+      if (com.github.alexthe666.iceandfire.IceAndFire.CONFIG.seaSerpentGriefing) {
          AABB bb = this.getBoundingBox();
          for (int a = (int)Math.round(bb.minX) - 2; a <= (int)Math.round(bb.maxX) + 2; a++) {
             for (int b = (int)Math.round(bb.minY); b <= (int)Math.round(bb.maxY) + 2 && b <= 127; b++) {

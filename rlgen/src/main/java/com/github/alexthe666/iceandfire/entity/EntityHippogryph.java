@@ -847,7 +847,7 @@ public class EntityHippogryph extends TamableAnimal implements IAnimatedEntity, 
       }
 
       if ((flying || hovering) && this.tickCount % 20 == 0 && !this.onGround()) {
-         this.playSound(SoundEvents.ENDER_DRAGON_FLAP, this.getSoundVolume() * (float)(AirWaterConfig.dragonFlapNoiseDistance / 2),
+         this.playSound(SoundEvents.ENDER_DRAGON_FLAP, this.getSoundVolume() * (float)(com.github.alexthe666.iceandfire.IceAndFire.CONFIG.dragonFlapNoiseDistance / 2),
             0.6F + this.random.nextFloat() * 0.6F * this.getVoicePitch());
       }
 

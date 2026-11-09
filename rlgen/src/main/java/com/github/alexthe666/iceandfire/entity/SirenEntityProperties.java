@@ -2,18 +2,21 @@ package com.github.alexthe666.iceandfire.entity;
 
 import net.ilexiconn.llibrary.server.entity.EntityProperties;
 import net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler;
+import com.github.alexthe666.iceandfire.core.ModEntityHooks;
+import javax.annotation.Nullable;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
-/** Ice and Fire 1.7.1 SirenEntityProperties (llibrary entity properties, synced to trackers every 20 ticks). */
+/** 1.12 SirenEntityProperties (EntityLivingBase), registered with LLibrary's EntityPropertiesHandler like 1.12. */
 public class SirenEntityProperties extends EntityProperties<LivingEntity> {
    public boolean isCharmed;
    public int sirenID;
    public int singTime;
 
-   public static SirenEntityProperties get(LivingEntity entity) {
+   @Nullable
+   public static SirenEntityProperties get(Entity entity) {
       return EntityPropertiesHandler.INSTANCE.getProperties(entity, SirenEntityProperties.class);
    }
 
@@ -34,9 +37,11 @@ public class SirenEntityProperties extends EntityProperties<LivingEntity> {
       this.sirenID = compound.getInt("SirenID");
    }
 
-   public EntitySiren getSiren(Level world) {
+   /** 1.12 getSiren(world): the entity with sirenID if it is a siren (cast it to EntitySiren). */
+   @Nullable
+   public Entity getSiren(Level world) {
       Entity entity = world.getEntity(this.sirenID);
-      return entity instanceof EntitySiren siren ? siren : null;
+      return ModEntityHooks.is(entity, "siren") ? entity : null;
    }
 
    @Override
@@ -45,12 +50,12 @@ public class SirenEntityProperties extends EntityProperties<LivingEntity> {
    }
 
    @Override
-   public String getID() {
-      return "Ice And Fire - Siren Property Tracker";
+   public Class<LivingEntity> getEntityClass() {
+      return LivingEntity.class;
    }
 
    @Override
-   public Class<LivingEntity> getEntityClass() {
-      return LivingEntity.class;
+   public String getID() {
+      return "Ice And Fire - Siren Property Tracker";
    }
 }

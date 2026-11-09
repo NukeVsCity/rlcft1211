@@ -122,8 +122,8 @@ public class EntityAmphithere extends TamableAnimal implements IAnimatedEntity, 
    public static AttributeSupplier.Builder createAttributes() {
       return TamableAnimal.createMobAttributes()
          .add(Attributes.MOVEMENT_SPEED, 0.4)
-         .add(Attributes.MAX_HEALTH, AirWaterConfig.amphithereMaxHealth)
-         .add(Attributes.ATTACK_DAMAGE, AirWaterConfig.amphithereAttackStrength)
+         .add(Attributes.MAX_HEALTH, com.github.alexthe666.iceandfire.IceAndFire.CONFIG.amphithereMaxHealth)
+         .add(Attributes.ATTACK_DAMAGE, com.github.alexthe666.iceandfire.IceAndFire.CONFIG.amphithereAttackStrength)
          .add(Attributes.FOLLOW_RANGE, 32.0)
          .add(Attributes.STEP_HEIGHT, 1.0);
    }
@@ -344,7 +344,7 @@ public class EntityAmphithere extends TamableAnimal implements IAnimatedEntity, 
       if (this.getUntamedRider() == null) {
          this.ridingTime = 0;
       }
-      if (!this.isTame() && this.ridingTime > AirWaterConfig.amphithereTameTime && this.getUntamedRider() instanceof Player rider) {
+      if (!this.isTame() && this.ridingTime > com.github.alexthe666.iceandfire.IceAndFire.CONFIG.amphithereTameTime && this.getUntamedRider() instanceof Player rider) {
          this.level().broadcastEntityEvent(this, (byte)45);
          this.tame(rider);
       }

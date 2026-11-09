@@ -1,6 +1,5 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
-import com.github.alexthe666.iceandfire.entity.AirWaterConfig;
 import com.github.alexthe666.iceandfire.entity.AirWaterUtils;
 import com.github.alexthe666.iceandfire.entity.EntityStymphalianBird;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
@@ -18,7 +17,7 @@ public class StymphalianBirdAITarget<T extends LivingEntity> extends EntityAINea
    public StymphalianBirdAITarget(EntityStymphalianBird entityIn, Class<T> classTarget, boolean checkSight) {
       super(entityIn, classTarget, 0, checkSight, false, entity -> !AirWaterUtils.isStone(entity)
          && (entity instanceof Player p && !p.isCreative() || entity instanceof AbstractVillager || entity instanceof AbstractGolem
-            || entity instanceof Animal && AirWaterConfig.stympahlianBirdAttackAnimals));
+            || entity instanceof Animal && com.github.alexthe666.iceandfire.IceAndFire.CONFIG.stympahlianBirdAttackAnimals));
       this.bird = entityIn;
    }
 
