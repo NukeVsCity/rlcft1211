@@ -4,7 +4,7 @@ import com.google.common.collect.Maps;
 import java.util.Map;
 import net.minecraft.ChatFormatting;
 
-/** Ice and Fire 1.7.1 EnumDragonEgg. */
+/** 1.12 EnumDragonEgg. */
 public enum EnumDragonEgg {
    RED(0, ChatFormatting.DARK_RED, true),
    GREEN(1, ChatFormatting.DARK_GREEN, true),
@@ -20,7 +20,7 @@ public enum EnumDragonEgg {
    public ChatFormatting color;
    public boolean isFire;
 
-   EnumDragonEgg(int meta, ChatFormatting color, boolean isFire) {
+   private EnumDragonEgg(int meta, ChatFormatting color, boolean isFire) {
       this.meta = meta;
       this.color = color;
       this.isFire = isFire;
@@ -32,8 +32,8 @@ public enum EnumDragonEgg {
    }
 
    static {
-      for (EnumDragonEgg egg : values()) {
-         META_LOOKUP.put(egg.meta, egg);
+      for (EnumDragonEgg e : values()) {
+         META_LOOKUP.put(e.meta, e);
       }
    }
 }

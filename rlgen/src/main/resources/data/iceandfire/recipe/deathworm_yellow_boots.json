@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "C C",
+    "C C"
+  ],
+  "key": {
+    "C": {
+      "type": "neoforge:components",
+      "items": "iceandfire:deathworm_chitin",
+      "components": {},
+      "strict": true
+    }
+  },
+  "result": {
+    "id": "iceandfire:deathworm_yellow_boots",
+    "count": 1
+  }
+}

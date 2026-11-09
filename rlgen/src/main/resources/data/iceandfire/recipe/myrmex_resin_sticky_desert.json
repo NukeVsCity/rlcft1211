@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "iceandfire:myrmex_desert_resin"
+    },
+    {
+      "type": "neoforge:components",
+      "items": "iceandfire:myrmex_resin",
+      "components": {},
+      "strict": true
+    }
+  ],
+  "result": {
+    "id": "iceandfire:myrmex_resin_sticky",
+    "count": 1
+  }
+}

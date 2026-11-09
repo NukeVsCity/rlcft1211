@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/crop",
+  "textures": {
+    "crop": "iceandfire:blocks/dragon_ice_spikes"
+  },
+  "render_type": "minecraft:translucent"
+}

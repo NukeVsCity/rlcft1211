@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "iceandfire:myrmex_jungle_resin_block"
+  },
+  "result": {
+    "id": "iceandfire:myrmex_jungle_resin_glass",
+    "count": 1
+  },
+  "experience": 1.0,
+  "cookingtime": 200
+}

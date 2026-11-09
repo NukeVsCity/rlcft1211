@@ -1,0 +1,13 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "iceandfire:blocks/myrmex_jungle_resin_glass_all",
+    "down": "iceandfire:blocks/myrmex_jungle_resin_glass_blank",
+    "up": "iceandfire:blocks/myrmex_jungle_resin_glass_blank",
+    "north": "iceandfire:blocks/myrmex_jungle_resin_glass_up",
+    "east": "iceandfire:blocks/myrmex_jungle_resin_glass_up",
+    "south": "iceandfire:blocks/myrmex_jungle_resin_glass_up",
+    "west": "iceandfire:blocks/myrmex_jungle_resin_glass_up"
+  },
+  "render_type": "minecraft:translucent"
+}

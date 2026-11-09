@@ -98,7 +98,7 @@ public final class IafDragonEntities {
    public static void init(IEventBus modBus) {
       modBus.addListener(IafDragonEntities::attributes);
       modBus.addListener(DragonNetwork::register);
-      com.github.alexthe666.iceandfire.loot.CustomizeToDragon.register(modBus);
+      DragonHooks.install();
       NeoForge.EVENT_BUS.register(DragonEvents.class);
    }
 

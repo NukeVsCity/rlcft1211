@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "iceandfire:silver_sword",
+    "iceandfire:dragonbone_sword",
+    "iceandfire:dragonbone_sword_fire",
+    "iceandfire:dragonbone_sword_ice",
+    "iceandfire:myrmex_desert_sword",
+    "iceandfire:myrmex_desert_sword_venom",
+    "iceandfire:myrmex_jungle_sword",
+    "iceandfire:myrmex_jungle_sword_venom"
+  ]
+}

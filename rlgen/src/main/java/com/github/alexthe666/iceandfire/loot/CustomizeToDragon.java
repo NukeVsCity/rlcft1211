@@ -1,11 +1,12 @@
 package com.github.alexthe666.iceandfire.loot;
 
-import com.github.alexthe666.iceandfire.core.ModItems;
-import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
+import com.github.alexthe666.iceandfire.IceAndFire;
 import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.List;
-import java.util.Random;
+import java.util.function.BiFunction;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.functions.LootItemConditionalFunction;
@@ -17,75 +18,46 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 /**
- * Ice and Fire 1.7.1 CustomizeToDragon (loot function iceandfire:customize_to_dragon): turns the loot of the dead-dragon
- * tables into the looted dragon's colour and scales the counts with its age.
+ * 1.12 loot functions iceandfire:customize_to_dragon (dragon drops become the looted dragon's colour, stack sizes scale with its age)
+ * and iceandfire:customize_to_sea_serpent. The entity specific code (EntityDragonBase/EntitySeaSerpent fields) is set by the mob
+ * branches into {@link #DRAGON} / {@link #SEA_SERPENT}: (stack, looted entity) -> new stack, the 1.12 apply body. Unset, the stack is
+ * returned unchanged.
  */
 public class CustomizeToDragon extends LootItemConditionalFunction {
-   private static final DeferredRegister<LootItemFunctionType<?>> FUNCTIONS = DeferredRegister.create(Registries.LOOT_FUNCTION_TYPE, "iceandfire");
-   public static final DeferredHolder<LootItemFunctionType<?>, LootItemFunctionType<CustomizeToDragon>> TYPE = FUNCTIONS.register(
-      "customize_to_dragon", () -> new LootItemFunctionType<>(codec())
-   );
+   public static volatile BiFunction<ItemStack, Entity, ItemStack> DRAGON;
+   public static volatile BiFunction<ItemStack, Entity, ItemStack> SEA_SERPENT;
 
-   private static MapCodec<CustomizeToDragon> codec() {
-      return com.mojang.serialization.codecs.RecordCodecBuilder.mapCodec(i -> commonFields(i).apply(i, CustomizeToDragon::new));
+   public static final DeferredRegister<LootItemFunctionType<?>> FUNCTIONS = DeferredRegister.create(Registries.LOOT_FUNCTION_TYPE, IceAndFire.MODID);
+   public static final MapCodec<CustomizeToDragon> DRAGON_CODEC = RecordCodecBuilder.mapCodec(i -> commonFields(i).apply(i, c -> new CustomizeToDragon(c, false)));
+   public static final MapCodec<CustomizeToDragon> SERPENT_CODEC = RecordCodecBuilder.mapCodec(i -> commonFields(i).apply(i, c -> new CustomizeToDragon(c, true)));
+   public static final DeferredHolder<LootItemFunctionType<?>, LootItemFunctionType<CustomizeToDragon>> CUSTOMIZE_TO_DRAGON = FUNCTIONS.register("customize_to_dragon",
+      () -> new LootItemFunctionType<>(DRAGON_CODEC));
+   public static final DeferredHolder<LootItemFunctionType<?>, LootItemFunctionType<CustomizeToDragon>> CUSTOMIZE_TO_SEA_SERPENT = FUNCTIONS.register(
+      "customize_to_sea_serpent", () -> new LootItemFunctionType<>(SERPENT_CODEC));
+
+   private final boolean seaSerpent;
+
+   protected CustomizeToDragon(List<LootItemCondition> conditions, boolean seaSerpent) {
+      super(conditions);
+      this.seaSerpent = seaSerpent;
    }
 
    public static void register(IEventBus modBus) {
       FUNCTIONS.register(modBus);
    }
 
-   protected CustomizeToDragon(List<LootItemCondition> conditions) {
-      super(conditions);
-   }
-
    @Override
-   public LootItemFunctionType<CustomizeToDragon> getType() {
-      return TYPE.get();
-   }
-
-   private static boolean isAny(ItemStack stack, Object... items) {
-      for (Object item : items) {
-         if (item instanceof net.minecraft.world.level.ItemLike like && stack.is(like.asItem())) {
-            return true;
-         }
-      }
-      return false;
+   public LootItemFunctionType<? extends LootItemConditionalFunction> getType() {
+      return this.seaSerpent ? CUSTOMIZE_TO_SEA_SERPENT.get() : CUSTOMIZE_TO_DRAGON.get();
    }
 
    @Override
    protected ItemStack run(ItemStack stack, LootContext context) {
-      if (!stack.isEmpty() && context.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof EntityDragonBase dragon) {
-         Random random = new Random();
-         if (stack.is(ModItems.dragonbone)) {
-            stack.setCount(1 + random.nextInt(1 + dragon.getAgeInDays() / 25));
-            return stack;
-         } else if (isAny(stack, ModItems.dragonscales_red, ModItems.dragonscales_green, ModItems.dragonscales_bronze, ModItems.dragonscales_gray,
-            ModItems.dragonscales_blue, ModItems.dragonscales_white, ModItems.dragonscales_sapphire, ModItems.dragonscales_silver)) {
-            stack.setCount(dragon.getAgeInDays() / 25 + random.nextInt(1 + dragon.getAgeInDays() / 5));
-            return new ItemStack(dragon.getVariantScale(dragon.getVariant()), stack.getCount());
-         } else if (isAny(stack, ModItems.dragonegg_red, ModItems.dragonegg_green, ModItems.dragonegg_bronze, ModItems.dragonegg_gray,
-            ModItems.dragonegg_blue, ModItems.dragonegg_white, ModItems.dragonegg_sapphire, ModItems.dragonegg_silver)) {
-            if (dragon.isAdult()) {
-               return new ItemStack(dragon.getVariantEgg(dragon.getVariant()), stack.getCount());
-            } else {
-               stack.setCount(1 + random.nextInt(1 + dragon.getAgeInDays() / 5));
-               return new ItemStack(dragon.getVariantScale(dragon.getVariant()), stack.getCount());
-            }
-         } else if (isAny(stack, ModItems.fire_dragon_flesh, ModItems.ice_dragon_flesh)) {
-            stack.setCount(1 + random.nextInt(1 + dragon.getAgeInDays() / 25));
-            return new ItemStack(dragon.isFire ? ModItems.fire_dragon_flesh : ModItems.ice_dragon_flesh, stack.getCount());
-         } else if (isAny(stack, ModItems.dragon_skull)) {
-            ItemStack stack1 = stack.copy();
-            return stack1;
-         } else if (isAny(stack, ModItems.fire_dragon_blood, ModItems.ice_dragon_blood)) {
-            return new ItemStack(dragon.isFire ? ModItems.fire_dragon_blood : ModItems.ice_dragon_blood, stack.getCount());
-         } else {
-            return !isAny(stack, ModItems.fire_dragon_heart, ModItems.ice_dragon_heart)
-               ? stack
-               : new ItemStack(dragon.isFire ? ModItems.fire_dragon_heart : ModItems.ice_dragon_heart, stack.getCount());
-         }
-      } else {
+      Entity looted = context.getParamOrNull(LootContextParams.THIS_ENTITY);
+      BiFunction<ItemStack, Entity, ItemStack> f = this.seaSerpent ? SEA_SERPENT : DRAGON;
+      if (stack.isEmpty() || looted == null || f == null) {
          return stack;
       }
+      return f.apply(stack, looted);
    }
 }
