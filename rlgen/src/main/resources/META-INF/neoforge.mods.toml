@@ -28,3 +28,22 @@ type="required"
 versionRange="[1.7,)"
 ordering="NONE"
 side="BOTH"
+
+[[mods]]
+modId="llibrary"
+version="1.7.20"
+displayName="LLibrary (1.12 port)"
+description='''The parts of LLibrary 1.7.20 that Ice and Fire 1.7.1 uses.'''
+
+[[mods]]
+modId="iceandfire"
+version="1.7.1"
+displayName="Ice and Fire (1.12 RLCraft port)"
+description='''Ice and Fire 1.7.1 as in RLCraft 2.9.3, ported from the 1.12 code.'''
+
+[[dependencies.iceandfire]]
+modId="llibrary"
+type="required"
+versionRange="[1.7,)"
+ordering="AFTER"
+side="BOTH"
