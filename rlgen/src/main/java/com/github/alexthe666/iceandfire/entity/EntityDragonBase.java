@@ -252,7 +252,8 @@ public abstract class EntityDragonBase extends TamableAnimal
       super.setTarget(target);
    }
 
-   static final boolean DEBUG = true; // TEMP
+   /** -Diceandfire.dragondebug=true logs every target change of a dragon. */
+   static final boolean DEBUG = Boolean.getBoolean("iceandfire.dragondebug");
 
    public RandomSource getRNG() {
       return this.getRandom();
