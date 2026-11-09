@@ -3,6 +3,7 @@ package com.github.alexthe666.iceandfire.entity;
 import com.github.alexthe666.iceandfire.IafRegistries;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.enums.EnumHippogryphTypes;
+import com.github.alexthe666.iceandfire.inventory.ContainerHippocampus;
 import com.github.alexthe666.iceandfire.inventory.ContainerHippogryph;
 import com.github.alexthe666.iceandfire.message.AirWaterNetwork;
 import net.minecraft.core.registries.Registries;
@@ -62,11 +63,32 @@ public final class AirWaterEntities {
       () -> EntityType.Builder.<EntityAmphithere>of(EntityAmphithere::new, MobCategory.CREATURE).sized(2.5F, 1.25F).clientTrackingRange(4)
          .updateInterval(1).build("amphithere"));
 
+   public static final DeferredHolder<EntityType<?>, EntityType<EntityHippocampus>> HIPPOCAMPUS = IafRegistries.ENTITY_TYPES.register("hippocampus",
+      () -> EntityType.Builder.<EntityHippocampus>of(EntityHippocampus::new, MobCategory.WATER_CREATURE).sized(1.95F, 0.95F).clientTrackingRange(4)
+         .updateInterval(1).build("hippocampus"));
+
+   public static final DeferredHolder<EntityType<?>, EntityType<EntitySeaSerpent>> SEA_SERPENT = IafRegistries.ENTITY_TYPES.register("seaserpent",
+      () -> EntityType.Builder.<EntitySeaSerpent>of(EntitySeaSerpent::new, MobCategory.CREATURE).sized(0.5F, 0.5F).clientTrackingRange(4)
+         .updateInterval(1).build("seaserpent"));
+   public static final DeferredHolder<EntityType<?>, EntityType<EntitySeaSerpentBubbles>> SEA_SERPENT_BUBBLES = IafRegistries.ENTITY_TYPES.register(
+      "seaserpentbubble", () -> EntityType.Builder.<EntitySeaSerpentBubbles>of(EntitySeaSerpentBubbles::new, MobCategory.MISC).sized(0.8F, 0.8F)
+         .clientTrackingRange(4).updateInterval(1).build("seaserpentbubble"));
+   public static final DeferredHolder<EntityType<?>, EntityType<EntitySeaSerpentArrow>> SEA_SERPENT_ARROW = IafRegistries.ENTITY_TYPES.register(
+      "seaserpentarrow", () -> EntityType.Builder.<EntitySeaSerpentArrow>of(EntitySeaSerpentArrow::new, MobCategory.MISC).sized(0.5F, 0.5F)
+         .clientTrackingRange(4).updateInterval(1).build("seaserpentarrow"));
+
+   public static final DeferredHolder<EntityType<?>, EntityType<EntitySnowVillager>> SNOW_VILLAGER = IafRegistries.ENTITY_TYPES.register("snowvillager",
+      () -> EntityType.Builder.<EntitySnowVillager>of(EntitySnowVillager::new, MobCategory.MISC).sized(0.6F, 1.95F).eyeHeight(1.62F)
+         .clientTrackingRange(4).updateInterval(1).build("snowvillager"));
+
+   public static final DeferredHolder<MenuType<?>, MenuType<ContainerHippocampus>> HIPPOCAMPUS_MENU = IafRegistries.MENUS.register("hippocampus",
+      () -> IMenuTypeExtension.create(ContainerHippocampus::fromNetwork));
    public static final DeferredHolder<MenuType<?>, MenuType<ContainerHippogryph>> HIPPOGRYPH_MENU = IafRegistries.MENUS.register("hippogryph",
       () -> IMenuTypeExtension.create(ContainerHippogryph::fromNetwork));
 
    public static void register(IEventBus modBus) {
       net.ilexiconn.llibrary.server.entity.EntityPropertiesHandler.INSTANCE.registerProperties(SirenEntityProperties.class);
+      EntitySnowVillager.register(modBus);
       modBus.addListener(AirWaterEntities::attributes);
       modBus.addListener(AirWaterNetwork::register);
       NeoForge.EVENT_BUS.register(AirWaterEvents.class);
@@ -81,6 +103,9 @@ public final class AirWaterEntities {
       event.put(SIREN.get(), EntitySiren.createAttributes().build());
       event.put(PIXIE.get(), EntityPixie.createAttributes().build());
       event.put(AMPHITHERE.get(), EntityAmphithere.createAttributes().build());
+      event.put(HIPPOCAMPUS.get(), EntityHippocampus.createAttributes().build());
+      event.put(SEA_SERPENT.get(), EntitySeaSerpent.createAttributes().build());
+      event.put(SNOW_VILLAGER.get(), net.minecraft.world.entity.npc.Villager.createAttributes().build());
    }
 
    public static ResourceKey<LootTable> loot(String name) {

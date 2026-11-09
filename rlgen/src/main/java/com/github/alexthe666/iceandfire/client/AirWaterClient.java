@@ -3,6 +3,8 @@ package com.github.alexthe666.iceandfire.client;
 import com.github.alexthe666.iceandfire.client.model.IFChainBuffer;
 import com.github.alexthe666.iceandfire.entity.AirWaterEntities;
 import com.github.alexthe666.iceandfire.entity.AirWaterConfig;
+import com.github.alexthe666.iceandfire.entity.EntityAmphithere;
+import com.github.alexthe666.iceandfire.entity.EntityHippocampus;
 import com.github.alexthe666.iceandfire.entity.EntityHippogryph;
 import com.github.alexthe666.iceandfire.entity.EntitySiren;
 import com.github.alexthe666.iceandfire.entity.SirenEntityProperties;
@@ -82,8 +84,14 @@ public final class AirWaterClient {
    /** EntityHippogryph / EntityHippocampus / EntityAmphithere.updateClientControls */
    public static void updateControls(Entity entity) {
       Minecraft mc = Minecraft.getInstance();
-      if (mc.player == null || mc.screen != null && false) {
+      if (mc.player == null) {
          return;
+      }
+      if (entity instanceof EntityAmphithere a) {
+         amphithereControls(a, mc);
+      }
+      if (entity instanceof EntityHippocampus hc) {
+         hippocampusControls(hc, mc);
       }
       if (entity instanceof EntityHippogryph h) {
          if (h.isRidingPlayer(mc.player)) {
@@ -112,6 +120,46 @@ public final class AirWaterClient {
    }
 
    /** MessageSirenSong.onClientReceived */
+   private static void amphithereControls(EntityAmphithere h, Minecraft mc) {
+      if (h.isRidingPlayer(mc.player)) {
+         byte previousState = h.getControlState();
+         h.up(mc.options.keyJump.isDown());
+         h.down(dragonDown());
+         h.attack(dragonStrike());
+         h.dismount(mc.options.keyShift.isDown());
+         if (h.getControlState() != previousState) {
+            send(h, h.getControlState());
+         }
+      }
+      if (h.getVehicle() != null && h.getVehicle() == mc.player) {
+         byte previousState = h.getControlState();
+         h.dismount(mc.options.keyShift.isDown());
+         if (h.getControlState() != previousState) {
+            send(h, h.getControlState());
+         }
+      }
+   }
+
+   private static void hippocampusControls(EntityHippocampus h, Minecraft mc) {
+      if (h.isRidingPlayer(mc.player)) {
+         byte previousState = h.getControlState();
+         h.up(mc.options.keyJump.isDown());
+         h.dismount(mc.options.keyShift.isDown());
+         h.down(dragonDown());
+         if (h.getControlState() != previousState) {
+            send(h, h.getControlState());
+         }
+      }
+      if (h.getVehicle() != null && h.getVehicle() == mc.player) {
+         byte previousState = h.getControlState();
+         h.dismount(mc.options.keyShift.isDown());
+         h.down(dragonDown());
+         if (h.getControlState() != previousState) {
+            send(h, h.getControlState());
+         }
+      }
+   }
+
    public static void onSirenSong(int sirenId, boolean singing) {
       Minecraft mc = Minecraft.getInstance();
       if (mc.level != null && mc.level.getEntity(sirenId) instanceof EntitySiren siren) {
