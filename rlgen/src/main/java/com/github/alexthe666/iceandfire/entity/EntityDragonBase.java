@@ -244,6 +244,16 @@ public abstract class EntityDragonBase extends TamableAnimal
       // the 1.12 tasks are added in initEntityAI, after the subclass fields exist
    }
 
+   @Override
+   public void setTarget(@Nullable LivingEntity target) {
+      if (DEBUG && target != this.getTarget()) {
+         com.mojang.logging.LogUtils.getLogger().info("[dragondebug] {} {} target -> {}", this.getType(), this.getId(), target);
+      }
+      super.setTarget(target);
+   }
+
+   static final boolean DEBUG = true; // TEMP
+
    public RandomSource getRNG() {
       return this.getRandom();
    }

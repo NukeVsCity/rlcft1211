@@ -155,6 +155,10 @@ public class EntityDragonEgg extends Mob implements IBlacklistedFromStatues, IDe
    /** 1.12 attackEntityFrom: any hit (even an invulnerable one) pops the egg back as an item. */
    @Override
    public boolean hurt(DamageSource source, float amount) {
+      // 1.12 never called attackEntityFrom with fire damage on a fire-immune entity (the egg sits in fire to hatch)
+      if (this.fireImmune() && source.is(DamageTypeTags.IS_FIRE)) {
+         return false;
+      }
       if (!this.level().isClientSide && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && !this.isRemoved()) {
          this.spawnAtLocation(this.getItem(), 0.0F);
       }

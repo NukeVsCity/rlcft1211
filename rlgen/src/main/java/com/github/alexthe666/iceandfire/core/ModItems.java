@@ -41,4 +41,6 @@ public final class ModItems {
    public static Item fire_stew = Items.MUSHROOM_STEW;
    public static Item frost_stew = Items.BEETROOT_SOUP;
    public static Item dragonbone = Items.BONE;
+   public static Item fire_dragon_flesh = Items.BEEF;
+   public static Item ice_dragon_flesh = Items.MUTTON;
 }
