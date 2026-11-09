@@ -2,7 +2,7 @@
   "textures": {
     "0": "iceandfire:blocks/jar_side",
     "1": "iceandfire:blocks/jar_bottom",
-    "2": "minecraft:block/planks_oak",
+    "2": "minecraft:block/oak_planks",
     "particle": "minecraft:block/glass"
   },
   "elements": [
