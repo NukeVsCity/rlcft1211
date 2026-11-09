@@ -55,7 +55,35 @@ public final class IafLandMobs {
       "if_cockatriceegg", EntityType.Builder.<EntityCockatriceEgg>of(EntityCockatriceEgg::new, MobCategory.MISC).sized(0.25F, 0.25F)
    );
 
+   public static final Supplier<EntityType<EntityTroll>> TROLL = register(
+      "if_troll", EntityType.Builder.of(EntityTroll::new, MobCategory.MONSTER).sized(1.2F, 3.5F)
+   );
+   public static final Supplier<EntityType<EntityMyrmexWorker>> MYRMEX_WORKER = register(
+      "myrmex_worker", EntityType.Builder.of(EntityMyrmexWorker::new, MobCategory.CREATURE).sized(0.9F, 0.6F)
+   );
+   public static final Supplier<EntityType<EntityMyrmexSoldier>> MYRMEX_SOLDIER = register(
+      "myrmex_soldier", EntityType.Builder.of(EntityMyrmexSoldier::new, MobCategory.CREATURE).sized(0.99F, 0.95F)
+   );
+   public static final Supplier<EntityType<EntityMyrmexSentinel>> MYRMEX_SENTINEL = register(
+      "myrmex_sentinel", EntityType.Builder.of(EntityMyrmexSentinel::new, MobCategory.CREATURE).sized(1.3F, 1.95F)
+   );
+   public static final Supplier<EntityType<EntityMyrmexRoyal>> MYRMEX_ROYAL = register(
+      "myrmex_royal", EntityType.Builder.of(EntityMyrmexRoyal::new, MobCategory.CREATURE).sized(1.9F, 1.86F)
+   );
+   public static final Supplier<EntityType<EntityMyrmexQueen>> MYRMEX_QUEEN = register(
+      "myrmex_queen", EntityType.Builder.of(EntityMyrmexQueen::new, MobCategory.CREATURE).sized(2.9F, 1.86F)
+   );
+   public static final Supplier<EntityType<EntityMyrmexEgg>> MYRMEX_EGG = register(
+      "myrmex_egg", EntityType.Builder.of(EntityMyrmexEgg::new, MobCategory.MISC).sized(0.45F, 0.55F).fireImmune()
+   );
+
    static {
+      egg("if_troll", TROLL, 4014397, 5784378);
+      egg("myrmex_worker", MYRMEX_WORKER, 10575910, 5850400);
+      egg("myrmex_soldier", MYRMEX_SOLDIER, 10575910, 8217133);
+      egg("myrmex_sentinel", MYRMEX_SENTINEL, 10575910, 10649402);
+      egg("myrmex_royal", MYRMEX_ROYAL, 10575910, 13081416);
+      egg("myrmex_queen", MYRMEX_QUEEN, 10575910, 15513685);
       egg("gorgon", GORGON, 13687199, 6833456);
       egg("cyclops", CYCLOPS, 11567726, 3809039);
       egg("deathworm", DEATHWORM, 13749667, 4340282);
@@ -82,12 +110,20 @@ public final class IafLandMobs {
       event.put(CYCLOPS.get(), EntityCyclops.createAttributes().build());
       event.put(DEATHWORM.get(), EntityDeathWorm.createAttributes().build());
       event.put(COCKATRICE.get(), EntityCockatrice.createAttributes().build());
+      event.put(TROLL.get(), EntityTroll.createAttributes().build());
+      event.put(MYRMEX_WORKER.get(), EntityMyrmexWorker.createAttributes().build());
+      event.put(MYRMEX_SOLDIER.get(), EntityMyrmexSoldier.createAttributes().build());
+      event.put(MYRMEX_SENTINEL.get(), EntityMyrmexSentinel.createAttributes().build());
+      event.put(MYRMEX_ROYAL.get(), EntityMyrmexRoyal.createAttributes().build());
+      event.put(MYRMEX_QUEEN.get(), EntityMyrmexQueen.createAttributes().build());
+      event.put(MYRMEX_EGG.get(), EntityMyrmexEgg.createAttributes().build());
    }
 
    /** 1.12 getCanSpawnHere of each naturally spawning land mob. */
    private static void spawnPlacements(RegisterSpawnPlacementsEvent event) {
       event.register(DEATHWORM.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityDeathWorm::checkDeathWormSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
       event.register(COCKATRICE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityCockatrice::checkCockatriceSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+      event.register(TROLL.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EntityTroll::checkTrollSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
    }
 
    private static void payloads(RegisterPayloadHandlersEvent event) {
