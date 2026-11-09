@@ -10,8 +10,8 @@ import net.ilexiconn.llibrary.client.model.tabula.container.TabulaCubeGroupConta
 import net.ilexiconn.llibrary.client.model.tabula.container.TabulaModelContainer;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelBase;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.Entity;
+import net.ilexiconn.llibrary.client.model.legacy.LegacyRender;
+import net.minecraft.world.entity.Entity;
 
 public class IceAndFireTabulaModel extends AdvancedModelBase {
    protected Map<String, AdvancedModelRenderer> cubes = new HashMap<>();
@@ -82,14 +82,14 @@ public class IceAndFireTabulaModel extends AdvancedModelBase {
 
    public void render(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float rotationYaw, float rotationPitch, float scale) {
       this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, rotationYaw, rotationPitch, scale, entity);
-      GlStateManager.pushMatrix();
-      GlStateManager.scale(this.scale[0], this.scale[1], this.scale[2]);
+      LegacyRender.pushMatrix();
+      LegacyRender.scale(this.scale[0], this.scale[1], this.scale[2]);
 
       for (AdvancedModelRenderer box : this.rootBoxes) {
          box.render(scale);
       }
 
-      GlStateManager.popMatrix();
+      LegacyRender.popMatrix();
    }
 
    public void setRotationAngles(float limbSwing, float limbSwingAmount, float ageInTicks, float rotationYaw, float rotationPitch, float scale, Entity entity) {

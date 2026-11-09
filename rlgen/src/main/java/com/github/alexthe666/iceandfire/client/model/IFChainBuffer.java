@@ -1,7 +1,7 @@
 package com.github.alexthe666.iceandfire.client.model;
 
 import com.github.alexthe666.iceandfire.entity.IFlapable;
-import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
+import net.ilexiconn.llibrary.client.model.legacy.ModelRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -97,37 +97,37 @@ public class IFChainBuffer {
       return prev + (cur - prev) * PartialTicks.get();
    }
 
-   public void applyChainSwingBuffer(AdvancedModelRenderer... boxes) {
+   public void applyChainSwingBuffer(ModelRenderer... boxes) {
       float rotateAmount = (float)(Math.PI / 180.0) * lerp(this.prevYawVariation, this.yawVariation) / (float)boxes.length;
-      for (AdvancedModelRenderer box : boxes) {
+      for (ModelRenderer box : boxes) {
          box.rotateAngleY += rotateAmount;
       }
    }
 
-   public void applyChainWaveBuffer(AdvancedModelRenderer... boxes) {
+   public void applyChainWaveBuffer(ModelRenderer... boxes) {
       float rotateAmount = (float)(Math.PI / 180.0) * lerp(this.prevPitchVariation, this.pitchVariation) / (float)boxes.length;
-      for (AdvancedModelRenderer box : boxes) {
+      for (ModelRenderer box : boxes) {
          box.rotateAngleX += rotateAmount;
       }
    }
 
-   public void applyChainFlapBuffer(AdvancedModelRenderer... boxes) {
+   public void applyChainFlapBuffer(ModelRenderer... boxes) {
       float rotateAmount = (float)(Math.PI / 180.0) * lerp(this.prevYawVariation, this.yawVariation) / (float)boxes.length;
-      for (AdvancedModelRenderer box : boxes) {
+      for (ModelRenderer box : boxes) {
          box.rotateAngleZ += rotateAmount;
       }
    }
 
-   public void applyChainFlapBufferReverse(AdvancedModelRenderer... boxes) {
+   public void applyChainFlapBufferReverse(ModelRenderer... boxes) {
       float rotateAmount = (float)(Math.PI / 180.0) * lerp(this.prevYawVariation, this.yawVariation) / (float)boxes.length;
-      for (AdvancedModelRenderer box : boxes) {
+      for (ModelRenderer box : boxes) {
          box.rotateAngleZ -= rotateAmount * 0.5F;
       }
    }
 
-   public void applyChainSwingBufferReverse(AdvancedModelRenderer... boxes) {
+   public void applyChainSwingBufferReverse(ModelRenderer... boxes) {
       float rotateAmount = (float)(Math.PI / 180.0) * lerp(this.prevYawVariation, this.yawVariation) / (float)boxes.length;
-      for (AdvancedModelRenderer box : boxes) {
+      for (ModelRenderer box : boxes) {
          box.rotateAngleY -= rotateAmount;
       }
    }

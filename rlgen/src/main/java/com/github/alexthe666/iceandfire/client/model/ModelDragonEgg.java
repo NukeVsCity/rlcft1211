@@ -4,9 +4,8 @@ import com.github.alexthe666.iceandfire.entity.EntityDragonEgg;
 import com.github.alexthe666.iceandfire.entity.tile.TileEntityEggInIce;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelBase;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.block.Blocks;
 
 public class ModelDragonEgg extends AdvancedModelBase {
    public AdvancedModelRenderer Egg1;
@@ -57,7 +56,7 @@ public class ModelDragonEgg extends AdvancedModelBase {
       super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
       if (entity instanceof EntityDragonEgg) {
          EntityDragonEgg dragon = (EntityDragonEgg)entity;
-         if (dragon.world.getBlockState(new BlockPos(dragon)).getMaterial() == Material.FIRE && dragon.getType().isFire) {
+         if (/* Material.FIRE = only the fire block */ dragon.level().getBlockState(dragon.blockPosition()).is(Blocks.FIRE) && dragon.getEggType().isFire) {
             this.walk(this.Egg1, 0.3F, 0.3F, true, 1.0F, 0.0F, (float)entity.tickCount, 1.0F);
             this.flap(this.Egg1, 0.3F, 0.3F, false, 0.0F, 0.0F, (float)entity.tickCount, 1.0F);
          }

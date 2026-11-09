@@ -1,6 +1,6 @@
 package com.github.alexthe666.iceandfire.client.model.util;
 
-import net.minecraft.entity.Entity;
+import net.minecraft.world.entity.Entity;
 
 @FunctionalInterface
 public interface IIceAndFireTabulaModelAnimator<T extends Entity> {
