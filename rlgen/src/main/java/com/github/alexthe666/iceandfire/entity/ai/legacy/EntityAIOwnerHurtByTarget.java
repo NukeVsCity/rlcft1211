@@ -3,19 +3,20 @@ package com.github.alexthe666.iceandfire.entity.ai.legacy;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
 
-/** 1.12.2 EntityAIOwnerHurtByTarget. */
+/** 1.12.2 net.minecraft.entity.ai.EntityAIOwnerHurtByTarget. */
 public class EntityAIOwnerHurtByTarget extends EntityAITarget {
-   protected TamableAnimal tameable;
-   protected LivingEntity attacker;
+   TamableAnimal tameable;
+   LivingEntity attacker;
    private int timestamp;
 
    public EntityAIOwnerHurtByTarget(TamableAnimal tameable) {
       super(tameable, false);
       this.tameable = tameable;
+      this.setMutexBits(1);
    }
 
    @Override
-   public boolean canUse() {
+   public boolean shouldExecute() {
       if (!this.tameable.isTame()) {
          return false;
       } else {
@@ -31,13 +32,13 @@ public class EntityAIOwnerHurtByTarget extends EntityAITarget {
    }
 
    @Override
-   public void start() {
+   public void startExecuting() {
       this.taskOwner.setTarget(this.attacker);
       LivingEntity owner = this.tameable.getOwner();
       if (owner != null) {
          this.timestamp = owner.getLastHurtByMobTimestamp();
       }
 
-      super.start();
+      super.startExecuting();
    }
 }

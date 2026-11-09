@@ -2,7 +2,7 @@ package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntityMyrmexBase;
 import com.github.alexthe666.iceandfire.entity.MyrmexHive;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITarget;
+import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAITarget;
 import net.minecraft.world.entity.LivingEntity;
 
 /** 1.12 MyrmexAIDefendHive: attack the hive's aggressors, or now and then a player whose reputation is below 25. */

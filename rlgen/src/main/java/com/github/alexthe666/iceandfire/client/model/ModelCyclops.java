@@ -6,7 +6,7 @@ import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.util.Mth;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.phys.Vec3;
 
 public class ModelCyclops extends ModelDragonBase {
    public AdvancedModelRenderer body;
@@ -389,8 +389,8 @@ public class ModelCyclops extends ModelDragonBase {
 
       this.walk(this.Jaw, speed_idle, degree_idle * -0.15F, true, 0.0F, -0.1F, (float)entity.tickCount, 1.0F);
       if (entity != null) {
-         Vec3d vec3d = entity.getPositionEyes(0.0F);
-         Vec3d vec3d1 = entity.getPositionEyes(0.0F);
+         Vec3 vec3d = ((Entity)entity).getEyePosition(0.0F);
+         Vec3 vec3d1 = ((Entity)entity).getEyePosition(0.0F);
          double d0 = vec3d.y - vec3d1.y;
          if (d0 > 0.0) {
             this.Eye.rotationPointY = -4.1F;
@@ -398,12 +398,12 @@ public class ModelCyclops extends ModelDragonBase {
             this.Eye.rotationPointY = -5.1F;
          }
 
-         Vec3d vec3d2 = entity.getLook(0.0F);
-         vec3d2 = new Vec3d(vec3d2.x, 0.0, vec3d2.z);
-         Vec3d vec3d3 = new Vec3d(vec3d1.x - vec3d.x, 0.0, vec3d1.z - vec3d.z)
+         Vec3 vec3d2 = ((Entity)entity).getViewVector(0.0F);
+         vec3d2 = new Vec3(vec3d2.x, 0.0, vec3d2.z);
+         Vec3 vec3d3 = new Vec3(vec3d1.x - vec3d.x, 0.0, vec3d1.z - vec3d.z)
             .normalize()
-            .rotateYaw((float) (Math.PI / 2));
-         double d1 = vec3d2.dotProduct(vec3d3);
+            .yRot((float) (Math.PI / 2));
+         double d1 = vec3d2.dot(vec3d3);
          this.Eye.rotationPointX = Mth.sqrt((float)Math.abs(d1)) * 2.0F * (float)Math.signum(d1);
       }
    }

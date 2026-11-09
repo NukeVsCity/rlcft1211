@@ -286,7 +286,9 @@ public class ModelDeathWorm extends ModelDragonBase {
       this.chainSwing(WORM, speed_walk, degree_walk * 0.1F, -3.0, (float)entity.tickCount, 1.0F);
       this.chainSwing(WORM, speed_walk, degree_walk, -3.0, f, f1);
       this.chainFlap(WORM, speed_walk, degree_walk * 0.75F, -3.0, f, f1);
-      worm.tail_buffer.applyChainSwingBuffer(WORM);
+      if (worm.tail_buffer instanceof net.ilexiconn.llibrary.client.model.tools.ChainBuffer buffer) {
+         buffer.applyChainSwingBuffer(WORM);
+      }
       float pitchAmount = f4 / (180.0F / (float)Math.PI);
       this.Body.rotationPointX += pitchAmount;
    }

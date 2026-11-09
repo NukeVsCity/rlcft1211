@@ -1,60 +1,58 @@
 package com.github.alexthe666.iceandfire.entity.ai.legacy;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 
-/** 1.12.2 EntityAINearestAttackableTarget (targetChance roll, sorted list, the 1.12 getNearestAttackablePlayer). */
+/** 1.12.2 net.minecraft.entity.ai.EntityAINearestAttackableTarget (living targets; the player-only branch is not needed). */
 public class EntityAINearestAttackableTarget<T extends LivingEntity> extends EntityAITarget {
    protected final Class<T> targetClass;
    private final int targetChance;
-   protected final Sorter sorter;
+   protected final EntityAINearestAttackableTarget.Sorter sorter;
    protected final Predicate<T> targetEntitySelector;
    protected T targetEntity;
 
-   public EntityAINearestAttackableTarget(PathfinderMob owner, Class<T> cls, boolean checkSight) {
-      this(owner, cls, checkSight, false);
+   public EntityAINearestAttackableTarget(PathfinderMob creature, Class<T> classTarget, boolean checkSight) {
+      this(creature, classTarget, checkSight, false);
    }
 
-   public EntityAINearestAttackableTarget(PathfinderMob owner, Class<T> cls, boolean checkSight, boolean onlyNearby) {
-      this(owner, cls, 10, checkSight, onlyNearby, null);
+   public EntityAINearestAttackableTarget(PathfinderMob creature, Class<T> classTarget, boolean checkSight, boolean onlyNearby) {
+      this(creature, classTarget, 10, checkSight, onlyNearby, null);
    }
 
    public EntityAINearestAttackableTarget(
-      PathfinderMob owner, Class<T> cls, int chance, boolean checkSight, boolean onlyNearby, @Nullable final Predicate<? super T> selector
+      PathfinderMob creature, Class<T> classTarget, int chance, boolean checkSight, boolean onlyNearby, @Nullable final Predicate<? super T> targetSelector
    ) {
-      super(owner, checkSight, onlyNearby);
-      this.targetClass = cls;
+      super(creature, checkSight, onlyNearby);
+      this.targetClass = classTarget;
       this.targetChance = chance;
-      this.sorter = new Sorter(owner);
-      this.targetEntitySelector = e -> {
-         if (e == null) {
+      this.sorter = new EntityAINearestAttackableTarget.Sorter(creature);
+      this.setMutexBits(1);
+      this.targetEntitySelector = entity -> {
+         if (entity == null) {
             return false;
-         } else if (selector != null && !selector.test(e)) {
+         } else if (targetSelector != null && !targetSelector.test(entity)) {
             return false;
          } else {
-            return e.isSpectator() ? false : this.isSuitableTarget(e, false);
+            return !EntitySelector.NO_SPECTATORS.test(entity) ? false : this.isSuitableTarget(entity, false);
          }
       };
    }
 
-   @SuppressWarnings("unchecked")
    @Override
-   public boolean canUse() {
+   public boolean shouldExecute() {
       if (this.targetChance > 0 && this.taskOwner.getRandom().nextInt(this.targetChance) != 0) {
          return false;
-      } else if (!Player.class.isAssignableFrom(this.targetClass)) {
-         List<T> list = new ArrayList<>(
-            this.taskOwner.level().getEntitiesOfClass(this.targetClass, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector)
-         );
+      } else if (this.targetClass != Player.class) {
+         List<T> list = this.taskOwner.level().getEntitiesOfClass(this.targetClass, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector);
          if (list.isEmpty()) {
             return false;
          } else {
@@ -63,27 +61,35 @@ public class EntityAINearestAttackableTarget<T extends LivingEntity> extends Ent
             return true;
          }
       } else {
-         this.targetEntity = (T)LegacyAi.getNearestAttackablePlayer(
-            this.taskOwner.level(),
-            this.taskOwner.getX(),
-            this.taskOwner.getY() + (double)this.taskOwner.getEyeHeight(),
-            this.taskOwner.getZ(),
-            this.getTargetDistance(),
-            this.getTargetDistance(),
-            p -> this.targetClass.isInstance(p) && this.targetEntitySelector.test((T)p)
-         );
+         double range = this.getTargetDistance();
+         Player best = null;
+         double bestDist = -1.0;
+         for (Player player : this.taskOwner.level().players()) {
+            @SuppressWarnings("unchecked")
+            T asT = (T)player;
+            if (this.targetEntitySelector.test(asT)) {
+               double d = player.distanceToSqr(this.taskOwner.getX(), this.taskOwner.getY() + (double)this.taskOwner.getEyeHeight(), this.taskOwner.getZ());
+               if (d < range * range && (bestDist == -1.0 || d < bestDist)) {
+                  bestDist = d;
+                  best = player;
+               }
+            }
+         }
+         @SuppressWarnings("unchecked")
+         T found = (T)best;
+         this.targetEntity = found;
          return this.targetEntity != null;
       }
    }
 
-   protected AABB getTargetableArea(double dist) {
-      return this.taskOwner.getBoundingBox().inflate(dist, 4.0, dist);
+   protected AABB getTargetableArea(double targetDistance) {
+      return this.taskOwner.getBoundingBox().inflate(targetDistance, 4.0, targetDistance);
    }
 
    @Override
-   public void start() {
+   public void startExecuting() {
       this.taskOwner.setTarget(this.targetEntity);
-      super.start();
+      super.startExecuting();
    }
 
    public static class Sorter implements Comparator<Entity> {

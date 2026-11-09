@@ -7,8 +7,6 @@ import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
 import net.ilexiconn.llibrary.client.model.legacy.ModelRenderer;
 import net.ilexiconn.llibrary.client.model.legacy.LegacyRender;
-import net.minecraft.client.renderer.LegacyRender.DestFactor;
-import net.minecraft.client.renderer.LegacyRender.SourceFactor;
 import net.minecraft.world.entity.Entity;
 
 public class ModelMyrmexRoyal extends ModelMyrmexBase {
@@ -259,12 +257,8 @@ public class ModelMyrmexRoyal extends ModelMyrmexBase {
       this.animate((IAnimatedEntity)entity, f, f1, f2, f3, f4, f5);
       this.setRotationAngles(f, f1, f2, f3, f4, f5, (EntityMyrmexBase)entity);
       LegacyRender.color(1.0F, 1.0F, 1.0F, 1.0F);
-      LegacyRender.enableNormalize();
-      LegacyRender.enableBlend();
-      LegacyRender.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
+      // 1.12 enabled alpha blending here; the myrmex renderer draws with a translucent render type
       this.Body2.render(f5);
-      LegacyRender.disableBlend();
-      LegacyRender.disableNormalize();
    }
 
    public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4, float f5) {
@@ -331,7 +325,7 @@ public class ModelMyrmexRoyal extends ModelMyrmexBase {
       this.swing(this.MandibleR, speed_idle * 2.0F, degree_idle * -0.75F, false, 1.0F, 0.2F, (float)entity.tickCount, 1.0F);
       this.swing(this.MandibleL, speed_idle * 2.0F, degree_idle * -0.75F, true, 1.0F, 0.2F, (float)entity.tickCount, 1.0F);
       EntityMyrmexRoyal myrmex = (EntityMyrmexRoyal)entity;
-      if (myrmex.isFlying() && !myrmex.onGround) {
+      if (myrmex.isFlying() && !myrmex.onGround()) {
          this.chainWave(LEFT_WINGS, speed_fly, degree_fly * 0.75F, 2.0, (float)entity.tickCount, 1.0F);
          this.chainWave(RIGHT_WINGS, speed_fly, degree_fly * 0.75F, 2.0, (float)entity.tickCount, 1.0F);
          this.bob(this.Body2, speed_fly, degree_fly * 10.0F, false, 0.0F, 0.0F);

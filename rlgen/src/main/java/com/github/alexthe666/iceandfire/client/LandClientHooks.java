@@ -56,7 +56,11 @@ public final class LandClientHooks {
       }
    }
 
-   /** tail_buffer.calculateChainSwingBuffer(90, 20, 5, worm). STUB(iaf/llibrary): needs ChainBuffer. */
+   /** tail_buffer.calculateChainSwingBuffer(90, 20, 5, worm) */
    public static void deathWormTail(EntityDeathWorm worm) {
+      if (!(worm.tail_buffer instanceof net.ilexiconn.llibrary.client.model.tools.ChainBuffer)) {
+         worm.tail_buffer = new net.ilexiconn.llibrary.client.model.tools.ChainBuffer();
+      }
+      ((net.ilexiconn.llibrary.client.model.tools.ChainBuffer)worm.tail_buffer).calculateChainSwingBuffer(90.0F, 20, 5.0F, worm);
    }
 }

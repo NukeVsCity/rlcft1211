@@ -2,9 +2,9 @@ package com.github.alexthe666.iceandfire.entity;
 
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.ai.TrollAIFleeSun;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIAttackMelee;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIHurtByTarget;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
+import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAIAttackMelee;
+import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAIHurtByTarget;
+import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAINearestAttackableTarget;
 import com.github.alexthe666.iceandfire.enums.EnumTroll;
 import javax.annotation.Nullable;
 import net.ilexiconn.llibrary.server.animation.Animation;

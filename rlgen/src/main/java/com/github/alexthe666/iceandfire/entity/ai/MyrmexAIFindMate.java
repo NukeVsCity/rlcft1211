@@ -2,8 +2,8 @@ package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntityMyrmexRoyal;
 import com.github.alexthe666.iceandfire.entity.MyrmexHive;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITarget;
+import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAINearestAttackableTarget;
+import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAITarget;
 import com.github.alexthe666.iceandfire.world.MyrmexWorldData;
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,6 +1,6 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIAttackMelee;
+import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAIAttackMelee;
 import net.minecraft.world.entity.PathfinderMob;
 
 /** 1.12 EntityAIAttackMeleeNoCooldown */

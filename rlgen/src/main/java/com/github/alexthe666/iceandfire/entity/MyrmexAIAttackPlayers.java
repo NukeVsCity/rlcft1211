@@ -1,6 +1,6 @@
 package com.github.alexthe666.iceandfire.entity;
 
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
+import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAINearestAttackableTarget;
 import net.minecraft.world.entity.player.Player;
 
 /** 1.12 MyrmexAIAttackPlayers: players without a hive or with a reputation below 25. */

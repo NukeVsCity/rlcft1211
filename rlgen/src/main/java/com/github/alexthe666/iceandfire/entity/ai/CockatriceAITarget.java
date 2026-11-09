@@ -1,7 +1,7 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntityCockatrice;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
+import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAINearestAttackableTarget;
 import java.util.function.Predicate;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.LivingEntity;

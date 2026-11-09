@@ -1,8 +1,8 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntityDeathWorm;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITarget;
+import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAINearestAttackableTarget;
+import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAITarget;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

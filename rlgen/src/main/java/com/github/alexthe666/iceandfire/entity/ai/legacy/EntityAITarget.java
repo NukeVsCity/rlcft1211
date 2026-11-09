@@ -1,6 +1,5 @@
 package com.github.alexthe666.iceandfire.entity.ai.legacy;
 
-import java.util.EnumSet;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -10,14 +9,13 @@ import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.pathfinder.Node;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.scores.Team;
 
-/** 1.12.2 net.minecraft.entity.ai.EntityAITarget (the 1.21 TargetGoal changed reach/sight rules). */
-public abstract class EntityAITarget extends Goal {
+/** 1.12.2 net.minecraft.entity.ai.EntityAITarget. */
+public abstract class EntityAITarget extends EntityAIBase {
    protected final PathfinderMob taskOwner;
    protected boolean shouldCheckSight;
    private final boolean nearbyOnly;
@@ -27,50 +25,49 @@ public abstract class EntityAITarget extends Goal {
    protected LivingEntity target;
    protected int unseenMemoryTicks = 60;
 
-   public EntityAITarget(PathfinderMob owner, boolean checkSight) {
-      this(owner, checkSight, false);
+   public EntityAITarget(PathfinderMob creature, boolean checkSight) {
+      this(creature, checkSight, false);
    }
 
-   public EntityAITarget(PathfinderMob owner, boolean checkSight, boolean onlyNearby) {
-      this.taskOwner = owner;
+   public EntityAITarget(PathfinderMob creature, boolean checkSight, boolean onlyNearby) {
+      this.taskOwner = creature;
       this.shouldCheckSight = checkSight;
       this.nearbyOnly = onlyNearby;
-      this.setFlags(EnumSet.of(Goal.Flag.TARGET));
    }
 
    @Override
-   public boolean canContinueToUse() {
-      LivingEntity target = this.taskOwner.getTarget();
-      if (target == null) {
-         target = this.target;
+   public boolean shouldContinueExecuting() {
+      LivingEntity living = this.taskOwner.getTarget();
+      if (living == null) {
+         living = this.target;
       }
 
-      if (target == null) {
+      if (living == null) {
          return false;
-      } else if (!target.isAlive()) {
+      } else if (!living.isAlive()) {
          return false;
       } else {
          Team team = this.taskOwner.getTeam();
-         Team team1 = target.getTeam();
+         Team team1 = living.getTeam();
          if (team != null && team1 == team) {
             return false;
          } else {
-            double d = this.getTargetDistance();
-            if (this.taskOwner.distanceToSqr(target) > d * d) {
+            double d0 = this.getTargetDistance();
+            if (this.taskOwner.distanceToSqr(living) > d0 * d0) {
                return false;
             } else {
                if (this.shouldCheckSight) {
-                  if (this.taskOwner.getSensing().hasLineOfSight(target)) {
+                  if (this.taskOwner.getSensing().hasLineOfSight(living)) {
                      this.targetUnseenTicks = 0;
                   } else if (++this.targetUnseenTicks > this.unseenMemoryTicks) {
                      return false;
                   }
                }
 
-               if (target instanceof Player && ((Player)target).getAbilities().invulnerable) {
+               if (living instanceof Player && ((Player)living).getAbilities().invulnerable) {
                   return false;
                } else {
-                  this.taskOwner.setTarget(target);
+                  this.taskOwner.setTarget(living);
                   return true;
                }
             }
@@ -79,19 +76,19 @@ public abstract class EntityAITarget extends Goal {
    }
 
    protected double getTargetDistance() {
-      AttributeInstance attr = this.taskOwner.getAttribute(Attributes.FOLLOW_RANGE);
-      return attr == null ? 16.0 : attr.getValue();
+      AttributeInstance attribute = this.taskOwner.getAttribute(Attributes.FOLLOW_RANGE);
+      return attribute == null ? 16.0 : attribute.getValue();
    }
 
    @Override
-   public void start() {
+   public void startExecuting() {
       this.targetSearchStatus = 0;
       this.targetSearchDelay = 0;
       this.targetUnseenTicks = 0;
    }
 
    @Override
-   public void stop() {
+   public void resetTask() {
       this.taskOwner.setTarget(null);
       this.target = null;
    }
@@ -127,7 +124,7 @@ public abstract class EntityAITarget extends Goal {
    protected boolean isSuitableTarget(@Nullable LivingEntity target, boolean includeInvincibles) {
       if (!isSuitableTarget(this.taskOwner, target, includeInvincibles, this.shouldCheckSight)) {
          return false;
-      } else if (!this.taskOwner.isWithinRestriction(BlockPos.containing(target.getX(), target.getY(), target.getZ()))) {
+      } else if (!this.taskOwner.isWithinRestriction(BlockPos.containing(target.position()))) {
          return false;
       } else {
          if (this.nearbyOnly) {

@@ -8,7 +8,7 @@ import com.github.alexthe666.iceandfire.entity.IafLand;
 import com.github.alexthe666.iceandfire.entity.LandUtils;
 import com.github.alexthe666.iceandfire.entity.StoneEntityProperties;
 import com.github.alexthe666.iceandfire.entity.ai.EntitySheepAIFollowCyclops;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
+import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAINearestAttackableTarget;
 import com.github.alexthe666.iceandfire.message.MessageStoneStatue;
 import java.util.ArrayList;
 import java.util.Collections;

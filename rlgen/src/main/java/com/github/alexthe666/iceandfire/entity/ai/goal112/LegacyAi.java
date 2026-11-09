@@ -1,4 +1,4 @@
-package com.github.alexthe666.iceandfire.entity.ai.legacy;
+package com.github.alexthe666.iceandfire.entity.ai.goal112;
 
 import java.util.function.Predicate;
 import java.util.function.ToDoubleFunction;
