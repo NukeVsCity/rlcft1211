@@ -13,5 +13,6 @@ public final class IceAndFire {
 
    public IceAndFire(IEventBus modBus) {
       IafRegistries.register(modBus);
+      com.github.alexthe666.iceandfire.entity.AirWaterEntities.register(modBus);
    }
 }
