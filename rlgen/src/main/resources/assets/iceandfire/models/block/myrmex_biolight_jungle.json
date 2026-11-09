@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "iceandfire:blocks/myrmex_jungle_biolight_top"
+  },
+  "render_type": "minecraft:cutout"
+}

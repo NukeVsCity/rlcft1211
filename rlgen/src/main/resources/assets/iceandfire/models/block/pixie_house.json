@@ -1,0 +1,7 @@
+{
+  "textures": {
+    "particle": "minecraft:block/mushroom_block_skin_stem"
+  },
+  "elements": [],
+  "render_type": "minecraft:cutout"
+}

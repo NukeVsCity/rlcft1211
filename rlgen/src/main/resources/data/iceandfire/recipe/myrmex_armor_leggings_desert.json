@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CCC",
+    "C C",
+    "C C"
+  ],
+  "key": {
+    "C": {
+      "item": "iceandfire:myrmex_desert_chitin"
+    }
+  },
+  "result": {
+    "id": "iceandfire:myrmex_desert_leggings",
+    "count": 1
+  }
+}

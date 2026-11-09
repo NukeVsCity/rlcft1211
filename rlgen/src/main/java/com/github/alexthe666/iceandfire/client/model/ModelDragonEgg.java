@@ -45,10 +45,15 @@ public class ModelDragonEgg extends AdvancedModelBase {
    }
 
    public void renderFrozen(TileEntityEggInIce tile) {
+      this.renderFrozen(tile.ticksExisted);
+   }
+
+   /** 1.12 quirk kept: the wobble is applied after drawing and RenderEggInIce makes a new model every frame, so it never shows. */
+   public void renderFrozen(int ticksExisted) {
       this.Egg1.rotateAngleX = (float)Math.toRadians(-180.0);
       ModelUtils.renderAll(this.boxList);
-      this.walk(this.Egg1, 0.3F, 0.1F, true, 1.0F, 0.0F, (float)tile.ticksExisted, 1.0F);
-      this.flap(this.Egg1, 0.3F, 0.1F, false, 0.0F, 0.0F, (float)tile.ticksExisted, 1.0F);
+      this.walk(this.Egg1, 0.3F, 0.1F, true, 1.0F, 0.0F, (float)ticksExisted, 1.0F);
+      this.flap(this.Egg1, 0.3F, 0.1F, false, 0.0F, 0.0F, (float)ticksExisted, 1.0F);
    }
 
    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {

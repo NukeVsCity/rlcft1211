@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RD",
+    "DR"
+  ],
+  "key": {
+    "D": {
+      "tag": "iceandfire:ore_dirt"
+    },
+    "R": {
+      "item": "iceandfire:myrmex_jungle_resin"
+    }
+  },
+  "result": {
+    "id": "iceandfire:myrmex_resin",
+    "count": 1,
+    "components": {
+      "iceandfire:meta": 1
+    }
+  }
+}

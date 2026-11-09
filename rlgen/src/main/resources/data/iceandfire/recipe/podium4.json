@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SPS",
+    " P ",
+    "SPS"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:jungle_slab"
+    },
+    "P": {
+      "item": "minecraft:jungle_planks"
+    }
+  },
+  "result": {
+    "id": "iceandfire:podium",
+    "count": 1,
+    "components": {
+      "iceandfire:meta": 3
+    }
+  }
+}

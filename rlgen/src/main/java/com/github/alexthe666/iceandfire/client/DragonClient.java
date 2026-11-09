@@ -14,8 +14,10 @@ import com.github.alexthe666.iceandfire.client.render.entity.RenderDragonBase;
 import com.github.alexthe666.iceandfire.client.render.entity.RenderDragonEgg;
 import com.github.alexthe666.iceandfire.client.render.entity.RenderDragonFireCharge;
 import com.github.alexthe666.iceandfire.client.render.entity.RenderDragonSkull;
-import com.github.alexthe666.iceandfire.client.render.tile.RenderEggInIce;
-import com.github.alexthe666.iceandfire.core.ModBlocks;
+import com.github.alexthe666.iceandfire.client.model.ModelDragonEgg;
+import com.github.alexthe666.iceandfire.client.render.tile.IafRenderHooks;
+import net.ilexiconn.llibrary.client.model.legacy.LegacyRender;
+import net.minecraft.client.renderer.RenderType;
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import com.github.alexthe666.iceandfire.entity.IafDragonEntities;
 import com.github.alexthe666.iceandfire.entity.ReversedBuffer;
@@ -66,7 +68,6 @@ public final class DragonClient {
       event.registerEntityRenderer(IafDragonEntities.DRAGON_FIRE_CHARGE.get(), ctx -> new RenderDragonFireCharge<>(ctx, true));
       event.registerEntityRenderer(IafDragonEntities.DRAGON_ICE.get(), NoopRenderer::new);
       event.registerEntityRenderer(IafDragonEntities.DRAGON_ICE_CHARGE.get(), ctx -> new RenderDragonFireCharge<>(ctx, false));
-      event.registerBlockEntityRenderer(ModBlocks.EGG_IN_ICE_TILE.get(), RenderEggInIce::new);
    }
 
    @SubscribeEvent
@@ -84,6 +85,20 @@ public final class DragonClient {
    public static void setup(FMLClientSetupEvent event) {
       com.github.alexthe666.iceandfire.entity.DragonParticles.spawner = DragonParticles::spawn;
       EntityDragonBase.clientBuffers = DragonClient::updateBuffers;
+      // the podium and egg-in-ice renderers of iaf/core draw the egg through this hook (1.12 made a new ModelDragonEgg each frame)
+      IafRenderHooks.egg = (pose, buffers, light, overlay, texture, frozenTicks) -> {
+         ModelDragonEgg model = new ModelDragonEgg();
+         LegacyRender.push(pose, buffers.getBuffer(RenderType.entityCutoutNoCull(texture)), light, overlay, -1);
+         try {
+            if (frozenTicks < 0) {
+               model.renderPodium();
+            } else {
+               model.renderFrozen(frozenTicks);
+            }
+         } finally {
+            LegacyRender.pop();
+         }
+      };
    }
 
    /**

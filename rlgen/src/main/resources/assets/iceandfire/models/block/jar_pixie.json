@@ -1,0 +1,4 @@
+{
+  "parent": "iceandfire:block/jar",
+  "render_type": "minecraft:translucent"
+}
