@@ -5,7 +5,9 @@ import com.github.alexthe666.iceandfire.client.model.util.IIceAndFireTabulaModel
 import com.github.alexthe666.iceandfire.client.model.util.IceAndFireTabulaModel;
 import com.github.alexthe666.iceandfire.entity.EntityDragonBase;
 import com.github.alexthe666.iceandfire.entity.EntityFireDragon;
+import com.github.alexthe666.iceandfire.entity.ReversedBuffer;
 import net.ilexiconn.llibrary.LLibrary;
+import net.ilexiconn.llibrary.client.model.tools.ChainBuffer;
 import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
 
 public class FireDragonTabulaModelAnimator extends IceAndFireTabulaModelAnimator implements IIceAndFireTabulaModelAnimator<EntityFireDragon> {
@@ -186,9 +188,10 @@ public class FireDragonTabulaModelAnimator extends IceAndFireTabulaModelAnimator
          }
       }
 
-      if (!entity.isModelDead()) {
-         entity.turn_buffer.applyChainSwingBuffer(neckParts);
-         entity.tail_buffer.applyChainSwingBuffer(tailPartsWBody);
+      // the buffers live on the entity (created and ticked client side by DragonClientHooks)
+      if (!entity.isModelDead() && entity.turn_buffer instanceof ReversedBuffer turn && entity.tail_buffer instanceof ChainBuffer tail) {
+         turn.applyChainSwingBuffer(neckParts);
+         tail.applyChainSwingBuffer(tailPartsWBody);
       }
    }
 
