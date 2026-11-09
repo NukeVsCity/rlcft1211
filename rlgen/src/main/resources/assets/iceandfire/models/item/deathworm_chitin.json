@@ -1,0 +1,20 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "iceandfire:items/deathworm_chitin_yellow"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "iceandfire:meta": 1
+      },
+      "model": "iceandfire:item/deathworm_chitin_white"
+    },
+    {
+      "predicate": {
+        "iceandfire:meta": 2
+      },
+      "model": "iceandfire:item/deathworm_chitin_red"
+    }
+  ]
+}

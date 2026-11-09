@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BMB",
+    "MBM",
+    "BMB"
+  ],
+  "key": {
+    "M": {
+      "tag": "iceandfire:food_meat"
+    },
+    "B": {
+      "item": "minecraft:bone"
+    }
+  },
+  "result": {
+    "id": "iceandfire:dragon_meal",
+    "count": 1
+  }
+}

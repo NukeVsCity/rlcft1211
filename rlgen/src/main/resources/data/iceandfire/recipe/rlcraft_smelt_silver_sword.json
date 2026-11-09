@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "iceandfire:silver_sword"
+  },
+  "result": {
+    "id": "iceandfire:silver_nugget",
+    "count": 4
+  },
+  "experience": 1.0,
+  "cookingtime": 200
+}

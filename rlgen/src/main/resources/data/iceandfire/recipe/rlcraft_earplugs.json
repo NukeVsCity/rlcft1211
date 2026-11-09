@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BB"
+  ],
+  "key": {
+    "B": {
+      "tag": "minecraft:wooden_buttons"
+    }
+  },
+  "result": {
+    "id": "iceandfire:earplugs",
+    "count": 1
+  }
+}

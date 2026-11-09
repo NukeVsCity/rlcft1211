@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "RS",
+    "SR"
+  ],
+  "key": {
+    "S": {
+      "tag": "minecraft:sand"
+    },
+    "R": {
+      "item": "iceandfire:myrmex_desert_resin"
+    }
+  },
+  "result": {
+    "id": "iceandfire:myrmex_resin",
+    "count": 1
+  }
+}

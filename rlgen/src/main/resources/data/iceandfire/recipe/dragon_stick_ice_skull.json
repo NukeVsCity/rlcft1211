@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S",
+    "T",
+    " "
+  ],
+  "key": {
+    "S": {
+      "type": "neoforge:components",
+      "items": "iceandfire:dragon_skull",
+      "components": {
+        "iceandfire:meta": 1
+      },
+      "strict": false
+    },
+    "T": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "id": "iceandfire:dragon_stick",
+    "count": 1
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CCC",
+    "C C",
+    "C C"
+  ],
+  "key": {
+    "C": {
+      "type": "neoforge:components",
+      "items": "iceandfire:deathworm_chitin",
+      "components": {
+        "iceandfire:meta": 2
+      },
+      "strict": false
+    }
+  },
+  "result": {
+    "id": "iceandfire:deathworm_red_leggings",
+    "count": 1
+  }
+}

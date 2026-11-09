@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "iceandfire:items/jar_0"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "iceandfire:meta": 1
+      },
+      "model": "iceandfire:item/jar_1"
+    },
+    {
+      "predicate": {
+        "iceandfire:meta": 2
+      },
+      "model": "iceandfire:item/jar_2"
+    },
+    {
+      "predicate": {
+        "iceandfire:meta": 3
+      },
+      "model": "iceandfire:item/jar_3"
+    },
+    {
+      "predicate": {
+        "iceandfire:meta": 4
+      },
+      "model": "iceandfire:item/jar_4"
+    }
+  ]
+}

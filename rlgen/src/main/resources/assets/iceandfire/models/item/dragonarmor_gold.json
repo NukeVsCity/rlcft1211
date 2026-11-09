@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "iceandfire:items/dragonarmor_gold_head"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "iceandfire:meta": 1
+      },
+      "model": "iceandfire:item/dragonarmor_gold_neck"
+    },
+    {
+      "predicate": {
+        "iceandfire:meta": 2
+      },
+      "model": "iceandfire:item/dragonarmor_gold_body"
+    },
+    {
+      "predicate": {
+        "iceandfire:meta": 3
+      },
+      "model": "iceandfire:item/dragonarmor_gold_tail"
+    }
+  ]
+}
