@@ -167,7 +167,7 @@ public enum EnumDragonTextures {
                   return textures.FIRESTAGE4SLEEPINGTEXTURE;
             }
          }
-      } else if (!dragon.isSleeping() && !dragon.isBlinking()) {
+      } else if (!dragon.isDragonSleeping() && !dragon.isBlinking()) {
          switch (dragon.getDragonStage()) {
             case 1:
                return textures.FIRESTAGE1TEXTURE;
@@ -234,7 +234,7 @@ public enum EnumDragonTextures {
                   return textures.ICESTAGE4SLEEPINGTEXTURE;
             }
          }
-      } else if (!dragon.isSleeping() && !dragon.isBlinking()) {
+      } else if (!dragon.isDragonSleeping() && !dragon.isBlinking()) {
          switch (dragon.getDragonStage()) {
             case 1:
                return textures.ICESTAGE1TEXTURE;

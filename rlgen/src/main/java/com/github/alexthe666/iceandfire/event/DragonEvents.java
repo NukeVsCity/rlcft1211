@@ -22,12 +22,10 @@ import net.minecraft.world.level.block.ChestBlock;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
-import net.neoforged.neoforge.event.entity.living.LivingFallEvent;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 
-/** The dragon parts of Ice and Fire 1.7.1 EventLiving. */
+/** The dragon parts of Ice and Fire 1.7.1 EventLiving (the fall/logout parts are in iaf/core's EventLiving), plus the villager/animal fear goals of every IaF mob. */
 public final class DragonEvents {
    private DragonEvents() {
    }
@@ -41,14 +39,6 @@ public final class DragonEvents {
             event.setCanceled(true);
             event.setCancellationResult(InteractionResult.SUCCESS);
          }
-      }
-   }
-
-   @SubscribeEvent
-   public static void onEntityFall(LivingFallEvent event) {
-      if (event.getEntity() instanceof Player player && DragonCompat.hasDismountedDragon(player)) {
-         event.setDamageMultiplier(0.0F);
-         DragonCompat.setDismountedDragon(player, false);
       }
    }
 
@@ -115,13 +105,6 @@ public final class DragonEvents {
       if (event.getPlayer() != null
          && (event.getState().getBlock() == DragonCompat.block(ModBlocks.goldPile) || event.getState().getBlock() == DragonCompat.block(ModBlocks.silverPile))) {
          alertDragons(event.getPlayer());
-      }
-   }
-
-   @SubscribeEvent
-   public static void onPlayerLeave(PlayerEvent.PlayerLoggedOutEvent event) {
-      for (Entity passenger : new ArrayList<>(event.getEntity().getPassengers())) {
-         passenger.stopRiding();
       }
    }
 
