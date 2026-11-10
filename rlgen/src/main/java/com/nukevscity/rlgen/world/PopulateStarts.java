@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import net.minecraft.core.SectionPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ChunkPos;
@@ -58,10 +57,10 @@ public final class PopulateStarts {
 
    static Starts collect(WorldGenLevel level, ChunkPos cp, StructureManager structures, LegacyChunkGenerator generator) {
       var registry = level.registryAccess().registryOrThrow(Registries.STRUCTURE);
-      return new Starts(cp.toLong(), generator, find(registry.get(MINESHAFT), cp, structures), find(registry.get(VILLAGE), cp, structures));
+      return new Starts(cp.toLong(), generator, find(level, registry.get(MINESHAFT), cp, structures), find(level, registry.get(VILLAGE), cp, structures));
    }
 
-   private static List<StructureStart> find(Structure structure, ChunkPos cp, StructureManager structures) {
+   private static List<StructureStart> find(WorldGenLevel level, Structure structure, ChunkPos cp, StructureManager structures) {
       List<StructureStart> out = new ArrayList<>();
       if (structure == null) {
          return out;
@@ -72,12 +71,20 @@ public final class PopulateStarts {
       // the populate area lies in this chunk and the ones +1 east/south; their references name every start reaching it
       for (int dx = 0; dx <= 1; dx++) {
          for (int dz = 0; dz <= 1; dz++) {
-            SectionPos sp = SectionPos.of(new ChunkPos(cp.x + dx, cp.z + dz), 0);
-            for (StructureStart start : structures.startsForStructure(sp, structure)) {
+            // the neighbours' references can name a start one chunk beyond what this chunk's WorldGenRegion holds: skipped
+            it.unimi.dsi.fastutil.longs.LongSet refs = level.getChunk(cp.x + dx, cp.z + dz,
+               net.minecraft.world.level.chunk.status.ChunkStatus.STRUCTURE_REFERENCES).getReferencesForStructure(structure);
+            it.unimi.dsi.fastutil.longs.LongSet reachable = new it.unimi.dsi.fastutil.longs.LongOpenHashSet();
+            for (long r : refs) {
+               if (level.hasChunk(ChunkPos.getX(r), ChunkPos.getZ(r))) {
+                  reachable.add(r);
+               }
+            }
+            structures.fillStartsForStructure(structure, reachable, start -> {
                if (start.isValid() && start.getBoundingBox().intersects(minX, minZ, minX + 15, minZ + 15)) {
                   found.putIfAbsent(start.getChunkPos().toLong(), start);
                }
-            }
+            });
          }
       }
       out.addAll(found.values());
