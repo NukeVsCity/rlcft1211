@@ -3,15 +3,14 @@ package com.github.alexthe666.iceandfire.entity;
 import com.github.alexthe666.iceandfire.entity.ai.StymphalianBirdAIAirTarget;
 import com.github.alexthe666.iceandfire.entity.ai.StymphalianBirdAIFlee;
 import com.github.alexthe666.iceandfire.entity.ai.StymphalianBirdAITarget;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIAttackMelee;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIHurtByTarget;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAILookIdle;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAISwimming;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAITasks;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIWander;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIWatchClosest;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.LegacyMoveControl;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.LegacyTasksGoal;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIAttackMelee;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIHurtByTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAILookIdle;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAISwimming;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIWander;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIWatchClosest;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.LegacyMoveControl;
 import java.util.Optional;
 import java.util.UUID;
 import javax.annotation.Nullable;
@@ -79,7 +78,7 @@ public class EntityStymphalianBird extends PathfinderMob implements IAnimatedEnt
       super(type, level);
       this.moveControl = new LegacyMoveControl(this);
       this.initEntityAI();
-      this.goalSelector.addGoal(0, new LegacyTasksGoal(this, this.targetTasks, this.tasks));
+      com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112.install(this, this.tasks, this.targetTasks);
    }
 
    public static AttributeSupplier.Builder createAttributes() {

@@ -4,13 +4,12 @@ import com.github.alexthe666.iceandfire.entity.ai.PixieAIFlee;
 import com.github.alexthe666.iceandfire.entity.ai.PixieAIFollowOwner;
 import com.github.alexthe666.iceandfire.entity.ai.PixieAIPickupItem;
 import com.github.alexthe666.iceandfire.entity.ai.PixieAISteal;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIBase;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAILookIdle;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAISwimming;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAITasks;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIWatchClosest;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.LegacyMoveControl;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.LegacyTasksGoal;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAILookIdle;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAISwimming;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIWatchClosest;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.LegacyMoveControl;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
@@ -52,7 +51,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.Vec3;
 
 /** Ice and Fire 1.7.1 EntityPixie. */
-public class EntityPixie extends TamableAnimal implements com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAISit.Sittable {
+public class EntityPixie extends TamableAnimal implements com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAISit.Sitter {
    public static final float[][] PARTICLE_RGB = new float[][]{
       {1.0F, 0.752F, 0.792F}, {0.831F, 0.662F, 1.0F}, {0.513F, 0.843F, 1.0F}, {0.654F, 0.909F, 0.615F}, {0.996F, 0.788F, 0.407F}
    };
@@ -79,7 +78,7 @@ public class EntityPixie extends TamableAnimal implements com.github.alexthe666.
       this.xpReward = 3;
       this.setDropChance(EquipmentSlot.MAINHAND, 0.0F);
       this.initEntityAI();
-      this.goalSelector.addGoal(0, new LegacyTasksGoal(this, this.targetTasks, this.tasks));
+      com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112.install(this, this.tasks, this.targetTasks);
    }
 
    public static AttributeSupplier.Builder createAttributes() {

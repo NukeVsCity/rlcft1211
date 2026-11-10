@@ -1,4 +1,4 @@
-package com.github.alexthe666.iceandfire.entity.ai.legacy112;
+package com.github.alexthe666.iceandfire.entity.ai.legacy;
 
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.control.MoveControl;

@@ -2,9 +2,9 @@ package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.AirWaterUtils;
 import com.github.alexthe666.iceandfire.entity.EntityPixie;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIBase;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.Legacy112;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.RandomPositionGenerator;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.RandomPositionGenerator;
 import java.util.List;
 import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;

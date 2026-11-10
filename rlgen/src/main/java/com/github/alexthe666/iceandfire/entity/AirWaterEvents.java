@@ -129,7 +129,7 @@ public final class AirWaterEvents {
       List<EntityAmphithere> list = villager.level().getEntitiesOfClass(EntityAmphithere.class,
          new AABB(villager.getX() - 1.0, villager.getY() - 1.0, villager.getZ() - 1.0, villager.getX() + 1.0, villager.getY() + 1.0,
             villager.getZ() + 1.0).inflate(d0, d0, d0));
-      list.sort(new com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAINearestAttackableTarget.Sorter(attacker));
+      list.sort(new com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget.Sorter(attacker));
       for (EntityAmphithere amphithere : list) {
          if (!(attacker instanceof EntityAmphithere) && !AirWaterUtils.hasSameOwner(amphithere, attacker)) {
             if (attacker instanceof Player player) {

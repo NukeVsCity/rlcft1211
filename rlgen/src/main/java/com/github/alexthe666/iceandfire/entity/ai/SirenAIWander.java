@@ -1,7 +1,7 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntitySiren;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIWander;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIWander;
 import net.minecraft.world.entity.PathfinderMob;
 
 /** Ice and Fire 1.7.1 SirenAIWander */

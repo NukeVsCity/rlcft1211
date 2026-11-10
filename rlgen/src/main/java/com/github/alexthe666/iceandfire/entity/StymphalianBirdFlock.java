@@ -1,7 +1,7 @@
 package com.github.alexthe666.iceandfire.entity;
 
 import com.github.alexthe666.iceandfire.entity.ai.StymphalianBirdAIAirTarget;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAINearestAttackableTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;

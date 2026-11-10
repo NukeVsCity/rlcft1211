@@ -1,8 +1,8 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.AirWaterUtils;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIBase;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.Legacy112;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.pathfinder.Path;

@@ -5,11 +5,10 @@ import com.github.alexthe666.iceandfire.entity.ai.FlyingAITarget;
 import com.github.alexthe666.iceandfire.entity.ai.PathNavigateAmphibious;
 import com.github.alexthe666.iceandfire.entity.ai.SeaSerpentAIAttackMelee;
 import com.github.alexthe666.iceandfire.entity.ai.SeaSerpentAIGetInWater;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIBase;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIHurtByTarget;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAITasks;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.LegacyMoveControl;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.LegacyTasksGoal;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIHurtByTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.LegacyMoveControl;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import net.ilexiconn.llibrary.server.animation.Animation;
@@ -117,7 +116,7 @@ public class EntitySeaSerpent extends Animal implements IAnimatedEntity, IMultip
       // parts get the ids right after the serpent's (as the 1.21 ender dragon), so hits on them reach the server
       this.setId(ENTITY_COUNTER.getAndAdd(this.segments.length + 1) + 1);
       this.initEntityAI();
-      this.goalSelector.addGoal(0, new LegacyTasksGoal(this, this.targetTasks, this.tasks));
+      com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112.install(this, this.tasks, this.targetTasks);
       if (level.isClientSide) {
          this.roll_buffer = AirWaterEntities.clientChainBuffer();
          this.pitch_buffer = AirWaterEntities.clientChainBuffer();
@@ -876,7 +875,7 @@ public class EntitySeaSerpent extends Animal implements IAnimatedEntity, IMultip
    }
 
    public static boolean isWaterBlock(Level world, BlockPos pos) {
-      return com.github.alexthe666.iceandfire.entity.ai.legacy112.Legacy112.isWaterMaterial(world.getBlockState(pos));
+      return com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112.isWaterMaterial(world.getBlockState(pos));
    }
 
    public boolean isAtSurface() {

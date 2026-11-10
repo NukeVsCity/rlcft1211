@@ -1,6 +1,6 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIWatchClosest;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIWatchClosest;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;

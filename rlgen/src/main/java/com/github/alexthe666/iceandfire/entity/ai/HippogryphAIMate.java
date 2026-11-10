@@ -2,8 +2,8 @@ package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.AirWaterEntities;
 import com.github.alexthe666.iceandfire.entity.EntityHippogryph;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIBase;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.Legacy112;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
 import java.util.List;
 import java.util.Random;
 import net.minecraft.core.particles.ParticleTypes;

@@ -1,4 +1,4 @@
-package com.github.alexthe666.iceandfire.entity.ai.legacy112;
+package com.github.alexthe666.iceandfire.entity.ai.legacy;
 
 import javax.annotation.Nullable;
 import net.minecraft.world.entity.PathfinderMob;

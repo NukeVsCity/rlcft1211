@@ -1,4 +1,4 @@
-package com.github.alexthe666.iceandfire.entity.ai.legacy112;
+package com.github.alexthe666.iceandfire.entity.ai.legacy;
 
 import java.util.List;
 import java.util.function.Function;
@@ -157,5 +157,44 @@ public final class Legacy112 {
 
    public static float wrapDegrees(float f) {
       return Mth.wrapDegrees(f);
+   }
+
+   /**
+    * Runs a mob's 1.12 task lists through {@link EntityAITasks#install} (targetTasks, then tasks, every tick) and, before them,
+    * 1.12 EntityLiving.updateMovementGoalFlags every 5 ticks.
+    */
+   public static void install(net.minecraft.world.entity.Mob mob, EntityAITasks tasks, EntityAITasks targetTasks) {
+      mob.goalSelector.addGoal(0, new net.minecraft.world.entity.ai.goal.Goal() {
+         {
+            this.setFlags(java.util.EnumSet.noneOf(net.minecraft.world.entity.ai.goal.Goal.Flag.class));
+         }
+
+         @Override
+         public boolean canUse() {
+            return true;
+         }
+
+         @Override
+         public boolean isInterruptable() {
+            return false;
+         }
+
+         @Override
+         public boolean requiresUpdateEveryTick() {
+            return true;
+         }
+
+         @Override
+         public void tick() {
+            if (mob.tickCount % 5 == 0) {
+               boolean notMobRidden = !(mob.getControllingPassenger() instanceof net.minecraft.world.entity.Mob);
+               boolean notInBoat = !(mob.getVehicle() instanceof net.minecraft.world.entity.vehicle.Boat);
+               tasks.setControlFlag(1, notMobRidden);
+               tasks.setControlFlag(4, notMobRidden && notInBoat);
+               tasks.setControlFlag(2, notMobRidden);
+            }
+         }
+      });
+      EntityAITasks.install(mob, mob.goalSelector, tasks, mob.targetSelector, targetTasks);
    }
 }

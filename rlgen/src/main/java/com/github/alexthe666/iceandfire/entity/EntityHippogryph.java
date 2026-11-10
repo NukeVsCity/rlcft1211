@@ -6,16 +6,15 @@ import com.github.alexthe666.iceandfire.entity.ai.HippogryphAIMate;
 import com.github.alexthe666.iceandfire.entity.ai.HippogryphAITarget;
 import com.github.alexthe666.iceandfire.entity.ai.HippogryphAITargetItems;
 import com.github.alexthe666.iceandfire.entity.ai.HippogryphAIWander;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIHurtByTarget;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAILookIdle;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIOwnerHurtByTarget;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIOwnerHurtTarget;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAISit;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAISwimming;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAITasks;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAITempt;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIWatchClosest;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.LegacyTasksGoal;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIHurtByTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAILookIdle;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIOwnerHurtByTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIOwnerHurtTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAISit;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAISwimming;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITempt;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIWatchClosest;
 import com.github.alexthe666.iceandfire.enums.EnumHippogryphTypes;
 import com.github.alexthe666.iceandfire.inventory.ContainerHippogryph;
 import javax.annotation.Nullable;
@@ -70,7 +69,7 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
 /** Ice and Fire 1.7.1 EntityHippogryph. */
-public class EntityHippogryph extends TamableAnimal implements IAnimatedEntity, IDragonFlute, IVillagerFear, IAnimalFear, IDropArmor, EntityAISit.Sittable,
+public class EntityHippogryph extends TamableAnimal implements IAnimatedEntity, IDragonFlute, IVillagerFear, IAnimalFear, IDropArmor, EntityAISit.Sitter,
    IAirWaterRideable {
    public static final ResourceKey<LootTable> LOOT = AirWaterEntities.loot("hippogryph");
    private static final int FLIGHT_CHANCE_PER_TICK = 1200;
@@ -115,7 +114,7 @@ public class EntityHippogryph extends TamableAnimal implements IAnimatedEntity, 
    public EntityHippogryph(EntityType<? extends EntityHippogryph> type, Level level) {
       super(type, level);
       this.initEntityAI();
-      this.goalSelector.addGoal(0, new LegacyTasksGoal(this, this.targetTasks, this.tasks));
+      com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112.install(this, this.tasks, this.targetTasks);
       this.initHippogryphInv();
       if (level.isClientSide) {
          this.roll_buffer = AirWaterEntities.clientChainBuffer();

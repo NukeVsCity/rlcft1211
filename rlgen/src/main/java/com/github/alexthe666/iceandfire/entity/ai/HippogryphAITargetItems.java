@@ -1,8 +1,8 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntityHippogryph;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAINearestAttackableTarget;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAITarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITarget;
 import java.util.List;
 import java.util.function.Predicate;
 import net.minecraft.sounds.SoundEvents;

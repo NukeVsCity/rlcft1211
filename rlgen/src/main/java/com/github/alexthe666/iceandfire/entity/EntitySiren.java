@@ -5,15 +5,14 @@ import com.github.alexthe666.iceandfire.entity.ai.AquaticAIGetOutOfWater;
 import com.github.alexthe666.iceandfire.entity.ai.PathNavigateAmphibious;
 import com.github.alexthe666.iceandfire.entity.ai.SirenAIFindWaterTarget;
 import com.github.alexthe666.iceandfire.entity.ai.SirenAIWander;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIAttackMelee;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIHurtByTarget;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAILookIdle;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAINearestAttackableTarget;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAITasks;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIWatchClosest;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.Legacy112;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.LegacyMoveControl;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.LegacyTasksGoal;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIAttackMelee;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIHurtByTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAILookIdle;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIWatchClosest;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.LegacyMoveControl;
 import com.github.alexthe666.iceandfire.message.AirWaterNetwork;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
@@ -99,7 +98,7 @@ public class EntitySiren extends Monster implements IAnimatedEntity {
       this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, Player.class, 0, true, false,
          entity -> this.isAgressive() && !entity.isCreative() && !entity.isSpectator()));
       this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, Villager.class, 0, true, false, entity -> this.isAgressive()));
-      this.goalSelector.addGoal(0, new LegacyTasksGoal(this, this.targetTasks, this.tasks));
+      com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112.install(this, this.tasks, this.targetTasks);
       if (level.isClientSide) {
          this.tail_buffer = AirWaterEntities.clientLLibraryChainBuffer();
       }

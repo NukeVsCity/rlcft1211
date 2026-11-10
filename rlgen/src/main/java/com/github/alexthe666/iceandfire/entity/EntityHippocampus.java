@@ -4,12 +4,11 @@ import com.github.alexthe666.iceandfire.entity.ai.AquaticAIFindWaterTarget;
 import com.github.alexthe666.iceandfire.entity.ai.AquaticAIGetInWater;
 import com.github.alexthe666.iceandfire.entity.ai.HippocampusAIWander;
 import com.github.alexthe666.iceandfire.entity.ai.PathNavigateAmphibious;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIMate;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAITasks;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAITempt;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.Legacy112;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.LegacyMoveControl;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.LegacyTasksGoal;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIMate;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITempt;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.LegacyMoveControl;
 import com.github.alexthe666.iceandfire.inventory.ContainerHippocampus;
 import javax.annotation.Nullable;
 import net.ilexiconn.llibrary.server.animation.Animation;
@@ -90,7 +89,7 @@ public class EntityHippocampus extends TamableAnimal implements IAnimatedEntity,
       this.tasks.addTask(2, new AquaticAIGetInWater(this, 1.0));
       this.tasks.addTask(3, new HippocampusAIWander(this, 1.0));
       this.tasks.addTask(4, new EntityAIMate(this, 1.0));
-      this.goalSelector.addGoal(0, new LegacyTasksGoal(this, this.targetTasks, this.tasks));
+      com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112.install(this, this.tasks, this.targetTasks);
       if (level.isClientSide) {
          this.tail_buffer = AirWaterEntities.clientLLibraryChainBuffer();
       }

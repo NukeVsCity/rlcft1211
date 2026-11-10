@@ -6,16 +6,15 @@ import com.github.alexthe666.iceandfire.entity.ai.AmphithereAIFollowOwner;
 import com.github.alexthe666.iceandfire.entity.ai.AmphithereAIHurtByTarget;
 import com.github.alexthe666.iceandfire.entity.ai.EntityAIWatchClosestIgnoreRider;
 import com.github.alexthe666.iceandfire.entity.ai.PathNavigateFlyingCreature;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIBase;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIMate;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIOwnerHurtByTarget;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIOwnerHurtTarget;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAISit;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAISwimming;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAITasks;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.EntityAIWander;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.LegacyMoveControl;
-import com.github.alexthe666.iceandfire.entity.ai.legacy112.LegacyTasksGoal;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIMate;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIOwnerHurtByTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIOwnerHurtTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAISit;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAISwimming;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIWander;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.LegacyMoveControl;
 import javax.annotation.Nullable;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
@@ -61,7 +60,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.Vec3;
 
 /** Ice and Fire 1.7.1 EntityAmphithere. */
-public class EntityAmphithere extends TamableAnimal implements IAnimatedEntity, IPhasesThroughBlock, IFlapable, IDragonFlute, EntityAISit.Sittable,
+public class EntityAmphithere extends TamableAnimal implements IAnimatedEntity, IPhasesThroughBlock, IFlapable, IDragonFlute, EntityAISit.Sitter,
    IAirWaterRideable {
    private int animationTick;
    private Animation currentAnimation;
@@ -110,7 +109,7 @@ public class EntityAmphithere extends TamableAnimal implements IAnimatedEntity, 
    public EntityAmphithere(EntityType<? extends EntityAmphithere> type, Level level) {
       super(type, level);
       this.initEntityAI();
-      this.goalSelector.addGoal(0, new LegacyTasksGoal(this, this.targetTasks, this.tasks));
+      com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112.install(this, this.tasks, this.targetTasks);
       if (level.isClientSide) {
          this.roll_buffer = AirWaterEntities.clientChainBuffer();
          this.pitch_buffer = AirWaterEntities.clientChainBuffer();
