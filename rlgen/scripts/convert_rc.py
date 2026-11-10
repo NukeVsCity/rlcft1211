@@ -256,20 +256,20 @@ def rmeta(*targets):
     return ("rlgen_meta", list(targets))
 QUARK_COLORS_RL = {10: "rlgen:quilted_wool_purple"}
 MOD_BLOCKS.update({
-    "iceandfire:ash": ("rlgen", "rlgen:ash"), "iceandfire:chared_cobblestone": ("rlgen", "rlgen:chared_cobblestone"),
-    "iceandfire:chared_stone": ("rlgen", "rlgen:chared_stone"), "iceandfire:chared_dirt": ("rlgen", "rlgen:chared_dirt"),
-    "iceandfire:chared_grass": ("rlgen", "rlgen:chared_grass"), "iceandfire:chared_gravel": ("rlgen", "rlgen:chared_gravel"),
-    "iceandfire:chared_grass_path": ("rlgen", "rlgen:chared_grass_path"), "iceandfire:frozen_cobblestone": ("rlgen", "rlgen:frozen_cobblestone"),
-    "iceandfire:frozen_stone": ("rlgen", "rlgen:frozen_stone"), "iceandfire:frozen_dirt": ("rlgen", "rlgen:frozen_dirt"),
-    "iceandfire:frozen_grass": ("rlgen", "rlgen:frozen_grass"), "iceandfire:frozen_gravel": ("rlgen", "rlgen:frozen_gravel"),
-    "iceandfire:frozen_grass_path": ("rlgen", "rlgen:frozen_grass_path"), "iceandfire:frozen_splinters": ("rlgen", "rlgen:frozen_splinters"),
-    "iceandfire:goldpile": rmeta(*[f"rlgen:gold_pile[layers={i + 1}]" for i in range(8)]),
-    "iceandfire:silverpile": rmeta(*[f"rlgen:silver_pile[layers={i + 1}]" for i in range(8)]),
-    "iceandfire:silver_ore": ("rlgen", "rlgen:silver_ore"), "iceandfire:sapphire_ore": ("rlgen", "rlgen:sapphire_ore"),
-    "iceandfire:fire_lily": ("rlgen", "rlgen:fire_lily"), "iceandfire:frost_lily": ("rlgen", "rlgen:frost_lily"),
-    "iceandfire:myrmex_resin": rmeta("rlgen:desert_myrmex_resin", "rlgen:jungle_myrmex_resin"),
-    "iceandfire:myrmex_resin_sticky": rmeta("rlgen:desert_myrmex_resin_sticky", "rlgen:jungle_myrmex_resin_sticky"),
-    "iceandfire:pixie_house": ("rlgen", "rlgen:pixie_house"),
+    # Ice and Fire: the real blocks of the ported mod (same registry names as 1.12, metadata -> properties)
+    **{f"iceandfire:{n}": ("rlgen", f"iceandfire:{n}") for n in [
+        "ash", "chared_cobblestone", "chared_stone", "chared_dirt", "chared_grass", "chared_gravel", "chared_grass_path",
+        "frozen_cobblestone", "frozen_stone", "frozen_dirt", "frozen_grass", "frozen_gravel", "frozen_grass_path", "frozen_splinters",
+        "silver_ore", "sapphire_ore", "silver_block", "sapphire_block", "fire_lily", "frost_lily", "dragon_ice", "dragon_ice_spikes", "nest",
+        "lectern", "jar_empty", "jar_pixie", "desert_myrmex_cocoon", "jungle_myrmex_cocoon", "myrmex_desert_biolight", "myrmex_jungle_biolight",
+        "myrmex_desert_resin_block", "myrmex_jungle_resin_block", "myrmex_desert_resin_glass", "myrmex_jungle_resin_glass"]},
+    "iceandfire:goldpile": rmeta(*[f"iceandfire:goldpile[layers={i + 1}]" for i in range(8)]),
+    "iceandfire:silverpile": rmeta(*[f"iceandfire:silverpile[layers={i + 1}]" for i in range(8)]),
+    "iceandfire:myrmex_resin": rmeta("iceandfire:myrmex_resin[variant=desert]", "iceandfire:myrmex_resin[variant=jungle]"),
+    "iceandfire:myrmex_resin_sticky": rmeta("iceandfire:myrmex_resin_sticky[variant=desert]", "iceandfire:myrmex_resin_sticky[variant=jungle]"),
+    # EnumFacing.byHorizontalIndex
+    "iceandfire:pixie_house": rmeta(*[f"iceandfire:pixie_house[facing={f}]" for f in ["south", "west", "north", "east"]]),
+    "iceandfire:podium": rmeta(*[f"iceandfire:podium[variant={w}]" for w in ["oak", "spruce", "birch", "jungle", "acacia", "dark_oak"]]),
     "bountiful:bountyboard": ("rlgen", "rlgen:bounty_board"),
     "quark:crystal": rmeta(*[f"rlgen:crystal_{c}" for c in ["white", "red", "orange", "yellow", "green", "blue", "indigo", "violet", "black"]]),
     "quark:marble": rmeta("rlgen:marble", "rlgen:marble_smooth"), "quark:limestone": rmeta("rlgen:limestone", "rlgen:limestone"),
@@ -362,8 +362,9 @@ def convert_block(name, meta):
 
 # ---------------------------------------------------------------- items
 ITEM_MOD = {
-    "iceandfire:silver_ingot": "minecraft:iron_ingot", "iceandfire:sapphire_gem": "minecraft:lapis_lazuli",
-    "iceandfire:silver_nugget": "minecraft:iron_nugget", "rustic:honeycomb": "minecraft:honeycomb",
+    # Ice and Fire items keep their 1.12 names in the port (item_id passes every iceandfire: id through)
+    "iceandfire:silver_ingot": "iceandfire:silver_ingot", "iceandfire:sapphire_gem": "iceandfire:sapphire_gem",
+    "iceandfire:silver_nugget": "iceandfire:silver_nugget", "rustic:honeycomb": "minecraft:honeycomb",
 }
 ENCH = {0: "protection", 1: "fire_protection", 2: "feather_falling", 3: "blast_protection", 4: "projectile_protection", 5: "respiration",
         6: "aqua_affinity", 7: "thorns", 8: "depth_strider", 9: "frost_walker", 10: "binding_curse", 16: "sharpness", 17: "smite",
@@ -380,7 +381,7 @@ def item_id(iid, damage):
         if ":" not in iid:
             iid = "minecraft:" + iid
         if not iid.startswith("minecraft:"):
-            return ITEM_MOD.get(iid)
+            return ITEM_MOD.get(iid, iid if iid.startswith("iceandfire:") else None)
         short = iid.split(":", 1)[1]
         num = I112.get(short, B112.get(short))
         if num is None:

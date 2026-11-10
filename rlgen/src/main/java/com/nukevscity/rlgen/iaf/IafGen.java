@@ -1,6 +1,8 @@
 package com.nukevscity.rlgen.iaf;
 
-import com.nukevscity.rlgen.RLGen;
+import com.github.alexthe666.iceandfire.block.BlockElementalFlower;
+import com.github.alexthe666.iceandfire.core.ModBlocks;
+import com.github.alexthe666.iceandfire.entity.DragonWorldGenSpawns;
 import com.nukevscity.rlgen.deco.DWorld;
 import com.nukevscity.rlgen.legacy.biome.Biome;
 import com.nukevscity.rlgen.legacy.biome.Biomes;
@@ -24,13 +26,15 @@ import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 
 /**
  * Ice and Fire 1.7.1 StructureGenerator (an IWorldGenerator of weight 0) with RLCraft's ice_and_fire.cfg. Each 1.12 chunk is planned
  * once on the 1.12 terrain with the chunk random Forge gave IWorldGenerators; the planned writes are replayed on the real world at the
  * end of each populate area's decoration (like 1.12, where it ran right after populate), so roosts burn the trees and plants there.
- * Mobs (dragons, cyclopes, sirens, hippocampi, sea serpents, stymphalian birds, dragon skeletons) are not spawned, but their random
- * draws are kept so everything after them lands where 1.12 put it.
+ * The mobs 1.12 spawned (dragons, dragon skeletons, cyclopes and their sheep, sirens, hippocampi, sea serpents, stymphalian birds,
+ * myrmexes, pixies, snow villagers, the gorgon temple's gorgon) draw their values while planning, in the 1.12 order, and are added to
+ * the chunk that holds them when it is decorated (IafSpawns).
  */
 public final class IafGen {
    private static final int DANGEROUS_DISTANCE = 200;
@@ -48,9 +52,9 @@ public final class IafGen {
    private static final int SNOW_VILLAGE_CHANCE = 300;
    static final int ORE_TO_STONE_RATIO = 45;
    static final int DEN_GOLD_AMOUNT = 4;
-   static final String FIRE_CHEST = "rlgen:iceandfire/fire_dragon_cave";
-   static final String ICE_CHEST = "rlgen:iceandfire/ice_dragon_cave";
-   static final String CYCLOPS_CHEST = "rlgen:iceandfire/cyclops_cave";
+   static final String FIRE_CHEST = "iceandfire:fire_dragon_cave";
+   static final String ICE_CHEST = "iceandfire:ice_dragon_cave";
+   static final String CYCLOPS_CHEST = "iceandfire:cyclops_cave";
    /** EnumFacing.HORIZONTALS */
    private static final Direction[] HORIZONTALS = {Direction.SOUTH, Direction.WEST, Direction.NORTH, Direction.EAST};
    /** Planned chunks within this many chunks can reach a chunk (a gorgon temple ends up to 47 blocks from the chunk centre). */
@@ -92,7 +96,7 @@ public final class IafGen {
       IafWorld world = new IafWorld(gen);
       // what Ice and Fire drew from an unseeded new Random(): seeded here so a world always comes out the same
       Random unseeded = new Random(seed ^ ((long)cx * 0x2F0B3A49L + (long)cz * 0x61C88647L) ^ 0x1CEA9DF1L);
-      generate(world, chunkRandom(seed, cx, cz), unseeded, cx, cz);
+      generate(world, chunkRandom(seed, cx, cz), unseeded, cx, cz, seed);
       // Quark's generators of weight 0 and 1 that reach beyond one decoration step
       QuarkPlanned.pirateShip(world, templates, chunkRandom(seed, cx, cz), cx, cz);
       QuarkPlanned.crystalCave(world, chunkRandom(seed, cx, cz), cx, cz);
@@ -205,9 +209,10 @@ public final class IafGen {
                fill.accept(be);
             }
          }
+         case IafWorld.ENTITY -> ((IafWorld.Spawn)op.extra()).spawn(w.level);
          case IafWorld.LILY -> {
             BlockPos surface = w.height(p);
-            if (w.get(surface).canBeReplaced() && ((LilyBlock)op.state().getBlock()).canPlaceOn(w.get(surface.below()))) {
+            if (w.get(surface).canBeReplaced() && ((BlockElementalFlower)op.state().getBlock()).canPlaceOn(w.get(surface.below()))) {
                w.set(surface, op.state());
             }
          }
@@ -233,7 +238,15 @@ public final class IafGen {
       return (double)pos.getX() * pos.getX() + (double)pos.getZ() * pos.getZ() > (double)(DANGEROUS_DISTANCE * DANGEROUS_DISTANCE);
    }
 
-   private static void generate(IafWorld world, Random random, Random unseeded, int chunkX, int chunkZ) {
+   /** The bounding box of an entity of this size at the middle of pos. */
+   private static AABB box(BlockPos pos, float width, float height) {
+      double cx = (double)((float)pos.getX() + 0.5F);
+      double cy = (double)((float)pos.getY() + 0.5F);
+      double cz = (double)((float)pos.getZ() + 0.5F);
+      return new AABB(cx - width / 2.0F, cy, cz - width / 2.0F, cx + width / 2.0F, cy + height, cz + width / 2.0F);
+   }
+
+   private static void generate(IafWorld world, Random random, Random unseeded, int chunkX, int chunkZ, long seed) {
       int x = chunkX * 16 + 8;
       int z = chunkZ * 16 + 8;
       BlockPos height = world.height(new BlockPos(x, 0, z));
@@ -294,37 +307,63 @@ public final class IafGen {
          }
       }
 
-      // dragon skeletons (entities)
+      // dragon skeletons
       if (world.hasType(height, "DRY") && world.hasType(height, "SANDY") && random.nextInt(SKELETON_CHANCE + 1) == 0) {
-         random.nextInt(100);
-         random.nextInt(360);
+         int dragonage = 10 + random.nextInt(100);
+         int yaw = random.nextInt(360);
+         int groundY = height.getY();
+         world.found.add("fire dragon skeleton " + x + ", " + (groundY + 1) + ", " + z);
+         world.spawn(x, groundY + 1, z, level -> DragonWorldGenSpawns.skeleton(level, dragonage, yaw, x, groundY, z, true));
       }
       if (world.hasType(height, "COLD") && world.hasType(height, "SNOWY") && random.nextInt(SKELETON_CHANCE + 1) == 0) {
-         random.nextInt(100);
-         random.nextInt(360);
+         int dragonage = 10 + random.nextInt(100);
+         int yaw = random.nextInt(360);
+         int groundY = height.getY();
+         world.found.add("ice dragon skeleton " + x + ", " + (groundY + 1) + ", " + z);
+         world.spawn(x, groundY + 1, z, level -> DragonWorldGenSpawns.skeleton(level, dragonage, yaw, x, groundY, z, false));
       }
 
-      // hippocampi, sea serpents, stymphalian birds (entities)
+      // hippocampi, sea serpents, stymphalian birds
       if (world.hasType(height, "OCEAN") && random.nextInt(HIPPOCAMPUS_CHANCE + 1) == 0) {
+         // EntityHippocampus.isNotColliding: no other entity in its box (the ones spawned here are the only ones in a new chunk)
+         List<AABB> spawned = new ArrayList<>();
          for (int i = 0; i < random.nextInt(5); i++) {
             BlockPos pos = new BlockPos(x + random.nextInt(10) - 5, 20 + random.nextInt(40), z + random.nextInt(10) - 5);
             if (Mat112.of(world.get(pos)) == Mat112.WATER) {
-               random.nextInt(5);
+               int variant = random.nextInt(5);
+               AABB box = box(pos, IafSpawns.hippocampusWidth(), IafSpawns.hippocampusHeight());
+               if (spawned.stream().noneMatch(box::intersects)) {
+                  spawned.add(box);
+                  world.found.add("hippocampus " + pos.toShortString());
+                  world.spawn(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, level -> IafSpawns.hippocampus(level, pos, variant));
+               }
             }
          }
       }
       if (world.hasType(height, "OCEAN") && random.nextInt(SERPENT_CHANCE + 1) == 0) {
          BlockPos pos = new BlockPos(x + random.nextInt(10) - 5, 20 + random.nextInt(40), z + random.nextInt(10) - 5);
          if (Mat112.of(world.get(pos)) == Mat112.WATER) {
-            random.nextInt(6);
-            random.nextInt(15);
-            random.nextFloat();
+            // EntitySeaSerpent.onWorldSpawn(random)
+            int variant = random.nextInt(6);
+            boolean ancient = random.nextInt(15) == 1;
+            float scale = random.nextFloat();
+            world.found.add("sea serpent " + pos.toShortString());
+            world.spawn(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, level -> IafSpawns.seaSerpent(level, pos, variant, ancient, scale));
          }
       }
       if (far(height) && world.hasType(height, "SWAMP") && random.nextInt(BIRD_CHANCE + 1) == 0) {
+         List<AABB> spawned = new ArrayList<>();
          for (int ix = 0; ix < 4 + random.nextInt(4); ix++) {
-            random.nextInt(10);
-            random.nextInt(10);
+            BlockPos pos = height.offset(random.nextInt(10) - 5, 0, random.nextInt(10) - 5);
+            if (Mat112.opaqueCube(world.get(pos.below()))) {
+               // the entity part of isNotColliding here, the block part against the real world when spawned
+               AABB box = box(pos, IafSpawns.birdWidth(), IafSpawns.birdHeight());
+               if (spawned.stream().noneMatch(box::intersects)) {
+                  spawned.add(box);
+                  world.found.add("stymphalian bird " + pos.toShortString());
+                  world.spawn(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, level -> IafSpawns.stymphalianBird(level, pos));
+               }
+            }
          }
       }
 
@@ -358,7 +397,7 @@ public final class IafGen {
          int oreHeight = random.nextInt(32);
          int xOre = chunkX * 16 + random.nextInt(16);
          int zOre = chunkZ * 16 + random.nextInt(16);
-         IafStructures.minable(world, random, new BlockPos(xOre, oreHeight, zOre), RLGen.SILVER_ORE.get().defaultBlockState(), 4 + random.nextInt(4));
+         IafStructures.minable(world, random, new BlockPos(xOre, oreHeight, zOre), ModBlocks.silverOre.defaultBlockState(), 4 + random.nextInt(4));
       }
 
       if (world.hasType(height, "SNOWY")) {
@@ -367,7 +406,7 @@ public final class IafGen {
             int oreHeight = random.nextInt(28) + 4;
             int xOre = chunkX * 16 + random.nextInt(16);
             int zOre = chunkZ * 16 + random.nextInt(16);
-            world.ore(new BlockPos(xOre, oreHeight, zOre), RLGen.SAPPHIRE_ORE.get().defaultBlockState());
+            world.ore(new BlockPos(xOre, oreHeight, zOre), ModBlocks.sapphireOre.defaultBlockState());
          }
       }
 
@@ -389,15 +428,15 @@ public final class IafGen {
             int down = Math.max(15, lowest - 20 + random.nextInt(10));
             boolean jungle = world.hasType(height, "JUNGLE");
             world.found.add((jungle ? "jungle" : "desert") + " myrmex hive " + height.getX() + ", " + down + ", " + height.getZ());
-            new IafHive(world, unseeded, jungle).generate(random, new BlockPos(height.getX(), down, height.getZ()));
+            new IafHive(world, unseeded, jungle, seed).generate(random, new BlockPos(height.getX(), down, height.getZ()));
          }
       }
 
       if (world.hasType(height, "COLD") && world.hasType(height, "SNOWY") && random.nextInt(5) == 0) {
-         world.lily(x, z, RLGen.FROST_LILY.get().defaultBlockState());
+         world.lily(x, z, ModBlocks.frost_lily.defaultBlockState());
       }
       if (world.hasType(height, "HOT") && world.hasType(height, "SANDY") && random.nextInt(5) == 0) {
-         world.lily(x, z, RLGen.FIRE_LILY.get().defaultBlockState());
+         world.lily(x, z, ModBlocks.fire_lily.defaultBlockState());
       }
    }
 

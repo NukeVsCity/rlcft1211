@@ -2,7 +2,6 @@ package com.github.alexthe666.iceandfire.structures;
 
 import com.github.alexthe666.iceandfire.entity.MyrmexHive;
 import com.github.alexthe666.iceandfire.world.MyrmexWorldData;
-import com.nukevscity.rlgen.RLGen;
 import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -28,8 +27,12 @@ public class MyrmexNestGen {
 
    public MyrmexNestGen(boolean jungle) {
       this.jungle = jungle;
-      this.resin = (jungle ? RLGen.JUNGLE_MYRMEX_RESIN : RLGen.DESERT_MYRMEX_RESIN).get().defaultBlockState();
-      this.stickyResin = (jungle ? RLGen.JUNGLE_MYRMEX_RESIN_STICKY : RLGen.DESERT_MYRMEX_RESIN_STICKY).get().defaultBlockState();
+      com.github.alexthe666.iceandfire.block.BlockMyrmexResin.EnumType variant = jungle
+         ? com.github.alexthe666.iceandfire.block.BlockMyrmexResin.EnumType.JUNGLE : com.github.alexthe666.iceandfire.block.BlockMyrmexResin.EnumType.DESERT;
+      this.resin = com.github.alexthe666.iceandfire.core.ModBlocks.myrmex_resin.defaultBlockState()
+         .setValue(com.github.alexthe666.iceandfire.block.BlockMyrmexResin.VARIANT, variant);
+      this.stickyResin = com.github.alexthe666.iceandfire.core.ModBlocks.myrmex_resin_sticky.defaultBlockState()
+         .setValue(com.github.alexthe666.iceandfire.block.BlockMyrmexResin.VARIANT, variant);
    }
 
    public void generate(Level world, Random rand, BlockPos position) {

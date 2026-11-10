@@ -120,6 +120,9 @@ public final class LegacyStates {
       if (s == null) {
          s = i.get(n + ":0");
       }
+      if (s == null && n.startsWith("iceandfire:")) {
+         s = n; // the Ice and Fire port keeps the 1.12 item names
+      }
       if (s == null) {
          return null;
       }

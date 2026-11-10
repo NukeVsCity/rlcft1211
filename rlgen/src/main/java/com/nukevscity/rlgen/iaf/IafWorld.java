@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -31,6 +32,14 @@ final class IafWorld {
    static final byte VILLAGE = 7;
    /** A block whose block entity is then filled (extra = Consumer of the block entity). */
    static final byte BLOCK_ENTITY = 8;
+   /** A mob spawned where 1.12 called World.spawnEntity (extra = Spawn), replayed in the chunk that holds its position. */
+   static final byte ENTITY = 9;
+
+   /** What 1.12 did with the new entity, against the real world (a WorldGenRegion) when its chunk is decorated. */
+   @FunctionalInterface
+   interface Spawn {
+      void spawn(net.minecraft.world.level.WorldGenLevel level);
+   }
 
    record Op(int x, int y, int z, byte kind, BlockState state, String loot, long lootSeed, Object extra) {
       Op(int x, int y, int z, byte kind, BlockState state, String loot, long lootSeed) {
@@ -119,6 +128,20 @@ final class IafWorld {
          this.put(p, s);
          this.ops.add(new Op(p.getX(), p.getY(), p.getZ(), BLOCK_ENTITY, s, null, 0L, fill));
       }
+   }
+
+   /** World.spawnEntity at (x, z): the entity lands in the chunk holding that column. */
+   void spawn(double x, double y, double z, Spawn spawn) {
+      this.ops.add(new Op(Mth.floor(x), Mth.floor(y), Mth.floor(z), ENTITY, null, null, 0L, spawn));
+   }
+
+   /** MyrmexHive.getGroundedPos on the planning world. */
+   BlockPos grounded(BlockPos pos) {
+      BlockPos current = pos;
+      while (this.isAir(current.below()) && current.getY() > 0) {
+         current = current.below();
+      }
+      return current;
    }
 
    /** 1.12 bedrock at Y 0..4 (hardness -1). */

@@ -50,7 +50,7 @@ QUARK = {
     "iron_plate": lambda p: "minecraft:iron_block",
     "custom_bookshelf": lambda p: "minecraft:bookshelf",
 }
-MODS = {"iceandfire:silver_ore": "rlgen:silver_ore", "notreepunching:cobblestone/andesite": "minecraft:cobblestone"}
+MODS = {"iceandfire:silver_ore": "iceandfire:silver_ore", "notreepunching:cobblestone/andesite": "minecraft:cobblestone"}
 seen = {}
 
 def conv(s):

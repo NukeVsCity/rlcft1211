@@ -1,7 +1,7 @@
 {
-"iceandfire:sapphire_gem:0": "minecraft:lapis_lazuli",
-"iceandfire:silver_ingot:0": "minecraft:iron_ingot",
-"iceandfire:silver_nugget:0": "minecraft:iron_nugget",
+"iceandfire:sapphire_gem:0": "iceandfire:sapphire_gem",
+"iceandfire:silver_ingot:0": "iceandfire:silver_ingot",
+"iceandfire:silver_nugget:0": "iceandfire:silver_nugget",
 "minecraft:acacia_boat:0": "minecraft:acacia_boat",
 "minecraft:acacia_door:0": "minecraft:acacia_door",
 "minecraft:acacia_fence:0": "minecraft:acacia_fence",

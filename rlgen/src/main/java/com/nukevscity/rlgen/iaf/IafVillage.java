@@ -1,5 +1,8 @@
 package com.nukevscity.rlgen.iaf;
 
+import com.github.alexthe666.iceandfire.block.BlockPixieHouse;
+import com.github.alexthe666.iceandfire.core.ModBlocks;
+import com.github.alexthe666.iceandfire.entity.tile.TileEntityPixieHouse;
 import com.nukevscity.rlgen.RLGen;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +28,7 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
  * Ice and Fire 1.7.1 MapGenPixieVillage / PixieVillagePieces (a grass path square with a dark oak, paths, pixie houses) and
  * MapGenSnowVillage / SnowVillagePieces (a packed ice well, paths, ice huts, torch posts). The pieces are planned with the
  * IWorldGenerator chunk random and built inside the 64 x 64 box around the chunk centre, like their generate() did.
- * Pixies and snow villagers are not spawned.
+ * Pixies and snow villagers are spawned by the pieces' spawnVillagers, inside the box being built.
  */
 final class IafVillage {
    private static final Direction[] HORIZONTAL = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
@@ -175,7 +178,7 @@ final class IafVillage {
                   // Torch.findPieceBox(...) is computed and thrown away
                   village = rand.nextBoolean() ? WoodHut.createPiece(start, list, rand, x, y, z, facing, type) : TorchNew.createPiece(start, list, x, y, z, facing, type);
                } else {
-                  village = PixieHouse.createPiece(start, list, x, y, z, facing, type);
+                  village = PixieHouse.createPiece(start, list, rand, x, y, z, facing, type);
                }
                if (village != null) {
                   w.spawned++;
@@ -243,6 +246,26 @@ final class IafVillage {
       void placeTorch(WorldGenLevel level, Direction facing, int x, int y, int z, BoundingBox box) {
          if (!this.zombie) {
             this.placeBlock(level, Blocks.WALL_TORCH.defaultBlockState().setValue(net.minecraft.world.level.block.WallTorchBlock.FACING, facing), x, y, z, box);
+         }
+      }
+
+      /**
+       * PixieVillagePieces / SnowVillagePieces.Village.spawnVillagers: count mobs from (x, y, z) along x, as long as they are inside
+       * the box being built (each piece is built once per chunk, so each mob is spawned in the chunk that holds it).
+       */
+      void spawnVillagers(WorldGenLevel level, BoundingBox box, int x, int y, int z, int count, boolean snow) {
+         for (int i = 0; i < count; i++) {
+            int j = this.getWorldX(x + i, z);
+            int k = this.getWorldY(y);
+            int l = this.getWorldZ(x + i, z);
+            if (!box.isInside(new BlockPos(j, k, l))) {
+               break;
+            }
+            if (snow) {
+               IafSpawns.snowVillager(level, (double)j + 0.5, (double)k, (double)l + 0.5, this.zombie);
+            } else {
+               IafSpawns.pixie(level, (double)j + 0.5, (double)k, (double)l + 0.5);
+            }
          }
       }
 
@@ -463,7 +486,7 @@ final class IafVillage {
 
       @Override
       void addComponentParts(WorldGenLevel level, Random random, BoundingBox box) {
-         BlockState path = this.snow ? RLGen.FROZEN_GRASS_PATH.get().defaultBlockState() : Blocks.DIRT_PATH.defaultBlockState();
+         BlockState path = this.snow ? ModBlocks.frozenGrassPath.defaultBlockState() : Blocks.DIRT_PATH.defaultBlockState();
          BlockState planks = Blocks.SPRUCE_PLANKS.defaultBlockState();
          BlockState gravel = Blocks.GRAVEL.defaultBlockState();
          BlockState cobble = Blocks.COBBLESTONE.defaultBlockState();
@@ -511,15 +534,18 @@ final class IafVillage {
    }
 
    static final class PixieHouse extends Village {
-      PixieHouse(int type, BoundingBox box, Direction facing) {
+      PixieHouse(int type, Random rand, BoundingBox box, Direction facing) {
          super(type, box);
          this.setOrientation(facing);
          this.groundOffset = 0;
+         // isTallHouse and tablePosition, never used
+         rand.nextBoolean();
+         rand.nextInt(3);
       }
 
-      static PixieHouse createPiece(Start start, List<Village> list, int x, int y, int z, Direction facing, int type) {
+      static PixieHouse createPiece(Start start, List<Village> list, Random rand, int x, int y, int z, Direction facing, int type) {
          BoundingBox b = BoundingBox.orientBox(x, y, z, 0, 0, 0, 1, 1, 1, facing);
-         return canVillageGoDeeper(b) && findIntersecting(list, b) == null ? new PixieHouse(type, b, facing) : null;
+         return canVillageGoDeeper(b) && findIntersecting(list, b) == null ? new PixieHouse(type, rand, b, facing) : null;
       }
 
       @Override
@@ -528,9 +554,12 @@ final class IafVillage {
          Direction facing = this.getOrientation() == null ? Direction.NORTH : this.getOrientation().getOpposite();
          BlockPos pos = new BlockPos(this.getWorldX(0, 0), this.getWorldY(0), this.getWorldZ(0, 0));
          if (box.isInside(pos)) {
-            level.setBlock(pos, RLGen.PIXIE_HOUSE.get().defaultBlockState().setValue(PixieHouseBlock.FACING, facing)
-               .setValue(PixieHouseBlock.TYPE, random.nextInt(5)), 2);
+            level.setBlock(pos, ModBlocks.pixieHouse.defaultBlockState().setValue(BlockPixieHouse.FACING, facing), 2);
+            if (level.getBlockEntity(pos) instanceof TileEntityPixieHouse house) {
+               house.houseType = random.nextInt(5);
+            }
          }
+         this.spawnVillagers(level, box, 0, 1, 0, 1, false);
       }
    }
 
@@ -581,7 +610,7 @@ final class IafVillage {
 
       @Override
       void addComponentParts(WorldGenLevel level, Random random, BoundingBox box) {
-         BlockState floor = RLGen.FROZEN_COBBLESTONE.get().defaultBlockState();
+         BlockState floor = ModBlocks.frozenCobblestone.defaultBlockState();
          BlockState snow = Blocks.SNOW_BLOCK.defaultBlockState();
          BlockState stairs = Blocks.COBBLESTONE_STAIRS.defaultBlockState().setValue(net.minecraft.world.level.block.StairBlock.FACING, Direction.NORTH);
          BlockState ice = Blocks.PACKED_ICE.defaultBlockState();
@@ -628,7 +657,7 @@ final class IafVillage {
          }
          if (this.getBlock(level, 1, 0, -1, box).isAir() && !this.getBlock(level, 1, -1, -1, box).isAir()) {
             this.placeBlock(level, stairs, 1, 0, -1, box);
-            if (this.getBlock(level, 1, -1, -1, box).is(RLGen.FROZEN_GRASS_PATH.get())) {
+            if (this.getBlock(level, 1, -1, -1, box).is(ModBlocks.frozenGrassPath)) {
                this.placeBlock(level, Blocks.GRASS_BLOCK.defaultBlockState(), 1, -1, -1, box);
             }
          }
@@ -638,6 +667,7 @@ final class IafVillage {
                this.fillColumnDown(level, floor, j, -1, i, box);
             }
          }
+         this.spawnVillagers(level, box, 1, 1, 2, 1, true);
       }
    }
 }

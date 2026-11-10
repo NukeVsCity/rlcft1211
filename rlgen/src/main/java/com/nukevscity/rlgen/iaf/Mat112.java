@@ -1,5 +1,6 @@
 package com.nukevscity.rlgen.iaf;
 
+import com.github.alexthe666.iceandfire.core.ModBlocks;
 import com.nukevscity.rlgen.RLGen;
 import com.nukevscity.rlgen.block.LegacyPlantBlock;
 import net.minecraft.core.BlockPos;
@@ -25,16 +26,16 @@ public enum Mat112 {
       if (s.is(Blocks.LAVA)) {
          return LAVA;
       }
-      if (s.is(Blocks.GRASS_BLOCK) || s.is(Blocks.MYCELIUM) || s.is(RLGen.GRASS_DEFILED.get()) || s.is(RLGen.CHARED_GRASS.get()) || s.is(RLGen.FROZEN_GRASS.get())) {
+      if (s.is(Blocks.GRASS_BLOCK) || s.is(Blocks.MYCELIUM) || s.is(RLGen.GRASS_DEFILED.get()) || s.is(ModBlocks.charedGrass) || s.is(ModBlocks.frozenGrass)) {
          return GRASS;
       }
       if (s.is(Blocks.DIRT) || s.is(Blocks.COARSE_DIRT) || s.is(Blocks.PODZOL) || s.is(Blocks.FARMLAND) || s.is(Blocks.DIRT_PATH)
-         || s.is(RLGen.DIRT_DEFILED.get()) || s.is(RLGen.CHARED_DIRT.get()) || s.is(RLGen.FROZEN_DIRT.get()) || s.is(RLGen.CHARED_GRAVEL.get())
-         || s.is(RLGen.FROZEN_GRAVEL.get()) || s.is(RLGen.CHARED_GRASS_PATH.get()) || s.is(RLGen.FROZEN_GRASS_PATH.get()) || s.getBlock() instanceof PileBlock) {
+         || s.is(RLGen.DIRT_DEFILED.get()) || s.is(ModBlocks.charedDirt) || s.is(ModBlocks.frozenDirt) || s.is(ModBlocks.charedGravel)
+         || s.is(ModBlocks.frozenGravel) || s.is(ModBlocks.charedGrassPath) || s.is(ModBlocks.frozenGrassPath) || s.getBlock() instanceof com.github.alexthe666.iceandfire.block.BlockGoldPile) {
          return GROUND;
       }
       // BlockFalling is Material.SAND: sand, red sand, gravel, concrete powder, Defiled sand/gravel, ash
-      if (s.is(BlockTags.SAND) || s.is(Blocks.GRAVEL) || s.is(RLGen.SAND_DEFILED.get()) || s.is(RLGen.GRAVEL_DEFILED.get()) || s.is(RLGen.ASH.get())
+      if (s.is(BlockTags.SAND) || s.is(Blocks.GRAVEL) || s.is(RLGen.SAND_DEFILED.get()) || s.is(RLGen.GRAVEL_DEFILED.get()) || s.is(ModBlocks.ash)
          || s.getBlock() instanceof net.minecraft.world.level.block.ConcretePowderBlock) {
          return SAND;
       }
@@ -53,7 +54,7 @@ public enum Mat112 {
       if (s.is(BlockTags.LEAVES) || s.getBlock() instanceof LeavesBlock) {
          return LEAVES;
       }
-      if (s.is(RLGen.FROZEN_SPLINTERS.get())) {
+      if (s.is(ModBlocks.frozenSplinters)) {
          return WOOD;
       }
       SoundType sound = s.getSoundType();
@@ -119,24 +120,24 @@ public enum Mat112 {
       }
       Mat112 m = of(s);
       if (m == GRASS) {
-         return RLGen.CHARED_GRASS.get().defaultBlockState();
+         return ModBlocks.charedGrass.defaultBlockState();
       } else if (m == GROUND && dirt(s)) {
-         return RLGen.CHARED_DIRT.get().defaultBlockState();
+         return ModBlocks.charedDirt.defaultBlockState();
       } else if (m == GROUND && s.is(Blocks.GRAVEL)) {
-         return RLGen.CHARED_GRAVEL.get().defaultBlockState();
+         return ModBlocks.charedGravel.defaultBlockState();
       } else if (m != ROCK || !s.is(Blocks.COBBLESTONE)) {
          if (m == ROCK) {
-            return RLGen.CHARED_STONE.get().defaultBlockState();
+            return ModBlocks.charedStone.defaultBlockState();
          } else if (s.is(Blocks.DIRT_PATH)) {
-            return RLGen.CHARED_GRASS_PATH.get().defaultBlockState();
+            return ModBlocks.charedGrassPath.defaultBlockState();
          } else if (m == WOOD) {
-            return RLGen.ASH.get().defaultBlockState();
+            return ModBlocks.ash.defaultBlockState();
          } else if (m == LEAVES || m == PLANTS) {
             return Blocks.AIR.defaultBlockState();
          }
          return null;
       } else {
-         return RLGen.CHARED_COBBLESTONE.get().defaultBlockState();
+         return ModBlocks.charedCobblestone.defaultBlockState();
       }
    }
 
@@ -149,36 +150,36 @@ public enum Mat112 {
       if (m != GRASS && (m != CRAFTED_SNOW || !sky)) {
          if ((m != GROUND || !dirt(s)) && (m != CRAFTED_SNOW || sky)) {
             if (m == GROUND && s.is(Blocks.GRAVEL)) {
-               return RLGen.FROZEN_GRAVEL.get().defaultBlockState();
+               return ModBlocks.frozenGravel.defaultBlockState();
             } else if (m != ROCK || !s.is(Blocks.COBBLESTONE)) {
                if (m == ROCK) {
-                  return RLGen.FROZEN_STONE.get().defaultBlockState();
+                  return ModBlocks.frozenStone.defaultBlockState();
                } else if (s.is(Blocks.DIRT_PATH)) {
-                  return RLGen.FROZEN_GRASS_PATH.get().defaultBlockState();
+                  return ModBlocks.frozenGrassPath.defaultBlockState();
                } else if (m == WOOD) {
-                  return RLGen.FROZEN_SPLINTERS.get().defaultBlockState();
+                  return ModBlocks.frozenSplinters.defaultBlockState();
                } else if (m == LEAVES || m == PLANTS || m == SNOW) {
                   return Blocks.AIR.defaultBlockState();
                }
                return null;
             } else {
-               return RLGen.FROZEN_COBBLESTONE.get().defaultBlockState();
+               return ModBlocks.frozenCobblestone.defaultBlockState();
             }
          } else {
-            return RLGen.FROZEN_DIRT.get().defaultBlockState();
+            return ModBlocks.frozenDirt.defaultBlockState();
          }
       } else {
-         return RLGen.FROZEN_GRASS.get().defaultBlockState();
+         return ModBlocks.frozenGrass.defaultBlockState();
       }
    }
 
    /** getTranslationKey().contains("chared") / ("frozen") */
    public static boolean charred(BlockState s, boolean fire) {
       if (fire) {
-         return s.is(RLGen.CHARED_DIRT.get()) || s.is(RLGen.CHARED_GRASS.get()) || s.is(RLGen.CHARED_STONE.get()) || s.is(RLGen.CHARED_COBBLESTONE.get())
-            || s.is(RLGen.CHARED_GRAVEL.get()) || s.is(RLGen.CHARED_GRASS_PATH.get());
+         return s.is(ModBlocks.charedDirt) || s.is(ModBlocks.charedGrass) || s.is(ModBlocks.charedStone) || s.is(ModBlocks.charedCobblestone)
+            || s.is(ModBlocks.charedGravel) || s.is(ModBlocks.charedGrassPath);
       }
-      return s.is(RLGen.FROZEN_DIRT.get()) || s.is(RLGen.FROZEN_GRASS.get()) || s.is(RLGen.FROZEN_STONE.get()) || s.is(RLGen.FROZEN_COBBLESTONE.get())
-         || s.is(RLGen.FROZEN_GRAVEL.get()) || s.is(RLGen.FROZEN_GRASS_PATH.get()) || s.is(RLGen.FROZEN_SPLINTERS.get());
+      return s.is(ModBlocks.frozenDirt) || s.is(ModBlocks.frozenGrass) || s.is(ModBlocks.frozenStone) || s.is(ModBlocks.frozenCobblestone)
+         || s.is(ModBlocks.frozenGravel) || s.is(ModBlocks.frozenGrassPath) || s.is(ModBlocks.frozenSplinters);
    }
 }

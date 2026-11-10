@@ -1,7 +1,7 @@
 """Converts a 1.12 structure template (.nbt, palette of 1.12 names + properties) to a 1.21 one, through convert_rc.py's tables.
 1.21's own data fixer chokes on some 1.12 templates, so the palette is flattened here: 1.12 state -> meta (states112.tsv, dumped
 from the 1.12.2 jar: every valid state and its metadata) -> 1.21 state (convert_rc.convert_block). Skull types and rotations come
-from the skull block entities. Entities from mods (e.g. iceandfire:gorgon) are dropped.
+from the skull block entities. Ice and Fire entities (the gorgon) are kept with their id, rotation and health; other mods' are dropped.
 Usage: python3 -I convert_template112.py <minecraft-data dir> <in.nbt> <out.nbt>"""
 import sys, os, importlib.util, re
 import nbtlib
@@ -77,6 +77,10 @@ def item(i):
 ents = []
 for e in t["entities"]:
     n = e["nbt"]
+    if str(n["id"]).startswith("iceandfire:"):
+        e["nbt"] = Compound({k: n[k] for k in ("id", "Pos", "Rotation", "Health", "PersistenceRequired") if k in n})
+        ents.append(e)
+        continue
     if not str(n["id"]).startswith("minecraft:"):
         continue
     for k in ("HandItems", "ArmorItems"):

@@ -73,6 +73,12 @@
      "weight": 0.7087690830230713,
      "min": 1,
      "max": 2
+    },
+    {
+     "id": "iceandfire:silver_block",
+     "weight": 0.7087690830230713,
+     "min": 1,
+     "max": 1
     }
    ],
    "minItems": null,
@@ -93,7 +99,7 @@
   {
    "items": [
     {
-     "id": "minecraft:iron_nugget",
+     "id": "iceandfire:silver_nugget",
      "weight": 0.7087690830230713,
      "min": 1,
      "max": 8

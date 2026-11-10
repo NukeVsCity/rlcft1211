@@ -11,12 +11,110 @@
    "maxItems": null
   },
   {
-   "items": [],
+   "items": [
+    {
+     "id": "iceandfire:dragonscales_red",
+     "weight": 1.0,
+     "min": 24,
+     "max": 64
+    },
+    {
+     "id": "iceandfire:dragonscales_green",
+     "weight": 1.0,
+     "min": 24,
+     "max": 64
+    },
+    {
+     "id": "iceandfire:dragonscales_bronze",
+     "weight": 1.0,
+     "min": 24,
+     "max": 64
+    },
+    {
+     "id": "iceandfire:dragonscales_gray",
+     "weight": 1.0,
+     "min": 24,
+     "max": 64
+    },
+    {
+     "id": "iceandfire:dragonscales_blue",
+     "weight": 1.0,
+     "min": 24,
+     "max": 64
+    },
+    {
+     "id": "iceandfire:dragonscales_white",
+     "weight": 1.0,
+     "min": 24,
+     "max": 64
+    },
+    {
+     "id": "iceandfire:dragonscales_sapphire",
+     "weight": 1.0,
+     "min": 24,
+     "max": 64
+    },
+    {
+     "id": "iceandfire:dragonscales_silver",
+     "weight": 1.0,
+     "min": 24,
+     "max": 64
+    }
+   ],
    "minItems": null,
    "maxItems": null
   },
   {
-   "items": [],
+   "items": [
+    {
+     "id": "iceandfire:shiny_scales",
+     "weight": 1.0,
+     "min": 24,
+     "max": 64
+    },
+    {
+     "id": "iceandfire:sea_serpent_scales_blue",
+     "weight": 1.0,
+     "min": 24,
+     "max": 64
+    },
+    {
+     "id": "iceandfire:sea_serpent_scales_bronze",
+     "weight": 1.0,
+     "min": 24,
+     "max": 64
+    },
+    {
+     "id": "iceandfire:sea_serpent_scales_deepblue",
+     "weight": 1.0,
+     "min": 24,
+     "max": 64
+    },
+    {
+     "id": "iceandfire:sea_serpent_scales_green",
+     "weight": 1.0,
+     "min": 24,
+     "max": 64
+    },
+    {
+     "id": "iceandfire:sea_serpent_scales_purple",
+     "weight": 1.0,
+     "min": 24,
+     "max": 64
+    },
+    {
+     "id": "iceandfire:sea_serpent_scales_red",
+     "weight": 1.0,
+     "min": 24,
+     "max": 64
+    },
+    {
+     "id": "iceandfire:sea_serpent_scales_teal",
+     "weight": 1.0,
+     "min": 24,
+     "max": 64
+    }
+   ],
    "minItems": null,
    "maxItems": null
   },

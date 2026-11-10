@@ -1,6 +1,8 @@
 package com.nukevscity.rlgen.iaf;
 
-import com.nukevscity.rlgen.RLGen;
+import com.github.alexthe666.iceandfire.block.BlockGoldPile;
+import com.github.alexthe666.iceandfire.core.ModBlocks;
+import com.github.alexthe666.iceandfire.entity.DragonWorldGenSpawns;
 import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,11 +27,11 @@ final class IafStructures {
    }
 
    private static BlockState pile(boolean fire, int layers) {
-      return (fire ? RLGen.GOLD_PILE : RLGen.SILVER_PILE).get().defaultBlockState().setValue(PileBlock.LAYERS, layers);
+      return (fire ? ModBlocks.goldPile : ModBlocks.silverPile).defaultBlockState().setValue(BlockGoldPile.LAYERS, layers);
    }
 
    private static BlockState cobble(boolean fire) {
-      return (fire ? RLGen.CHARED_COBBLESTONE : RLGen.FROZEN_COBBLESTONE).get().defaultBlockState();
+      return (fire ? ModBlocks.charedCobblestone : ModBlocks.frozenCobblestone).defaultBlockState();
    }
 
    private static boolean isChest(BlockState s) {
@@ -42,7 +44,10 @@ final class IafStructures {
       int dragonAge = 50 + rand.nextInt(25);
       burnGround(world, rand, position, dragonAge / 5, fire);
       generateStructures(world, rand, unseeded, position, dragonAge / 5, fire);
-      rand.nextFloat(); // the dragon's rotation (the dragon itself is not spawned)
+      float yaw = rand.nextFloat() * 360.0F;
+      // on top of World.getHeight(position) of the finished roost, which the real world has (with its trees burnt) when it is spawned
+      world.spawn(position.getX() + 0.5, position.getY(), position.getZ() + 0.5, level -> DragonWorldGenSpawns.roostDragon(level, yaw, position,
+         IafSpawns.legacyHeight(level, position.getX(), position.getZ()), dragonAge, fire));
    }
 
    private static void burnGround(IafWorld world, Random rand, BlockPos position, int radius, boolean fire) {
@@ -179,7 +184,9 @@ final class IafStructures {
             }
          }
       }
-      rand.nextFloat(); // the sleeping dragon's rotation
+      float yaw = rand.nextFloat() * 360.0F;
+      world.spawn(position.getX() + 0.5, position.getY() + 0.5, position.getZ() + 0.5,
+         level -> DragonWorldGenSpawns.caveDragon(level, yaw, position, dragonAge, fire));
    }
 
    private static void setGoldPile(IafWorld world, Random unseeded, BlockPos pos, boolean fire) {
@@ -207,7 +214,7 @@ final class IafStructures {
                world.set(pos, Blocks.GOLD_ORE.defaultBlockState());
             }
             if (chance > 40 && chance < 50) {
-               world.set(pos, RLGen.SILVER_ORE.get().defaultBlockState());
+               world.set(pos, ModBlocks.silverOre.defaultBlockState());
             }
             if (chance > 50 && chance < 60) {
                world.set(pos, Blocks.COAL_ORE.defaultBlockState());
@@ -222,10 +229,10 @@ final class IafStructures {
                world.set(pos, Blocks.DIAMOND_ORE.defaultBlockState());
             }
             if (chance > 90 && chance < 1000) {
-               world.set(pos, fire ? Blocks.EMERALD_ORE.defaultBlockState() : RLGen.SAPPHIRE_ORE.get().defaultBlockState());
+               world.set(pos, fire ? Blocks.EMERALD_ORE.defaultBlockState() : ModBlocks.sapphireOre.defaultBlockState());
             }
          } else if (unseeded.nextInt(2) == 0) {
-            world.set(pos, (fire ? RLGen.CHARED_STONE : RLGen.FROZEN_STONE).get().defaultBlockState());
+            world.set(pos, (fire ? ModBlocks.charedStone : ModBlocks.frozenStone).defaultBlockState());
          } else {
             world.set(pos, cobble(fire));
          }
@@ -313,8 +320,9 @@ final class IafStructures {
             }
          }
       }
-      rand.nextInt(3); // the cyclops' variant
-      rand.nextFloat(); // and rotation (the cyclops itself is not spawned)
+      int variant = rand.nextInt(3);
+      float yaw = rand.nextFloat() * 360.0F;
+      world.spawn(position.getX() + 0.5, position.getY() + 1.5, position.getZ() + 0.5, level -> IafSpawns.cyclops(level, position, variant, yaw));
    }
 
    private static void genSheepPen(IafWorld world, BlockPos blockpos, Random rand, BlockPos origin, float radius) {
@@ -329,7 +337,9 @@ final class IafStructures {
             if (origin.distSqr(fencePos) <= (double)(radius * radius)) {
                world.set(fencePos, Blocks.OAK_FENCE.defaultBlockState());
                if (world.isAir(fencePos.relative(direction.getClockWise())) && sheepsSpawned < sheeps) {
-                  rand.nextInt(4); // the sheep's fleece (sheep are not spawned)
+                  BlockPos sheepPos = fencePos.relative(direction.getClockWise());
+                  boolean yellow = rand.nextInt(4) == 0;
+                  world.spawn(sheepPos.getX() + 0.5, sheepPos.getY() + 0.5, sheepPos.getZ() + 0.5, level -> IafSpawns.sheep(level, sheepPos, yellow));
                   sheepsSpawned++;
                }
             }
@@ -418,9 +428,11 @@ final class IafStructures {
                if (world.isAir(upPos) && world.isAir(upPos.east()) && world.isAir(upPos.north()) && world.isAir(upPos.north().east())
                   && rand.nextInt(3) == 0 && sirens < sirensMax) {
                   sirens++;
-                  rand.nextInt(2); // hair colour
-                  rand.nextInt(2); // singing pose
-                  rand.nextFloat(); // rotation (sirens are not spawned)
+                  BlockPos sirenPos = upPos.north().east();
+                  int hair = rand.nextInt(2);
+                  int pose = rand.nextInt(2);
+                  float yaw = rand.nextFloat() * 360.0F;
+                  world.spawn(sirenPos.getX() + 0.5, sirenPos.getY() + 1, sirenPos.getZ() + 0.5, level -> IafSpawns.siren(level, sirenPos, hair, pose, yaw));
                }
             }
          }

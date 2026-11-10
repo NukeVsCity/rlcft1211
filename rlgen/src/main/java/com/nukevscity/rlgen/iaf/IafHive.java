@@ -1,6 +1,11 @@
 package com.nukevscity.rlgen.iaf;
 
-import com.nukevscity.rlgen.RLGen;
+import com.github.alexthe666.iceandfire.block.BlockGoldPile;
+import com.github.alexthe666.iceandfire.block.BlockMyrmexBiolight;
+import com.github.alexthe666.iceandfire.block.BlockMyrmexResin;
+import com.github.alexthe666.iceandfire.core.ModBlocks;
+import com.github.alexthe666.iceandfire.entity.MyrmexHive;
+import com.github.alexthe666.iceandfire.structures.WorldGenMyrmexHive;
 import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,7 +16,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
-/** Ice and Fire 1.7.1 WorldGenMyrmexHive (small = false, as StructureGenerator used it) and WorldGenMyrmexDecoration. Myrmex are not spawned. */
+/** Ice and Fire 1.7.1 WorldGenMyrmexHive (small = false, as StructureGenerator used it) and WorldGenMyrmexDecoration, with its MyrmexHive (rooms, entrances) and myrmexes. */
 final class IafHive {
    private enum RoomType {
       DEFAULT(false), TUNNEL(false), ENTERANCE(false), QUEEN(false), FOOD(true), EMPTY(true), NURSERY(true), SHINY(true), TRASH(true);
@@ -28,10 +33,10 @@ final class IafHive {
       }
    }
 
-   static final String FOOD_DESERT = "rlgen:iceandfire/myrmex_desert_food_chest";
-   static final String FOOD_JUNGLE = "rlgen:iceandfire/myrmex_jungle_food_chest";
-   static final String TRASH = "rlgen:iceandfire/myrmex_trash_chest";
-   static final String GOLD = "rlgen:iceandfire/myrmex_loot_chest";
+   static final String FOOD_DESERT = "iceandfire:myrmex_desert_food_chest";
+   static final String FOOD_JUNGLE = "iceandfire:myrmex_jungle_food_chest";
+   static final String TRASH = "iceandfire:myrmex_trash_chest";
+   static final String GOLD = "iceandfire:myrmex_loot_chest";
 
    private final IafWorld world;
    private final Random unseeded;
@@ -42,13 +47,18 @@ final class IafHive {
    private int totalRooms;
    private boolean hasFoodRoom;
    private boolean hasNursery;
+   private final long seed;
+   /** WorldGenMyrmexHive.hive: its rooms and entrances, registered with MyrmexWorldData when the queen's chunk is decorated. */
+   private MyrmexHive hive;
 
-   IafHive(IafWorld world, Random unseeded, boolean jungle) {
+   IafHive(IafWorld world, Random unseeded, boolean jungle, long seed) {
       this.world = world;
       this.unseeded = unseeded;
       this.jungle = jungle;
-      this.resin = (jungle ? RLGen.JUNGLE_MYRMEX_RESIN : RLGen.DESERT_MYRMEX_RESIN).get().defaultBlockState();
-      this.stickyResin = (jungle ? RLGen.JUNGLE_MYRMEX_RESIN_STICKY : RLGen.DESERT_MYRMEX_RESIN_STICKY).get().defaultBlockState();
+      this.seed = seed;
+      BlockMyrmexResin.EnumType variant = jungle ? BlockMyrmexResin.EnumType.JUNGLE : BlockMyrmexResin.EnumType.DESERT;
+      this.resin = ModBlocks.myrmex_resin.defaultBlockState().setValue(BlockMyrmexResin.VARIANT, variant);
+      this.stickyResin = ModBlocks.myrmex_resin_sticky.defaultBlockState().setValue(BlockMyrmexResin.VARIANT, variant);
    }
 
    void generate(Random rand, BlockPos position) {
@@ -64,8 +74,7 @@ final class IafHive {
    }
 
    private boolean isResin(BlockState s) {
-      return s.is(RLGen.DESERT_MYRMEX_RESIN.get()) || s.is(RLGen.JUNGLE_MYRMEX_RESIN.get()) || s.is(RLGen.DESERT_MYRMEX_RESIN_STICKY.get())
-         || s.is(RLGen.JUNGLE_MYRMEX_RESIN_STICKY.get());
+      return s.getBlock() instanceof BlockMyrmexResin;
    }
 
    private static boolean sturdyUp(BlockState s) {
@@ -82,6 +91,12 @@ final class IafHive {
    }
 
    private void generateMainRoom(Random rand, BlockPos position) {
+      this.hive = new MyrmexHive(null, position, 100);
+      // a fixed UUID, so a plan made again for the same hive names the same hive
+      this.hive.hiveUUID = new java.util.UUID(this.seed ^ 0x4D59524D4558L, position.asLong());
+      MyrmexHive registered = this.hive;
+      BlockPos center = position;
+      this.world.spawn(center.getX(), center.getY(), center.getZ(), level -> IafSpawns.registerHive(level, registered));
       this.generateSphere(rand, position, 14, 7, this.resin, this.stickyResin);
       this.generateSphere(rand, position, 12, 5, Blocks.AIR.defaultBlockState());
       this.decorateSphere(rand, position, 12, 5, RoomType.QUEEN);
@@ -89,13 +104,27 @@ final class IafHive {
       this.generatePath(rand, position.relative(Direction.SOUTH, 9).below(), 15 + rand.nextInt(10), Direction.SOUTH, 100);
       this.generatePath(rand, position.relative(Direction.WEST, 9).below(), 15 + rand.nextInt(10), Direction.WEST, 100);
       this.generatePath(rand, position.relative(Direction.EAST, 9).below(), 15 + rand.nextInt(10), Direction.EAST, 100);
-      // the queen, workers, soldiers and sentinels (not spawned; their counts are drawn in the loop conditions)
+      // the queen, workers, soldiers and sentinels at the grounded centre (their counts are drawn in the loop conditions)
+      BlockPos ground = this.world.grounded(position);
+      this.spawnMyrmex(0, ground);
       for (int i = 0; i < 4 + rand.nextInt(3); i++) {
+         this.spawnMyrmex(1, ground);
       }
       for (int i = 0; i < 2 + rand.nextInt(2); i++) {
+         this.spawnMyrmex(2, ground);
       }
       for (int i = 0; i < rand.nextInt(2); i++) {
+         this.spawnMyrmex(3, ground);
       }
+   }
+
+   private void spawnMyrmex(int caste, BlockPos ground) {
+      MyrmexHive h = this.hive;
+      boolean j = this.jungle;
+      if (caste == 0) {
+         this.world.found.add((j ? "jungle" : "desert") + " myrmex queen " + ground.above().toShortString());
+      }
+      this.world.spawn(ground.getX() + 0.5, ground.getY() + 1.0, ground.getZ() + 0.5, level -> IafSpawns.myrmex(level, h, caste, ground, j));
    }
 
    private void generatePath(Random rand, BlockPos offset, int length, Direction direction, int roomChance) {
@@ -127,6 +156,7 @@ final class IafHive {
       this.generateSphereRespectResin(rand, position, size + 2, height + 2);
       this.generateSphere(rand, position, size, height - 1, Blocks.AIR.defaultBlockState());
       this.decorateSphere(rand, position, size, height - 1, type);
+      this.hive.addRoom(position, WorldGenMyrmexHive.RoomType.valueOf(type.name()));
       for (Direction d : new Direction[]{Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST}) {
          if (rand.nextInt(3) == 0 && direction.getOpposite() != d) {
             this.generatePath(rand, position.relative(d, size - 2), 5 + rand.nextInt(20), d, roomChance);
@@ -136,6 +166,7 @@ final class IafHive {
 
    private void generateEntrance(Random rand, BlockPos position, int size, int height, Direction direction) {
       BlockPos up = position.above();
+      this.hive.getEntranceBottoms().put(up, direction);
       while (!this.world.canSeeSky(up)) {
          this.generateCircleRespectSky(rand, up, size, height, direction);
          up = up.above().relative(direction);
@@ -143,6 +174,7 @@ final class IafHive {
       this.generateSphereRespectAir(rand, up, size + 2, height + 2);
       this.generateSphere(rand, up.above(), size, height - 1, Blocks.AIR.defaultBlockState());
       this.decorateSphere(rand, up.above(), size, height - 1, RoomType.ENTERANCE);
+      this.hive.getEntrances().put(up, direction);
       this.entrances++;
    }
 
@@ -319,10 +351,14 @@ final class IafHive {
          }
          case NURSERY -> {
             if (random.nextInt(4) == 0) {
-               random.nextInt(4); // a baby myrmex (not spawned): caste, growth stage, rotations
-               random.nextInt(2);
-               random.nextFloat();
-               random.nextFloat();
+               int caste = random.nextInt(4);
+               int growth = random.nextInt(2);
+               float yaw = random.nextFloat() * 360.0F;
+               float headYaw = random.nextFloat() * 360.0F;
+               MyrmexHive h = this.hive;
+               boolean j = this.jungle;
+               BlockPos pos = blockpos.immutable();
+               this.world.spawn(pos.getX(), pos.getY(), pos.getZ(), level -> IafSpawns.babyMyrmex(level, h, caste, growth, pos, yaw, headYaw, j));
             }
          }
          case SHINY -> {
@@ -350,10 +386,10 @@ final class IafHive {
       boolean tunnel = roomType == RoomType.ENTERANCE || roomType == RoomType.TUNNEL;
       if (Mat112.opaqueCube(this.world.get(blockpos.above())) && random.nextInt(tunnel ? 20 : 6) == 0) {
          int tuberLength = tunnel ? 1 : (roomType == RoomType.QUEEN ? 1 + random.nextInt(5) : 1 + random.nextInt(3));
-         BlockState light = (this.jungle ? RLGen.MYRMEX_JUNGLE_BIOLIGHT : RLGen.MYRMEX_DESERT_BIOLIGHT).get().defaultBlockState();
+         BlockState light = (this.jungle ? ModBlocks.myrmex_jungle_biolight : ModBlocks.myrmex_desert_biolight).defaultBlockState();
          for (int i = 0; i < tuberLength; i++) {
             if (this.world.isAir(blockpos.below(i))) {
-               this.world.set(blockpos.below(i), light.setValue(BiolightBlock.DOWN, i + 1 < tuberLength));
+               this.world.set(blockpos.below(i), light.setValue(BlockMyrmexBiolight.CONNECTED_DOWN, i + 1 < tuberLength));
             }
          }
       }
@@ -389,19 +425,19 @@ final class IafHive {
 
    private void generateCocoon(BlockPos blockpos, Random rand, String lootTable) {
       if (sturdyUp(this.world.get(blockpos.below()))) {
-         BlockState cocoon = (this.jungle ? RLGen.JUNGLE_MYRMEX_COCOON : RLGen.DESERT_MYRMEX_COCOON).get().defaultBlockState();
+         BlockState cocoon = (this.jungle ? ModBlocks.jungle_myrmex_cocoon : ModBlocks.desert_myrmex_cocoon).defaultBlockState();
          this.world.chest(blockpos, cocoon, lootTable, rand.nextLong());
       }
    }
 
    private void generateGold(BlockPos blockpos, Random rand) {
-      BlockState gold = (rand.nextBoolean() ? RLGen.GOLD_PILE : RLGen.SILVER_PILE).get().defaultBlockState();
+      BlockState gold = (rand.nextBoolean() ? ModBlocks.goldPile : ModBlocks.silverPile).defaultBlockState();
       if (sturdyUp(this.world.get(blockpos.below()))) {
-         this.world.set(blockpos, gold.setValue(PileBlock.LAYERS, 8));
-         this.world.set(this.grounded(blockpos.north()), gold.setValue(PileBlock.LAYERS, 1 + this.unseeded.nextInt(7)));
-         this.world.set(this.grounded(blockpos.south()), gold.setValue(PileBlock.LAYERS, 1 + this.unseeded.nextInt(7)));
-         this.world.set(this.grounded(blockpos.west()), gold.setValue(PileBlock.LAYERS, 1 + this.unseeded.nextInt(7)));
-         this.world.set(this.grounded(blockpos.east()), gold.setValue(PileBlock.LAYERS, 1 + this.unseeded.nextInt(7)));
+         this.world.set(blockpos, gold.setValue(BlockGoldPile.LAYERS, 8));
+         this.world.set(this.grounded(blockpos.north()), gold.setValue(BlockGoldPile.LAYERS, 1 + this.unseeded.nextInt(7)));
+         this.world.set(this.grounded(blockpos.south()), gold.setValue(BlockGoldPile.LAYERS, 1 + this.unseeded.nextInt(7)));
+         this.world.set(this.grounded(blockpos.west()), gold.setValue(BlockGoldPile.LAYERS, 1 + this.unseeded.nextInt(7)));
+         this.world.set(this.grounded(blockpos.east()), gold.setValue(BlockGoldPile.LAYERS, 1 + this.unseeded.nextInt(7)));
          if (rand.nextInt(3) == 0) {
             BlockState chest = IafGen.chest(this.unseeded);
             this.world.chest(blockpos.above(), chest, GOLD, rand.nextLong());
@@ -439,11 +475,11 @@ final class IafHive {
          && (current.is(Blocks.DIRT) || current.is(Blocks.SAND) || current.is(Blocks.COBBLESTONE) || current.is(Blocks.GRAVEL))) {
          Block ore = Blocks.REDSTONE_ORE;
          if (rand.nextInt(3) == 0) {
-            ore = rand.nextBoolean() ? Blocks.GOLD_ORE : RLGen.SILVER_ORE.get();
+            ore = rand.nextBoolean() ? Blocks.GOLD_ORE : ModBlocks.silverOre;
          } else if (rand.nextInt(3) == 0) {
             ore = Blocks.DIAMOND_ORE;
          } else if (rand.nextInt(2) == 0) {
-            ore = rand.nextBoolean() ? Blocks.EMERALD_ORE : RLGen.SAPPHIRE_ORE.get();
+            ore = rand.nextBoolean() ? Blocks.EMERALD_ORE : ModBlocks.sapphireOre;
          }
          this.world.set(blockpos, ore.defaultBlockState());
       }

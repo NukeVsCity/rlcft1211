@@ -146,7 +146,7 @@ public final class World {
       BlockEntity be = this.level.getBlockEntity(pos);
       ResourceLocation id = ResourceLocation.tryParse(com.github.fnar.minecraft.block.spawner.SpawnPotentialMapper1_12.entityId(mob));
       if (id == null || !BuiltInRegistries.ENTITY_TYPE.containsKey(id)) {
-         id = ResourceLocation.withDefaultNamespace(standIn(mob)); // Lycanites / Ice and Fire are not ported yet
+         id = ResourceLocation.withDefaultNamespace(standIn(mob)); // Lycanites is not ported yet (Ice and Fire mobs are real now)
       }
       if (be instanceof SpawnerBlockEntity spawner && id != null && BuiltInRegistries.ENTITY_TYPE.containsKey(id)) {
          spawner.setEntityId(BuiltInRegistries.ENTITY_TYPE.get(id), this.level.getRandom());
