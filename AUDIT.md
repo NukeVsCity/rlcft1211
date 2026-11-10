@@ -77,6 +77,14 @@ Status: DONE = ported; PART = partly ported; TODO = to port; SKIP = deliberately
 
 Comparison with a real 1.12 save: `rlgen/scripts/compare112.py` (+ `gen_compare_world.sh` for our side), needs the save's region files and level.dat.
 
+## Gameplay ports
+| Mod | Status |
+|---|---|
+| LLibrary 1.7.20 (parts IaF uses) | DONE (v0.10.0) |
+| Ice and Fire 1.7.1 | DONE (v0.10.0): items/blocks/recipes/loot/config, dragons (server+client), land mobs, air/water mobs, world-gen spawns |
+| Lycanites Mobs 2.0.8.9 | TODO (next) |
+| Mechanics (Simple Difficulty, First Aid, NTP, Spartan, RLCombat/Dodge/ShieldBreak, Baubles, Scaling Health/Infernal/Champions/Bloodmoon, Reskillable/CompatSkills/Level Up, Potion Core/SME/Better Survival) | TODO |
+
 ## Blocks inside structures
 Counted per block over the overworld RC structures. The most used now are real rlgen blocks with the mods' textures
 (`scripts/gen_mod_blocks.py`, data/rlgen/mod_blocks.json): BetterNether tiles/bone/reeds/stalagnate/cincinnasite, Quark carved wood,
