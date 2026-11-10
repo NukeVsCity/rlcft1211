@@ -95,6 +95,8 @@ final class IafHive {
       // a fixed UUID, so a plan made again for the same hive names the same hive
       this.hive.hiveUUID = new java.util.UUID(this.seed ^ 0x4D59524D4558L, position.asLong());
       MyrmexHive registered = this.hive;
+      // known before any of its chunks is decorated, so a myrmex loaded from another chunk first still finds it
+      com.github.alexthe666.iceandfire.world.MyrmexWorldData.WORLDGEN_PENDING.putIfAbsent(registered.hiveUUID, registered);
       BlockPos center = position;
       this.world.spawn(center.getX(), center.getY(), center.getZ(), level -> IafSpawns.registerHive(level, registered));
       this.generateSphere(rand, position, 14, 7, this.resin, this.stickyResin);

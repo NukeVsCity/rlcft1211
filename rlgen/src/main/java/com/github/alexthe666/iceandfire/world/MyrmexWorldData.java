@@ -127,6 +127,18 @@ public class MyrmexWorldData extends SavedData {
          }
       }
 
+      // a hive world generation built (WorldGenMyrmexHive called addHive before spawning its myrmexes)
+      MyrmexHive pending = id == null ? null : WORLDGEN_PENDING.remove(id);
+      if (pending != null && this.world != null) {
+         addHive(this.world, pending);
+         return pending;
+      }
       return null;
    }
+
+   /**
+    * Hives built by world generation threads (rlgen's planned WorldGenMyrmexHive), waiting for the server thread: added on the next
+    * server task, or as soon as one of their myrmexes is loaded and asks for its hive, whichever comes first.
+    */
+   public static final java.util.Map<UUID, MyrmexHive> WORLDGEN_PENDING = new java.util.concurrent.ConcurrentHashMap<>();
 }

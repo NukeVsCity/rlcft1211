@@ -207,13 +207,9 @@ public final class IafSpawns {
     */
    static void registerHive(WorldGenLevel level, MyrmexHive hive) {
       ServerLevel server = level.getLevel();
-      server.getServer().execute(() -> {
-         MyrmexWorldData data = MyrmexWorldData.get(server);
-         if (data.getHiveFromUUID(hive.hiveUUID) == null) {
-            MyrmexWorldData.addHive(server, hive);
-            data.setDirty();
-         }
-      });
+      MyrmexWorldData.WORLDGEN_PENDING.putIfAbsent(hive.hiveUUID, hive);
+      // getHiveFromUUID adds a pending hive to the list (unless a myrmex of it was loaded first and did so)
+      server.getServer().execute(() -> MyrmexWorldData.get(server).getHiveFromUUID(hive.hiveUUID));
    }
 
    /**
