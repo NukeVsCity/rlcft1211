@@ -58,6 +58,35 @@ public final class LandHooks {
       };
       ModEntityHooks.placeStoneStatue = LandHooks::placeStoneStatue;
       ModEntityHooks.useGorgonHead = LandHooks::useGorgonHead;
+      ModEntityHooks.useMyrmexStaff = LandHooks::useMyrmexStaff;
+   }
+
+   /**
+    * 1.12 ItemMyrmexStaff.onItemRightClick (pos == null) and onItemUse while sneaking: the server sends the staff's hive (or null)
+    * to every player; the client opens GuiMyrmexStaff / GuiMyrmexAddRoom when the staff is bound. Like 1.12 a right click also
+    * adds an empty MyrmexHive to the world data.
+    */
+   private static void useMyrmexStaff(Level worldIn, Player player, ItemStack staff, @javax.annotation.Nullable BlockPos pos,
+         @javax.annotation.Nullable Direction side) {
+      net.minecraft.nbt.CompoundTag tag = com.github.alexthe666.iceandfire.core.IafMeta.getTag(staff);
+      java.util.UUID id = tag != null && tag.hasUUID("HiveUUID") ? tag.getUUID("HiveUUID") : new java.util.UUID(0L, 0L);
+      if (!worldIn.isClientSide) {
+         MyrmexHive hive = com.github.alexthe666.iceandfire.world.MyrmexWorldData.get(worldIn).getHiveFromUUID(id);
+         if (pos == null) {
+            com.github.alexthe666.iceandfire.world.MyrmexWorldData.addHive(worldIn, new MyrmexHive());
+         }
+         if (hive != null) {
+            net.neoforged.neoforge.network.PacketDistributor.sendToAllPlayers(com.github.alexthe666.iceandfire.message.MessageGetMyrmexHive.of(hive));
+         } else {
+            net.neoforged.neoforge.network.PacketDistributor.sendToAllPlayers(com.github.alexthe666.iceandfire.message.MessageSetMyrmexHiveNull.INSTANCE);
+         }
+      } else if (!id.equals(new java.util.UUID(0L, 0L))) {
+         if (pos == null) {
+            com.github.alexthe666.iceandfire.client.MyrmexStaffClient.openMyrmexStaffGui(staff);
+         } else {
+            com.github.alexthe666.iceandfire.client.MyrmexStaffClient.openMyrmexAddRoomGui(staff, pos, side);
+         }
+      }
    }
 
    /** ItemStoneStatue.onItemUse */

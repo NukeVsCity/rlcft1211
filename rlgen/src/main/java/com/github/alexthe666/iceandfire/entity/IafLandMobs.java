@@ -97,6 +97,7 @@ public final class IafLandMobs {
    }
 
    public static void init(IEventBus modBus) {
+      LandParticles.init();
       modBus.addListener(IafLandMobs::spawnPlacements);
       LandHooks.install();
       com.github.alexthe666.iceandfire.world.IafLandSpawns.register(modBus);
@@ -131,5 +132,15 @@ public final class IafLandMobs {
       PayloadRegistrar registrar = event.registrar(IceAndFire.MODID + "_land").versioned("1");
       registrar.playToClient(MessageStoneStatue.TYPE, MessageStoneStatue.CODEC, MessageStoneStatue::handle);
       registrar.playToServer(MessageDeathWormControl.TYPE, MessageDeathWormControl.CODEC, MessageDeathWormControl::handle);
+      registrar.playBidirectional(
+         com.github.alexthe666.iceandfire.message.MessageGetMyrmexHive.TYPE,
+         com.github.alexthe666.iceandfire.message.MessageGetMyrmexHive.CODEC,
+         com.github.alexthe666.iceandfire.message.MessageGetMyrmexHive::handle
+      );
+      registrar.playToClient(
+         com.github.alexthe666.iceandfire.message.MessageSetMyrmexHiveNull.TYPE,
+         com.github.alexthe666.iceandfire.message.MessageSetMyrmexHiveNull.CODEC,
+         com.github.alexthe666.iceandfire.message.MessageSetMyrmexHiveNull::handle
+      );
    }
 }

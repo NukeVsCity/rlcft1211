@@ -1,18 +1,27 @@
 package com.github.alexthe666.iceandfire.entity;
 
-import net.minecraft.core.particles.DustParticleOptions;
+import com.github.alexthe666.iceandfire.IafRegistries;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.level.Level;
-import org.joml.Vector3f;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
-/** Ice and Fire proxy particles used by the land mobs. */
+/** Ice and Fire proxy particles used by the land mobs ("blood" in 1.12 ClientProxy.spawnParticle). */
 public final class LandParticles {
    private LandParticles() {
    }
 
-   private static final DustParticleOptions BLOOD = new DustParticleOptions(new Vector3f(0.6F, 0.0F, 0.0F), 1.0F);
+   public static final DeferredHolder<ParticleType<?>, SimpleParticleType> BLOOD =
+      IafRegistries.PARTICLE_TYPES.register("blood", () -> new SimpleParticleType(false));
 
-   /** IceAndFire.PROXY.spawnParticle("blood", ...). STUB(iaf/dragon-client): red dust until the ParticleBlood port exists. */
+   /** Loads the class so the holder is registered. */
+   public static void init() {
+   }
+
+   /** IceAndFire.PROXY.spawnParticle("blood", ...): client.particle.ParticleBlood (red rain drop); nothing on the server, like CommonProxy. */
    public static void blood(Level level, double x, double y, double z, double mx, double my, double mz) {
-      level.addParticle(BLOOD, x, y, z, mx, my, mz);
+      if (level.isClientSide) {
+         level.addParticle(BLOOD.get(), x, y, z, mx, my, mz);
+      }
    }
 }
