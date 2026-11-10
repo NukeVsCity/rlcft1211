@@ -1,9 +1,9 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.IafLand;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAINearestAttackableTarget;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAITarget;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.LegacyAi;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.LegacyAi;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,6 +27,7 @@ public class CyclopsAITargetSheepPlayers<T extends LivingEntity> extends EntityA
       PathfinderMob creature, Class<T> classTarget, int chance, boolean checkSight, boolean onlyNearby, @Nullable final Predicate<? super T> targetSelector
    ) {
       super(creature, checkSight, onlyNearby);
+      this.setMutexBits(1);
       this.targetClass = classTarget;
       this.targetChance = chance;
       this.sorter = new EntityAINearestAttackableTarget.Sorter(creature);
@@ -43,7 +44,7 @@ public class CyclopsAITargetSheepPlayers<T extends LivingEntity> extends EntityA
 
    @SuppressWarnings("unchecked")
    @Override
-   public boolean canUse() {
+   public boolean shouldExecute() {
       if (this.targetChance > 0 && this.taskOwner.getRandom().nextInt(this.targetChance) != 0) {
          return false;
       } else if (!Player.class.isAssignableFrom(this.targetClass)) {
@@ -84,8 +85,8 @@ public class CyclopsAITargetSheepPlayers<T extends LivingEntity> extends EntityA
    }
 
    @Override
-   public void start() {
+   public void startExecuting() {
       this.taskOwner.setTarget(this.targetEntity);
-      super.start();
+      super.startExecuting();
    }
 }

@@ -1,10 +1,10 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntityDeathWorm;
-import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIWander;
 
 /** 1.12 DeathWormAIWander (EntityAIWander, chance 120, out of sand only). */
-public class DeathWormAIWander extends RandomStrollGoal {
+public class DeathWormAIWander extends EntityAIWander {
    private EntityDeathWorm worm;
 
    public DeathWormAIWander(EntityDeathWorm creatureIn, double speedIn) {
@@ -13,12 +13,12 @@ public class DeathWormAIWander extends RandomStrollGoal {
    }
 
    @Override
-   public boolean canUse() {
-      return !this.worm.isInSand() && super.canUse();
+   public boolean shouldExecute() {
+      return !this.worm.isInSand() && super.shouldExecute();
    }
 
    @Override
-   public boolean canContinueToUse() {
-      return !this.worm.isInSand() && super.canContinueToUse();
+   public boolean shouldContinueExecuting() {
+      return !this.worm.isInSand() && super.shouldContinueExecuting();
    }
 }

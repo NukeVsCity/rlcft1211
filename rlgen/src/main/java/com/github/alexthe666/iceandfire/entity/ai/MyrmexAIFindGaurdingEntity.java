@@ -2,8 +2,8 @@ package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntityMyrmexBase;
 import com.github.alexthe666.iceandfire.entity.EntityMyrmexSoldier;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAINearestAttackableTarget;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAITarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITarget;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -18,6 +18,7 @@ public class MyrmexAIFindGaurdingEntity extends EntityAITarget {
 
    public MyrmexAIFindGaurdingEntity(EntityMyrmexSoldier myrmex) {
       super(myrmex, false, false);
+      this.setMutexBits(1);
       this.theNearestAttackableTargetSorter = new EntityAINearestAttackableTarget.Sorter(myrmex);
       this.targetEntitySelector = m -> m != null
          && !(m instanceof EntityMyrmexSoldier)
@@ -29,7 +30,7 @@ public class MyrmexAIFindGaurdingEntity extends EntityAITarget {
    }
 
    @Override
-   public boolean canUse() {
+   public boolean shouldExecute() {
       if (this.myrmex.canMove() && this.myrmex.getTarget() == null && this.myrmex.guardingEntity == null) {
          List<EntityMyrmexBase> list = new ArrayList<>(
             this.taskOwner.level().getEntitiesOfClass(EntityMyrmexBase.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector)
@@ -51,7 +52,7 @@ public class MyrmexAIFindGaurdingEntity extends EntityAITarget {
    }
 
    @Override
-   public boolean canContinueToUse() {
+   public boolean shouldContinueExecuting() {
       return false;
    }
 }

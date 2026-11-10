@@ -3,8 +3,8 @@ package com.github.alexthe666.iceandfire.entity.ai;
 import com.github.alexthe666.iceandfire.entity.EntityMyrmexBase;
 import com.github.alexthe666.iceandfire.entity.EntityMyrmexEgg;
 import com.github.alexthe666.iceandfire.entity.EntityMyrmexWorker;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAINearestAttackableTarget;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAITarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITarget;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,6 +21,7 @@ public class MyrmexAIPickupBabies extends EntityAITarget {
 
    public MyrmexAIPickupBabies(EntityMyrmexWorker myrmex) {
       super(myrmex, false, false);
+      this.setMutexBits(1);
       this.theNearestAttackableTargetSorter = new EntityAINearestAttackableTarget.Sorter(myrmex);
       this.targetEntitySelector = m -> m != null
          && (
@@ -31,7 +32,7 @@ public class MyrmexAIPickupBabies extends EntityAITarget {
    }
 
    @Override
-   public boolean canUse() {
+   public boolean shouldExecute() {
       if (this.myrmex.canMove() && this.myrmex.getNavigation().isDone() && !this.myrmex.shouldEnterHive() && this.myrmex.keepSearching && !this.myrmex.holdingBaby()) {
          List<LivingEntity> listBabies = new ArrayList<>(
             this.taskOwner.level().getEntitiesOfClass(LivingEntity.class, this.getTargetableArea(this.getTargetDistance()), this.targetEntitySelector)
@@ -53,30 +54,25 @@ public class MyrmexAIPickupBabies extends EntityAITarget {
    }
 
    @Override
-   public void start() {
+   public void startExecuting() {
       this.taskOwner.getNavigation().moveTo(this.targetEntity.getX(), this.targetEntity.getY(), this.targetEntity.getZ(), 1.0);
-      super.start();
+      super.startExecuting();
    }
 
    @Override
-   public boolean requiresUpdateEveryTick() {
-      return true;
-   }
-
-   @Override
-   public void tick() {
+   public void updateTask() {
       if (this.targetEntity == null || this.targetEntity != null && !this.targetEntity.isAlive()) {
-         this.stop();
+         this.resetTask();
       }
 
       if (this.targetEntity != null && this.targetEntity.isAlive() && this.taskOwner.distanceToSqr(this.targetEntity) < 2.0) {
          this.targetEntity.startRiding(this.myrmex);
-         this.stop();
+         this.resetTask();
       }
    }
 
    @Override
-   public boolean canContinueToUse() {
+   public boolean shouldContinueExecuting() {
       return !this.taskOwner.getNavigation().isDone();
    }
 }

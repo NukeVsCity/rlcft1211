@@ -2,8 +2,8 @@ package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntityMyrmexRoyal;
 import com.github.alexthe666.iceandfire.entity.MyrmexHive;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAINearestAttackableTarget;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAITarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITarget;
 import com.github.alexthe666.iceandfire.world.MyrmexWorldData;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,12 +18,13 @@ public class MyrmexAIFindMate extends EntityAITarget {
 
    public MyrmexAIFindMate(EntityMyrmexRoyal myrmex) {
       super(myrmex, false, false);
+      this.setMutexBits(1);
       this.theNearestAttackableTargetSorter = new EntityAINearestAttackableTarget.Sorter(myrmex);
       this.myrmex = myrmex;
    }
 
    @Override
-   public boolean canUse() {
+   public boolean shouldExecute() {
       if (this.myrmex.canMove() && this.myrmex.getTarget() == null && this.myrmex.releaseTicks >= 400 && this.myrmex.mate == null) {
          MyrmexHive village = this.myrmex.getHive();
          if (village == null) {
@@ -64,7 +65,7 @@ public class MyrmexAIFindMate extends EntityAITarget {
    }
 
    @Override
-   public boolean canContinueToUse() {
+   public boolean shouldContinueExecuting() {
       return false;
    }
 }

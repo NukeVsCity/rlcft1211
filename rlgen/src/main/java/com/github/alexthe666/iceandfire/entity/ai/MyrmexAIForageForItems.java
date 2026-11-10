@@ -1,8 +1,8 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntityMyrmexWorker;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAINearestAttackableTarget;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAITarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITarget;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,13 +20,14 @@ public class MyrmexAIForageForItems extends EntityAITarget {
 
    public MyrmexAIForageForItems(EntityMyrmexWorker myrmex) {
       super(myrmex, false, false);
+      this.setMutexBits(1);
       this.theNearestAttackableTargetSorter = new EntityAINearestAttackableTarget.Sorter(myrmex);
       this.targetEntitySelector = item -> item != null && !item.getItem().isEmpty() && !item.isInWater();
       this.myrmex = myrmex;
    }
 
    @Override
-   public boolean canUse() {
+   public boolean shouldExecute() {
       if (this.myrmex.canMove()
          && !this.myrmex.holdingBaby()
          && this.myrmex.getNavigation().isDone()
@@ -53,32 +54,27 @@ public class MyrmexAIForageForItems extends EntityAITarget {
    }
 
    @Override
-   public void start() {
+   public void startExecuting() {
       this.taskOwner.getNavigation().moveTo(this.targetEntity.getX(), this.targetEntity.getY(), this.targetEntity.getZ(), 1.0);
-      super.start();
+      super.startExecuting();
    }
 
    @Override
-   public boolean requiresUpdateEveryTick() {
-      return true;
-   }
-
-   @Override
-   public void tick() {
+   public void updateTask() {
       if (this.targetEntity == null || this.targetEntity != null && (!this.targetEntity.isAlive() || this.targetEntity.isInWater())) {
-         this.stop();
+         this.resetTask();
       }
 
       if (this.targetEntity != null && this.targetEntity.isAlive() && this.taskOwner.distanceToSqr(this.targetEntity) < 1.0) {
          this.myrmex.onPickupItem(this.targetEntity);
          this.myrmex.setItemInHand(InteractionHand.MAIN_HAND, this.targetEntity.getItem());
          this.targetEntity.discard();
-         this.stop();
+         this.resetTask();
       }
    }
 
    @Override
-   public boolean canContinueToUse() {
+   public boolean shouldContinueExecuting() {
       return !this.taskOwner.getNavigation().isDone() && this.myrmex.getTarget() == null;
    }
 }

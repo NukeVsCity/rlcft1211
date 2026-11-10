@@ -1,7 +1,7 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntityCockatrice;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAINearestAttackableTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
 import java.util.function.Predicate;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,9 +17,9 @@ public class CockatriceAITarget<T extends LivingEntity> extends EntityAINearestA
    }
 
    @Override
-   public boolean canUse() {
+   public boolean shouldExecute() {
       if (this.taskOwner.getRandom().nextInt(20) == 0 && this.cockatrice.level().getDifficulty() != Difficulty.PEACEFUL) {
-         if (super.canUse() && this.targetEntity != null && !this.targetEntity.getClass().equals(this.cockatrice.getClass())) {
+         if (super.shouldExecute() && this.targetEntity != null && !this.targetEntity.getClass().equals(this.cockatrice.getClass())) {
             if (this.targetEntity instanceof Player && !this.cockatrice.isOwnedBy(this.targetEntity)) {
                return !this.cockatrice.isTame();
             }

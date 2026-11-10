@@ -1,13 +1,12 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntityCockatrice;
-import java.util.EnumSet;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.RandomPositionGenerator;
 import net.minecraft.world.phys.Vec3;
 
 /** 1.12 CockatriceAIWander (only when the command is "wander"). */
-public class CockatriceAIWander extends Goal {
+public class CockatriceAIWander extends EntityAIBase {
    private EntityCockatrice cockatrice;
    private double xPosition;
    private double yPosition;
@@ -24,16 +23,16 @@ public class CockatriceAIWander extends Goal {
       this.cockatrice = creatureIn;
       this.speed = speedIn;
       this.executionChance = chance;
-      this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+      this.setMutexBits(1);
    }
 
    @Override
-   public boolean canUse() {
+   public boolean shouldExecute() {
       if (this.cockatrice.canMove() && this.cockatrice.getCommand() == 0) {
          if (!this.mustUpdate && this.cockatrice.getRandom().nextInt(this.executionChance) != 0) {
             return false;
          } else {
-            Vec3 vec3d = DefaultRandomPos.getPos(this.cockatrice, 10, 7);
+            Vec3 vec3d = RandomPositionGenerator.findRandomTarget(this.cockatrice, 10, 7);
             if (vec3d == null) {
                return false;
             } else {
@@ -50,12 +49,12 @@ public class CockatriceAIWander extends Goal {
    }
 
    @Override
-   public boolean canContinueToUse() {
+   public boolean shouldContinueExecuting() {
       return !this.cockatrice.getNavigation().isDone();
    }
 
    @Override
-   public void start() {
+   public void startExecuting() {
       this.cockatrice.getNavigation().moveTo(this.xPosition, this.yPosition, this.zPosition, this.speed);
    }
 

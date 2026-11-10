@@ -1,6 +1,6 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAIAttackMelee;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIAttackMelee;
 import net.minecraft.world.entity.PathfinderMob;
 
 /** 1.12 EntityAIAttackMeleeNoCooldown */
@@ -10,8 +10,8 @@ public class EntityAIAttackMeleeNoCooldown extends EntityAIAttackMelee {
    }
 
    @Override
-   public void tick() {
-      super.tick();
+   public void updateTask() {
+      super.updateTask();
       this.attackTick = 0;
    }
 }

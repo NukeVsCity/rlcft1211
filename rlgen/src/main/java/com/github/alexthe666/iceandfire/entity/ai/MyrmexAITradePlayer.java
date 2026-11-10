@@ -1,21 +1,20 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntityMyrmexBase;
-import java.util.EnumSet;
-import net.minecraft.world.entity.ai.goal.Goal;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import net.minecraft.world.entity.player.Player;
 
 /** 1.12 MyrmexAITradePlayer (mutex 5: move + jump) */
-public class MyrmexAITradePlayer extends Goal {
+public class MyrmexAITradePlayer extends EntityAIBase {
    private final EntityMyrmexBase myrmex;
 
    public MyrmexAITradePlayer(EntityMyrmexBase myrmex) {
       this.myrmex = myrmex;
-      this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.JUMP));
+      this.setMutexBits(5);
    }
 
    @Override
-   public boolean canUse() {
+   public boolean shouldExecute() {
       if (!this.myrmex.isAlive()) {
          return false;
       } else if (this.myrmex.isInWater()) {
@@ -35,17 +34,12 @@ public class MyrmexAITradePlayer extends Goal {
    }
 
    @Override
-   public boolean requiresUpdateEveryTick() {
-      return true;
-   }
-
-   @Override
-   public void tick() {
+   public void updateTask() {
       this.myrmex.getNavigation().stop();
    }
 
    @Override
-   public void stop() {
+   public void resetTask() {
       this.myrmex.setCustomer(null);
    }
 }

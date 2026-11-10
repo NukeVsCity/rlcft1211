@@ -5,14 +5,13 @@ import com.github.alexthe666.iceandfire.entity.EntityMyrmexWorker;
 import com.github.alexthe666.iceandfire.entity.MyrmexHive;
 import com.github.alexthe666.iceandfire.structures.WorldGenMyrmexHive;
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.ai.goal.Goal;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -20,7 +19,7 @@ import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 
 /** 1.12 MyrmexAIStoreItems: put the carried item into a myrmex cocoon of a food room. */
-public class MyrmexAIStoreItems extends Goal {
+public class MyrmexAIStoreItems extends EntityAIBase {
    private final EntityMyrmexBase myrmex;
    private final double movementSpeed;
    private Path path;
@@ -30,7 +29,7 @@ public class MyrmexAIStoreItems extends Goal {
    public MyrmexAIStoreItems(EntityMyrmexBase entityIn, double movementSpeedIn) {
       this.myrmex = entityIn;
       this.movementSpeed = movementSpeedIn;
-      this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+      this.setMutexBits(1);
    }
 
    /** BlockMyrmexCocoon with a TileEntityMyrmexCocoon (any "myrmex...cocoon" block whose block entity is a container) */
@@ -58,7 +57,7 @@ public class MyrmexAIStoreItems extends Goal {
    }
 
    @Override
-   public boolean canUse() {
+   public boolean shouldExecute() {
       if (this.myrmex.canMove()
          && (!(this.myrmex instanceof EntityMyrmexWorker) || !((EntityMyrmexWorker)this.myrmex).holdingBaby())
          && (this.myrmex.shouldEnterHive() || this.myrmex.getNavigation().isDone())
@@ -83,7 +82,7 @@ public class MyrmexAIStoreItems extends Goal {
    }
 
    @Override
-   public boolean canContinueToUse() {
+   public boolean shouldContinueExecuting() {
       return !this.myrmex.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()
          && !this.myrmex.getNavigation().isDone()
          && this.nextCocoon != null
@@ -93,17 +92,12 @@ public class MyrmexAIStoreItems extends Goal {
    }
 
    @Override
-   public void start() {
+   public void startExecuting() {
       this.myrmex.getNavigation().moveTo(this.path, this.movementSpeed);
    }
 
    @Override
-   public boolean requiresUpdateEveryTick() {
-      return true;
-   }
-
-   @Override
-   public void tick() {
+   public void updateTask() {
       if (this.nextCocoon != null
          && this.myrmex.distanceToSqr(Vec3.atLowerCornerOf(this.nextCocoon)) < 4.0
          && !this.myrmex.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()
@@ -140,13 +134,13 @@ public class MyrmexAIStoreItems extends Goal {
                }
             }
          } else {
-            this.stop();
+            this.resetTask();
          }
       }
    }
 
    @Override
-   public void stop() {
+   public void resetTask() {
       this.nextRoom = BlockPos.ZERO;
       this.nextCocoon = null;
       this.myrmex.getNavigation().moveTo((Path)null, this.movementSpeed);

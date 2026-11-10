@@ -4,15 +4,14 @@ import com.github.alexthe666.iceandfire.entity.EntityMyrmexBase;
 import com.github.alexthe666.iceandfire.entity.EntityMyrmexWorker;
 import com.github.alexthe666.iceandfire.entity.MyrmexHive;
 import com.github.alexthe666.iceandfire.world.MyrmexWorldData;
-import java.util.EnumSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.ai.goal.Goal;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 
 /** 1.12 MyrmexAIMoveThroughHive: walk to a random room of the nearest hive while underground. */
-public class MyrmexAIMoveThroughHive extends Goal {
+public class MyrmexAIMoveThroughHive extends EntityAIBase {
    private final EntityMyrmexBase myrmex;
    private final double movementSpeed;
    private Path path;
@@ -21,11 +20,11 @@ public class MyrmexAIMoveThroughHive extends Goal {
    public MyrmexAIMoveThroughHive(EntityMyrmexBase entityIn, double movementSpeedIn) {
       this.myrmex = entityIn;
       this.movementSpeed = movementSpeedIn;
-      this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+      this.setMutexBits(1);
    }
 
    @Override
-   public boolean canUse() {
+   public boolean shouldExecute() {
       if (this.myrmex.canMove()
          && (!(this.myrmex instanceof EntityMyrmexWorker) || !((EntityMyrmexWorker)this.myrmex).holdingBaby())
          && this.myrmex.shouldMoveThroughHive()
@@ -50,7 +49,7 @@ public class MyrmexAIMoveThroughHive extends Goal {
    }
 
    @Override
-   public boolean canContinueToUse() {
+   public boolean shouldContinueExecuting() {
       return !this.myrmex.getNavigation().isDone()
          && this.myrmex.distanceToSqr(Vec3.atLowerCornerOf(this.nextRoom)) > 3.0
          && this.myrmex.shouldEnterHive()
@@ -58,12 +57,12 @@ public class MyrmexAIMoveThroughHive extends Goal {
    }
 
    @Override
-   public void start() {
+   public void startExecuting() {
       this.myrmex.getNavigation().moveTo(this.path, this.movementSpeed);
    }
 
    @Override
-   public void stop() {
+   public void resetTask() {
       this.nextRoom = BlockPos.ZERO;
       this.myrmex.getNavigation().moveTo((Path)null, this.movementSpeed);
    }

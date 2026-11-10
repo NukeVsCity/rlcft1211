@@ -1,22 +1,21 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntityMyrmexSoldier;
-import java.util.EnumSet;
-import net.minecraft.world.entity.ai.goal.Goal;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 
 /** 1.12 MyrmexAIEscortEntity */
-public class MyrmexAIEscortEntity extends Goal {
+public class MyrmexAIEscortEntity extends EntityAIBase {
    private final EntityMyrmexSoldier myrmex;
    private final double movementSpeed;
 
    public MyrmexAIEscortEntity(EntityMyrmexSoldier entityIn, double movementSpeedIn) {
       this.myrmex = entityIn;
       this.movementSpeed = movementSpeedIn;
-      this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+      this.setMutexBits(1);
    }
 
    @Override
-   public boolean canUse() {
+   public boolean shouldExecute() {
       return this.myrmex.canMove()
          && this.myrmex.getTarget() == null
          && this.myrmex.guardingEntity != null
@@ -25,19 +24,14 @@ public class MyrmexAIEscortEntity extends Goal {
    }
 
    @Override
-   public boolean requiresUpdateEveryTick() {
-      return true;
-   }
-
-   @Override
-   public void tick() {
+   public void updateTask() {
       if (this.myrmex.guardingEntity != null && (this.myrmex.distanceTo(this.myrmex.guardingEntity) > 30.0F || this.myrmex.getNavigation().isDone())) {
          this.myrmex.getNavigation().moveTo(this.myrmex.guardingEntity, this.movementSpeed);
       }
    }
 
    @Override
-   public boolean canContinueToUse() {
+   public boolean shouldContinueExecuting() {
       return this.myrmex.canMove()
          && this.myrmex.getTarget() == null
          && this.myrmex.guardingEntity != null

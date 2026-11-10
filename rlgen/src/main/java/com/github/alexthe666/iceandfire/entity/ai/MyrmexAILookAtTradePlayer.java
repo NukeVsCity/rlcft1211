@@ -1,11 +1,11 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntityMyrmexBase;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIWatchClosest;
 import net.minecraft.world.entity.player.Player;
 
 /** 1.12 MyrmexAILookAtTradePlayer */
-public class MyrmexAILookAtTradePlayer extends LookAtPlayerGoal {
+public class MyrmexAILookAtTradePlayer extends EntityAIWatchClosest {
    private final EntityMyrmexBase myrmex;
 
    public MyrmexAILookAtTradePlayer(EntityMyrmexBase myrmex) {
@@ -14,9 +14,9 @@ public class MyrmexAILookAtTradePlayer extends LookAtPlayerGoal {
    }
 
    @Override
-   public boolean canUse() {
+   public boolean shouldExecute() {
       if (this.myrmex.isTrading()) {
-         this.lookAt = this.myrmex.getCustomer();
+         this.closestEntity = this.myrmex.getCustomer();
          return true;
       } else {
          return false;

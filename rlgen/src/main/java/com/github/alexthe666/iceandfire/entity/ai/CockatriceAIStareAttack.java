@@ -2,14 +2,13 @@ package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntityCockatrice;
 import com.github.alexthe666.iceandfire.entity.EntityGorgon;
-import java.util.EnumSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.goal.Goal;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import net.minecraft.world.phys.Vec3;
 
 /** 1.12 CockatriceAIStareAttack: walk into the target's view and stare. */
-public class CockatriceAIStareAttack extends Goal {
+public class CockatriceAIStareAttack extends EntityAIBase {
    private final EntityCockatrice entity;
    private final double moveSpeedAmp;
    private final float maxAttackDistance;
@@ -28,7 +27,7 @@ public class CockatriceAIStareAttack extends Goal {
       this.moveSpeedAmp = speedAmplifier;
       this.attackCooldown = delay;
       this.maxAttackDistance = maxDistance * maxDistance;
-      this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
+      this.setMutexBits(3);
    }
 
    public void setAttackCooldown(int cooldown) {
@@ -36,17 +35,17 @@ public class CockatriceAIStareAttack extends Goal {
    }
 
    @Override
-   public boolean canUse() {
+   public boolean shouldExecute() {
       return this.entity.getTarget() != null;
    }
 
    @Override
-   public boolean canContinueToUse() {
-      return this.canUse();
+   public boolean shouldContinueExecuting() {
+      return this.shouldExecute();
    }
 
    @Override
-   public void stop() {
+   public void resetTask() {
       this.seeTime = 0;
       this.attackTime = -1;
       this.entity.stopUsingItem();
@@ -55,18 +54,13 @@ public class CockatriceAIStareAttack extends Goal {
    }
 
    @Override
-   public boolean requiresUpdateEveryTick() {
-      return true;
-   }
-
-   @Override
-   public void tick() {
+   public void updateTask() {
       LivingEntity entitylivingbase = this.entity.getTarget();
       if (entitylivingbase != null) {
          if (EntityGorgon.isStoneMob(entitylivingbase) || !entitylivingbase.isAlive()) {
             this.entity.setTarget(null);
             this.entity.setTargetedEntity(0);
-            this.stop();
+            this.resetTask();
             return;
          }
 

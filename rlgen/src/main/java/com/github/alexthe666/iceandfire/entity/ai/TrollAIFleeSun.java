@@ -1,16 +1,15 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntityTroll;
-import java.util.EnumSet;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.ai.goal.Goal;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 /** 1.12 TrollAIFleeSun (the shelter must not see the sky and must be a bright spot: getBlockPathWeight below 0, as in 1.7.1). */
-public class TrollAIFleeSun extends Goal {
+public class TrollAIFleeSun extends EntityAIBase {
    private final EntityTroll troll;
    private double shelterX;
    private double shelterY;
@@ -22,11 +21,11 @@ public class TrollAIFleeSun extends Goal {
       this.troll = theCreatureIn;
       this.movementSpeed = movementSpeedIn;
       this.world = theCreatureIn.level();
-      this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+      this.setMutexBits(1);
    }
 
    @Override
-   public boolean canUse() {
+   public boolean shouldExecute() {
       if (!this.world.isDay()) {
          return false;
       } else if (!this.world.canSeeSky(BlockPos.containing(this.troll.getX(), this.troll.getBoundingBox().minY, this.troll.getZ()))) {
@@ -45,12 +44,12 @@ public class TrollAIFleeSun extends Goal {
    }
 
    @Override
-   public boolean canContinueToUse() {
+   public boolean shouldContinueExecuting() {
       return !this.troll.getNavigation().isDone();
    }
 
    @Override
-   public void start() {
+   public void startExecuting() {
       this.troll.getNavigation().moveTo(this.shelterX, this.shelterY, this.shelterZ, this.movementSpeed);
    }
 

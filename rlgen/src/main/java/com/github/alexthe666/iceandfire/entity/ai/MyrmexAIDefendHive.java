@@ -2,7 +2,7 @@ package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntityMyrmexBase;
 import com.github.alexthe666.iceandfire.entity.MyrmexHive;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAITarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITarget;
 import net.minecraft.world.entity.LivingEntity;
 
 /** 1.12 MyrmexAIDefendHive: attack the hive's aggressors, or now and then a player whose reputation is below 25. */
@@ -12,11 +12,12 @@ public class MyrmexAIDefendHive extends EntityAITarget {
 
    public MyrmexAIDefendHive(EntityMyrmexBase myrmex) {
       super(myrmex, false, true);
+      this.setMutexBits(1);
       this.myrmex = myrmex;
    }
 
    @Override
-   public boolean canUse() {
+   public boolean shouldExecute() {
       MyrmexHive village = this.myrmex.getHive();
       if (this.myrmex.canMove() && village != null) {
          this.villageAgressorTarget = village.findNearestVillageAggressor(this.myrmex);
@@ -34,8 +35,8 @@ public class MyrmexAIDefendHive extends EntityAITarget {
    }
 
    @Override
-   public void start() {
+   public void startExecuting() {
       this.myrmex.setTarget(this.villageAgressorTarget);
-      super.start();
+      super.startExecuting();
    }
 }

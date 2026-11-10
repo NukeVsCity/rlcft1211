@@ -5,15 +5,14 @@ import com.github.alexthe666.iceandfire.entity.EntityMyrmexQueen;
 import com.github.alexthe666.iceandfire.entity.EntityMyrmexWorker;
 import com.github.alexthe666.iceandfire.entity.MyrmexHive;
 import com.github.alexthe666.iceandfire.world.MyrmexWorldData;
-import java.util.EnumSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.ai.goal.Goal;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 
 /** 1.12 MyrmexAILeaveHive: walk out through the closest entrance. */
-public class MyrmexAILeaveHive extends Goal {
+public class MyrmexAILeaveHive extends EntityAIBase {
    private final EntityMyrmexBase myrmex;
    private final double movementSpeed;
    private Path path;
@@ -22,11 +21,11 @@ public class MyrmexAILeaveHive extends Goal {
    public MyrmexAILeaveHive(EntityMyrmexBase entityIn, double movementSpeedIn) {
       this.myrmex = entityIn;
       this.movementSpeed = movementSpeedIn;
-      this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+      this.setMutexBits(1);
    }
 
    @Override
-   public boolean canUse() {
+   public boolean shouldExecute() {
       if (this.myrmex instanceof EntityMyrmexQueen) {
          return false;
       } else if (this.myrmex.isChild()) {
@@ -53,7 +52,7 @@ public class MyrmexAILeaveHive extends Goal {
    }
 
    @Override
-   public boolean canContinueToUse() {
+   public boolean shouldContinueExecuting() {
       double d = this.myrmex.distanceToSqr(Vec3.atLowerCornerOf(this.nextEntrance));
       return !(d <= 3.0) && !this.myrmex.shouldEnterHive()
          ? !this.myrmex.getNavigation().isDone() && d > 3.0 && this.myrmex.shouldLeaveHive()
@@ -61,12 +60,12 @@ public class MyrmexAILeaveHive extends Goal {
    }
 
    @Override
-   public void start() {
+   public void startExecuting() {
       this.myrmex.getNavigation().moveTo(this.path, this.movementSpeed);
    }
 
    @Override
-   public void stop() {
+   public void resetTask() {
       this.nextEntrance = BlockPos.ZERO;
       this.myrmex.getNavigation().moveTo((Path)null, this.movementSpeed);
    }

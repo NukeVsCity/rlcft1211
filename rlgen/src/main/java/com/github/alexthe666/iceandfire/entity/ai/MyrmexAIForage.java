@@ -4,13 +4,12 @@ import com.github.alexthe666.iceandfire.entity.EntityMyrmexBase;
 import com.github.alexthe666.iceandfire.entity.EntityMyrmexWorker;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.EnumSet;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.RandomPositionGenerator;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -18,7 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 /** 1.12 MyrmexAIForage: a worker on the surface eats a plant/leaf block and carries its first drop home. */
-public class MyrmexAIForage extends Goal {
+public class MyrmexAIForage extends EntityAIBase {
    private static final int RADIUS = 8;
    private final EntityMyrmexWorker myrmex;
    private final BlockSorter targetSorter;
@@ -28,11 +27,11 @@ public class MyrmexAIForage extends Goal {
    public MyrmexAIForage(EntityMyrmexWorker myrmex) {
       this.myrmex = myrmex;
       this.targetSorter = new BlockSorter();
-      this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+      this.setMutexBits(1);
    }
 
    @Override
-   public boolean canUse() {
+   public boolean shouldExecute() {
       if (this.myrmex.canMove()
          && !this.myrmex.holdingBaby()
          && this.myrmex.getNavigation().isDone()
@@ -51,7 +50,7 @@ public class MyrmexAIForage extends Goal {
          if (allBlocks.isEmpty()) {
             this.myrmex.keepSearching = true;
             this.wanderRadius += 8;
-            Vec3 vec = DefaultRandomPos.getPos(this.myrmex, this.wanderRadius, 7);
+            Vec3 vec = RandomPositionGenerator.findRandomTarget(this.myrmex, this.wanderRadius, 7);
             if (vec != null) {
                this.targetBlock = BlockPos.containing(vec);
             }
@@ -68,7 +67,7 @@ public class MyrmexAIForage extends Goal {
    }
 
    @Override
-   public boolean canContinueToUse() {
+   public boolean shouldContinueExecuting() {
       if (!this.myrmex.keepSearching && this.targetBlock == null) {
          return false;
       } else if (this.myrmex.shouldEnterHive()) {
@@ -80,16 +79,11 @@ public class MyrmexAIForage extends Goal {
    }
 
    @Override
-   public boolean requiresUpdateEveryTick() {
-      return true;
-   }
-
-   @Override
-   public void tick() {
+   public void updateTask() {
       if (this.myrmex.keepSearching) {
          this.myrmex.getNavigation().moveTo((double)this.targetBlock.getX() + 0.5, (double)this.targetBlock.getY(), (double)this.targetBlock.getZ() + 0.5, 1.0);
          if (this.myrmex.distanceToSqr(Vec3.atCenterOf(this.targetBlock)) < 2.0) {
-            this.stop();
+            this.resetTask();
          }
       } else if (this.targetBlock != null) {
          this.myrmex.getNavigation().moveTo((double)this.targetBlock.getX() + 0.5, (double)this.targetBlock.getY(), (double)this.targetBlock.getZ() + 0.5, 1.0);
@@ -118,7 +112,7 @@ public class MyrmexAIForage extends Goal {
                   }
 
                   this.targetBlock = null;
-                  this.stop();
+                  this.resetTask();
                   this.myrmex.keepSearching = false;
                   this.wanderRadius = 8;
                   return;
@@ -129,7 +123,7 @@ public class MyrmexAIForage extends Goal {
    }
 
    @Override
-   public void stop() {
+   public void resetTask() {
       this.targetBlock = BlockPos.ZERO;
       this.myrmex.keepSearching = true;
    }

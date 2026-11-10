@@ -1,7 +1,7 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntityCyclops;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAIAttackMelee;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIAttackMelee;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -15,7 +15,7 @@ public class CyclopsAIAttackMelee extends EntityAIAttackMelee {
    protected void checkAndPerformAttack(LivingEntity entity, double distance) {
       double d0 = this.getAttackReachSqr(entity);
       if (this.isCyclopsBlinded() && distance >= 36.0) {
-         this.stop();
+         this.resetTask();
       } else {
          if (distance <= d0 && this.attackTick <= 0) {
             this.attackTick = 20;
