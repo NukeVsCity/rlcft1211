@@ -37,7 +37,13 @@ public final class CreativeTab {
                out.accept(s);
             }
          }
+         for (java.util.function.Supplier<? extends net.minecraft.world.level.ItemLike> extra : CreativeTab.EXTRA) {
+            out.accept(extra.get());
+         }
       }).build());
+
+   /** Items of the other branches shown after the 1.12 items (spawn eggs etc.): {@code CreativeTab.EXTRA.add(MY_SPAWN_EGG)} at construction. */
+   public static final java.util.List<java.util.function.Supplier<? extends net.minecraft.world.level.ItemLike>> EXTRA = new java.util.ArrayList<>();
 
    private static ItemStack[] metas(Item item, int n) {
       ItemStack[] r = new ItemStack[n];
