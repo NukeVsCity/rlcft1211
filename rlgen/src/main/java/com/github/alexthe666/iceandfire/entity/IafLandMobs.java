@@ -90,9 +90,10 @@ public final class IafLandMobs {
       egg("if_cockatrice", COCKATRICE, 9392133, 5200419);
    }
 
-   /** 1.12 builder.egg(main, sub): the forge spawn egg, here an item spawn_egg_<name> (STUB(iaf/core) if core makes spawn eggs). */
+   /** 1.12 builder.egg(main, sub): the forge spawn egg, here an item spawn_egg_<name> in the Ice and Fire tab. */
    private static void egg(String name, Supplier<? extends EntityType<? extends net.minecraft.world.entity.Mob>> type, int main, int sub) {
-      IafRegistries.ITEMS.register("spawn_egg_" + name, () -> new DeferredSpawnEggItem(type, main, sub, new Item.Properties()));
+      Supplier<Item> item = IafRegistries.ITEMS.register("spawn_egg_" + name, () -> new DeferredSpawnEggItem(type, main, sub, new Item.Properties()));
+      com.github.alexthe666.iceandfire.misc.CreativeTab.EXTRA.add(item);
    }
 
    public static void init(IEventBus modBus) {
