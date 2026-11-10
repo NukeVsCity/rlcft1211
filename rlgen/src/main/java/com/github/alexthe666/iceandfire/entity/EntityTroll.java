@@ -1,10 +1,15 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAILookIdle;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIWanderAvoidWater;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIWatchClosest;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.ai.TrollAIFleeSun;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAIAttackMelee;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAIHurtByTarget;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAINearestAttackableTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIAttackMelee;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIHurtByTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
 import com.github.alexthe666.iceandfire.enums.EnumTroll;
 import javax.annotation.Nullable;
 import net.ilexiconn.llibrary.server.animation.Animation;
@@ -33,9 +38,6 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
@@ -53,6 +55,10 @@ import net.minecraft.world.phys.Vec3;
 
 /** Ice and Fire 1.7.1 EntityTroll. */
 public class EntityTroll extends Monster implements IAnimatedEntity, IVillagerFear {
+   /** 1.12 EntityLiving.tasks / targetTasks, run by the 1.12 scheduler. */
+   public final EntityAITasks tasks = new EntityAITasks();
+   public final EntityAITasks targetTasks = new EntityAITasks();
+
    private int animationTick;
    private Animation currentAnimation;
    private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(EntityTroll.class, EntityDataSerializers.INT);
@@ -68,6 +74,8 @@ public class EntityTroll extends Monster implements IAnimatedEntity, IVillagerFe
 
    public EntityTroll(EntityType<? extends EntityTroll> type, Level worldIn) {
       super(type, worldIn);
+      Legacy112.install(this, this.tasks, this.targetTasks);
+      this.initEntityAI();
    }
 
    public static AttributeSupplier.Builder createAttributes() {
@@ -92,16 +100,16 @@ public class EntityTroll extends Monster implements IAnimatedEntity, IVillagerFe
          && Monster.checkMonsterSpawnRules(type, level, reason, pos, random);
    }
 
-   @Override
-   protected void registerGoals() {
-      this.goalSelector.addGoal(1, new TrollAIFleeSun(this, 1.0));
-      this.goalSelector.addGoal(2, new EntityAIAttackMelee(this, 1.0, true));
-      this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 1.0));
-      this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F, 1.0F));
-      this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
-      this.targetSelector.addGoal(1, new EntityAIHurtByTarget(this, false));
-      this.targetSelector.addGoal(2, new EntityAINearestAttackableTarget<>(this, Villager.class, false));
-      this.targetSelector.addGoal(2, new EntityAINearestAttackableTarget<>(this, Player.class, false));
+   /** 1.12 initEntityAI. */
+   protected void initEntityAI() {
+      this.tasks.addTask(1, new TrollAIFleeSun(this, 1.0));
+      this.tasks.addTask(2, new EntityAIAttackMelee(this, 1.0, true));
+      this.tasks.addTask(3, new EntityAIWanderAvoidWater(this, 1.0));
+      this.tasks.addTask(4, new EntityAIWatchClosest(this, Player.class, 8.0F, 1.0F));
+      this.tasks.addTask(4, new EntityAILookIdle(this));
+      this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+      this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, Villager.class, false));
+      this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, Player.class, false));
       ((GroundPathNavigation)this.getNavigation()).setAvoidSun(true);
    }
 

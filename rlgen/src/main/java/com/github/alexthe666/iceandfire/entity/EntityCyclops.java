@@ -1,10 +1,17 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIFleeSun;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAILookIdle;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIRestrictSun;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIWanderAvoidWater;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIWatchClosest;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.ai.CyclopsAIAttackMelee;
 import com.github.alexthe666.iceandfire.entity.ai.CyclopsAITargetSheepPlayers;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAIHurtByTarget;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAINearestAttackableTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIHurtByTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
 import javax.annotation.Nullable;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
@@ -29,11 +36,6 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FleeSunGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.RestrictSunGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.PolarBear;
 import net.minecraft.world.entity.animal.WaterAnimal;
@@ -55,6 +57,10 @@ import net.minecraft.world.phys.Vec3;
 
 /** Ice and Fire 1.7.1 EntityCyclops. */
 public class EntityCyclops extends Monster implements IAnimatedEntity, IBlacklistedFromStatues, IVillagerFear {
+   /** 1.12 EntityLiving.tasks / targetTasks, run by the 1.12 scheduler. */
+   public final EntityAITasks tasks = new EntityAITasks();
+   public final EntityAITasks targetTasks = new EntityAITasks();
+
    private int animationTick;
    private Animation currentAnimation;
    public EntityCyclopsEye eyeEntity;
@@ -68,6 +74,8 @@ public class EntityCyclops extends Monster implements IAnimatedEntity, IBlacklis
 
    public EntityCyclops(EntityType<? extends EntityCyclops> type, Level worldIn) {
       super(type, worldIn);
+      Legacy112.install(this, this.tasks, this.targetTasks);
+      this.initEntityAI();
       this.setPathfindingMalus(PathType.WATER, -1.0F);
       this.setPathfindingMalus(PathType.FENCE, 0.0F);
       this.eyeEntity = new EntityCyclopsEye(this, 0.2F, 0.0F, 7.4F, 1.2F, 0.5F, 1.0F);
@@ -88,17 +96,17 @@ public class EntityCyclops extends Monster implements IAnimatedEntity, IBlacklis
       return 20 + this.level().random.nextInt(15);
    }
 
-   @Override
-   protected void registerGoals() {
-      this.goalSelector.addGoal(2, new RestrictSunGoal(this));
-      this.goalSelector.addGoal(3, new FleeSunGoal(this, 1.0));
-      this.goalSelector.addGoal(3, new CyclopsAIAttackMelee(this, 1.0, false));
-      this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0));
-      this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F, 1.0F));
-      this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-      this.targetSelector.addGoal(1, new EntityAIHurtByTarget(this, false));
-      this.targetSelector
-         .addGoal(
+   /** 1.12 initEntityAI. */
+   protected void initEntityAI() {
+      this.tasks.addTask(2, new EntityAIRestrictSun(this));
+      this.tasks.addTask(3, new EntityAIFleeSun(this, 1.0));
+      this.tasks.addTask(3, new CyclopsAIAttackMelee(this, 1.0, false));
+      this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0));
+      this.tasks.addTask(6, new EntityAIWatchClosest(this, Player.class, 8.0F, 1.0F));
+      this.tasks.addTask(6, new EntityAILookIdle(this));
+      this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+      this.targetTasks
+         .addTask(
             2,
             new EntityAINearestAttackableTarget<>(
                this,
@@ -117,7 +125,7 @@ public class EntityCyclops extends Monster implements IAnimatedEntity, IBlacklis
                   || entity instanceof Villager
             )
          );
-      this.targetSelector.addGoal(3, new CyclopsAITargetSheepPlayers<>(this, Player.class, 0, true, true, entity -> true));
+      this.targetTasks.addTask(3, new CyclopsAITargetSheepPlayers<>(this, Player.class, 0, true, true, entity -> true));
    }
 
    /** collideWithEntity: sheep are not pushed by the shepherd. */

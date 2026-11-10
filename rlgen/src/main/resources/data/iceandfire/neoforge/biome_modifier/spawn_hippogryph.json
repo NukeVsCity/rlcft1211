@@ -1,0 +1,48 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#iceandfire:spawns_hippogryph",
+  "spawners": [
+    {
+      "type": "iceandfire:hippogryph",
+      "weight": 2,
+      "minCount": 1,
+      "maxCount": 1
+    },
+    {
+      "type": "iceandfire:hippogryph",
+      "weight": 2,
+      "minCount": 1,
+      "maxCount": 1
+    },
+    {
+      "type": "iceandfire:hippogryph",
+      "weight": 2,
+      "minCount": 1,
+      "maxCount": 1
+    },
+    {
+      "type": "iceandfire:hippogryph",
+      "weight": 2,
+      "minCount": 1,
+      "maxCount": 1
+    },
+    {
+      "type": "iceandfire:hippogryph",
+      "weight": 2,
+      "minCount": 1,
+      "maxCount": 1
+    },
+    {
+      "type": "iceandfire:hippogryph",
+      "weight": 2,
+      "minCount": 1,
+      "maxCount": 1
+    },
+    {
+      "type": "iceandfire:hippogryph",
+      "weight": 2,
+      "minCount": 1,
+      "maxCount": 1
+    }
+  ]
+}

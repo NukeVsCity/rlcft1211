@@ -3,7 +3,7 @@ package com.github.alexthe666.iceandfire.entity.ai;
 import com.github.alexthe666.iceandfire.entity.EntityCockatrice;
 import com.github.alexthe666.iceandfire.entity.EntityGorgon;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.LegacyAi;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
 import net.minecraft.world.entity.player.Player;
 
 /** 1.12 CockatriceAIAggroLook: an untamed cockatrice attacks the player who looks at it. */
@@ -24,13 +24,14 @@ public class CockatriceAIAggroLook extends EntityAINearestAttackableTarget<Playe
          return false;
       } else {
          double d0 = this.getTargetDistance();
-         this.player = LegacyAi.getNearestAttackablePlayer(
+         this.player = Legacy112.getNearestAttackablePlayer(
             this.cockatrice.level(),
             this.cockatrice.getX(),
             this.cockatrice.getY(),
             this.cockatrice.getZ(),
             d0,
             d0,
+            null,
             p -> p != null && EntityGorgon.isEntityLookingAt(p, this.cockatrice, 0.6F)
          );
          return this.player != null;

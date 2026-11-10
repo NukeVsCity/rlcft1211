@@ -84,8 +84,7 @@ public class EntityAIFollowOwner extends EntityAIBase {
 
    @Override
    public void updateTask() {
-      int pitchSpeed = this.tameable instanceof EntityAIWatchClosest.FaceSpeeds ? ((EntityAIWatchClosest.FaceSpeeds)this.tameable).getVerticalFaceSpeed() : 40;
-      this.tameable.getLookControl().setLookAt(this.owner, 10.0F, (float)pitchSpeed);
+      this.tameable.getLookControl().setLookAt(this.owner, 10.0F, Legacy112.verticalFaceSpeed(this.tameable));
       if (!this.isSitting()) {
          if (--this.timeToRecalcPath <= 0) {
             this.timeToRecalcPath = 10;

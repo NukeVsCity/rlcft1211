@@ -1,10 +1,18 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIFleeSun;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAILookIdle;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIRestrictSun;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAISwimming;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIWanderAvoidWater;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIWatchClosest;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.ai.GorgonAIStareAttack;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAIAttackMelee;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAIHurtByTarget;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAINearestAttackableTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIAttackMelee;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIHurtByTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
 import javax.annotation.Nullable;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
@@ -20,12 +28,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FleeSunGoal;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.RestrictSunGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -33,6 +35,10 @@ import net.minecraft.world.phys.Vec3;
 
 /** Ice and Fire 1.7.1 EntityGorgon. */
 public class EntityGorgon extends Monster implements IAnimatedEntity, IVillagerFear, IAnimalFear {
+   /** 1.12 EntityLiving.tasks / targetTasks, run by the 1.12 scheduler. */
+   public final EntityAITasks tasks = new EntityAITasks();
+   public final EntityAITasks targetTasks = new EntityAITasks();
+
    public static final Animation ANIMATION_SCARE = Animation.create(30);
    public static final Animation ANIMATION_HIT = Animation.create(10);
    private int animationTick;
@@ -43,6 +49,8 @@ public class EntityGorgon extends Monster implements IAnimatedEntity, IVillagerF
 
    public EntityGorgon(EntityType<? extends EntityGorgon> type, Level worldIn) {
       super(type, worldIn);
+      Legacy112.install(this, this.tasks, this.targetTasks);
+      this.initEntityAI();
    }
 
    public static AttributeSupplier.Builder createAttributes() {
@@ -71,32 +79,36 @@ public class EntityGorgon extends Monster implements IAnimatedEntity, IVillagerF
       return mob instanceof Mob && LandUtils.isStone(mob);
    }
 
-   @Override
-   protected void registerGoals() {
-      this.goalSelector.addGoal(1, new FloatGoal(this));
-      this.goalSelector.addGoal(2, new RestrictSunGoal(this));
-      this.goalSelector.addGoal(3, new FleeSunGoal(this, 1.0));
-      this.goalSelector.addGoal(3, this.aiStare = new GorgonAIStareAttack(this, 1.0, 0, 15.0F));
-      this.goalSelector.addGoal(3, this.aiMelee = new EntityAIAttackMelee(this, 1.0, false));
-      this.goalSelector.addGoal(4, new GorgonAIStareAttack(this, 1.0, 0, 15.0F));
-      WaterAvoidingRandomStrollGoal wander = new WaterAvoidingRandomStrollGoal(this, 1.0);
-      wander.setInterval(20);
-      this.goalSelector.addGoal(5, wander);
-      this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F, 1.0F) {
+   /** 1.12 initEntityAI. */
+   protected void initEntityAI() {
+      this.tasks.addTask(1, new EntityAISwimming(this));
+      this.tasks.addTask(2, new EntityAIRestrictSun(this));
+      this.tasks.addTask(3, new EntityAIFleeSun(this, 1.0));
+      this.tasks.addTask(3, this.aiStare = new GorgonAIStareAttack(this, 1.0, 0, 15.0F));
+      this.tasks.addTask(3, this.aiMelee = new EntityAIAttackMelee(this, 1.0, false));
+      this.tasks.addTask(4, new GorgonAIStareAttack(this, 1.0, 0, 15.0F));
+      this.tasks.addTask(5, new EntityAIWanderAvoidWater(this, 1.0) {
          @Override
-         public boolean canContinueToUse() {
-            return this.lookAt != null && this.lookAt instanceof Player && ((Player)this.lookAt).isCreative() ? false : super.canContinueToUse();
+         public boolean shouldExecute() {
+            this.executionChance = 20;
+            return super.shouldExecute();
          }
       });
-      this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-      this.targetSelector.addGoal(1, new EntityAIHurtByTarget(this, false));
-      this.targetSelector.addGoal(2, new EntityAINearestAttackableTarget<>(this, Player.class, 0, true, false, entity -> true));
-      this.targetSelector.addGoal(3, new EntityAINearestAttackableTarget<>(this, Mob.class, 0, true, false, entity -> {
+      this.tasks.addTask(6, new EntityAIWatchClosest(this, Player.class, 8.0F, 1.0F) {
+         @Override
+         public boolean shouldContinueExecuting() {
+            return this.closestEntity != null && this.closestEntity instanceof Player && ((Player)this.closestEntity).isCreative() ? false : super.shouldContinueExecuting();
+         }
+      });
+      this.tasks.addTask(6, new EntityAILookIdle(this));
+      this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false));
+      this.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(this, Player.class, 0, true, false, entity -> true));
+      this.targetTasks.addTask(3, new EntityAINearestAttackableTarget<>(this, Mob.class, 0, true, false, entity -> {
          StoneEntityProperties properties = StoneEntityProperties.get(entity);
          return entity instanceof Mob && LandUtils.isAlive(entity) && (properties == null || !properties.isStone)
             || entity instanceof IBlacklistedFromStatues && ((IBlacklistedFromStatues)entity).canBeTurnedToStone();
       }));
-      this.goalSelector.removeGoal(this.aiMelee);
+      this.tasks.removeTask(this.aiMelee);
    }
 
    public void attackEntityWithRangedAttack(LivingEntity entity) {
@@ -136,11 +148,11 @@ public class EntityGorgon extends Monster implements IAnimatedEntity, IVillagerF
             || entitylivingbaseIn.hasEffect(MobEffects.BLINDNESS)
             || entitylivingbaseIn instanceof IBlacklistedFromStatues && !((IBlacklistedFromStatues)entitylivingbaseIn).canBeTurnedToStone();
          if (blindness && this.deathTime == 0) {
-            this.goalSelector.removeGoal(this.aiStare);
-            this.goalSelector.addGoal(3, this.aiMelee);
+            this.tasks.removeTask(this.aiStare);
+            this.tasks.addTask(3, this.aiMelee);
          } else {
-            this.goalSelector.removeGoal(this.aiMelee);
-            this.goalSelector.addGoal(3, this.aiStare);
+            this.tasks.removeTask(this.aiMelee);
+            this.tasks.addTask(3, this.aiStare);
          }
       }
    }

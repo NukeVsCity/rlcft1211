@@ -3,7 +3,7 @@ package com.github.alexthe666.iceandfire.entity.ai;
 import com.github.alexthe666.iceandfire.entity.IafLand;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITarget;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.LegacyAi;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -59,7 +59,7 @@ public class CyclopsAITargetSheepPlayers<T extends LivingEntity> extends EntityA
             return true;
          }
       } else {
-         this.targetEntity = (T)LegacyAi.getNearestAttackablePlayer(
+         this.targetEntity = (T)Legacy112.getNearestAttackablePlayer(
             this.taskOwner.level(),
             this.taskOwner.getX(),
             this.taskOwner.getY() + (double)this.taskOwner.getEyeHeight(),

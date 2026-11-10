@@ -2,7 +2,7 @@ package com.github.alexthe666.iceandfire.entity.ai.legacy;
 
 import net.minecraft.world.entity.Mob;
 
-/** 1.12.2 net.minecraft.entity.ai.EntityAILookIdle. */
+/** 1.12.2 EntityAILookIdle */
 public class EntityAILookIdle extends EntityAIBase {
    private final Mob idleEntity;
    private double lookX;
@@ -26,19 +26,16 @@ public class EntityAILookIdle extends EntityAIBase {
 
    @Override
    public void startExecuting() {
-      double d0 = (Math.PI * 2) * this.idleEntity.getRandom().nextDouble();
-      this.lookX = Math.cos(d0);
-      this.lookZ = Math.sin(d0);
+      double d = (Math.PI * 2) * this.idleEntity.getRandom().nextDouble();
+      this.lookX = Math.cos(d);
+      this.lookZ = Math.sin(d);
       this.idleTime = 20 + this.idleEntity.getRandom().nextInt(20);
    }
 
    @Override
    public void updateTask() {
       this.idleTime--;
-      int yawSpeed = this.idleEntity instanceof EntityAIWatchClosest.FaceSpeeds ? ((EntityAIWatchClosest.FaceSpeeds)this.idleEntity).getHorizontalFaceSpeed() : 10;
-      int pitchSpeed = this.idleEntity instanceof EntityAIWatchClosest.FaceSpeeds ? ((EntityAIWatchClosest.FaceSpeeds)this.idleEntity).getVerticalFaceSpeed() : 40;
-      this.idleEntity
-         .getLookControl()
-         .setLookAt(this.idleEntity.getX() + this.lookX, this.idleEntity.getEyeY(), this.idleEntity.getZ() + this.lookZ, (float)yawSpeed, (float)pitchSpeed);
+      this.idleEntity.getLookControl().setLookAt(this.idleEntity.getX() + this.lookX, this.idleEntity.getEyeY(), this.idleEntity.getZ() + this.lookZ,
+         Legacy112.horizontalFaceSpeed(this.idleEntity), Legacy112.verticalFaceSpeed(this.idleEntity));
    }
 }

@@ -4,7 +4,7 @@ import javax.annotation.Nullable;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.phys.Vec3;
 
-/** 1.12.2 net.minecraft.entity.ai.EntityAIWander (idleTime = 1.21 noActionTime). */
+/** 1.12.2 EntityAIWander */
 public class EntityAIWander extends EntityAIBase {
    protected final PathfinderMob entity;
    protected double x;
@@ -31,19 +31,18 @@ public class EntityAIWander extends EntityAIBase {
          if (this.entity.getNoActionTime() >= 100) {
             return false;
          }
-
          if (this.entity.getRandom().nextInt(this.executionChance) != 0) {
             return false;
          }
       }
 
-      Vec3 vec3d = this.getPosition();
-      if (vec3d == null) {
+      Vec3 vec = this.getPosition();
+      if (vec == null) {
          return false;
       } else {
-         this.x = vec3d.x;
-         this.y = vec3d.y;
-         this.z = vec3d.z;
+         this.x = vec.x;
+         this.y = vec.y;
+         this.z = vec.z;
          this.mustUpdate = false;
          return true;
       }

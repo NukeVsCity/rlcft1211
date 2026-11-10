@@ -1,5 +1,10 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAILookIdle;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAISwimming;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIWatchClosest;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
 import com.github.alexthe666.iceandfire.entity.ai.MyrmexAIDefendHive;
 import com.github.alexthe666.iceandfire.entity.ai.MyrmexAIEscortEntity;
 import com.github.alexthe666.iceandfire.entity.ai.MyrmexAIFindGaurdingEntity;
@@ -9,9 +14,9 @@ import com.github.alexthe666.iceandfire.entity.ai.MyrmexAIMoveThroughHive;
 import com.github.alexthe666.iceandfire.entity.ai.MyrmexAIReEnterHive;
 import com.github.alexthe666.iceandfire.entity.ai.MyrmexAITradePlayer;
 import com.github.alexthe666.iceandfire.entity.ai.MyrmexAIWander;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAIAttackMelee;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAIHurtByTarget;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAINearestAttackableTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIAttackMelee;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIHurtByTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
 import java.util.ArrayList;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.minecraft.core.registries.Registries;
@@ -25,9 +30,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -90,23 +92,23 @@ public class EntityMyrmexSoldier extends EntityMyrmexBase {
    }
 
    @Override
-   protected void registerGoals() {
-      this.goalSelector.addGoal(0, new FloatGoal(this));
-      this.goalSelector.addGoal(0, new MyrmexAITradePlayer(this));
-      this.goalSelector.addGoal(0, new MyrmexAILookAtTradePlayer(this));
-      this.goalSelector.addGoal(1, new EntityAIAttackMelee(this, 1.0, true));
-      this.goalSelector.addGoal(2, new MyrmexAIEscortEntity(this, 1.0));
-      this.goalSelector.addGoal(2, new MyrmexAIReEnterHive(this, 1.0));
-      this.goalSelector.addGoal(4, new MyrmexAILeaveHive(this, 1.0));
-      this.goalSelector.addGoal(5, new MyrmexAIMoveThroughHive(this, 1.0));
-      this.goalSelector.addGoal(6, new MyrmexAIWander(this, 1.0));
-      this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 6.0F));
-      this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
-      this.targetSelector.addGoal(1, new MyrmexAIDefendHive(this));
-      this.targetSelector.addGoal(2, new MyrmexAIFindGaurdingEntity(this));
-      this.targetSelector.addGoal(3, new EntityAIHurtByTarget(this, false));
-      this.targetSelector.addGoal(4, new MyrmexAIAttackPlayers(this));
-      this.targetSelector.addGoal(4, new EntityAINearestAttackableTarget<>(this, Mob.class, 10, true, true,
+   protected void initEntityAI() {
+      this.tasks.addTask(0, new EntityAISwimming(this));
+      this.tasks.addTask(0, new MyrmexAITradePlayer(this));
+      this.tasks.addTask(0, new MyrmexAILookAtTradePlayer(this));
+      this.tasks.addTask(1, new EntityAIAttackMelee(this, 1.0, true));
+      this.tasks.addTask(2, new MyrmexAIEscortEntity(this, 1.0));
+      this.tasks.addTask(2, new MyrmexAIReEnterHive(this, 1.0));
+      this.tasks.addTask(4, new MyrmexAILeaveHive(this, 1.0));
+      this.tasks.addTask(5, new MyrmexAIMoveThroughHive(this, 1.0));
+      this.tasks.addTask(6, new MyrmexAIWander(this, 1.0));
+      this.tasks.addTask(7, new EntityAIWatchClosest(this, Player.class, 6.0F));
+      this.tasks.addTask(8, new EntityAILookIdle(this));
+      this.targetTasks.addTask(1, new MyrmexAIDefendHive(this));
+      this.targetTasks.addTask(2, new MyrmexAIFindGaurdingEntity(this));
+      this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, false));
+      this.targetTasks.addTask(4, new MyrmexAIAttackPlayers(this));
+      this.targetTasks.addTask(4, new EntityAINearestAttackableTarget<>(this, Mob.class, 10, true, true,
          entity -> entity != null && notVisibleMob(entity) && !EntityMyrmexBase.haveSameHive(this, entity) && LandUtils.isAlive(entity)));
    }
 
