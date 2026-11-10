@@ -61,22 +61,24 @@ public class EntityAINearestAttackableTarget<T extends LivingEntity> extends Ent
             return true;
          }
       } else {
-         double range = this.getTargetDistance();
-         Player best = null;
-         double bestDist = -1.0;
-         for (Player player : this.taskOwner.level().players()) {
-            @SuppressWarnings("unchecked")
-            T asT = (T)player;
-            if (this.targetEntitySelector.test(asT)) {
-               double d = player.distanceToSqr(this.taskOwner.getX(), this.taskOwner.getY() + (double)this.taskOwner.getEyeHeight(), this.taskOwner.getZ());
-               if (d < range * range && (bestDist == -1.0 || d < bestDist)) {
-                  bestDist = d;
-                  best = player;
-               }
-            }
-         }
+         // 1.12 World.getNearestAttackablePlayer(x, y + eyeHeight, z, dist, dist, skull multiplier, selector)
          @SuppressWarnings("unchecked")
-         T found = (T)best;
+         T found = (T)Legacy112.getNearestAttackablePlayer(
+            this.taskOwner.level(),
+            this.taskOwner.getX(),
+            this.taskOwner.getY() + (double)this.taskOwner.getEyeHeight(),
+            this.taskOwner.getZ(),
+            this.getTargetDistance(),
+            this.getTargetDistance(),
+            player -> {
+               net.minecraft.world.item.ItemStack head = player.getItemBySlot(net.minecraft.world.entity.EquipmentSlot.HEAD);
+               boolean skeleton = this.taskOwner instanceof net.minecraft.world.entity.monster.AbstractSkeleton && head.is(net.minecraft.world.item.Items.SKELETON_SKULL);
+               boolean zombie = this.taskOwner instanceof net.minecraft.world.entity.monster.Zombie && head.is(net.minecraft.world.item.Items.ZOMBIE_HEAD);
+               boolean creeper = this.taskOwner instanceof net.minecraft.world.entity.monster.Creeper && head.is(net.minecraft.world.item.Items.CREEPER_HEAD);
+               return skeleton || zombie || creeper ? 0.5 : 1.0;
+            },
+            p -> this.targetEntitySelector.test((T)p)
+         );
          this.targetEntity = found;
          return this.targetEntity != null;
       }
