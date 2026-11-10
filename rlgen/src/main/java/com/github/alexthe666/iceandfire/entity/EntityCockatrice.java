@@ -1,5 +1,12 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAILookIdle;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAISit;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIFollowOwner;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAISwimming;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIWatchClosest;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.ai.CockatriceAIAggroLook;
 import com.github.alexthe666.iceandfire.entity.ai.CockatriceAIFollowOwner;
@@ -8,10 +15,10 @@ import com.github.alexthe666.iceandfire.entity.ai.CockatriceAITarget;
 import com.github.alexthe666.iceandfire.entity.ai.CockatriceAITargetItems;
 import com.github.alexthe666.iceandfire.entity.ai.CockatriceAIWander;
 import com.github.alexthe666.iceandfire.entity.ai.EntityAIAttackMeleeNoCooldown;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAIAttackMelee;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAIHurtByTarget;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAIOwnerHurtByTarget;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAIOwnerHurtTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIAttackMelee;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIHurtByTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIOwnerHurtByTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIOwnerHurtTarget;
 import java.util.List;
 import javax.annotation.Nullable;
 import net.ilexiconn.llibrary.server.animation.Animation;
@@ -50,10 +57,6 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.EnderMan;
@@ -72,7 +75,11 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 /** Ice and Fire 1.7.1 EntityCockatrice. */
-public class EntityCockatrice extends TamableAnimal implements IAnimatedEntity, IBlacklistedFromStatues, IVillagerFear {
+public class EntityCockatrice extends TamableAnimal implements IAnimatedEntity, IBlacklistedFromStatues, IVillagerFear, EntityAISit.Sitter, EntityAIFollowOwner.SittingState {
+   /** 1.12 EntityLiving.tasks / targetTasks, run by the 1.12 scheduler. */
+   public final EntityAITasks tasks = new EntityAITasks();
+   public final EntityAITasks targetTasks = new EntityAITasks();
+
    private int animationTick;
    private Animation currentAnimation;
    private static final EntityDataAccessor<Boolean> HEN = SynchedEntityData.defineId(EntityCockatrice.class, EntityDataSerializers.BOOLEAN);
@@ -91,6 +98,8 @@ public class EntityCockatrice extends TamableAnimal implements IAnimatedEntity, 
    public static final Animation ANIMATION_BITE = Animation.create(15);
    public static final Animation ANIMATION_SPEAK = Animation.create(10);
    public static final Animation ANIMATION_EAT = Animation.create(20);
+   /** 1.12 EntityTameable.aiSit. */
+   private EntityAISit aiSit;
    private CockatriceAIStareAttack aiStare;
    private EntityAIAttackMelee aiMelee;
    private boolean isMeleeMode = false;
@@ -101,6 +110,8 @@ public class EntityCockatrice extends TamableAnimal implements IAnimatedEntity, 
 
    public EntityCockatrice(EntityType<? extends EntityCockatrice> type, Level worldIn) {
       super(type, worldIn);
+      Legacy112.install(this, this.tasks, this.targetTasks);
+      this.initEntityAI();
    }
 
    public static AttributeSupplier.Builder createAttributes() {
@@ -122,23 +133,23 @@ public class EntityCockatrice extends TamableAnimal implements IAnimatedEntity, 
       return random.nextInt(IceAndFire.CONFIG.cockatriceSpawnCheckChance + 1) == 0 && Animal.checkAnimalSpawnRules(type, level, reason, pos, random);
    }
 
-   @Override
-   protected void registerGoals() {
-      this.goalSelector.addGoal(1, new FloatGoal(this));
-      this.goalSelector.addGoal(2, new CockatriceAIFollowOwner(this, 1.0, 10.0F, 2.0F));
-      this.goalSelector.addGoal(2, new CockatriceAIWander(this, 1.0));
-      this.goalSelector.addGoal(3, new SitWhenOrderedToGoal(this));
-      this.goalSelector.addGoal(4, this.aiStare = new CockatriceAIStareAttack(this, 1.0, 0, 15.0F));
-      this.goalSelector.addGoal(4, this.aiMelee = new EntityAIAttackMeleeNoCooldown(this, 1.5, false));
-      this.goalSelector.addGoal(6, new CockatriceAIAggroLook(this));
-      this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, LivingEntity.class, 6.0F));
-      this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
-      this.targetSelector.addGoal(1, new CockatriceAITargetItems(this, false));
-      this.targetSelector.addGoal(2, new EntityAIOwnerHurtByTarget(this));
-      this.targetSelector.addGoal(3, new EntityAIOwnerHurtTarget(this));
-      this.targetSelector.addGoal(4, new EntityAIHurtByTarget(this, false));
-      this.targetSelector
-         .addGoal(
+   /** 1.12 initEntityAI. */
+   protected void initEntityAI() {
+      this.tasks.addTask(1, new EntityAISwimming(this));
+      this.tasks.addTask(2, new CockatriceAIFollowOwner(this, 1.0, 10.0F, 2.0F));
+      this.tasks.addTask(2, new CockatriceAIWander(this, 1.0));
+      this.tasks.addTask(3, this.aiSit = new EntityAISit(this));
+      this.tasks.addTask(4, this.aiStare = new CockatriceAIStareAttack(this, 1.0, 0, 15.0F));
+      this.tasks.addTask(4, this.aiMelee = new EntityAIAttackMeleeNoCooldown(this, 1.5, false));
+      this.tasks.addTask(6, new CockatriceAIAggroLook(this));
+      this.tasks.addTask(7, new EntityAIWatchClosest(this, LivingEntity.class, 6.0F));
+      this.tasks.addTask(8, new EntityAILookIdle(this));
+      this.targetTasks.addTask(1, new CockatriceAITargetItems(this, false));
+      this.targetTasks.addTask(2, new EntityAIOwnerHurtByTarget(this));
+      this.targetTasks.addTask(3, new EntityAIOwnerHurtTarget(this));
+      this.targetTasks.addTask(4, new EntityAIHurtByTarget(this, false));
+      this.targetTasks
+         .addTask(
             5,
             new CockatriceAITarget<>(
                this,
@@ -152,7 +163,7 @@ public class EntityCockatrice extends TamableAnimal implements IAnimatedEntity, 
                   && !LandUtils.isAnimaniaChicken(entity)
             )
          );
-      this.goalSelector.removeGoal(this.aiMelee);
+      this.tasks.removeTask(this.aiMelee);
    }
 
    @Override
@@ -180,16 +191,16 @@ public class EntityCockatrice extends TamableAnimal implements IAnimatedEntity, 
 
    private void switchAI(boolean melee) {
       if (melee) {
-         this.goalSelector.removeGoal(this.aiStare);
+         this.tasks.removeTask(this.aiStare);
          if (this.aiMelee != null) {
-            this.goalSelector.addGoal(4, this.aiMelee);
+            this.tasks.addTask(4, this.aiMelee);
          }
 
          this.isMeleeMode = true;
       } else {
-         this.goalSelector.removeGoal(this.aiMelee);
+         this.tasks.removeTask(this.aiMelee);
          if (this.aiStare != null) {
-            this.goalSelector.addGoal(4, this.aiStare);
+            this.tasks.addTask(4, this.aiStare);
          }
 
          this.isMeleeMode = false;
@@ -313,6 +324,10 @@ public class EntityCockatrice extends TamableAnimal implements IAnimatedEntity, 
    @Override
    public void readAdditionalSaveData(CompoundTag tag) {
       super.readAdditionalSaveData(tag);
+      if (this.aiSit != null) {
+         this.aiSit.setSitting(tag.getBoolean("Sitting"));
+      }
+
       this.setHen(tag.getBoolean("Hen"));
       this.setStaring(tag.getBoolean("Staring"));
       this.setTamingLevel(tag.getInt("TamingLevel"));

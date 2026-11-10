@@ -1,22 +1,21 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntityCockatrice;
-import java.util.EnumSet;
-import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
-import net.minecraft.world.entity.ai.goal.Goal;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIFollowOwner;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 
 /** 1.12 CockatriceAIFollowOwner (EntityAIFollowOwner while the command is "follow"). */
-public class CockatriceAIFollowOwner extends FollowOwnerGoal {
+public class CockatriceAIFollowOwner extends EntityAIFollowOwner {
    EntityCockatrice cockatrice;
 
    public CockatriceAIFollowOwner(EntityCockatrice cockatrice, double speed, float minDist, float maxDist) {
       super(cockatrice, speed, minDist, maxDist);
       this.cockatrice = cockatrice;
-      this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+      this.setMutexBits(1);
    }
 
    @Override
-   public boolean canUse() {
-      return super.canUse() && this.cockatrice.getCommand() == 2;
+   public boolean shouldExecute() {
+      return super.shouldExecute() && this.cockatrice.getCommand() == 2;
    }
 }

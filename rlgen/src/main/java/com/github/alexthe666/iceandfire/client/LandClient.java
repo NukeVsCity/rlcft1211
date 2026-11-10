@@ -82,6 +82,11 @@ public final class LandClient {
    private static final ResourceLocation WORM_YELLOW = tex("deathworm/deathworm_yellow");
 
    @SubscribeEvent
+   public static void registerParticles(net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent event) {
+      event.registerSpriteSet(com.github.alexthe666.iceandfire.entity.LandParticles.BLOOD.get(), com.github.alexthe666.iceandfire.client.particle.ParticleBlood.Provider::new);
+   }
+
+   @SubscribeEvent
    public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
       event.registerEntityRenderer(IafLandMobs.GORGON.get(), ctx -> {
          RenderLandMob<EntityGorgon> r = new RenderLandMob<>(ctx, new ModelGorgon(), 0.6F,

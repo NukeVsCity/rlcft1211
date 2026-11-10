@@ -5,12 +5,12 @@ import com.github.alexthe666.iceandfire.entity.LandUtils;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.ai.goal.Goal;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 /** 1.12 MyrmexAIFindHidingSpot: a sentinel on the surface walks away until no hidden sentinel is near, then hides. */
-public class MyrmexAIFindHidingSpot extends Goal {
+public class MyrmexAIFindHidingSpot extends EntityAIBase {
    private static final int RADIUS = 32;
    private final EntityMyrmexSentinel myrmex;
    private BlockPos targetBlock = BlockPos.ZERO;
@@ -21,23 +21,18 @@ public class MyrmexAIFindHidingSpot extends Goal {
    }
 
    @Override
-   public boolean canUse() {
+   public boolean shouldExecute() {
       this.targetBlock = this.getTargetPosition(this.wanderRadius);
       return this.myrmex.canMove() && this.myrmex.getTarget() == null && this.myrmex.canSeeSky();
    }
 
    @Override
-   public boolean canContinueToUse() {
+   public boolean shouldContinueExecuting() {
       return !this.myrmex.shouldEnterHive() && this.myrmex.getNavigation().isDone();
    }
 
    @Override
-   public boolean requiresUpdateEveryTick() {
-      return true;
-   }
-
-   @Override
-   public void tick() {
+   public void updateTask() {
       if (this.areMyrmexNear(32.0) || this.myrmex.isOnResin()) {
          this.myrmex.getNavigation().moveTo((double)this.targetBlock.getX() + 0.5, (double)this.targetBlock.getY(), (double)this.targetBlock.getZ() + 0.5, 1.0);
          if (this.myrmex.distanceToSqr(Vec3.atCenterOf(this.targetBlock)) < 2.0) {
@@ -46,12 +41,12 @@ public class MyrmexAIFindHidingSpot extends Goal {
          }
       } else if (this.myrmex.getTarget() == null) {
          this.myrmex.setHiding(true);
-         this.stop();
+         this.resetTask();
       }
    }
 
    @Override
-   public void stop() {
+   public void resetTask() {
       this.targetBlock = BlockPos.ZERO;
       this.wanderRadius = 32;
    }

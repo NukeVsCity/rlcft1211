@@ -2,16 +2,15 @@ package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntityDeathWorm;
 import com.github.alexthe666.iceandfire.entity.IafLand;
-import java.util.EnumSet;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.ai.goal.Goal;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 /** 1.12 DeathWormAIGetInSand: out of sand, walk to a sand block nearby. */
-public class DeathWormAIGetInSand extends Goal {
+public class DeathWormAIGetInSand extends EntityAIBase {
    private final EntityDeathWorm creature;
    private double shelterX;
    private double shelterY;
@@ -23,11 +22,11 @@ public class DeathWormAIGetInSand extends Goal {
       this.creature = theCreatureIn;
       this.movementSpeed = movementSpeedIn;
       this.world = theCreatureIn.level();
-      this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+      this.setMutexBits(1);
    }
 
    @Override
-   public boolean canUse() {
+   public boolean shouldExecute() {
       if (!this.creature.isVehicle() && !this.creature.isInSand() && (this.creature.getTarget() == null || this.creature.getTarget().isInWater())) {
          Vec3 vec3d = this.findPossibleShelter();
          if (vec3d == null) {
@@ -44,12 +43,12 @@ public class DeathWormAIGetInSand extends Goal {
    }
 
    @Override
-   public boolean canContinueToUse() {
+   public boolean shouldContinueExecuting() {
       return !this.creature.getNavigation().isDone();
    }
 
    @Override
-   public void start() {
+   public void startExecuting() {
       this.creature.getNavigation().moveTo(this.shelterX, this.shelterY, this.shelterZ, this.movementSpeed);
    }
 

@@ -336,7 +336,8 @@ public class MyrmexHive {
       readPosList(compound, "MiscRooms", this.miscRooms);
       readFacingMap(compound, "Entrances", this.entrances);
       readFacingMap(compound, "EntranceBottoms", this.entranceBottoms);
-      this.hiveUUID = compound.getUUID("HiveUUID");
+      // 1.12 getUniqueId: 0-0 when the tag has no UUID (an empty MessageGetMyrmexHive)
+      this.hiveUUID = compound.hasUUID("HiveUUID") ? compound.getUUID("HiveUUID") : new UUID(0L, 0L);
       ListTag players = compound.getList("Players", Tag.TAG_COMPOUND);
 
       for (int j = 0; j < players.size(); j++) {

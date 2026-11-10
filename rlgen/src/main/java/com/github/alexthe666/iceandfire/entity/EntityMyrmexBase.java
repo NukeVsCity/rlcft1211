@@ -1,5 +1,7 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.ai.PathNavigateMyrmex;
 import com.github.alexthe666.iceandfire.structures.WorldGenMyrmexHive;
@@ -68,6 +70,14 @@ import net.minecraft.world.level.block.state.BlockState;
 
 /** Ice and Fire 1.7.1 EntityMyrmexBase (castes, growth, hive membership, reputation and trading as an IMerchant). */
 public abstract class EntityMyrmexBase extends Animal implements IAnimatedEntity, Merchant {
+   /** 1.12 EntityLiving.tasks / targetTasks, run by the 1.12 scheduler. */
+   public final EntityAITasks tasks = new EntityAITasks();
+   public final EntityAITasks targetTasks = new EntityAITasks();
+
+   /** 1.12 initEntityAI, filled by each caste. */
+   protected void initEntityAI() {
+   }
+
    private static final EntityDataAccessor<Byte> CLIMBING = SynchedEntityData.defineId(EntityMyrmexBase.class, EntityDataSerializers.BYTE);
    private static final EntityDataAccessor<Integer> GROWTH_STAGE = SynchedEntityData.defineId(EntityMyrmexBase.class, EntityDataSerializers.INT);
    private static final EntityDataAccessor<Boolean> VARIANT = SynchedEntityData.defineId(EntityMyrmexBase.class, EntityDataSerializers.BOOLEAN);
@@ -96,6 +106,8 @@ public abstract class EntityMyrmexBase extends Animal implements IAnimatedEntity
 
    public EntityMyrmexBase(EntityType<? extends EntityMyrmexBase> type, Level worldIn) {
       super(type, worldIn);
+      Legacy112.install(this, this.tasks, this.targetTasks);
+      this.initEntityAI();
    }
 
    public static AttributeSupplier.Builder createBaseAttributes() {

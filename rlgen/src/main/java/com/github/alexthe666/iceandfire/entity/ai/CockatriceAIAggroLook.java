@@ -2,8 +2,8 @@ package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntityCockatrice;
 import com.github.alexthe666.iceandfire.entity.EntityGorgon;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAINearestAttackableTarget;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.LegacyAi;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
 import net.minecraft.world.entity.player.Player;
 
 /** 1.12 CockatriceAIAggroLook: an untamed cockatrice attacks the player who looks at it. */
@@ -19,18 +19,19 @@ public class CockatriceAIAggroLook extends EntityAINearestAttackableTarget<Playe
    }
 
    @Override
-   public boolean canUse() {
+   public boolean shouldExecute() {
       if (this.cockatrice.isTame()) {
          return false;
       } else {
          double d0 = this.getTargetDistance();
-         this.player = LegacyAi.getNearestAttackablePlayer(
+         this.player = Legacy112.getNearestAttackablePlayer(
             this.cockatrice.level(),
             this.cockatrice.getX(),
             this.cockatrice.getY(),
             this.cockatrice.getZ(),
             d0,
             d0,
+            null,
             p -> p != null && EntityGorgon.isEntityLookingAt(p, this.cockatrice, 0.6F)
          );
          return this.player != null;
@@ -38,19 +39,19 @@ public class CockatriceAIAggroLook extends EntityAINearestAttackableTarget<Playe
    }
 
    @Override
-   public void start() {
+   public void startExecuting() {
       this.aggroTime = 5;
       this.teleportTime = 0;
    }
 
    @Override
-   public void stop() {
+   public void resetTask() {
       this.player = null;
-      super.stop();
+      super.resetTask();
    }
 
    @Override
-   public boolean canContinueToUse() {
+   public boolean shouldContinueExecuting() {
       if (this.player != null) {
          if (!EntityGorgon.isEntityLookingAt(this.player, this.cockatrice, 0.4F)) {
             return false;
@@ -64,7 +65,7 @@ public class CockatriceAIAggroLook extends EntityAINearestAttackableTarget<Playe
             return true;
          }
       } else {
-         return this.targetEntity != null && this.targetEntity.isAlive() ? true : super.canContinueToUse();
+         return this.targetEntity != null && this.targetEntity.isAlive() ? true : super.shouldContinueExecuting();
       }
    }
 }

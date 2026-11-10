@@ -1,7 +1,7 @@
 package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntityDeathWorm;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAINearestAttackableTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
 import java.util.function.Predicate;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Creeper;
@@ -19,8 +19,8 @@ public class DeathWormAITarget<T extends LivingEntity> extends EntityAINearestAt
    }
 
    @Override
-   public boolean canUse() {
-      if (super.canUse() && this.targetEntity != null && !this.targetEntity.getClass().equals(this.deathworm.getClass())) {
+   public boolean shouldExecute() {
+      if (super.shouldExecute() && this.targetEntity != null && !this.targetEntity.getClass().equals(this.deathworm.getClass())) {
          if (this.targetEntity instanceof Player && !this.deathworm.isOwnedBy(this.targetEntity)) {
             return !this.deathworm.isTame();
          }

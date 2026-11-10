@@ -3,16 +3,15 @@ package com.github.alexthe666.iceandfire.entity.ai;
 import com.github.alexthe666.iceandfire.entity.EntityDeathWorm;
 import com.github.alexthe666.iceandfire.entity.IafLand;
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.ai.goal.Goal;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 
 /** 1.12 DeathWormAIFindSandTarget: in sand, swim to the target or to a random sand block. */
-public class DeathWormAIFindSandTarget extends Goal {
+public class DeathWormAIFindSandTarget extends EntityAIBase {
    private EntityDeathWorm mob;
    private int range;
    private boolean avoidAttacker;
@@ -20,11 +19,11 @@ public class DeathWormAIFindSandTarget extends Goal {
    public DeathWormAIFindSandTarget(EntityDeathWorm mob, int range) {
       this.mob = mob;
       this.range = range;
-      this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+      this.setMutexBits(1);
    }
 
    @Override
-   public boolean canUse() {
+   public boolean shouldExecute() {
       if (this.mob.isInSand() && !this.mob.isPassenger() && !this.mob.isVehicle()) {
          if (this.mob.getRandom().nextFloat() < 0.5F) {
             Path path = this.mob.getNavigation().getPath();
@@ -50,7 +49,7 @@ public class DeathWormAIFindSandTarget extends Goal {
    }
 
    @Override
-   public boolean canContinueToUse() {
+   public boolean shouldContinueExecuting() {
       return false;
    }
 

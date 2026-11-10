@@ -5,7 +5,7 @@ import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.RandomPositionGenerator;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
@@ -85,7 +85,7 @@ public class EntitySheepAIFollowCyclops extends Goal {
    public Path getPathToEntityLiving(Animal entityIn, EntityCyclops cyclops) {
       PathNavigation navi = entityIn.getNavigation();
       // 1.12 RandomPositionGenerator.findRandomTargetBlockTowards(entity, 2, 7, cyclops pos)
-      Vec3 vec3d = DefaultRandomPos.getPosTowards(entityIn, 2, 7, new Vec3(cyclops.getX(), cyclops.getY(), cyclops.getZ()), (float)(Math.PI / 2));
+      Vec3 vec3d = RandomPositionGenerator.findRandomTargetBlockTowards(entityIn, 2, 7, new Vec3(cyclops.getX(), cyclops.getY(), cyclops.getZ()));
       if (vec3d != null) {
          BlockPos blockpos = BlockPos.containing(vec3d);
          return navi.createPath(blockpos, 0);

@@ -2,8 +2,8 @@ package com.github.alexthe666.iceandfire.entity.ai;
 
 import com.github.alexthe666.iceandfire.entity.EntityCockatrice;
 import com.github.alexthe666.iceandfire.entity.LandUtils;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAINearestAttackableTarget;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAITarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAINearestAttackableTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITarget;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,7 +32,7 @@ public class CockatriceAITargetItems extends EntityAITarget {
    }
 
    @Override
-   public boolean canUse() {
+   public boolean shouldExecute() {
       if (!((EntityCockatrice)this.taskOwner).canMove()) {
          return false;
       } else if (this.taskOwner.getHealth() >= this.taskOwner.getMaxHealth()) {
@@ -57,21 +57,16 @@ public class CockatriceAITargetItems extends EntityAITarget {
    }
 
    @Override
-   public void start() {
+   public void startExecuting() {
       this.taskOwner.getNavigation().moveTo(this.targetEntity.getX(), this.targetEntity.getY(), this.targetEntity.getZ(), 1.0);
-      super.start();
+      super.startExecuting();
    }
 
    @Override
-   public boolean requiresUpdateEveryTick() {
-      return true;
-   }
-
-   @Override
-   public void tick() {
-      super.tick();
+   public void updateTask() {
+      super.updateTask();
       if (this.targetEntity == null || this.targetEntity != null && !this.targetEntity.isAlive()) {
-         this.stop();
+         this.resetTask();
       }
 
       if (this.targetEntity != null && this.targetEntity.isAlive() && this.taskOwner.distanceToSqr(this.targetEntity) < 1.0) {
@@ -80,12 +75,12 @@ public class CockatriceAITargetItems extends EntityAITarget {
          this.taskOwner.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
          cockatrice.heal(8.0F);
          cockatrice.setAnimation(EntityCockatrice.ANIMATION_EAT);
-         this.stop();
+         this.resetTask();
       }
    }
 
    @Override
-   public boolean canContinueToUse() {
+   public boolean shouldContinueExecuting() {
       return !this.taskOwner.getNavigation().isDone();
    }
 }

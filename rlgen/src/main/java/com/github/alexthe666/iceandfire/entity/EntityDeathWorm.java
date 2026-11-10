@@ -1,5 +1,7 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
 import com.github.alexthe666.iceandfire.IceAndFire;
 import com.github.alexthe666.iceandfire.entity.ai.DeathWormAIFindSandTarget;
 import com.github.alexthe666.iceandfire.entity.ai.DeathWormAIGetInSand;
@@ -8,10 +10,10 @@ import com.github.alexthe666.iceandfire.entity.ai.DeathWormAIWander;
 import com.github.alexthe666.iceandfire.entity.ai.DeathwormAITargetItems;
 import com.github.alexthe666.iceandfire.entity.ai.PathNavigateDeathWormLand;
 import com.github.alexthe666.iceandfire.entity.ai.PathNavigateDeathWormSand;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAIAttackMelee;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAIHurtByTarget;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAIOwnerHurtByTarget;
-import com.github.alexthe666.iceandfire.entity.ai.goal112.EntityAIOwnerHurtTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIAttackMelee;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIHurtByTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIOwnerHurtByTarget;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIOwnerHurtTarget;
 import javax.annotation.Nullable;
 import net.ilexiconn.llibrary.server.animation.Animation;
 import net.ilexiconn.llibrary.server.animation.AnimationHandler;
@@ -68,6 +70,10 @@ import net.neoforged.neoforge.event.EventHooks;
 
 /** Ice and Fire 1.7.1 EntityDeathWorm. */
 public class EntityDeathWorm extends TamableAnimal implements IBlacklistedFromStatues, IAnimatedEntity, IVillagerFear, IAnimalFear, IPhasesThroughBlock {
+   /** 1.12 EntityLiving.tasks / targetTasks, run by the 1.12 scheduler. */
+   public final EntityAITasks tasks = new EntityAITasks();
+   public final EntityAITasks targetTasks = new EntityAITasks();
+
    private int animationTick;
    private boolean willExplode = false;
    private int ticksTillExplosion = 60;
@@ -96,18 +102,20 @@ public class EntityDeathWorm extends TamableAnimal implements IBlacklistedFromSt
 
    public EntityDeathWorm(EntityType<? extends EntityDeathWorm> type, Level worldIn) {
       super(type, worldIn);
+      Legacy112.install(this, this.tasks, this.targetTasks);
+      this.initEntityAI();
       this.noCulling = true;
       this.switchNavigator(false);
-      this.goalSelector.addGoal(0, new EntityAIAttackMelee(this, 1.5, true));
-      this.goalSelector.addGoal(1, new DeathWormAIFindSandTarget(this, 10));
-      this.goalSelector.addGoal(2, new DeathWormAIGetInSand(this, 1.0));
-      this.goalSelector.addGoal(3, new DeathWormAIWander(this, 1.0));
-      this.targetSelector.addGoal(1, new EntityAIOwnerHurtByTarget(this));
-      this.targetSelector.addGoal(2, new EntityAIOwnerHurtTarget(this));
-      this.targetSelector.addGoal(3, new EntityAIHurtByTarget(this, false));
-      this.targetSelector.addGoal(3, new DeathwormAITargetItems(this, false, false));
-      this.targetSelector
-         .addGoal(
+      this.tasks.addTask(0, new EntityAIAttackMelee(this, 1.5, true));
+      this.tasks.addTask(1, new DeathWormAIFindSandTarget(this, 10));
+      this.tasks.addTask(2, new DeathWormAIGetInSand(this, 1.0));
+      this.tasks.addTask(3, new DeathWormAIWander(this, 1.0));
+      this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
+      this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
+      this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, false));
+      this.targetTasks.addTask(3, new DeathwormAITargetItems(this, false, false));
+      this.targetTasks
+         .addTask(
             5,
             new DeathWormAITarget<>(
                this,
@@ -142,8 +150,8 @@ public class EntityDeathWorm extends TamableAnimal implements IBlacklistedFromSt
          && level.getMaxLocalRawBrightness(pos) > 8;
    }
 
-   @Override
-   protected void registerGoals() {
+   /** 1.12 initEntityAI. */
+   protected void initEntityAI() {
       // the 1.12 worm added its AI in the constructor
    }
 

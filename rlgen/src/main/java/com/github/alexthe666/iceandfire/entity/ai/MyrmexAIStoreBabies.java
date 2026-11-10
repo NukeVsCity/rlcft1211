@@ -4,15 +4,14 @@ import com.github.alexthe666.iceandfire.entity.EntityMyrmexWorker;
 import com.github.alexthe666.iceandfire.entity.MyrmexHive;
 import com.github.alexthe666.iceandfire.structures.WorldGenMyrmexHive;
 import java.util.ArrayList;
-import java.util.EnumSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.ai.goal.Goal;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 
 /** 1.12 MyrmexAIStoreBabies: carry a larva/pupa/egg to a nursery. */
-public class MyrmexAIStoreBabies extends Goal {
+public class MyrmexAIStoreBabies extends EntityAIBase {
    private final EntityMyrmexWorker myrmex;
    private final double movementSpeed;
    private BlockPos nextRoom = BlockPos.ZERO;
@@ -20,11 +19,11 @@ public class MyrmexAIStoreBabies extends Goal {
    public MyrmexAIStoreBabies(EntityMyrmexWorker entityIn, double movementSpeedIn) {
       this.myrmex = entityIn;
       this.movementSpeed = movementSpeedIn;
-      this.setFlags(EnumSet.of(Goal.Flag.MOVE));
+      this.setMutexBits(1);
    }
 
    @Override
-   public boolean canUse() {
+   public boolean shouldExecute() {
       if (this.myrmex.canMove() && this.myrmex.holdingBaby() && (this.myrmex.shouldEnterHive() || this.myrmex.getNavigation().isDone()) && !this.myrmex.canSeeSky()) {
          MyrmexHive village = this.myrmex.getHive();
          if (village == null) {
@@ -42,7 +41,7 @@ public class MyrmexAIStoreBabies extends Goal {
    }
 
    @Override
-   public boolean canContinueToUse() {
+   public boolean shouldContinueExecuting() {
       return this.myrmex.holdingBaby()
          && !this.myrmex.getNavigation().isDone()
          && this.myrmex.distanceToSqr(Vec3.atLowerCornerOf(this.nextRoom)) > 3.0
@@ -50,24 +49,19 @@ public class MyrmexAIStoreBabies extends Goal {
    }
 
    @Override
-   public boolean requiresUpdateEveryTick() {
-      return true;
-   }
-
-   @Override
-   public void tick() {
+   public void updateTask() {
       this.myrmex.getNavigation().moveTo((double)this.nextRoom.getX(), (double)this.nextRoom.getY(), (double)this.nextRoom.getZ(), this.movementSpeed);
       if (this.nextRoom != null && this.myrmex.distanceToSqr(Vec3.atLowerCornerOf(this.nextRoom)) < 4.0 && this.myrmex.holdingBaby() && !this.myrmex.getPassengers().isEmpty()) {
          for (Entity entity : new ArrayList<>(this.myrmex.getPassengers())) {
             entity.stopRiding();
-            this.stop();
+            this.resetTask();
             entity.copyPosition(this.myrmex);
          }
       }
    }
 
    @Override
-   public void stop() {
+   public void resetTask() {
       this.nextRoom = BlockPos.ZERO;
       this.myrmex.getNavigation().moveTo((Path)null, this.movementSpeed);
    }
