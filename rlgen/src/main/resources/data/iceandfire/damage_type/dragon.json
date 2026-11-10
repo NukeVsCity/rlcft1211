@@ -1,12 +1,5 @@
 {
-<<<<<<< HEAD
-  "exhaustion": 0.1,
-  "message_id": "dragon",
-  "scaling": "never"
-}
-=======
   "message_id": "dragon",
   "scaling": "never",
   "exhaustion": 0.1
 }
->>>>>>> 69d432bd330535269c95c326a3b51ebf0470e6aa
