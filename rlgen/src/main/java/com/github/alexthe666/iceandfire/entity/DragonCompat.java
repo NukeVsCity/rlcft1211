@@ -1,5 +1,6 @@
 package com.github.alexthe666.iceandfire.entity;
 
+import com.github.alexthe666.iceandfire.core.IafMeta;
 import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -114,66 +115,73 @@ public final class DragonCompat {
    public static final ResourceKey<DamageType> DRAGON_ICE = ResourceKey.create(Registries.DAMAGE_TYPE, ResourceLocation.fromNamespaceAndPath("iceandfire", "dragon_ice"));
 
    public static DamageSource dragonFire(Level level) {
-      return level.damageSources().source(DRAGON_FIRE);
+      return com.github.alexthe666.iceandfire.core.IafDamage.dragonFire(level);
    }
 
    public static DamageSource dragonIce(Level level) {
-      return level.damageSources().source(DRAGON_ICE);
+      return com.github.alexthe666.iceandfire.core.IafDamage.dragonIce(level);
    }
 
    // ------------------------------------------------------------------ properties owned by other parts of the port
 
-   /** StoneEntityProperties.isStone (gorgon statues). STUB(iaf/mobs-land): wire to the stone attachment. */
+   /** 1.12 StoneEntityProperties properties != null && properties.isStone (gorgon statues). */
    public static boolean isStone(Entity entity) {
-      return false;
+      StoneEntityProperties properties = StoneEntityProperties.get(entity);
+      return properties != null && properties.isStone;
    }
 
-   /** FrozenEntityProperties.setFrozenFor. STUB(iaf/core): wire to the frozen attachment. */
+   /** 1.12 FrozenEntityProperties.setFrozenFor (frozenProps != null). */
    public static void setFrozenFor(Entity entity, int ticks) {
+      FrozenEntityProperties properties = FrozenEntityProperties.get(entity);
+      if (properties != null) {
+         properties.setFrozenFor(ticks);
+      }
    }
 
    /**
     * 1.12 EntityDragonEgg in water: sets TileEntityEggInIce.type and ownerUUID of the egg-in-ice block just placed.
-    * STUB(iaf/core): the egg-in-ice block entity (it hatches the ice dragon) belongs to iaf/core.
+    * The egg-in-ice block entity of iaf/core hatches the ice dragon through ModEntityHooks.hatchIceDragon.
     */
    public static void onEggInIce(net.minecraft.world.level.Level level, BlockPos pos, com.github.alexthe666.iceandfire.enums.EnumDragonEgg type, @javax.annotation.Nullable java.util.UUID owner) {
+      if (level.getBlockEntity(pos) instanceof com.github.alexthe666.iceandfire.entity.tile.TileEntityEggInIce egg) {
+         egg.type = type;
+         egg.ownerUUID = owner;
+         egg.setChanged();
+      }
    }
 
-   /** MiscPlayerProperties.hasDismountedDragon (kept in the player's persistent data). */
+   /** MiscPlayerProperties.hasDismountedDragon. */
    public static void setDismountedDragon(Player player, boolean value) {
-      player.getPersistentData().putBoolean("iceandfire_hasDismountedDragon", value);
+      MiscPlayerProperties properties = MiscPlayerProperties.get(player);
+      if (properties != null) {
+         properties.hasDismountedDragon = value;
+      }
    }
 
    public static boolean hasDismountedDragon(Player player) {
-      return player.getPersistentData().getBoolean("iceandfire_hasDismountedDragon");
+      MiscPlayerProperties properties = MiscPlayerProperties.get(player);
+      return properties != null && properties.hasDismountedDragon;
    }
 
-   /**
-    * 1.12 new ItemStack(ModItems.dragon_skull, 1, meta) with the tags Stage, DragonType (always 0 in 1.7.1) and DragonAge.
-    * STUB(iaf/core): metadata 0 = fire, 1 = ice is kept as the custom tag "SkullMeta" until the skull item is ported.
-    */
+   /** 1.12 new ItemStack(ModItems.dragon_skull, 1, meta) with the tags Stage, DragonType (always 0 in 1.7.1) and DragonAge. */
    public static net.minecraft.world.item.ItemStack dragonSkull(int meta, int stage, int age) {
-      net.minecraft.world.item.ItemStack skull = new net.minecraft.world.item.ItemStack(com.github.alexthe666.iceandfire.core.ModItems.dragon_skull, 1);
+      net.minecraft.world.item.ItemStack skull = IafMeta.stack(com.github.alexthe666.iceandfire.core.ModItems.dragon_skull, 1, meta);
       net.minecraft.nbt.CompoundTag tag = new net.minecraft.nbt.CompoundTag();
       tag.putInt("Stage", stage);
       tag.putInt("DragonType", 0);
       tag.putInt("DragonAge", age);
-      tag.putInt("SkullMeta", meta);
-      skull.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.of(tag));
+      IafMeta.setTag(skull, tag);
       return skull;
    }
 
-   /** 1.12 dragon horn: the whole dragon NBT goes into the horn's tag. STUB(iaf/core): the horn item reads it back. */
+   /** 1.12 dragon horn: writeEntityToNBT(stack1.getTagCompound()). */
    public static void storeDragonInHorn(net.minecraft.world.item.ItemStack horn, Entity dragon, net.minecraft.nbt.CompoundTag dragonTag) {
-      net.minecraft.nbt.CompoundTag tag = dragonTag.copy();
-      tag.putString("id", net.minecraft.world.entity.EntityType.getKey(dragon.getType()).toString());
-      horn.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.of(tag));
+      IafMeta.setTag(horn, dragonTag);
    }
 
-   /** Dragon armor piece of a stack: 1.12 metadata 0 head, 1 neck, 2 body, 3 tail. STUB(iaf/core): "ArmorPart" custom tag. */
+   /** Dragon armor piece of a stack: 1.12 metadata 0 head, 1 neck, 2 body, 3 tail. */
    public static int dragonArmorPart(net.minecraft.world.item.ItemStack stack) {
-      net.minecraft.world.item.component.CustomData data = stack.get(net.minecraft.core.component.DataComponents.CUSTOM_DATA);
-      return data == null ? 0 : data.copyTag().getInt("ArmorPart");
+      return IafMeta.getMetadata(stack);
    }
 
    /** 1.12 Entity.getLookVec. */
