@@ -1,0 +1,312 @@
+package com.github.alexthe666.iceandfire.client.model;
+
+import com.github.alexthe666.iceandfire.entity.EntityMyrmexWorker;
+import net.ilexiconn.llibrary.client.model.ModelAnimator;
+import net.ilexiconn.llibrary.client.model.tools.AdvancedModelRenderer;
+import net.ilexiconn.llibrary.server.animation.IAnimatedEntity;
+import net.ilexiconn.llibrary.client.model.legacy.ModelRenderer;
+import net.minecraft.world.entity.Entity;
+
+public class ModelMyrmexWorker extends ModelMyrmexBase {
+   public AdvancedModelRenderer Body2;
+   public AdvancedModelRenderer Body3;
+   public AdvancedModelRenderer Body1;
+   public AdvancedModelRenderer legTopR2;
+   public AdvancedModelRenderer legTopR2_1;
+   public AdvancedModelRenderer Body4;
+   public AdvancedModelRenderer legTopR3;
+   public AdvancedModelRenderer legTopR3_1;
+   public AdvancedModelRenderer Body5;
+   public AdvancedModelRenderer Tail1;
+   public AdvancedModelRenderer Tail2;
+   public AdvancedModelRenderer Stinger;
+   public AdvancedModelRenderer legMidR3;
+   public AdvancedModelRenderer legBottomR3;
+   public AdvancedModelRenderer legMidR3_1;
+   public AdvancedModelRenderer legBottomR3_1;
+   public AdvancedModelRenderer Neck1;
+   public AdvancedModelRenderer legTopR1;
+   public AdvancedModelRenderer legTopR1_1;
+   public AdvancedModelRenderer HeadBase;
+   public AdvancedModelRenderer EyeR;
+   public AdvancedModelRenderer MandibleL;
+   public AdvancedModelRenderer MandibleR;
+   public AdvancedModelRenderer EyeL;
+   public AdvancedModelRenderer legMidR1;
+   public AdvancedModelRenderer legBottomR1;
+   public AdvancedModelRenderer legMidR1_1;
+   public AdvancedModelRenderer legBottomR1_1;
+   public AdvancedModelRenderer legMidR2;
+   public AdvancedModelRenderer legBottomR2;
+   public AdvancedModelRenderer legMidR2_1;
+   public AdvancedModelRenderer legBottomR2_1;
+   private ModelAnimator animator;
+
+   public ModelMyrmexWorker() {
+      this.textureWidth = 128;
+      this.textureHeight = 128;
+      this.legTopR3 = new AdvancedModelRenderer(this, 0, 54);
+      this.legTopR3.mirror = true;
+      this.legTopR3.setRotationPoint(-3.3F, 1.0F, 1.6F);
+      this.legTopR3.addBox(-1.0F, 0.0F, -1.5F, 2, 7, 3, 0.0F);
+      this.setRotateAngle(this.legTopR3, 0.5009095F, 0.22759093F, 0.7740535F);
+      this.Body2 = new AdvancedModelRenderer(this, 70, 53);
+      this.Body2.setRotationPoint(0.0F, 10.0F, -6.0F);
+      this.Body2.addBox(-3.0F, -2.7F, -0.1F, 6, 7, 4, 0.0F);
+      this.setRotateAngle(this.Body2, -0.045553092F, 0.0F, 0.0F);
+      this.Tail1 = new AdvancedModelRenderer(this, 80, 51);
+      this.Tail1.setRotationPoint(0.0F, -0.4F, 1.2F);
+      this.Tail1.addBox(-5.5F, -3.2F, -0.1F, 11, 11, 13, 0.0F);
+      this.setRotateAngle(this.Tail1, -0.4553564F, 0.0F, 0.0F);
+      this.legTopR2_1 = new AdvancedModelRenderer(this, 0, 54);
+      this.legTopR2_1.mirror = true;
+      this.legTopR2_1.setRotationPoint(-3.3F, 1.0F, 1.6F);
+      this.legTopR2_1.addBox(-1.0F, 0.0F, -1.5F, 2, 7, 3, 0.0F);
+      this.setRotateAngle(this.legTopR2_1, 0.0F, 0.0F, (float) (Math.PI * 2.0 / 9.0));
+      this.legMidR3_1 = new AdvancedModelRenderer(this, 11, 50);
+      this.legMidR3_1.mirror = true;
+      this.legMidR3_1.setRotationPoint(0.0F, 6.4F, 0.1F);
+      this.legMidR3_1.addBox(-1.5F, 0.0F, -1.0F, 3, 12, 2, 0.0F);
+      this.setRotateAngle(this.legMidR3_1, 0.0F, 0.0F, -1.1383038F);
+      this.Stinger = new AdvancedModelRenderer(this, 60, 0);
+      this.Stinger.setRotationPoint(0.0F, 0.6F, 6.0F);
+      this.Stinger.addBox(-1.0F, -2.7F, -1.7F, 2, 8, 2, 0.0F);
+      this.setRotateAngle(this.Stinger, 0.63739425F, 0.0F, 0.0F);
+      this.legTopR1 = new AdvancedModelRenderer(this, 0, 54);
+      this.legTopR1.mirror = true;
+      this.legTopR1.setRotationPoint(-3.3F, 1.0F, -1.4F);
+      this.legTopR1.addBox(-1.0F, 0.0F, -1.5F, 2, 7, 3, 0.0F);
+      this.setRotateAngle(this.legTopR1, -0.5009095F, -0.22759093F, (float) (Math.PI * 2.0 / 9.0));
+      this.legBottomR3 = new AdvancedModelRenderer(this, 22, 51);
+      this.legBottomR3.setRotationPoint(0.0F, 10.4F, 0.0F);
+      this.legBottomR3.addBox(-1.01F, 0.0F, -0.9F, 2, 13, 2, 0.0F);
+      this.setRotateAngle(this.legBottomR3, 0.0F, 0.0F, -1.3203416F);
+      this.EyeR = new AdvancedModelRenderer(this, 40, 0);
+      this.EyeR.mirror = true;
+      this.EyeR.setRotationPoint(-4.0F, -0.3F, -3.5F);
+      this.EyeR.addBox(-1.5F, -1.0F, -3.0F, 3, 2, 6, 0.0F);
+      this.setRotateAngle(this.EyeR, 0.2268928F, 0.08726646F, (float) (-Math.PI / 2));
+      this.MandibleR = new AdvancedModelRenderer(this, 0, 25);
+      this.MandibleR.mirror = true;
+      this.MandibleR.setRotationPoint(-3.4F, 3.7F, -7.7F);
+      this.MandibleR.addBox(-2.0F, -2.51F, -5.1F, 4, 2, 6, 0.0F);
+      this.setRotateAngle(this.MandibleR, (float) (Math.PI / 18), -0.18203785F, 0.0F);
+      this.HeadBase = new AdvancedModelRenderer(this, 0, 0);
+      this.HeadBase.setRotationPoint(0.0F, -0.1F, -2.4F);
+      this.HeadBase.addBox(-4.0F, -2.51F, -10.1F, 8, 6, 10, 0.0F);
+      this.setRotateAngle(this.HeadBase, 0.63739425F, 0.0F, 0.0F);
+      this.legBottomR1_1 = new AdvancedModelRenderer(this, 22, 51);
+      this.legBottomR1_1.mirror = true;
+      this.legBottomR1_1.setRotationPoint(0.0F, 10.4F, 0.0F);
+      this.legBottomR1_1.addBox(-1.01F, 0.0F, -0.9F, 2, 13, 2, 0.0F);
+      this.setRotateAngle(this.legBottomR1_1, 0.0F, 0.0F, 1.3203416F);
+      this.legMidR2_1 = new AdvancedModelRenderer(this, 11, 50);
+      this.legMidR2_1.setRotationPoint(0.0F, 6.4F, 0.1F);
+      this.legMidR2_1.addBox(-1.5F, 0.0F, -1.0F, 3, 12, 2, 0.0F);
+      this.setRotateAngle(this.legMidR2_1, 0.0F, 0.0F, 1.1383038F);
+      this.Body3 = new AdvancedModelRenderer(this, 36, 73);
+      this.Body3.setRotationPoint(0.0F, 0.2F, 4.1F);
+      this.Body3.addBox(-4.5F, -3.4F, -1.4F, 9, 9, 9, 0.0F);
+      this.Tail2 = new AdvancedModelRenderer(this, 60, 17);
+      this.Tail2.setRotationPoint(0.0F, 0.6F, 12.0F);
+      this.Tail2.addBox(-4.0F, -2.7F, -0.1F, 8, 8, 6, 0.0F);
+      this.setRotateAngle(this.Tail2, -0.4098033F, 0.0F, 0.0F);
+      this.legBottomR3_1 = new AdvancedModelRenderer(this, 22, 51);
+      this.legBottomR3_1.mirror = true;
+      this.legBottomR3_1.setRotationPoint(0.0F, 10.4F, 0.0F);
+      this.legBottomR3_1.addBox(-1.01F, 0.0F, -0.9F, 2, 13, 2, 0.0F);
+      this.setRotateAngle(this.legBottomR3_1, 0.0F, 0.0F, 1.3203416F);
+      this.Neck1 = new AdvancedModelRenderer(this, 32, 22);
+      this.Neck1.setRotationPoint(0.0F, 0.0F, -6.0F);
+      this.Neck1.addBox(-2.5F, -2.0F, -3.5F, 5, 5, 4, 0.0F);
+      this.setRotateAngle(this.Neck1, -0.27314404F, 0.0F, 0.0F);
+      this.legMidR2 = new AdvancedModelRenderer(this, 11, 50);
+      this.legMidR2.mirror = true;
+      this.legMidR2.setRotationPoint(0.0F, 6.4F, 0.1F);
+      this.legMidR2.addBox(-1.5F, 0.0F, -1.0F, 3, 12, 2, 0.0F);
+      this.setRotateAngle(this.legMidR2, 0.0F, 0.0F, -1.1383038F);
+      this.legBottomR2_1 = new AdvancedModelRenderer(this, 22, 51);
+      this.legBottomR2_1.setRotationPoint(0.0F, 10.4F, 0.0F);
+      this.legBottomR2_1.addBox(-1.01F, 0.0F, -0.9F, 2, 13, 2, 0.0F);
+      this.setRotateAngle(this.legBottomR2_1, 0.0F, 0.0F, -1.3203416F);
+      this.legMidR1 = new AdvancedModelRenderer(this, 11, 50);
+      this.legMidR1.setRotationPoint(0.0F, 6.4F, 0.1F);
+      this.legMidR1.addBox(-1.5F, 0.0F, -1.0F, 3, 12, 2, 0.0F);
+      this.setRotateAngle(this.legMidR1, 0.0F, 0.0F, 1.1383038F);
+      this.legBottomR1 = new AdvancedModelRenderer(this, 22, 51);
+      this.legBottomR1.setRotationPoint(0.0F, 10.4F, 0.0F);
+      this.legBottomR1.addBox(-1.01F, 0.0F, -0.9F, 2, 13, 2, 0.0F);
+      this.setRotateAngle(this.legBottomR1, 0.0F, 0.0F, -1.3203416F);
+      this.Body4 = new AdvancedModelRenderer(this, 58, 35);
+      this.Body4.setRotationPoint(0.0F, -0.4F, 7.3F);
+      this.Body4.addBox(-3.0F, -2.7F, -1.5F, 6, 7, 4, 0.0F);
+      this.setRotateAngle(this.Body4, 0.4098033F, 0.0F, 0.0F);
+      this.EyeL = new AdvancedModelRenderer(this, 40, 0);
+      this.EyeL.setRotationPoint(4.0F, -0.3F, -3.5F);
+      this.EyeL.addBox(-1.5F, -1.0F, -3.0F, 3, 2, 6, 0.0F);
+      this.setRotateAngle(this.EyeL, 0.2268928F, -0.08726646F, (float) (Math.PI / 2));
+      this.legTopR1_1 = new AdvancedModelRenderer(this, 0, 54);
+      this.legTopR1_1.setRotationPoint(3.3F, 1.0F, -1.4F);
+      this.legTopR1_1.addBox(-1.0F, 0.0F, -1.5F, 2, 7, 3, 0.0F);
+      this.setRotateAngle(this.legTopR1_1, -0.5009095F, 0.22759093F, (float) (-Math.PI * 2.0 / 9.0));
+      this.MandibleL = new AdvancedModelRenderer(this, 0, 25);
+      this.MandibleL.setRotationPoint(3.4F, 3.7F, -7.7F);
+      this.MandibleL.addBox(-2.0F, -2.51F, -5.1F, 4, 2, 6, 0.0F);
+      this.setRotateAngle(this.MandibleL, (float) (Math.PI / 18), 0.18203785F, 0.0F);
+      this.legTopR3_1 = new AdvancedModelRenderer(this, 0, 54);
+      this.legTopR3_1.setRotationPoint(3.3F, 1.0F, 1.6F);
+      this.legTopR3_1.addBox(-1.0F, 0.0F, -1.5F, 2, 7, 3, 0.0F);
+      this.setRotateAngle(this.legTopR3_1, 0.5009095F, -0.22759093F, -0.7740535F);
+      this.legTopR2 = new AdvancedModelRenderer(this, 0, 54);
+      this.legTopR2.setRotationPoint(3.3F, 1.0F, 1.6F);
+      this.legTopR2.addBox(-1.0F, 0.0F, -1.5F, 2, 7, 3, 0.0F);
+      this.setRotateAngle(this.legTopR2, 0.0F, 0.0F, (float) (-Math.PI * 2.0 / 9.0));
+      this.legBottomR2 = new AdvancedModelRenderer(this, 22, 51);
+      this.legBottomR2.mirror = true;
+      this.legBottomR2.setRotationPoint(0.0F, 10.4F, 0.0F);
+      this.legBottomR2.addBox(-1.01F, 0.0F, -0.9F, 2, 13, 2, 0.0F);
+      this.setRotateAngle(this.legBottomR2, 0.0F, 0.0F, 1.3203416F);
+      this.Body5 = new AdvancedModelRenderer(this, 82, 35);
+      this.Body5.setRotationPoint(0.0F, -0.4F, 4.2F);
+      this.Body5.addBox(-3.5F, -2.5F, -2.1F, 7, 8, 6, 0.0F);
+      this.setRotateAngle(this.Body5, -0.045553092F, 0.0F, 0.0F);
+      this.Body1 = new AdvancedModelRenderer(this, 34, 47);
+      this.Body1.setRotationPoint(0.0F, -0.7F, -1.0F);
+      this.Body1.addBox(-3.5F, -2.1F, -6.3F, 7, 8, 9, 0.0F);
+      this.setRotateAngle(this.Body1, 0.045553092F, 0.0F, 0.0F);
+      this.legMidR3 = new AdvancedModelRenderer(this, 11, 50);
+      this.legMidR3.setRotationPoint(0.0F, 6.4F, 0.1F);
+      this.legMidR3.addBox(-1.5F, 0.0F, -1.0F, 3, 12, 2, 0.0F);
+      this.setRotateAngle(this.legMidR3, 0.0F, 0.0F, 1.1383038F);
+      this.legMidR1_1 = new AdvancedModelRenderer(this, 11, 50);
+      this.legMidR1_1.mirror = true;
+      this.legMidR1_1.setRotationPoint(0.0F, 6.4F, 0.1F);
+      this.legMidR1_1.addBox(-1.5F, 0.0F, -1.0F, 3, 12, 2, 0.0F);
+      this.setRotateAngle(this.legMidR1_1, 0.0F, 0.0F, -1.1383038F);
+      this.Body3.addChild(this.legTopR3);
+      this.Body5.addChild(this.Tail1);
+      this.Body2.addChild(this.legTopR2_1);
+      this.legTopR3_1.addChild(this.legMidR3_1);
+      this.Tail2.addChild(this.Stinger);
+      this.Body1.addChild(this.legTopR1);
+      this.legMidR3.addChild(this.legBottomR3);
+      this.HeadBase.addChild(this.EyeR);
+      this.HeadBase.addChild(this.MandibleR);
+      this.Neck1.addChild(this.HeadBase);
+      this.legMidR1_1.addChild(this.legBottomR1_1);
+      this.legTopR2_1.addChild(this.legMidR2_1);
+      this.Body2.addChild(this.Body3);
+      this.Tail1.addChild(this.Tail2);
+      this.legMidR3_1.addChild(this.legBottomR3_1);
+      this.Body1.addChild(this.Neck1);
+      this.legTopR2.addChild(this.legMidR2);
+      this.legMidR2_1.addChild(this.legBottomR2_1);
+      this.legTopR1.addChild(this.legMidR1);
+      this.legMidR1.addChild(this.legBottomR1);
+      this.Body3.addChild(this.Body4);
+      this.HeadBase.addChild(this.EyeL);
+      this.Body1.addChild(this.legTopR1_1);
+      this.HeadBase.addChild(this.MandibleL);
+      this.Body3.addChild(this.legTopR3_1);
+      this.Body2.addChild(this.legTopR2);
+      this.legMidR2.addChild(this.legBottomR2);
+      this.Body4.addChild(this.Body5);
+      this.Body2.addChild(this.Body1);
+      this.legTopR3.addChild(this.legMidR3);
+      this.legTopR1_1.addChild(this.legMidR1_1);
+      this.animator = ModelAnimator.create();
+      this.updateDefaultPose();
+   }
+
+   @Override
+   public void renderAdult(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+      this.animate((IAnimatedEntity)entity, f, f1, f2, f3, f4, f5);
+      this.setRotationAngles(f, f1, f2, f3, f4, f5, (EntityMyrmexWorker)entity);
+      this.Body2.render(f5);
+   }
+
+   public void animate(IAnimatedEntity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+      this.resetToDefaultPose();
+      this.animator.update(entity);
+      this.animator.setAnimation(EntityMyrmexWorker.ANIMATION_BITE);
+      this.animator.startKeyframe(5);
+      ModelUtils.rotate(this.animator, this.Neck1, -50.0F, 0.0F, 0.0F);
+      ModelUtils.rotate(this.animator, this.HeadBase, 50.0F, 0.0F, 0.0F);
+      ModelUtils.rotate(this.animator, this.MandibleR, 0.0F, 25.0F, 0.0F);
+      ModelUtils.rotate(this.animator, this.MandibleL, 0.0F, -25.0F, 0.0F);
+      this.animator.endKeyframe();
+      this.animator.startKeyframe(5);
+      ModelUtils.rotate(this.animator, this.Neck1, 30.0F, 0.0F, 0.0F);
+      ModelUtils.rotate(this.animator, this.HeadBase, -30.0F, 0.0F, 0.0F);
+      ModelUtils.rotate(this.animator, this.MandibleR, 0.0F, -45.0F, 0.0F);
+      ModelUtils.rotate(this.animator, this.MandibleL, 0.0F, 45.0F, 0.0F);
+      this.animator.endKeyframe();
+      this.animator.resetKeyframe(5);
+      this.animator.setAnimation(EntityMyrmexWorker.ANIMATION_STING);
+      this.animator.startKeyframe(5);
+      this.animator.move(this.Body2, 0.0F, -4.0F, 0.0F);
+      ModelUtils.rotate(this.animator, this.Body3, -35.0F, 0.0F, 0.0F);
+      ModelUtils.rotate(this.animator, this.Body4, -49.0F, 0.0F, 0.0F);
+      ModelUtils.rotate(this.animator, this.Body5, -5.0F, 0.0F, 0.0F);
+      ModelUtils.rotate(this.animator, this.Tail1, -57.0F, 0.0F, 0.0F);
+      ModelUtils.rotate(this.animator, this.Tail2, -40.0F, 0.0F, 0.0F);
+      ModelUtils.rotate(this.animator, this.Stinger, 90.0F, 0.0F, 0.0F);
+      ModelUtils.rotateFrom(this.animator, this.legTopR3, 44.0F, -7.0F, 44.0F);
+      ModelUtils.rotateFrom(this.animator, this.legTopR3_1, 44.0F, 7.0F, -44.0F);
+      ModelUtils.rotateFrom(this.animator, this.legMidR3, 0.0F, 0.0F, 50.0F);
+      ModelUtils.rotateFrom(this.animator, this.legMidR2, 0.0F, 0.0F, -45.0F);
+      ModelUtils.rotateFrom(this.animator, this.legMidR1, 0.0F, 0.0F, 45.0F);
+      ModelUtils.rotateFrom(this.animator, this.legMidR3_1, 0.0F, 0.0F, -50.0F);
+      ModelUtils.rotateFrom(this.animator, this.legMidR2_1, 0.0F, 0.0F, 45.0F);
+      ModelUtils.rotateFrom(this.animator, this.legMidR1_1, 0.0F, 0.0F, -45.0F);
+      this.animator.endKeyframe();
+      this.animator.resetKeyframe(10);
+   }
+
+   public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
+      AdvancedModelRenderer[] GASTER = new AdvancedModelRenderer[]{this.Body4, this.Body5, this.Tail1, this.Tail2, this.Stinger};
+      AdvancedModelRenderer[] NECK = new AdvancedModelRenderer[]{this.Neck1, this.HeadBase};
+      AdvancedModelRenderer[] LEGR1 = new AdvancedModelRenderer[]{this.legTopR1, this.legMidR1, this.legBottomR1};
+      AdvancedModelRenderer[] LEGR2 = new AdvancedModelRenderer[]{this.legTopR2, this.legMidR2, this.legBottomR2};
+      AdvancedModelRenderer[] LEGR3 = new AdvancedModelRenderer[]{this.legTopR3, this.legMidR3, this.legBottomR3};
+      AdvancedModelRenderer[] LEGL1 = new AdvancedModelRenderer[]{this.legTopR1_1, this.legMidR1_1, this.legBottomR1_1};
+      AdvancedModelRenderer[] LEGL2 = new AdvancedModelRenderer[]{this.legTopR2_1, this.legMidR2_1, this.legBottomR2_1};
+      AdvancedModelRenderer[] LEGL3 = new AdvancedModelRenderer[]{this.legTopR3_1, this.legMidR3_1, this.legBottomR3_1};
+      float speed_walk = 0.9F;
+      float speed_idle = 0.05F;
+      float degree_walk = 0.3F;
+      float degree_idle = 0.25F;
+      if (entity.getPassengers().isEmpty()) {
+         this.faceTarget(f3, f4, 2.0F, NECK);
+      }
+
+      this.chainWave(GASTER, speed_idle, degree_idle * 0.15F, 0.0, (float)entity.tickCount, 1.0F);
+      this.chainWave(NECK, speed_idle, degree_idle * -0.15F, 2.0, (float)entity.tickCount, 1.0F);
+      this.swing(this.MandibleR, speed_idle, degree_idle * -0.5F, false, 1.0F, 0.2F, (float)entity.tickCount, 1.0F);
+      this.swing(this.MandibleL, speed_idle, degree_idle * -0.5F, true, 1.0F, 0.2F, (float)entity.tickCount, 1.0F);
+      this.animateLeg(LEGR1, speed_walk, degree_walk, false, 0.0F, 1.0F, f, f1);
+      this.animateLeg(LEGR3, speed_walk, degree_walk, false, 0.0F, 1.0F, f, f1);
+      this.animateLeg(LEGR2, speed_walk, degree_walk, true, 0.0F, 1.0F, f, f1);
+      this.animateLeg(LEGL1, speed_walk, degree_walk, false, 1.0F, -1.0F, f, f1);
+      this.animateLeg(LEGL3, speed_walk, degree_walk, false, 1.0F, -1.0F, f, f1);
+      this.animateLeg(LEGL2, speed_walk, degree_walk, true, 1.0F, -1.0F, f, f1);
+   }
+
+   private void animateLeg(AdvancedModelRenderer[] models, float speed, float degree, boolean reverse, float offset, float weight, float f, float f1) {
+      this.flap(models[0], speed, degree * 0.4F, reverse, offset, weight * 0.2F, f, f1);
+      this.flap(models[1], speed, degree * 2.0F, reverse, offset, weight * -0.4F, f, f1);
+      this.flap(models[1], speed, -degree * 1.2F, reverse, offset, weight * 0.5F, f, f1);
+      this.walk(models[0], speed, degree, reverse, offset, 0.0F, f, f1);
+   }
+
+   @Override
+   public ModelRenderer[] getHeadParts() {
+      return new ModelRenderer[]{this.Neck1, this.HeadBase};
+   }
+
+   @Override
+   public void renderStatue() {
+      this.resetToDefaultPose();
+      this.Body2.render(0.0625F);
+   }
+}
