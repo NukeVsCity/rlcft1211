@@ -22,12 +22,25 @@ public final class StubTestEntities {
 
    static {
       for (CreatureInfo info : CreatureManager.getInstance().creatures.values()) {
-         TYPES.put(info.name, ENTITIES.register(info.name, () -> EntityType.Builder.<BaseCreatureEntity>of(StubCreature::new, MobCategory.MONSTER)
+         TYPES.put(info.name, ENTITIES.register(info.name, () -> EntityType.Builder.<BaseCreatureEntity>of(factory(info.name), MobCategory.MONSTER)
             .sized((float)info.width, (float)info.height).clientTrackingRange(10).build(LycanitesMobs.MODID + ":" + info.name)));
       }
    }
 
    private StubTestEntities() {
+   }
+
+   private static EntityType.EntityFactory<BaseCreatureEntity> factory(String name) {
+      return switch (name) {
+         case "amalgalich" -> com.lycanitesmobs.core.entity.creature.EntityAmalgalich::new;
+         case "asmodeus" -> com.lycanitesmobs.core.entity.creature.EntityAsmodeus::new;
+         case "darkling" -> com.lycanitesmobs.core.entity.creature.EntityDarkling::new;
+         case "spectre" -> com.lycanitesmobs.core.entity.creature.EntitySpectre::new;
+         case "yale" -> com.lycanitesmobs.core.entity.creature.EntityYale::new;
+         case "roa" -> com.lycanitesmobs.core.entity.creature.EntityRoa::new;
+         case "thresher" -> com.lycanitesmobs.core.entity.creature.EntityThresher::new;
+         default -> StubCreature::new;
+      };
    }
 
    /** Rideable so the model casts of the real creatures (e.g. ModelIgnibus) work on the test entities. */
