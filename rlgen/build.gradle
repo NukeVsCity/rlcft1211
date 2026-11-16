@@ -48,3 +48,4 @@ tasks.named('processResources', ProcessResources) {
     inputs.properties props
     filesMatching('META-INF/neoforge.mods.toml') { expand props }
 }
+tasks.withType(JavaCompile).configureEach { options.compilerArgs << '-Xmaxerrs' << '50000' }
