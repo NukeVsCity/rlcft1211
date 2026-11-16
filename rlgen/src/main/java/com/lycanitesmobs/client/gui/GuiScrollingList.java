@@ -33,6 +33,10 @@ public abstract class GuiScrollingList {
    private boolean hasHeader;
    private int headerHeight;
    protected boolean captureMouse = true;
+   /** Set when drawn this frame: 1.12 only handled the mouse inside drawScreen, so lists not drawn ignore input. */
+   public boolean drawnThisFrame;
+
+   private BaseScreen owner;
 
    public GuiScrollingList(Minecraft client, int width, int height, int top, int bottom, int left, int entryHeight, int screenWidth, int screenHeight) {
       this.client = client;
@@ -181,7 +185,17 @@ public abstract class GuiScrollingList {
       return false;
    }
 
+   /** 1.12 drawScreen(mouseX, mouseY, partialTicks), with the frame's GuiGraphics from DrawHelper. */
+   public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+      this.drawScreen(DrawHelper.graphics, mouseX, mouseY, partialTicks);
+   }
+
    public void drawScreen(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+      this.drawnThisFrame = true;
+      if (this.owner == null && this.client.screen instanceof BaseScreen screen) {
+         this.owner = screen;
+         screen.scrollingLists.add(this);
+      }
       this.mouseX = mouseX;
       this.mouseY = mouseY;
       this.drawBackground();

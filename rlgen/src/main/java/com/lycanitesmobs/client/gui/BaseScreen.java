@@ -15,6 +15,8 @@ public class BaseScreen extends Screen implements com.lycanitesmobs.client.gui.b
    protected Minecraft mc;
    protected float zLevel;
    protected DrawHelper drawHelper;
+   /** The 1.12 Forge scrolling lists drawn by this screen (they register themselves when first drawn). */
+   public final java.util.List<GuiScrollingList> scrollingLists = new java.util.ArrayList<>();
 
    public BaseScreen() {
       this(Component.empty());
@@ -31,6 +33,50 @@ public class BaseScreen extends Screen implements com.lycanitesmobs.client.gui.b
    public void actionPerformed(com.lycanitesmobs.client.gui.buttons.ButtonBase button) {
    }
 
+   @Override
+   public boolean mouseClicked(double mouseX, double mouseY, int button) {
+      for (GuiScrollingList list : java.util.List.copyOf(this.scrollingLists)) {
+         if (list.drawnThisFrame && list.mouseClicked(mouseX, mouseY, button)) {
+            return true;
+         }
+      }
+      return super.mouseClicked(mouseX, mouseY, button);
+   }
+
+   @Override
+   public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+      for (GuiScrollingList list : this.scrollingLists) {
+         if (list.drawnThisFrame && list.mouseDragged(mouseX, mouseY, button)) {
+            return true;
+         }
+      }
+      return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+   }
+
+   @Override
+   public boolean mouseReleased(double mouseX, double mouseY, int button) {
+      for (GuiScrollingList list : this.scrollingLists) {
+         list.mouseReleased(mouseX, mouseY, button);
+      }
+      return super.mouseReleased(mouseX, mouseY, button);
+   }
+
+   @Override
+   public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
+      for (GuiScrollingList list : this.scrollingLists) {
+         if (list.drawnThisFrame && list.mouseScrolled(mouseX, mouseY, scrollY)) {
+            return true;
+         }
+      }
+      return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
+   }
+
+   @Override
+   protected void clearWidgets() {
+      super.clearWidgets();
+      this.scrollingLists.clear();
+   }
+
    /** 1.12 buttonList.add. */
    public <T extends com.lycanitesmobs.client.gui.buttons.ButtonBase> T addButton(T button) {
       return this.addRenderableWidget(button);
@@ -43,6 +89,9 @@ public class BaseScreen extends Screen implements com.lycanitesmobs.client.gui.b
    @Override
    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
       DrawHelper.setGraphics(graphics);
+      for (GuiScrollingList list : this.scrollingLists) {
+         list.drawnThisFrame = false;
+      }
       this.drawScreen(graphics, mouseX, mouseY, partialTicks);
    }
 
