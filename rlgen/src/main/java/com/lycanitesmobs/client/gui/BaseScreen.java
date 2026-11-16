@@ -105,6 +105,11 @@ public class BaseScreen extends Screen implements com.lycanitesmobs.client.gui.b
    public void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
    }
 
+   /** 1.12 FontRenderer.drawString(text, x, y, color): no shadow. */
+   public void drawString(String text, int x, int y, int color) {
+      DrawHelper.graphics.drawString(this.getFontRenderer(), text, x, y, color, false);
+   }
+
    public void drawString(String text, float x, float y, int color, boolean shadow) {
       DrawHelper.graphics.drawString(this.getFontRenderer(), text, (int)x, (int)y, color, shadow);
    }
