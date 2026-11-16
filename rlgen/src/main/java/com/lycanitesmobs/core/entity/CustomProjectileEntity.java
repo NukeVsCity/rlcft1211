@@ -397,7 +397,7 @@ public class CustomProjectileEntity extends BaseProjectileEntity {
    }
 
    public int getBrightnessForRender() {
-      return this.projectileInfo != null && this.projectileInfo.glow ? 15728880 : super.getBrightnessForRender();
+      return this.projectileInfo != null && this.projectileInfo.glow ? 15728880 : super.getLightLevelDependentMagicValue();
    }
 
    @Override

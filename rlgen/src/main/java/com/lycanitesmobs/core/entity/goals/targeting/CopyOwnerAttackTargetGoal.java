@@ -119,7 +119,7 @@ public class CopyOwnerAttackTargetGoal extends TargetingGoal {
          return true;
       } else {
          LivingEntity owner = (LivingEntity)this.host.getOwner();
-         int lastAttackedTime = owner.getLastAttackedEntityTime();
+         int lastAttackedTime = owner.getLastHurtMobTimestamp();
          this.target = owner.getLastHurtMob();
          if (this.target == null) {
             ExtendedEntity extendedOwner = ExtendedEntity.getForEntity(owner);
@@ -136,7 +136,7 @@ public class CopyOwnerAttackTargetGoal extends TargetingGoal {
    @Override
    public void startExecuting() {
       if (this.isEntityTargetable(this.target, false)) {
-         this.lastAttackTime = ((LivingEntity)this.host.getOwner()).getLastAttackedEntityTime();
+         this.lastAttackTime = ((LivingEntity)this.host.getOwner()).getLastHurtMobTimestamp();
          super.startExecuting();
       }
    }

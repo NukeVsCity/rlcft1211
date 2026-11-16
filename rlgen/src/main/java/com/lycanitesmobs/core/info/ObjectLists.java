@@ -105,8 +105,8 @@ public class ObjectLists {
    };
    public static Map<String, List<ItemStack>> itemLists = new HashMap<>();
    public static Map<String, List<Class>> entityLists = new HashMap<>();
-   public static Map<String, List<Potion>> effectLists = new HashMap<>();
-   public static Map<String, Potion> allEffects = new HashMap<>();
+   public static Map<String, List<Holder<MobEffect>>> effectLists = new HashMap<>();
+   public static Map<String, Holder<MobEffect>> allEffects = new HashMap<>();
 
    public static void addItem(String list, Object object) {
       if (object instanceof Item || object instanceof Block || object instanceof ItemStack || object instanceof String) {
@@ -157,7 +157,7 @@ public class ObjectLists {
       }
    }
 
-   public static void addEffect(String list, Potion effect, String effectName) {
+   public static void addEffect(String list, Holder<MobEffect> effect, String effectName) {
       if (effect != null) {
          allEffects.put(effectName, effect);
          list = list.toLowerCase();
@@ -179,9 +179,9 @@ public class ObjectLists {
       return !entityLists.containsKey(list) ? new Class[0] : entityLists.get(list).toArray(new Class[entityLists.get(list).size()]);
    }
 
-   public static Potion[] getEffects(String list) {
+   public static Holder<MobEffect>[] getEffects(String list) {
       list = list.toLowerCase();
-      return !effectLists.containsKey(list) ? new Potion[0] : effectLists.get(list).toArray(new Potion[effectLists.get(list).size()]);
+      return !effectLists.containsKey(list) ? new Holder<MobEffect>[0] : effectLists.get(list).toArray(new Holder<MobEffect>[effectLists.get(list).size()]);
    }
 
    public static boolean inItemList(String list, ItemStack testStack) {
@@ -209,7 +209,7 @@ public class ObjectLists {
       return !entityLists.containsKey(list) ? false : false;
    }
 
-   public static boolean inEffectList(String list, Potion testPotion) {
+   public static boolean inEffectList(String list, Holder<MobEffect> testPotion) {
       list = list.toLowerCase();
       return !effectLists.containsKey(list) ? false : effectLists.get(list).contains(testPotion);
    }

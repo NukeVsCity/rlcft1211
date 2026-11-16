@@ -1,115 +1,74 @@
 package com.lycanitesmobs.core.block;
 
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
-import com.lycanitesmobs.LycEntities;
-import com.lycanitesmobs.compat.*;
-import io.netty.buffer.ByteBuf;
-import java.util.Optional;
-import javax.annotation.Nullable;
-import net.minecraft.core.*;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
-import net.minecraft.core.particles.*;
-import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.*;
-import net.minecraft.nbt.*;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.network.*;
-import net.minecraft.network.chat.*;
-import net.minecraft.network.syncher.*;
-import net.minecraft.resources.*;
-import net.minecraft.server.level.*;
-import net.minecraft.sounds.*;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.*;
-import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.util.*;
-import net.minecraft.world.*;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.*;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.*;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.*;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.*;
-import net.minecraft.world.entity.ai.navigation.*;
-import net.minecraft.world.entity.ambient.*;
-import net.minecraft.world.entity.animal.*;
-import net.minecraft.world.entity.item.*;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.*;
-import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.entity.npc.*;
-import net.minecraft.world.entity.player.*;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.*;
-import net.minecraft.world.entity.vehicle.*;
-import net.minecraft.world.item.*;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.*;
-import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.*;
-import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.*;
-import net.minecraft.world.level.block.state.*;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.*;
-import net.minecraft.world.level.material.*;
-import net.minecraft.world.level.pathfinder.*;
-import net.minecraft.world.phys.*;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
-import net.neoforged.bus.api.*;
-import net.neoforged.neoforge.common.*;
-import net.neoforged.neoforge.event.entity.*;
-import net.neoforged.neoforge.event.entity.living.*;
-import net.neoforged.neoforge.event.entity.player.*;
-import net.neoforged.neoforge.event.level.*;
-import net.neoforged.neoforge.event.tick.*;
+import com.lycanitesmobs.compat.ForgeFluid;
+import com.lycanitesmobs.compat.LycReg;
+import com.lycanitesmobs.compat.Material;
 import com.lycanitesmobs.core.LanguageManager;
 import com.lycanitesmobs.core.info.ModInfo;
 import java.util.List;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.PushReaction;
 
-
-public class BlockFluidBase extends BlockFluidClassic {
+/**
+ * 1.12 BlockFluidBase (a Forge BlockFluidClassic) as a 1.21 LiquidBlock of the Lycanites fluid (ForgeFluid holds the 1.21
+ * source/flowing fluids). The Forge hooks the subclasses override are kept: canDisplace(world, pos) is asked for the blocks the
+ * fluid flows next to (ooze freezing water, acid melting...), see {@link ForgeFluid}, and onEntityCollision for what touches it.
+ */
+public class BlockFluidBase extends LiquidBlock {
    public String blockName;
    public ModInfo group;
+   public final ForgeFluid fluid;
+   public final Material material;
    protected boolean destroyItems = true;
+   protected int lightValue = -1;
+   protected int lightOpacity = -1;
 
    public BlockFluidBase(ForgeFluid fluid, Material material, ModInfo group, String blockName) {
-      super(fluid, material);
+      super(fluid.getSource(), BlockBehaviour.Properties.ofFullCopy(material == Material.LAVA ? Blocks.LAVA : Blocks.WATER).pushReaction(PushReaction.DESTROY));
+      this.fluid = fluid;
+      this.material = material;
       this.blockName = blockName;
       this.group = group;
+      fluid.block = this;
       LycReg.setName(this, this.group.modid, this.blockName);
-      this.setTranslationKey(this.blockName);
-      this.setRenderLayer(Object.TRANSLUCENT);
+   }
+
+   public BlockFluidBase setLightLevel(float value) {
+      this.lightValue = (int)(15.0F * value);
+      return this;
+   }
+
+   public BlockFluidBase setLightOpacity(int opacity) {
+      this.lightOpacity = opacity;
+      return this;
+   }
+
+   @Override
+   public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
+      return this.lightValue >= 0 ? this.lightValue : super.getLightEmission(state, level, pos);
+   }
+
+   @Override
+   protected int getLightBlock(BlockState state, BlockGetter level, BlockPos pos) {
+      return this.lightOpacity >= 0 ? Math.min(this.lightOpacity, 15) : super.getLightBlock(state, level, pos);
    }
 
    public String getLocalizedName() {
-      return LanguageManager.translate(this.getDescriptionId() + ".name");
+      return LanguageManager.translate("tile." + this.blockName + ".name");
    }
 
    public void addInformation(ItemStack stack, Level world, List<String> tooltip, TooltipFlag advanced) {
@@ -117,28 +76,72 @@ public class BlockFluidBase extends BlockFluidClassic {
    }
 
    public String getDescription(ItemStack itemStack, Level world) {
-      return "§a" + LanguageManager.translate(this.getDescriptionId() + ".description");
+      return "§a" + LanguageManager.translate("tile." + this.blockName + ".description");
    }
 
+   /** 1.12 BlockFluidClassic level (metadata): 0 is a source block. */
+   public int getMetaFromState(BlockState state) {
+      return state.hasProperty(LEVEL) ? state.getValue(LEVEL) : 0;
+   }
+
+   /** Forge BlockFluidBase.canDisplace: air, or a block that does not block movement and is not a liquid. */
+   public boolean canDisplace(BlockGetter world, BlockPos pos) {
+      BlockState state = world.getBlockState(pos);
+      if (state.isAir()) {
+         return true;
+      } else if (state.getBlock() == this) {
+         return false;
+      } else {
+         Material material = Material.of(state);
+         return !material.blocksMovement() && material != Material.PORTAL && !material.isLiquid();
+      }
+   }
+
+   /** Forge BlockFluidBase.displaceIfPossible */
+   public boolean displaceIfPossible(Level world, BlockPos pos) {
+      if (world.isEmptyBlock(pos)) {
+         return true;
+      }
+      BlockState state = world.getBlockState(pos);
+      if (state.getBlock() == this) {
+         return false;
+      }
+      boolean canDisplace = this.canDisplace(world, pos);
+      if (canDisplace) {
+         world.destroyBlock(pos, true);
+      }
+      return canDisplace;
+   }
+
+   /** Called by the Lycanites fluid when it ticks: lets 1.12 canDisplace see the liquids around (Forge flowed into them). */
+   public void checkNeighbours(Level world, BlockPos pos) {
+      for (Direction direction : new Direction[]{Direction.DOWN, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST}) {
+         BlockPos next = pos.relative(direction);
+         if (Material.of(world.getBlockState(next)).isLiquid() && world.getBlockState(next).getBlock() != this) {
+            this.displaceIfPossible(world, next);
+         }
+      }
+   }
+
+   @Override
+   protected void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
+      this.onEntityCollision(world, pos, state, entity);
+   }
+
+   /** 1.12 onEntityCollision */
    public void onEntityCollision(Level world, BlockPos pos, BlockState state, Entity entity) {
       if (this.destroyItems && (entity instanceof ItemEntity || entity instanceof ExperienceOrb)) {
          entity.discard();
       }
-
-      super.onEntityCollision(world, pos, state, entity);
    }
 
-   public Boolean isEntityInsideMaterial(
-      BlockGetter world, BlockPos blockpos, BlockState state, Entity entity, double yToTest, Material materialIn, boolean testingHead
-   ) {
-      if (world instanceof Level) {
-         this.onEntityCollision((Level)world, blockpos, state, entity);
-      }
-
-      return super.isEntityInsideMaterial(world, blockpos, state, entity, yToTest, materialIn, testingHead);
+   @Override
+   public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
+      super.animateTick(state, world, pos, random);
    }
 
-   public RenderShape getRenderType(BlockState blockState) {
-      return RenderShape.MODEL;
+   @Override
+   protected void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
+      super.tick(state, world, pos, random);
    }
 }

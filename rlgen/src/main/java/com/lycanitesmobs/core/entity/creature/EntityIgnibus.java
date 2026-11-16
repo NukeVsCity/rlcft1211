@@ -360,6 +360,6 @@ public class EntityIgnibus extends RideableCreatureEntity implements IGroupHeavy
    }
 
    public int getBrightnessForRender() {
-      return this.isAttackOnCooldown() ? 15728880 : super.getBrightnessForRender();
+      return this.isAttackOnCooldown() ? 15728880 : super.getLightLevelDependentMagicValue();
    }
 }

@@ -158,7 +158,7 @@ public class FearEntity extends BaseCreatureEntity {
                      this.addEffect(new MobEffectInstance(MobEffects.LEVITATION, activeDebuff.getDuration(), activeDebuff.getAmplifier()));
                   }
 
-                  Potion instability = ObjectManager.getEffect("instability");
+                  Holder<MobEffect> instability = ObjectManager.getEffect("instability");
                   if (instability != null && fearedEntityLiving.hasEffect(instability)) {
                      MobEffectInstance activeDebuff = fearedEntityLiving.getEffect(instability);
                      this.addEffect(new MobEffectInstance(MobEffects.LEVITATION, activeDebuff.getDuration(), activeDebuff.getAmplifier()));

@@ -104,10 +104,10 @@ public class WorldSpawnCondition extends SpawnCondition {
    public String dimensionListType = "whitelist";
    public String biomeTagListType = "whitelist";
    public List<String> biomeTags = new ArrayList<>();
-   public List<Biome> biomesFromTags = null;
+   public List<ResourceLocation> biomesFromTags = null;
    public String biomeIdListType = "whitelist";
    public List<String> biomeIds = new ArrayList<>();
-   public List<Biome> biomes = new ArrayList<>();
+   public List<ResourceLocation> biomes = new ArrayList<>();
    public double worldDayMin = -1.0;
    public double worldDayMax = -1.0;
    public double worldDayN = -1.0;
@@ -262,7 +262,7 @@ public class WorldSpawnCondition extends SpawnCondition {
 
    public boolean isAllowedBiome(Level world, BlockPos position) {
       if (position != null) {
-         Biome biome = world.getBiome(position).value();
+         ResourceLocation biome = LycBiomes.at(world, position);
          if (!this.biomeIds.isEmpty()) {
             if (this.biomes == null) {
                this.biomes = JSONHelper.getBiomes(this.biomeIds);

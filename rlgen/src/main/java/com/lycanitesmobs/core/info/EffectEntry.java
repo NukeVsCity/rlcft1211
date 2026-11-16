@@ -109,7 +109,7 @@ public class EffectEntry {
       if (this.chance < 1.0F && world.random.nextFloat() > this.chance) {
          return null;
       } else {
-         Potion potion = (Potion)GameRegistry.findRegistry(Potion.class).getValue(ResourceLocation.parse(this.effectId));
+         Holder<MobEffect> potion = LycEffects.get(ResourceLocation.parse(this.effectId));
          if (potion != null) {
             return new MobEffectInstance(potion, this.duration, this.amplifier);
          } else {

@@ -96,7 +96,7 @@ import com.lycanitesmobs.core.entity.goals.BaseGoal;
 
 
 public class EffectAuraGoal extends BaseGoal {
-   protected Potion effect;
+   protected Holder<MobEffect> effect;
    protected float auraRange = 10.0F;
    protected int effectSeconds = 5;
    protected int effectAmplifier = 0;
@@ -130,7 +130,7 @@ public class EffectAuraGoal extends BaseGoal {
       return this;
    }
 
-   public EffectAuraGoal setEffect(Potion effect) {
+   public EffectAuraGoal setEffect(Holder<MobEffect> effect) {
       this.effect = effect;
       return this;
    }

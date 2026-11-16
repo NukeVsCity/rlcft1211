@@ -115,29 +115,26 @@ public class BlockFrostweb extends BlockBase {
       this.setLightOpacity(1);
    }
 
-   @Override
-   public Item getItemDropped(BlockState blockState, RandomSource random, int fortune) {
+      public Item getItemDropped(BlockState blockState, RandomSource random, int fortune) {
       return null;
    }
 
-   @Override
-   public int damageDropped(BlockState blockState) {
+      public int damageDropped(BlockState blockState) {
       return 0;
    }
 
-   @Override
-   public int quantityDropped(RandomSource random) {
+      public int quantityDropped(RandomSource random) {
       return 1;
    }
 
    @Override
-   public void onEntityCollision(Level world, BlockPos pos, BlockState state, Entity entity) {
-      super.onEntityCollision(world, pos, state, entity);
+   protected void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
+      super.entityInside(state, world, pos, entity);
       entity.setInWeb();
    }
 
-   public void randomDisplayTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
-      super.randomDisplayTick(state, world, pos, random);
+   public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
+      super.animateTick(state, world, pos, random);
       int x = pos.getX();
       int y = pos.getY();
       int z = pos.getZ();

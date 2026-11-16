@@ -136,14 +136,14 @@ public class AvoidIfHitGoal extends FindAvoidTargetGoal {
       if (this.host.getLastHurtByMob() == null) {
          return false;
       } else {
-         return this.host.shouldCreatureGroupRevenge(this.host.getLastHurtByMob()) ? false : this.host.getRevengeTimer() != this.revengeTime;
+         return this.host.shouldCreatureGroupRevenge(this.host.getLastHurtByMob()) ? false : this.host.getLastHurtByMobTimestamp() != this.revengeTime;
       }
    }
 
    @Override
    public void startExecuting() {
       this.target = this.host.getLastHurtByMob();
-      this.revengeTime = this.host.getRevengeTimer();
+      this.revengeTime = this.host.getLastHurtByMobTimestamp();
       this.callNearbyForHelp();
       super.startExecuting();
    }

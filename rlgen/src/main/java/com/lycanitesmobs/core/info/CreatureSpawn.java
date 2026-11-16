@@ -108,9 +108,9 @@ public class CreatureSpawn {
    public int[] dimensionIds;
    public String dimensionListType = "whitelist";
    public List<String> biomeTags = new ArrayList<>();
-   public List<Biome> biomesFromTags = null;
+   public List<ResourceLocation> biomesFromTags = null;
    public List<String> biomeIds = new ArrayList<>();
-   public List<Biome> biomes = null;
+   public List<ResourceLocation> biomes = null;
    public boolean ignoreBiome = false;
    public int spawnWeight = 8;
    public int dungeonWeight = 200;
@@ -229,7 +229,7 @@ public class CreatureSpawn {
 
    public void registerVanillaSpawns(CreatureInfo creatureInfo) {
       LycanitesMobs.logDebug("MobSetup", "========== Post Init Setup: " + creatureInfo.name + " ==========");
-      List<Biome> vanillaBiomes = new ArrayList<>();
+      List<ResourceLocation> vanillaBiomes = new ArrayList<>();
       if (this.biomesFromTags == null) {
          this.biomesFromTags = JSONHelper.getBiomesFromTags(this.biomeTags);
       }
@@ -255,10 +255,10 @@ public class CreatureSpawn {
                CreatureManager.getInstance().spawnConfig.ignoreWorldGenSpawning ? 0 : this.spawnGroupMin,
                CreatureManager.getInstance().spawnConfig.ignoreWorldGenSpawning ? 0 : this.spawnGroupMax,
                creatureType,
-               this.biomesFromTags.toArray(new Biome[this.biomesFromTags.size()])
+               this.biomesFromTags.toArray(new ResourceLocation[this.biomesFromTags.size()])
             );
 
-            for (Biome biome : vanillaBiomes) {
+            for (ResourceLocation biome : vanillaBiomes) {
                if (biome == Biomes.HELL) {
                   EntityRegistry.addSpawn(
                      creatureInfo.entityClass,
@@ -266,12 +266,12 @@ public class CreatureSpawn {
                      CreatureManager.getInstance().spawnConfig.ignoreWorldGenSpawning ? 0 : this.spawnGroupMin,
                      CreatureManager.getInstance().spawnConfig.ignoreWorldGenSpawning ? 0 : this.spawnGroupMax,
                      creatureType,
-                     new Biome[]{biome}
+                     new ResourceLocation[]{biome}
                   );
                   break;
                }
 
-               LycanitesMobs.logDebug("MobSetup", "Vanilla Spawn Biome Added: " + biome);
+               LycanitesMobs.logDebug("MobSetup", "Vanilla Spawn ResourceLocation Added: " + biome);
             }
          }
 
@@ -307,7 +307,7 @@ public class CreatureSpawn {
       }
    }
 
-   public boolean isValidBiome(Biome biome) {
+   public boolean isValidBiome(ResourceLocation biome) {
       if (this.ignoreBiome) {
          return true;
       } else {

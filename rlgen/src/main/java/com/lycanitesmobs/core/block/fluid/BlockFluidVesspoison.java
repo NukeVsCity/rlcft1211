@@ -107,11 +107,11 @@ public class BlockFluidVesspoison extends BlockFluidPoison {
          if (blockState.getBlock().getMetaFromState(blockState) != 0) {
             byte otherSourceBlocks = 0;
             ArrayList<BlockPos> adjBlockPositions = new ArrayList<>();
-            adjBlockPositions.offset(pos.add(-1, 0, 0));
-            adjBlockPositions.offset(pos.add(1, 0, 0));
-            adjBlockPositions.offset(pos.add(0, 1, 0));
-            adjBlockPositions.offset(pos.add(0, 0, -1));
-            adjBlockPositions.offset(pos.add(0, 0, 1));
+            adjBlockPositions.add(pos.offset(-1, 0, 0));
+            adjBlockPositions.add(pos.offset(1, 0, 0));
+            adjBlockPositions.add(pos.offset(0, 1, 0));
+            adjBlockPositions.add(pos.offset(0, 0, -1));
+            adjBlockPositions.add(pos.offset(0, 0, 1));
 
             for (BlockPos adjBlockPos : adjBlockPositions) {
                BlockState adjBlockState = world.getBlockState(adjBlockPos);

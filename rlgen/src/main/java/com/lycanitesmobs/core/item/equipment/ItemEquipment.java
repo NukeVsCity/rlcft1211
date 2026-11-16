@@ -123,8 +123,7 @@ public class ItemEquipment extends ItemBase {
       this.setMaxStackSize(1);
    }
 
-   @Override
-   public void addInformation(ItemStack itemStack, Level world, List<String> tooltip, TooltipFlag tooltipFlag) {
+      public void addInformation(ItemStack itemStack, Level world, List<String> tooltip, TooltipFlag tooltipFlag) {
       super.addInformation(itemStack, world, tooltip, tooltipFlag);
       FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 
@@ -476,7 +475,7 @@ public class ItemEquipment extends ItemBase {
          }
 
          if (active) {
-            player.setActiveHand(hand);
+            player.startUsingItem(hand);
             return new InteractionResultHolder(InteractionResult.SUCCESS, itemStack);
          } else {
             return new InteractionResultHolder(InteractionResult.FAIL, itemStack);
@@ -532,7 +531,7 @@ public class ItemEquipment extends ItemBase {
          }
 
          if (active) {
-            player.setActiveHand(hand);
+            player.startUsingItem(hand);
             this.removeSharpness(itemStack, 1);
             return InteractionResult.SUCCESS;
          } else {

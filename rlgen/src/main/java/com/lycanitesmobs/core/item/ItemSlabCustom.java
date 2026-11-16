@@ -123,7 +123,7 @@ public class ItemSlabCustom extends BlockItem {
          Comparable<?> comparable = this.singleSlab.getTypeForItem(itemStack);
          BlockState iblockstate = worldIn.getBlockState(pos);
          if (iblockstate.getBlock() == this.singleSlab) {
-            IProperty<?> iproperty = this.singleSlab.getVariantProperty();
+            Property<?> iproperty = this.singleSlab.getVariantProperty();
             Comparable<?> comparable1 = iblockstate.getValue(iproperty);
             EnumBlockHalf blockslab$enumblockhalf = (EnumBlockHalf)iblockstate.getValue(BlockSlab.HALF);
             if ((
@@ -156,7 +156,7 @@ public class ItemSlabCustom extends BlockItem {
    }
 
    public boolean canPlaceBlockOnSide(Level worldIn, BlockPos pos, Direction side, Player player, ItemStack stack) {
-      IProperty<?> iproperty = this.singleSlab.getVariantProperty();
+      Property<?> iproperty = this.singleSlab.getVariantProperty();
       Comparable<?> comparable = this.singleSlab.getTypeForItem(stack);
       BlockState iblockstate = worldIn.getBlockState(pos);
       if (iblockstate.getBlock() == this.singleSlab) {
@@ -197,7 +197,7 @@ public class ItemSlabCustom extends BlockItem {
       return false;
    }
 
-   protected <T extends Comparable<T>> BlockState makeState(IProperty<T> p_185055_1_, Comparable<?> p_185055_2_) {
+   protected <T extends Comparable<T>> BlockState makeState(Property<T> p_185055_1_, Comparable<?> p_185055_2_) {
       return this.doubleSlab.defaultBlockState();
    }
 }

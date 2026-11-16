@@ -140,7 +140,7 @@ public class EntityAsmodeus extends BaseCreatureEntity implements Enemy, IGroupH
       this.hasJumpSound = true;
       this.solidCollision = true;
       this.trueSight = true;
-      this.entityCollisionReduction = 1.0F;
+      0.0F = 1.0F;
       this.setupMob();
       this.hitAreaWidthScale = 2.0F;
       this.damageMax = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;

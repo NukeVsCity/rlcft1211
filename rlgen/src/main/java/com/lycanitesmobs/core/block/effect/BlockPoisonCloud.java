@@ -99,7 +99,7 @@ import java.util.Random;
 public class BlockPoisonCloud extends BlockBase {
    public BlockPoisonCloud() {
       super(Material.PLANTS);
-      this.setDefaultState(this.blockState.getBaseState().setValue(AGE, 0));
+      this.registerDefaultState(this.stateDefinition.any().setValue(AGE, 0));
       this.group = LycanitesMobs.modInfo;
       this.blockName = "poisoncloud";
       this.setup();
@@ -119,46 +119,41 @@ public class BlockPoisonCloud extends BlockBase {
       return world.getBlockState(pos.below()).getBlock() == Blocks.MYCELIUM ? false : super.canRemove(world, pos, state, rand);
    }
 
-   @Override
-   public BlockState getStateFromMeta(int meta) {
+      public BlockState getStateFromMeta(int meta) {
       return this.defaultBlockState().setValue(AGE, meta);
    }
 
-   @Override
-   public int getMetaFromState(BlockState state) {
+      public int getMetaFromState(BlockState state) {
       return (Integer)state.getValue(AGE);
    }
 
    @Override
-   public BlockStateContainer createBlockState() {
-      return new BlockStateContainer(this, new IProperty[]{AGE});
+   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+      builder.add(AGE);
    }
 
-   @Override
-   public Item getItemDropped(BlockState blockState, RandomSource random, int fortune) {
+      public Item getItemDropped(BlockState blockState, RandomSource random, int fortune) {
       return null;
    }
 
-   @Override
-   public int damageDropped(BlockState blockState) {
+      public int damageDropped(BlockState blockState) {
       return 0;
    }
 
-   @Override
-   public int quantityDropped(RandomSource random) {
+      public int quantityDropped(RandomSource random) {
       return 1;
    }
 
    @Override
-   public void onEntityCollision(Level world, BlockPos pos, BlockState state, Entity entity) {
-      super.onEntityCollision(world, pos, state, entity);
+   protected void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
+      super.entityInside(state, world, pos, entity);
       if (entity instanceof LivingEntity) {
          ((LivingEntity)entity).addEffect(new MobEffectInstance(MobEffects.POISON, 100, 0));
       }
    }
 
-   public void randomDisplayTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
-      super.randomDisplayTick(state, world, pos, random);
+   public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
+      super.animateTick(state, world, pos, random);
       int x = pos.getX();
       int y = pos.getY();
       int z = pos.getZ();

@@ -188,7 +188,7 @@ public class AsmodeusStructureBuilder extends StructureBuilder {
 
       for (int x = minX; x <= maxX; x++) {
          for (int z = minZ; z <= maxZ; z++) {
-            int topY = world.getTopSolidOrLiquidBlock(LycPos.of(x, 0, z)).getY();
+            int topY = world.getHeightmapPos(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, LycPos.of(x, 0, z)).getY();
 
             for (int y = minY; y <= maxY; y++) {
                BlockPos buildPos = LycPos.of(x, y, z);

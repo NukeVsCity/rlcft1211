@@ -99,7 +99,7 @@ import java.util.List;
 
 
 public class EquipmentStationBlock extends BlockBase implements ITileEntityProvider {
-   public static final PropertyDirection FACING = BlockHorizontal.FACING;
+   public static final DirectionProperty FACING = BlockHorizontal.FACING;
 
    public EquipmentStationBlock(ModInfo group) {
       super(Material.IRON);
@@ -109,21 +109,19 @@ public class EquipmentStationBlock extends BlockBase implements ITileEntityProvi
       this.setHardness(5.0F);
       this.hasTileEntity = true;
       CreativeTabs.add(LycanitesMobs.blocksTab, this);
-      this.setDefaultState(this.blockState.getBaseState().setValue(FACING, Direction.NORTH));
+      this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
    }
 
    @Override
-   public BlockStateContainer createBlockState() {
-      return new BlockStateContainer(this, new IProperty[]{FACING});
+   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+      builder.add(FACING);
    }
 
-   @Override
-   public String getLocalizedName() {
+      public String getLocalizedName() {
       return LanguageManager.translate(this.getDescriptionId());
    }
 
-   @Override
-   public void addInformation(ItemStack stack, Level world, List<String> tooltip, TooltipFlag advanced) {
+      public void addInformation(ItemStack stack, Level world, List<String> tooltip, TooltipFlag advanced) {
       tooltip.add(this.getDescription(stack, world));
    }
 
@@ -133,9 +131,9 @@ public class EquipmentStationBlock extends BlockBase implements ITileEntityProvi
    }
 
    @Override
-   public void onBlockAdded(Level world, BlockPos pos, BlockState state) {
+   protected void onPlace(BlockState state, Level world, BlockPos pos, BlockState lycOldState, boolean lycMoved) {
       this.setDefaultFacing(world, pos, state);
-      super.onBlockAdded(world, pos, state);
+      super.onPlace(state, world, pos, lycOldState, lycMoved);
    }
 
    protected void setDefaultFacing(Level world, BlockPos pos, BlockState state) {
@@ -195,8 +193,7 @@ public class EquipmentStationBlock extends BlockBase implements ITileEntityProvi
       return new EquipmentStationTileEntity();
    }
 
-   @Override
-   public BlockState getStateFromMeta(int meta) {
+      public BlockState getStateFromMeta(int meta) {
       Direction enumfacing = Direction.byIndex(meta);
       if (enumfacing.getAxis() == Axis.Y) {
          enumfacing = Direction.NORTH;
@@ -205,8 +202,7 @@ public class EquipmentStationBlock extends BlockBase implements ITileEntityProvi
       return this.defaultBlockState().setValue(FACING, enumfacing);
    }
 
-   @Override
-   public int getMetaFromState(BlockState state) {
+      public int getMetaFromState(BlockState state) {
       return ((Direction)state.getValue(FACING)).getIndex();
    }
 

@@ -115,7 +115,7 @@ public class ItemScepter extends ItemBase {
 
    public boolean onEntitySwing(LivingEntity entity, ItemStack itemStack) {
       if (entity instanceof Player) {
-         entity.setActiveHand(InteractionHand.MAIN_HAND);
+         entity.startUsingItem(InteractionHand.MAIN_HAND);
          return true;
       } else {
          return super.onEntitySwing(entity, itemStack);
@@ -135,7 +135,7 @@ public class ItemScepter extends ItemBase {
 
    @Override
    public InteractionResultHolder<ItemStack> onItemRightClick(Level world, Player player, InteractionHand hand) {
-      player.setActiveHand(hand);
+      player.startUsingItem(hand);
       return new InteractionResultHolder(InteractionResult.SUCCESS, player.getItemInHand(hand));
    }
 

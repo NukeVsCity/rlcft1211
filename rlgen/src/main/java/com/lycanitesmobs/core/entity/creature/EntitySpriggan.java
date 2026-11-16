@@ -158,7 +158,7 @@ public class EntitySpriggan extends TameableCreatureEntity implements Enemy {
                      && farmingBlock != Blocks.SHORT_GRASS
                      && farmingBlock != Blocks.TALL_GRASS) {
                      if (!this.level().isClientSide && this.farmingTick % currentFarmingRate == 0 && farmingBlock.getTickRandomly()) {
-                        this.level().scheduleBlockUpdate(pos, farmingBlock, currentFarmingRate, 1);
+                        this.level().scheduleTick(pos, farmingBlock, currentFarmingRate);
                      }
 
                      if (this.level().isClientSide && this.farmingTick % 40 == 0) {

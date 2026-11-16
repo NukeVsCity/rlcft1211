@@ -307,7 +307,7 @@ public class InventoryCreature implements Container {
             splitStacks[0] = null;
             splitStacks[1] = itemStack;
          } else {
-            splitStacks[1] = itemStack.splitStack(amount);
+            splitStacks[1] = itemStack.split(amount);
             if (itemStack.getCount() == 0) {
                itemStack = null;
             }

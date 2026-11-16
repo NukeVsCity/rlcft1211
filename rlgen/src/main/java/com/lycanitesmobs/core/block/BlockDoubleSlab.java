@@ -104,13 +104,11 @@ public class BlockDoubleSlab extends BlockPillar {
       this.slabName = slabName;
    }
 
-   @Override
-   public String getLocalizedName() {
+      public String getLocalizedName() {
       return LanguageManager.translate(this.getDescriptionId() + ".name");
    }
 
-   @Override
-   public void addInformation(ItemStack stack, Level world, List<String> tooltip, TooltipFlag advanced) {
+      public void addInformation(ItemStack stack, Level world, List<String> tooltip, TooltipFlag advanced) {
       tooltip.add(this.getDescription(stack, world));
    }
 
@@ -119,19 +117,16 @@ public class BlockDoubleSlab extends BlockPillar {
       return "§a" + LanguageManager.translate(this.getDescriptionId() + ".description");
    }
 
-   @Override
-   public Item getItemDropped(BlockState state, RandomSource random, int zero) {
+      public Item getItemDropped(BlockState state, RandomSource random, int zero) {
       Block slabBlock = ObjectManager.getBlock(this.slabName);
       return slabBlock != null ? Item.byBlock(slabBlock) : super.getItemDropped(state, random, zero);
    }
 
-   @Override
-   public int damageDropped(BlockState state) {
+      public int damageDropped(BlockState state) {
       return 0;
    }
 
-   @Override
-   public int quantityDropped(RandomSource random) {
+      public int quantityDropped(RandomSource random) {
       return ObjectManager.getBlock(this.slabName) != null ? 2 : 1;
    }
 }

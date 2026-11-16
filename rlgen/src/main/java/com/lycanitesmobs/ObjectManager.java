@@ -220,20 +220,10 @@ public class ObjectManager {
       });
       event.register(Registries.FLUID, helper -> {
          for (ForgeFluid fluid : fluids.values()) {
-            Block block = blocks.get(fluid.fluidName);
-            BaseFlowingFluid.Properties props = new BaseFlowingFluid.Properties(() -> fluid.fluidType, () -> fluid.sourceFluid, () -> fluid.flowingFluid)
-               .slopeFindDistance(4)
-               .levelDecreasePerBlock(1)
-               .tickRate(Math.max(1, fluid.viscosity / 200));
-            if (block instanceof net.minecraft.world.level.block.LiquidBlock liquidBlock) {
-               props.block(() -> liquidBlock);
-            }
-            Item bucket = buckets.get(block);
+            Item bucket = buckets.get(fluid.block);
             if (bucket != null) {
-               props.bucket(() -> bucket);
+               fluid.bucket = bucket;
             }
-            fluid.sourceFluid = new BaseFlowingFluid.Source(props);
-            fluid.flowingFluid = new BaseFlowingFluid.Flowing(props);
             helper.register(ResourceLocation.fromNamespaceAndPath(LycanitesMobs.modid, fluid.fluidName), fluid.sourceFluid);
             helper.register(ResourceLocation.fromNamespaceAndPath(LycanitesMobs.modid, "flowing_" + fluid.fluidName), fluid.flowingFluid);
          }

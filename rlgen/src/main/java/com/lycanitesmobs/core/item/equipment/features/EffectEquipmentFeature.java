@@ -168,7 +168,7 @@ public class EffectEquipmentFeature extends EquipmentFeature {
          if ("burning".equalsIgnoreCase(this.effectType)) {
             effectTarget.igniteForSeconds(Math.round((float)this.effectDuration / 20.0F));
          } else {
-            Potion potion = (Potion)GameRegistry.findRegistry(Potion.class).getValue(ResourceLocation.parse(this.effectType));
+            Holder<MobEffect> potion = LycEffects.get(ResourceLocation.parse(this.effectType));
             if (potion != null && this.effectStrength > 0) {
                effectTarget.addEffect(new MobEffectInstance(potion, this.effectDuration, this.effectStrength - 1));
             }

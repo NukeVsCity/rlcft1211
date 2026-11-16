@@ -271,7 +271,7 @@ public class MobSpawn {
       }
    }
 
-   public boolean canSpawn(Level world, int blockCount, Biome biome, boolean forceIgnoreDimension) {
+   public boolean canSpawn(Level world, int blockCount, ResourceLocation biome, boolean forceIgnoreDimension) {
       if (!CreatureManager.getInstance().spawnConfig.isAllowedGlobal(world)) {
          return false;
       } else {

@@ -132,7 +132,7 @@ public class WorldGenPoisonLakes extends WorldGenLakes implements IWorldGenBase 
    public void onWorldGen(RandomSource random, int chunkX, int chunkZ, Level world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
       if (this.isValidDimension(world)) {
          if (this.generateSurfaceChance > 0.0) {
-            Biome biome = world.getBiome(LycPos.of(chunkX * 16, 0, chunkZ * 16).value());
+            ResourceLocation biome = LycBiomes.at(world, LycPos.of(chunkX * 16, 0, chunkZ * 16));
             Set<Type> biomeTypesSet = BiomeDictionary.getTypes(biome);
             Type[] biomeTypes = biomeTypesSet.toArray(new Type[biomeTypesSet.size()]);
             boolean typeValid = false;
@@ -159,7 +159,7 @@ public class WorldGenPoisonLakes extends WorldGenLakes implements IWorldGenBase 
          if (this.generateUndergroundChance > 0.0 && (this.generateUndergroundChance >= 1.0 || random.nextDouble() <= this.generateUndergroundChance)) {
             int x = chunkX * 16 + 16;
             int z = chunkZ * 16 + 16;
-            int top = Math.max(1, world.getTopSolidOrLiquidBlock(LycPos.of(x, 0, z)).getY() - 10);
+            int top = Math.max(1, world.getHeightmapPos(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, LycPos.of(x, 0, z)).getY() - 10);
             if (top > 0) {
                int y = random.nextInt(top);
                this.generate(world, random, LycPos.of(x, y, z));

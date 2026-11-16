@@ -176,7 +176,7 @@ public class ElementInfo {
          duration = Math.round((float)duration * (float)this.buffDurationMultiplier);
 
          for (String buff : this.buffs) {
-            Potion potion = (Potion)GameRegistry.findRegistry(Potion.class).getValue(ResourceLocation.parse(buff));
+            Holder<MobEffect> potion = LycEffects.get(ResourceLocation.parse(buff));
             if (potion != null) {
                targetEntity.addEffect(new MobEffectInstance(potion, duration, amplifier));
             }
@@ -192,7 +192,7 @@ public class ElementInfo {
             if ("burning".equalsIgnoreCase(debuff)) {
                targetEntity.igniteForSeconds(duration / 20);
             } else {
-               Potion potion = (Potion)GameRegistry.findRegistry(Potion.class).getValue(ResourceLocation.parse(debuff));
+               Holder<MobEffect> potion = LycEffects.get(ResourceLocation.parse(debuff));
                if (potion != null) {
                   targetEntity.addEffect(new MobEffectInstance(potion, duration, amplifier));
                }

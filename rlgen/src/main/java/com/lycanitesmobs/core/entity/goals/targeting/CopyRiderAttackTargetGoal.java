@@ -111,14 +111,14 @@ public class CopyRiderAttackTargetGoal extends TargetingGoal {
          return false;
       } else {
          this.target = this.host.getRider().getLastHurtMob();
-         return this.target == null ? false : this.lastAttackTime != this.host.getRider().getLastAttackedEntityTime();
+         return this.target == null ? false : this.lastAttackTime != this.host.getRider().getLastHurtMobTimestamp();
       }
    }
 
    @Override
    public void startExecuting() {
       if (this.isTargetValid(this.target)) {
-         this.lastAttackTime = this.host.getRider().getLastAttackedEntityTime();
+         this.lastAttackTime = this.host.getRider().getLastHurtMobTimestamp();
          super.startExecuting();
       }
    }

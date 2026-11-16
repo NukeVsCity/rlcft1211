@@ -118,15 +118,15 @@ public class WorldMobEventEffect extends MobEventEffect {
    public void onUpdate(Level world, Player player, BlockPos pos, int level, int ticks, int variant) {
       if (ticks == 0) {
          if ("start".equalsIgnoreCase(this.rain)) {
-            world.getWorldInfo().setRaining(true);
+            world.getLevelData().setRaining(true);
          } else if ("stop".equalsIgnoreCase(this.rain)) {
-            world.getWorldInfo().setRaining(false);
+            world.getLevelData().setRaining(false);
          }
 
          if ("start".equalsIgnoreCase(this.thunder)) {
-            world.getWorldInfo().setThundering(true);
+            world.getLevelData().setThundering(true);
          } else if ("stop".equalsIgnoreCase(this.thunder)) {
-            world.getWorldInfo().setThundering(false);
+            world.getLevelData().setThundering(false);
          }
 
          if (this.dayTime >= 0) {

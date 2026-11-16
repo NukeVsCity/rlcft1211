@@ -107,7 +107,7 @@ public class DispenserBehaviorMobEggCustom extends BehaviorDefaultDispenseItem {
             entity.setCustomName(Component.literal(itemStack.getHoverName()));
          }
 
-         itemStack.splitStack(1);
+         itemStack.split(1);
          return itemStack;
       }
    }

@@ -96,20 +96,18 @@ import java.util.List;
 
 
 public class BlockPillar extends BlockBase {
-   public static final PropertyEnum<Axis> AXIS = PropertyEnum.create("axis", Axis.class);
+   public static final EnumProperty<Axis> AXIS = EnumProperty.create("axis", Axis.class);
 
    public BlockPillar(Material material, ModInfo group, String name) {
       super(material, group, name);
-      this.setDefaultState(this.blockState.getBaseState().setValue(AXIS, Axis.Y));
+      this.registerDefaultState(this.stateDefinition.any().setValue(AXIS, Axis.Y));
    }
 
-   @Override
-   public String getLocalizedName() {
+      public String getLocalizedName() {
       return LanguageManager.translate(this.getDescriptionId() + ".name");
    }
 
-   @Override
-   public void addInformation(ItemStack stack, Level world, List<String> tooltip, TooltipFlag advanced) {
+      public void addInformation(ItemStack stack, Level world, List<String> tooltip, TooltipFlag advanced) {
       tooltip.add(this.getDescription(stack, world));
    }
 
@@ -119,16 +117,15 @@ public class BlockPillar extends BlockBase {
    }
 
    @Override
-   public BlockStateContainer createBlockState() {
-      return new BlockStateContainer(this, new IProperty[]{AXIS});
+   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+      builder.add(AXIS);
    }
 
    protected ItemStack getSilkTouchDrop(BlockState state) {
       return new ItemStack(Item.byBlock(this));
    }
 
-   @Override
-   public BlockState getStateFromMeta(int meta) {
+      public BlockState getStateFromMeta(int meta) {
       Axis enumfacing$axis = Axis.Y;
       int i = meta & 12;
       if (i == 4) {
@@ -140,8 +137,7 @@ public class BlockPillar extends BlockBase {
       return this.defaultBlockState().setValue(AXIS, enumfacing$axis);
    }
 
-   @Override
-   public int getMetaFromState(BlockState state) {
+      public int getMetaFromState(BlockState state) {
       int i = 0;
       Axis enumfacing$axis = (Axis)state.getValue(AXIS);
       if (enumfacing$axis == Axis.X) {
@@ -162,7 +158,7 @@ public class BlockPillar extends BlockBase {
       UnmodifiableIterator var5 = state.getProperties().keySet().iterator();
 
       while (var5.hasNext()) {
-         IProperty<?> prop = (IProperty<?>)var5.next();
+         Property<?> prop = (Property<?>)var5.next();
          if (prop.getName().equals("axis")) {
             world.setBlock(pos, state.cycleProperty(prop), 3);
             return true;

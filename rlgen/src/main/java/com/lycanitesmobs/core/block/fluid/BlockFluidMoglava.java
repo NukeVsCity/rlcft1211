@@ -105,13 +105,11 @@ public class BlockFluidMoglava extends BlockFluidBase {
       this.destroyItems = false;
    }
 
-   @Override
-   public String getLocalizedName() {
+      public String getLocalizedName() {
       return LanguageManager.translate(this.getDescriptionId() + ".name");
    }
 
-   @Override
-   public void addInformation(ItemStack stack, Level world, List<String> tooltip, TooltipFlag advanced) {
+      public void addInformation(ItemStack stack, Level world, List<String> tooltip, TooltipFlag advanced) {
       tooltip.add(this.getDescription(stack, world));
    }
 
@@ -136,11 +134,11 @@ public class BlockFluidMoglava extends BlockFluidBase {
          if (blockState.getBlock().getMetaFromState(blockState) != 0) {
             byte otherSourceBlocks = 0;
             ArrayList<BlockPos> adjBlockPositions = new ArrayList<>();
-            adjBlockPositions.offset(pos.add(-1, 0, 0));
-            adjBlockPositions.offset(pos.add(1, 0, 0));
-            adjBlockPositions.offset(pos.add(0, 1, 0));
-            adjBlockPositions.offset(pos.add(0, 0, -1));
-            adjBlockPositions.offset(pos.add(0, 0, 1));
+            adjBlockPositions.add(pos.offset(-1, 0, 0));
+            adjBlockPositions.add(pos.offset(1, 0, 0));
+            adjBlockPositions.add(pos.offset(0, 1, 0));
+            adjBlockPositions.add(pos.offset(0, 0, -1));
+            adjBlockPositions.add(pos.offset(0, 0, 1));
 
             for (BlockPos adjBlockPos : adjBlockPositions) {
                BlockState adjBlockState = world.getBlockState(adjBlockPos);
@@ -169,15 +167,15 @@ public class BlockFluidMoglava extends BlockFluidBase {
    }
 
    @Override
-   public void onEntityCollision(Level world, BlockPos pos, BlockState state, Entity entity) {
+   protected void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
       if (entity instanceof ItemEntity) {
          entity.hurt(LycDamage.src(DamageTypes.LAVA), 10.0F);
       }
 
-      super.onEntityCollision(world, pos, state, entity);
+      super.entityInside(state, world, pos, entity);
    }
 
-   public void randomDisplayTick(BlockState blockState, Level world, BlockPos pos, RandomSource random) {
+   public void animateTick(BlockState blockState, Level world, BlockPos pos, RandomSource random) {
       if (random.nextInt(100) == 0) {
          float f = (float)pos.getX() + random.nextFloat();
          float f1 = (float)pos.getY() + random.nextFloat() * 0.5F;
@@ -185,6 +183,6 @@ public class BlockFluidMoglava extends BlockFluidBase {
          world.addParticle(ParticleTypes.LAVA, (double)f, (double)f1, (double)f2, 0.0, 0.0, 0.0);
       }
 
-      super.randomDisplayTick(blockState, world, pos, random);
+      super.animateTick(blockState, world, pos, random);
    }
 }

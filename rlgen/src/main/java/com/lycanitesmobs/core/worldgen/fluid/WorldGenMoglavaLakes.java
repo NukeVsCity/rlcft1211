@@ -140,7 +140,7 @@ public class WorldGenMoglavaLakes extends WorldGenLakes implements IWorldGenBase
          if (this.generateUndergroundChance > 0.0 && (this.generateUndergroundChance >= 1.0 || random.nextDouble() <= this.generateUndergroundChance)) {
             int x = chunkX * 16 + 16;
             int z = chunkZ * 16 + 16;
-            int top = Math.max(1, world.getTopSolidOrLiquidBlock(LycPos.of(x, 0, z)).getY() - 10);
+            int top = Math.max(1, world.getHeightmapPos(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, LycPos.of(x, 0, z)).getY() - 10);
             if (top > 0) {
                int y = random.nextInt(top);
                this.generate(world, random, LycPos.of(x, y, z));

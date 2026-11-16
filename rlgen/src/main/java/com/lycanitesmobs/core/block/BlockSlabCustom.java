@@ -95,14 +95,13 @@ import java.util.Random;
 
 
 public class BlockSlabCustom extends BlockSlab {
-   public static final PropertyEnum<BlockSlabCustom.Variant> VARIANT = PropertyEnum.create("variant", BlockSlabCustom.Variant.class);
+   public static final EnumProperty<BlockSlabCustom.Variant> VARIANT = EnumProperty.create("variant", BlockSlabCustom.Variant.class);
    protected Block doubleBlock;
 
    public BlockSlabCustom(BlockBase block, Block doubleBlock) {
       super(Material.of(block.defaultBlockState()));
       this.doubleBlock = doubleBlock;
-      this.setDefaultState(
-         this.blockState.getBaseState().setValue(HALF, EnumBlockHalf.BOTTOM).setValue(VARIANT, BlockSlabCustom.Variant.DEFAULT)
+      this.registerDefaultState(this.stateDefinition.any().setValue(HALF, EnumBlockHalf.BOTTOM).setValue(VARIANT, BlockSlabCustom.Variant.DEFAULT)
       );
       String slabName = "_slab";
       LycReg.setName(this, ResourceLocation.fromNamespaceAndPath(block.group.modid, block.blockName + slabName));
@@ -135,7 +134,7 @@ public class BlockSlabCustom extends BlockSlab {
    }
 
    protected BlockStateContainer createBlockState() {
-      return new BlockStateContainer(this, new IProperty[]{HALF, VARIANT});
+      return new BlockStateContainer(this, new Property[]{HALF, VARIANT});
    }
 
    public BlockState getStateFromMeta(int meta) {
@@ -146,7 +145,7 @@ public class BlockSlabCustom extends BlockSlab {
       return state.getValue(HALF) == EnumBlockHalf.BOTTOM ? 0 : 1;
    }
 
-   public IProperty<?> getVariantProperty() {
+   public Property<?> getVariantProperty() {
       return VARIANT;
    }
 

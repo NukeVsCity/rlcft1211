@@ -9,3 +9,7 @@ com/lycanitesmobs/core/entity/BaseCreatureEntity.java
 com/lycanitesmobs/core/entity/AgeableCreatureEntity.java
 com/lycanitesmobs/core/entity/TameableCreatureEntity.java
 com/lycanitesmobs/core/entity/RideableCreatureEntity.java
+com/lycanitesmobs/core/block/BlockBase.java
+com/lycanitesmobs/ObjectManager.java
+com/lycanitesmobs/PotionBase.java
+com/lycanitesmobs/core/block/BlockFluidBase.java

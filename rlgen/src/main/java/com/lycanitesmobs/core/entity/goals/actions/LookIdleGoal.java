@@ -139,7 +139,7 @@ public class LookIdleGoal extends EntityAIBase {
             this.host.getY() + (double)this.host.getEyeHeight(),
             this.host.getZ() + this.lookZ,
             10.0F,
-            (float)this.host.getVerticalFaceSpeed()
+            (float)this.host.getMaxHeadXRot()
          );
    }
 }

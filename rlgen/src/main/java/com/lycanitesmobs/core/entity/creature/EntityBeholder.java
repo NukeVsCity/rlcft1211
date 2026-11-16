@@ -145,7 +145,7 @@ public class EntityBeholder extends RideableCreatureEntity {
          && ("mob".equals(damageSrc.getMsgId()) || "player".equals(damageSrc.getMsgId()))
          && damageEntity instanceof LivingEntity) {
          LivingEntity targetLiving = (LivingEntity)damageEntity;
-         List<Potion> goodEffects = new ArrayList<>();
+         List<Holder<MobEffect>> goodEffects = new ArrayList<>();
 
          for (MobEffectInstance effect : targetLiving.getActiveEffects()) {
             if (ObjectLists.inEffectList("buffs", effect.getEffect())) {
@@ -256,6 +256,6 @@ public class EntityBeholder extends RideableCreatureEntity {
    }
 
    public int getBrightnessForRender() {
-      return this.isAttackOnCooldown() ? 15728880 : super.getBrightnessForRender();
+      return this.isAttackOnCooldown() ? 15728880 : super.getLightLevelDependentMagicValue();
    }
 }

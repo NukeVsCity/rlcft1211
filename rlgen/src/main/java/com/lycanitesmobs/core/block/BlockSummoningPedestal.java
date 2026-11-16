@@ -98,7 +98,7 @@ import com.lycanitesmobs.core.tileentity.TileEntitySummoningPedestal;
 
 
 public class BlockSummoningPedestal extends BlockBase implements ITileEntityProvider {
-   public static final PropertyEnum PROPERTY_OWNER = PropertyEnum.create("owner", BlockSummoningPedestal.EnumSummoningPedestal.class);
+   public static final EnumProperty PROPERTY_OWNER = EnumProperty.create("owner", BlockSummoningPedestal.EnumSummoningPedestal.class);
 
    public BlockSummoningPedestal(ModInfo group) {
       super(Material.IRON);
@@ -115,13 +115,13 @@ public class BlockSummoningPedestal extends BlockBase implements ITileEntityProv
    }
 
    @Override
-   public BlockStateContainer createBlockState() {
-      return new BlockStateContainer(this, new IProperty[]{PROPERTY_OWNER});
+   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+      builder.add(PROPERTY_OWNER);
    }
 
    @Override
-   public void onBlockAdded(Level world, BlockPos pos, BlockState state) {
-      super.onBlockAdded(world, pos, state);
+   protected void onPlace(BlockState state, Level world, BlockPos pos, BlockState lycOldState, boolean lycMoved) {
+      super.onPlace(state, world, pos, lycOldState, lycMoved);
    }
 
    public void onBlockPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {

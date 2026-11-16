@@ -45,7 +45,7 @@ TYPES = [
  ('EntityHusk', 'Husk'), ('EntityCreeper', 'Creeper'), ('EntityGhast', 'Ghast'), ('EntityBlaze', 'Blaze'), ('EntityMagmaCube', 'MagmaCube'),
  ('EntityEnderman', 'EnderMan'), ('EntityWitch', 'Witch'), ('EntitySilverfish', 'Silverfish'), ('EntitySnowman', 'SnowGolem'),
  ('EntityWither', 'WitherBoss'), ('EntityDragon', 'EnderDragon'), ('EntityMinecart', 'AbstractMinecart'), ('EntityBoat', 'Boat'),
- ('EntityFireball', 'AbstractHurtingProjectile'), ('Random', 'RandomSource'),
+ ('EntityFireball', 'AbstractHurtingProjectile'), ('Biome', 'ResourceLocation'), ('Potion', 'Holder<MobEffect>'), ('Random', 'RandomSource'),
  ('WorldServer', 'ServerLevel'), ('World', 'Level'), ('IBlockAccess', 'BlockGetter'), ('IBlockState', 'BlockState'), ('Vec3d', 'Vec3'),
  ('AxisAlignedBB', 'AABB'), ('NBTTagCompound', 'CompoundTag'), ('NBTTagList', 'ListTag'), ('NBTTagString', 'StringTag'), ('NBTBase', 'Tag'),
  ('EnumFacing', 'Direction'), ('EnumHand', 'InteractionHand'), ('EnumActionResult', 'InteractionResult'), ('ActionResult', 'InteractionResultHolder'),
@@ -235,7 +235,7 @@ R = [
  (r'\bMth\.clamp\(', 'Mth.clamp('), (r'\bMth\.abs\(', 'Mth.abs('), (r'\bMth\.atan2\(', 'Mth.atan2('),
  # block pos / vec
  (r'\.getX\(\)\.getX\(\)', '.getX()'),
- (r'\.add\((\-?[\w.()]+(?:\s*[+\-*/]\s*[\w.()]+)*), (\-?[\w.()]+(?:\s*[+\-*/]\s*[\w.()]+)*), (\-?[\w.()]+(?:\s*[+\-*/]\s*[\w.()]+)*)\)', r'.offset(\1, \2, \3)'),
+
  (r'\.getXOffset\(\)', '.getStepX()'), (r'\.getYOffset\(\)', '.getStepY()'), (r'\.getZOffset\(\)', '.getStepZ()'),
  (r'\.rotateYCCW\(\)', '.getCounterClockWise()'), (r'\.rotateY\(\)', '.getClockWise()'),
  (r'\.up\(\)', '.above()'), (r'\.down\(\)', '.below()'), (r'\.up\(', '.above('), (r'\.down\(', '.below('),
@@ -271,7 +271,7 @@ R = [
  (r'\bInteractionHand\.MAIN_HAND\b', 'InteractionHand.MAIN_HAND'), (r'\bEquipmentSlot\.MAINHAND\b', 'EquipmentSlot.MAINHAND'),
  (r'\bLevel\.MAX_ENTITY_RADIUS\b', '2.0'),
  (r'((?:this\.)?\w+(?:\(\))?(?:\.\w+(?:\(\))?)*)\.provider\.getDimension\(\)', r'LycDim.id(\1)'),
- (r'\.getBiome\(([^;]*?)\)(?=[;.)])', r'.getBiome(\1).value()'),
+
  (r'\bthis\.width\b(?!\s*=[^=])', 'this.getBbWidth()'), (r'\bthis\.height\b(?!\s*=[^=])', 'this.getBbHeight()'),
  (r'\b(entity|target|host|this\.host|player|owner|attackTarget|entityLiving|livingEntity|rider|passenger|minion|creature|partner|getTarget\(\)|this\.getTarget\(\)|this\.host\.getTarget\(\)|this\.target|this\.entity|targetEntity|hitEntity|entityHit|projectile|parent|this\.parent|thrower|getControllingPassenger\(\)|this\.getControllingPassenger\(\)|getVehicle\(\)|this\.getVehicle\(\))\.width\b', r'\1.getBbWidth()'),
  (r'\b(entity|target|host|this\.host|player|owner|attackTarget|entityLiving|livingEntity|rider|passenger|minion|creature|partner|getTarget\(\)|this\.getTarget\(\)|this\.host\.getTarget\(\)|this\.target|this\.entity|targetEntity|hitEntity|entityHit|projectile|parent|this\.parent|thrower|getControllingPassenger\(\)|this\.getControllingPassenger\(\)|getVehicle\(\)|this\.getVehicle\(\))\.height\b', r'\1.getBbHeight()'),
@@ -324,26 +324,29 @@ def split_args(a):
     return out
 
 def recv_rewrite(s, method, template):
-    """Rewrites RECV.method(ARGS) to template.format(r=RECV, a=ARGS)."""
-    out = []
-    pos = 0
+    """Rewrites RECV.method(ARGS) to template.format(r=RECV, a=ARGS) (chains and nested calls included)."""
+    mark = '.\x00' + method + '('
     pat = re.compile(r'\.' + method + r'\(')
+    pos = 0
     while True:
         m = pat.search(s, pos)
         if not m:
-            out.append(s[pos:]); break
+            break
         start = find_recv_start(s, m.start())
-        # args
         depth = 1; k = m.end()
         while k < len(s) and depth:
             if s[k] == '(': depth += 1
             elif s[k] == ')': depth -= 1
             k += 1
-        recv = s[start:m.start()]; args = s[m.end():k - 1]
+        recv = s[start:m.start()]
         if not recv:
-            out.append(s[pos:m.end()]); pos = m.end(); continue
-        out.append(s[pos:start]); out.append(template(recv, args) if callable(template) else template.format(r=recv, a=args)); pos = k
-    return ''.join(out)
+            pos = m.end(); continue
+        args = recv_rewrite(s[m.end():k - 1], method, template)
+        rep = template(recv, args) if callable(template) else template.format(r=recv, a=args)
+        rep = rep.replace('.' + method + '(', mark)
+        s = s[:start] + rep + s[k:]
+        pos = start
+    return s.replace(mark, '.' + method + '(')
 
 RECV = [
  ('getMaterial', 'Material.of({r})'),
@@ -356,6 +359,8 @@ RECV = [
  ('getCreativeTab', 'LycReg.tab({r})'),
  ('rayTraceBlocks', 'LycWorld.rayTraceBlocks({r}, {a})'),
  ('setBlockToAir', '{r}.removeBlock({a}, false)'),
+ ('getBiome', 'LycBiomes.at({r}, {a})'),
+ ('add', lambda r, a: '%s.%s(%s)' % (r, 'offset' if len(split_args(a)) == 3 and not r.endswith('Vector') else 'add', a)),
  ('setCustomNameTag', lambda r, a: '%s.setCustomName(%s)' % (r, a if ('getHoverName' in a or 'Component' in a) else 'Component.literal(' + a + ')')),
  ('getPlayers', lambda r, a: 'LycWorld.getPlayers(%s, %s)' % (r, a) if len(split_args(a)) == 2 else '%s.getPlayers(%s)' % (r, a)),
  ('isShield', lambda r, a: split_args(a)[0] + '.canPerformAction(net.neoforged.neoforge.common.ItemAbilities.SHIELD_BLOCK)'),
@@ -371,6 +376,9 @@ RECV = [
 
 
 PRE = [
+ (r'\(Potion\)\s*GameRegistry\.findRegistry\(Potion\.class\)\.getValue\(', 'LycEffects.get('), (r'GameRegistry\.findRegistry\(Potion\.class\)\.getValue\(', 'LycEffects.get('),
+ (r'\bPotion\.getIdFromPotion\(', 'LycEffects.id('), (r'\bPotion\.getPotionById\(', 'LycEffects.byId('), (r'\bPotion\.REGISTRY\.getObject\(', 'LycEffects.get('),
+ (r'\bPotion\.getPotionFromResourceLocation\(', 'LycEffects.get('),
  (r'new Random\(', 'RandomSource.create('),
 
 
@@ -413,6 +421,38 @@ PRE = [
 ]
 
 POST = [
+
+ (r'this\.setStepHeightCompat\(([^;]+)\);', r'this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(\1);'),
+ (r'GameRegistry\.findRegistry\(ResourceLocation\.class\)\.getValue\(ResourceLocation\.parse\(([^;]*?)\)\)', r'LycBiomes.parse(\1)'),
+ (r'\(ResourceLocation\)LycBiomes\.parse', 'LycBiomes.parse'),
+ (r'\.getRevengeTimer\(\)', '.getLastHurtByMobTimestamp()'), (r'\.getLastAttackedEntityTime\(\)', '.getLastHurtMobTimestamp()'),
+ (r'\.getVerticalFaceSpeed\(\)', '.getMaxHeadXRot()'), (r'\.getHorizontalFaceSpeed\(\)', '.getMaxHeadYRot()'),
+ (r'\.getTopSolidOrLiquidBlock\(([^;]*?)\)', r'.getHeightmapPos(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, \1)'),
+ (r'\.getBrightnessForRender\(\)', '.getLightLevelDependentMagicValue()'), (r'\.getWorldInfo\(\)', '.getLevelData()'),
+ (r'\.setActiveHand\(', '.startUsingItem('), (r'\.splitStack\(', '.split('),
+ (r'\.isFlying\b(?!\()', '.flying'), (r'\bthis\.entityCollisionReduction\b', '0.0F'),
+
+ (r'public BlockStateContainer createBlockState\(\) \{\s*return new BlockStateContainer\(this, new IProperty\[\]\s*\{([^}]*)\}\);\s*\}',
+  r'protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {\n      builder.add(\1);\n   }'),
+ (r'this\.setDefaultState\(\s*this\.blockState\s*\.getBaseState\(\)', 'this.registerDefaultState(this.stateDefinition.any()'),
+ (r'\bPropertyBool\.create\(', 'BooleanProperty.create('), (r'\bPropertyInteger\.create\(', 'IntegerProperty.create('),
+ (r'\bPropertyEnum\.create\(', 'EnumProperty.create('), (r'\bPropertyDirection\.create\(', 'DirectionProperty.create('),
+ (r'\bPropertyBool\b', 'BooleanProperty'), (r'\bPropertyInteger\b', 'IntegerProperty'), (r'\bPropertyEnum\b', 'EnumProperty'), (r'\bPropertyDirection\b', 'DirectionProperty'),
+ (r'\bIProperty\b', 'Property'),
+ (r'public void updateTick\(Level (\w+), BlockPos (\w+), BlockState (\w+), RandomSource (\w+)\)', r'public void tick(BlockState \3, ServerLevel \1, BlockPos \2, RandomSource \4)'),
+ (r'super\.updateTick\((\w+), (\w+), (\w+), (\w+)\)', r'super.tick(\3, (ServerLevel)\1, \2, \4)'),
+ (r'public void onEntityCollision\(Level (\w+), BlockPos (\w+), BlockState (\w+), Entity (\w+)\)', r'protected void entityInside(BlockState \3, Level \1, BlockPos \2, Entity \4)'),
+ (r'super\.onEntityCollision\((\w+), (\w+), (\w+), (\w+)\)', r'super.entityInside(\3, \1, \2, \4)'),
+ (r'public void randomDisplayTick\(BlockState (\w+), Level (\w+), BlockPos (\w+), RandomSource (\w+)\)', r'public void animateTick(BlockState \1, Level \2, BlockPos \3, RandomSource \4)'),
+ (r'super\.randomDisplayTick\(', 'super.animateTick('),
+ (r'public void onBlockAdded\(Level (\w+), BlockPos (\w+), BlockState (\w+)\)', r'protected void onPlace(BlockState \3, Level \1, BlockPos \2, BlockState lycOldState, boolean lycMoved)'),
+ (r'super\.onBlockAdded\((\w+), (\w+), (\w+)\)', r'super.onPlace(\3, \1, \2, lycOldState, lycMoved)'),
+ (r'public void neighborChanged\(BlockState (\w+), Level (\w+), BlockPos (\w+), Block (\w+), BlockPos (\w+)\)', r'protected void neighborChanged(BlockState \1, Level \2, BlockPos \3, Block \4, BlockPos \5, boolean lycMoving)'),
+ (r'super\.neighborChanged\((\w+), (\w+), (\w+), (\w+), (\w+)\)', r'super.neighborChanged(\1, \2, \3, \4, \5, lycMoving)'),
+ (r'\.scheduleUpdate\((\w+), (\w+), ([^;]+)\);', r'.scheduleTick(\1, \2, \3);'), (r'\.scheduleBlockUpdate\((\w+), (\w+), ([^,;]+), \d+\);', r'.scheduleTick(\1, \2, \3);'),
+ (r'\.isAreaLoaded\((\w+), (\d+)\)', r'.isAreaLoaded(\1, \2)'), (r'\.getGameRules\(\)\.getBoolean\("doFireTick"\)', '.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)'),
+ (r'\bthis\.blockState\.getBaseState\(\)', 'this.stateDefinition.any()'),
+ (r'@Override\s*\n(\s*)public (\w+) (getStateFromMeta|getMetaFromState|getLocalizedName|getActualState|tickRate|getItemDropped|damageDropped|quantityDropped|getTickRandomly|isOpaqueCube|isFullCube|getBlockLayer|getRenderType|canPlaceBlockAt|isPassable|getCollisionBoundingBox|isCollidable|isSideSolid|getLightOpacity|isReplaceable|getBoundingBox|addInformation|getSubBlocks|getUnlocalizedName|getTranslationKey)\(', r'\1public \2 \3('),
 
  (r'\bEntityDataSerializers\.OPTIONAL_UNIQUE_ID\b', 'EntityDataSerializers.OPTIONAL_UUID'),
  (r'\.getPortalCooldown\(\)', '.getDimensionChangingDelay()'), (r'\bthis\.timeUntilPortal\s*=\s*([^;]+);', r'this.setPortalCooldown(\1);'),
@@ -509,6 +549,8 @@ def port(src, path):
             name = 'com.lycanitesmobs.core.LanguageManager'
         elif name.startswith('com.lycanitesmobs.client.') or name.startswith('org.lwjgl'):
             continue
+        if name == 'net.minecraftforge.common.BiomeDictionary.Type':
+            keep.append('import com.lycanitesmobs.compat.BiomeDictionary.Type;')
         keep.append('import %s%s%s;' % (st, name, star))
     body = re.sub(r'^import [^\n]*\n', '', src, flags=re.M)
     body = re.sub(r'^package [^\n]*\n', '', body, count=1)

@@ -112,14 +112,13 @@ public class BlockHellfire extends BlockFireBase {
       this.setLightLevel(0.8F);
    }
 
-   @Override
-   public Item getItemDropped(BlockState state, RandomSource random, int zero) {
+      public Item getItemDropped(BlockState state, RandomSource random, int zero) {
       return null;
    }
 
    @Override
-   public void onEntityCollision(Level world, BlockPos pos, BlockState state, Entity entity) {
-      super.onEntityCollision(world, pos, state, entity);
+   protected void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
+      super.entityInside(state, world, pos, entity);
       if (entity instanceof LivingEntity) {
          PotionBase decay = ObjectManager.getEffect("decay");
          if (decay != null) {
@@ -146,8 +145,8 @@ public class BlockHellfire extends BlockFireBase {
       return block == Blocks.OBSIDIAN;
    }
 
-   public void randomDisplayTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
-      super.randomDisplayTick(state, world, pos, random);
+   public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
+      super.animateTick(state, world, pos, random);
       int x = pos.getX();
       int y = pos.getY();
       int z = pos.getZ();

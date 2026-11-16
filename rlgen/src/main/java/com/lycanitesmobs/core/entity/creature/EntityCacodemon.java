@@ -268,6 +268,6 @@ public class EntityCacodemon extends RideableCreatureEntity {
    }
 
    public int getBrightnessForRender() {
-      return this.isAttackOnCooldown() ? 15728880 : super.getBrightnessForRender();
+      return this.isAttackOnCooldown() ? 15728880 : super.getLightLevelDependentMagicValue();
    }
 }

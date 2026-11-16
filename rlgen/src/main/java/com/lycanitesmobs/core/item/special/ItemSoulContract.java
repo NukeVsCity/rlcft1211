@@ -125,8 +125,7 @@ public class ItemSoulContract extends ItemBase {
       return uuid;
    }
 
-   @Override
-   public void addInformation(ItemStack itemStack, Level world, List<String> tooltip, TooltipFlag tooltipFlag) {
+      public void addInformation(ItemStack itemStack, Level world, List<String> tooltip, TooltipFlag tooltipFlag) {
       super.addInformation(itemStack, world, tooltip, tooltipFlag);
       UUID ownerUUID = this.getOwnerUUID(itemStack);
       UUID petEntryUUID = this.getPetEntryUUID(itemStack);

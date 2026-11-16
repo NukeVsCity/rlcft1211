@@ -119,7 +119,7 @@ public class GameEventListener {
    }
 
    @SubscribeEvent
-   public void registerPotions(Register<Potion> event) {
+   public void registerPotions(Register<Holder<MobEffect>> event) {
       ObjectManager.registerPotions(event);
    }
 

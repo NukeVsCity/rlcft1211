@@ -104,13 +104,11 @@ public class BlockFluidAcid extends BlockFluidBase {
       this.setLightLevel(0.25F);
    }
 
-   @Override
-   public String getLocalizedName() {
+      public String getLocalizedName() {
       return LanguageManager.translate(this.getDescriptionId() + ".name");
    }
 
-   @Override
-   public void addInformation(ItemStack stack, Level world, List<String> tooltip, TooltipFlag advanced) {
+      public void addInformation(ItemStack stack, Level world, List<String> tooltip, TooltipFlag advanced) {
       tooltip.add(this.getDescription(stack, world));
    }
 
@@ -145,22 +143,22 @@ public class BlockFluidAcid extends BlockFluidBase {
    }
 
    @Override
-   public void onEntityCollision(Level world, BlockPos pos, BlockState state, Entity entity) {
+   protected void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
       if (entity != null) {
          if (!(entity instanceof ItemEntity) && !(entity instanceof ExperienceOrb)) {
             entity.hurt(ObjectManager.getDamageSource("acid"), 1.0F);
          }
 
-         Potion effect = ObjectManager.getEffect("penetration");
+         Holder<MobEffect> effect = ObjectManager.getEffect("penetration");
          if (effect != null && entity instanceof LivingEntity) {
             ((LivingEntity)entity).addEffect(new MobEffectInstance(effect, 200, 0));
          }
       }
 
-      super.onEntityCollision(world, pos, state, entity);
+      super.entityInside(state, world, pos, entity);
    }
 
-   public void randomDisplayTick(BlockState blockState, Level world, BlockPos pos, RandomSource random) {
+   public void animateTick(BlockState blockState, Level world, BlockPos pos, RandomSource random) {
       if (random.nextInt(100) == 0) {
          float f = (float)pos.getX() + random.nextFloat();
          float f1 = (float)pos.getY() + random.nextFloat() * 0.5F;
@@ -168,6 +166,6 @@ public class BlockFluidAcid extends BlockFluidBase {
          world.addParticle(ParticleTypes.CLOUD, (double)f, (double)f1, (double)f2, 0.0, 0.0, 0.0);
       }
 
-      super.randomDisplayTick(blockState, world, pos, random);
+      super.animateTick(blockState, world, pos, random);
    }
 }

@@ -138,7 +138,7 @@ public class BegGoal extends EntityAIBase {
             this.player.getY() + (double)this.player.getEyeHeight(),
             this.player.getZ(),
             10.0F,
-            (float)this.host.getVerticalFaceSpeed()
+            (float)this.host.getMaxHeadXRot()
          );
       this.begTime--;
    }

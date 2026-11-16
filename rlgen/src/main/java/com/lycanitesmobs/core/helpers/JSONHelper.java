@@ -238,8 +238,8 @@ public class JSONHelper {
       return materials;
    }
 
-   public static List<Biome> getBiomesFromTags(List<String> biomeTags) {
-      List<Biome> biomeList = new ArrayList<>();
+   public static List<ResourceLocation> getBiomesFromTags(List<String> biomeTags) {
+      List<ResourceLocation> biomeList = new ArrayList<>();
 
       for (String biomeEntry : biomeTags) {
          boolean additive = true;
@@ -251,10 +251,10 @@ public class JSONHelper {
             biomeEntry = biomeEntry.substring(1);
          }
 
-         List<Biome> selectedBiomes = new ArrayList<>();
+         List<ResourceLocation> selectedBiomes = new ArrayList<>();
          if ("ALL".equalsIgnoreCase(biomeEntry)) {
             for (Type biomeType : Type.getAll()) {
-               Set<Biome> selectedBiomesSet = BiomeDictionary.getBiomes(biomeType);
+               Set<ResourceLocation> selectedBiomesSet = BiomeDictionary.getBiomes(biomeType);
                selectedBiomes.addAll(selectedBiomesSet);
             }
          } else if (!"NONE".equalsIgnoreCase(biomeEntry)) {
@@ -267,12 +267,12 @@ public class JSONHelper {
             }
 
             if (biomeType != null) {
-               Set<Biome> selectedBiomesSet = BiomeDictionary.getBiomes(biomeType);
+               Set<ResourceLocation> selectedBiomesSet = BiomeDictionary.getBiomes(biomeType);
                selectedBiomes.addAll(selectedBiomesSet);
             }
          }
 
-         for (Biome biome : selectedBiomes) {
+         for (ResourceLocation biome : selectedBiomes) {
             if (additive) {
                if (!biomeList.contains(biome)) {
                   biomeList.add(biome);
@@ -286,11 +286,11 @@ public class JSONHelper {
       return biomeList;
    }
 
-   public static List<Biome> getBiomes(List<String> biomeIds) {
-      List<Biome> biomes = new ArrayList<>();
+   public static List<ResourceLocation> getBiomes(List<String> biomeIds) {
+      List<ResourceLocation> biomes = new ArrayList<>();
 
       for (String biomeId : biomeIds) {
-         Biome biome = (Biome)GameRegistry.findRegistry(Biome.class).getValue(ResourceLocation.parse(biomeId));
+         ResourceLocation biome = (ResourceLocation)GameRegistry.findRegistry(ResourceLocation.class).getValue(ResourceLocation.parse(biomeId));
          if (biome != null) {
             biomes.add(biome);
          }

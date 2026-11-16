@@ -141,8 +141,8 @@ public class RevengeGoal extends FindAttackTargetGoal {
    public boolean shouldExecute() {
       if (this.host.getLastHurtByMob() != null && this.isEntityTargetable(this.host.getLastHurtByMob(), false)) {
          this.target = this.host.getLastHurtByMob();
-         if (this.host.getRevengeTimer() != this.revengeTime) {
-            this.revengeTime = this.host.getRevengeTimer();
+         if (this.host.getLastHurtByMobTimestamp() != this.revengeTime) {
+            this.revengeTime = this.host.getLastHurtByMobTimestamp();
             this.callNearbyForHelp();
          }
 

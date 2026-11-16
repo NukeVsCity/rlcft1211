@@ -177,7 +177,7 @@ public class EntityGrue extends TameableCreatureEntity implements Enemy {
       } else {
          if (this.isRareVariant() && target instanceof LivingEntity) {
             LivingEntity targetLiving = (LivingEntity)target;
-            List<Potion> goodEffects = new ArrayList<>();
+            List<Holder<MobEffect>> goodEffects = new ArrayList<>();
 
             for (MobEffectInstance effectInstance : targetLiving.getActiveEffects()) {
                if (ObjectLists.inEffectList("buffs", effectInstance.getEffect())) {

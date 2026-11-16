@@ -1,104 +1,45 @@
 package com.lycanitesmobs.core.block;
 
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
-import com.lycanitesmobs.LycEntities;
-import com.lycanitesmobs.compat.*;
-import io.netty.buffer.ByteBuf;
-import java.util.Optional;
-import javax.annotation.Nullable;
-import net.minecraft.core.*;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
-import net.minecraft.core.particles.*;
-import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.*;
-import net.minecraft.nbt.*;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.network.*;
-import net.minecraft.network.chat.*;
-import net.minecraft.network.syncher.*;
-import net.minecraft.resources.*;
-import net.minecraft.server.level.*;
-import net.minecraft.sounds.*;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.*;
-import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.util.*;
-import net.minecraft.world.*;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.*;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.*;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.*;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.*;
-import net.minecraft.world.entity.ai.navigation.*;
-import net.minecraft.world.entity.ambient.*;
-import net.minecraft.world.entity.animal.*;
-import net.minecraft.world.entity.item.*;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.*;
-import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.entity.npc.*;
-import net.minecraft.world.entity.player.*;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.*;
-import net.minecraft.world.entity.vehicle.*;
-import net.minecraft.world.item.*;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.*;
-import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.*;
-import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.*;
-import net.minecraft.world.level.block.state.*;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.*;
-import net.minecraft.world.level.material.*;
-import net.minecraft.world.level.pathfinder.*;
-import net.minecraft.world.phys.*;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
-import net.neoforged.bus.api.*;
-import net.neoforged.neoforge.common.*;
-import net.neoforged.neoforge.event.entity.*;
-import net.neoforged.neoforge.event.entity.living.*;
-import net.neoforged.neoforge.event.entity.player.*;
-import net.neoforged.neoforge.event.level.*;
-import net.neoforged.neoforge.event.tick.*;
+import com.lycanitesmobs.compat.Material;
+import com.lycanitesmobs.compat.LycReg;
 import com.lycanitesmobs.core.LanguageManager;
 import com.lycanitesmobs.core.info.ModInfo;
 import java.util.List;
-import java.util.Random;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
-
+/**
+ * 1.12 BlockBase. 1.12 blocks set hardness, resistance, light, sound and opacity with setters after construction; 1.21 blocks
+ * take them in their Properties. The setters are kept (they store the values) and the 1.21 getters are overridden to return
+ * them; what 1.21 needs at construction (collision, occlusion, replaceable) comes from the 1.12 Material ({@link #props}).
+ */
 public class BlockBase extends Block {
    public ModInfo group;
    public String blockName = "BlockBase";
-   public static final PropertyInteger AGE = PropertyInteger.create("age", 0, 15);
+   public static final IntegerProperty AGE = IntegerProperty.create("age", 0, 15);
    public int tickRate = 0;
    public boolean removeOnTick = false;
    public boolean loopTicks = true;
@@ -106,33 +47,185 @@ public class BlockBase extends Block {
    public boolean noEntityCollision = false;
    public boolean noBreakCollision = false;
    public boolean isOpaque = true;
+   public final Material material;
+   protected float blockHardness = 0.0F;
+   protected float blockResistance = 0.0F;
+   protected int lightValue = -1;
+   protected int lightOpacity = -1;
+   protected SoundType legacySoundType;
+   protected boolean tickRandomly112 = false;
+
+   /** 1.21 Properties for a 1.12 material (Block(Material) defaults: hardness 0, no light; sounds of 1.12 Block.blockSoundType). */
+   public static BlockBehaviour.Properties props(Material material) {
+      BlockBehaviour.Properties p = BlockBehaviour.Properties.of().mapColor(MapColor.STONE);
+      if (!material.blocksMovement() && !material.isLiquid()) {
+         p.noCollission();
+      }
+      if (!material.isOpaque()) {
+         p.noOcclusion();
+      }
+      if (material.isReplaceable()) {
+         p.replaceable();
+      }
+      if (material == Material.FIRE || material == Material.PLANTS || material == Material.VINE || material == Material.WEB) {
+         p.pushReaction(PushReaction.DESTROY);
+      }
+      if (material == Material.FIRE || material == Material.AIR) {
+         p.noLootTable();
+      }
+      return p;
+   }
 
    public BlockBase(Material material, ModInfo group, String name) {
-      super(material);
+      this(props(material), material, group, name);
+   }
+
+   public BlockBase(BlockBehaviour.Properties properties, Material material, ModInfo group, String name) {
+      super(properties);
+      this.material = material;
       this.group = group;
       this.blockName = name;
-      this.fullBlock = this.isOpaque;
       this.setup();
    }
 
    public BlockBase(Material material) {
-      super(material);
+      super(props(material));
+      this.material = material;
    }
 
    public void setup() {
       LycReg.setName(this, this.group.modid, this.blockName.toLowerCase());
-      this.setTranslationKey(this.blockName);
+   }
+
+   // ==================== 1.12 Block setters ====================
+   public BlockBase setHardness(float hardness) {
+      this.blockHardness = hardness;
+      if (this.blockResistance < hardness * 5.0F) {
+         this.blockResistance = hardness * 5.0F;
+      }
+      return this;
+   }
+
+   public BlockBase setResistance(float resistance) {
+      this.blockResistance = resistance * 3.0F;
+      return this;
+   }
+
+   public BlockBase setBlockUnbreakable() {
+      this.setHardness(-1.0F);
+      return this;
+   }
+
+   public BlockBase setLightLevel(float value) {
+      this.lightValue = (int)(15.0F * value);
+      return this;
+   }
+
+   public BlockBase setLightOpacity(int opacity) {
+      this.lightOpacity = opacity;
+      return this;
+   }
+
+   public BlockBase setSoundType(SoundType sound) {
+      this.legacySoundType = sound;
+      return this;
+   }
+
+   public BlockBase setTickRandomly(boolean tickRandomly) {
+      this.tickRandomly112 = tickRandomly;
+      return this;
+   }
+
+   public BlockBase setHarvestLevel(String toolClass, int level) {
+      return this;
+   }
+
+   public BlockBase disableStats() {
+      return this;
+   }
+
+   public BlockBase setTranslationKey(String key) {
+      return this;
+   }
+
+   public BlockBase setCreativeTab(Object tab) {
+      if (tab instanceof com.lycanitesmobs.compat.CreativeTabs tabs) {
+         com.lycanitesmobs.compat.CreativeTabs.add(tabs, this);
+      }
+      return this;
+   }
+
+   public float getBlockHardness() {
+      return this.blockHardness;
    }
 
    public void copyAttributesTo(Block block) {
-      block.setHardness(this.blockHardness);
-      block.setResistance(this.blockResistance);
+      if (block instanceof BlockBase base) {
+         base.blockHardness = this.blockHardness;
+         base.blockResistance = this.blockResistance;
+      }
+   }
+
+   // ==================== 1.21 getters answering the 1.12 values ====================
+   @Override
+   protected float getDestroyProgress(BlockState state, Player player, BlockGetter level, BlockPos pos) {
+      // 1.12 ForgeHooks.blockStrength with this block's hardness
+      float hardness = this.blockHardness;
+      if (hardness < 0.0F) {
+         return 0.0F;
+      }
+      if (hardness == 0.0F) {
+         return 1.0F;
+      }
+      int i = net.neoforged.neoforge.event.EventHooks.doPlayerHarvestCheck(player, state, level, pos) ? 30 : 100;
+      return player.getDigSpeed(state, pos) / hardness / (float)i;
+   }
+
+   @Override
+   public float getExplosionResistance() {
+      // 1.12 getExplosionResistance(Entity) = blockResistance / 5
+      return this.blockResistance / 5.0F;
+   }
+
+   @Override
+   public float getExplosionResistance(BlockState state, BlockGetter level, BlockPos pos, Explosion explosion) {
+      return this.getExplosionResistance();
+   }
+
+   @Override
+   public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
+      return this.lightValue >= 0 ? this.lightValue : super.getLightEmission(state, level, pos);
+   }
+
+   @Override
+   protected int getLightBlock(BlockState state, BlockGetter level, BlockPos pos) {
+      if (this.lightOpacity >= 0) {
+         return Math.min(this.lightOpacity, 15);
+      }
+      return this.isOpaque ? 15 : super.getLightBlock(state, level, pos);
+   }
+
+   @Override
+   public SoundType getSoundType(BlockState state, LevelReader level, BlockPos pos, Entity entity) {
+      return this.legacySoundType != null ? this.legacySoundType : super.getSoundType(state, level, pos, entity);
+   }
+
+   @Override
+   protected boolean isRandomlyTicking(BlockState state) {
+      return this.getTickRandomly();
+   }
+
+   /** 1.12 Block.randomTick called updateTick. */
+   @Override
+   protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+      this.tick(state, level, pos, random);
    }
 
    public String getLocalizedName() {
-      return LanguageManager.translate(this.getDescriptionId() + ".name");
+      return LanguageManager.translate("tile." + this.blockName + ".name");
    }
 
+   /** 1.12 Block.addInformation (called by ItemBlockBase). */
    public void addInformation(ItemStack stack, Level world, List<String> tooltip, TooltipFlag advanced) {
       tooltip.add(this.getDescription(stack, world));
    }
@@ -141,26 +234,11 @@ public class BlockBase extends Block {
       return "§a" + LanguageManager.translate("tile." + this.blockName + ".description");
    }
 
-   public void onBlockAdded(Level world, BlockPos pos, BlockState state) {
+   @Override
+   protected void onPlace(BlockState state, Level world, BlockPos pos, BlockState oldState, boolean moved) {
       if (this.tickRate > 0) {
-         world.scheduleUpdate(pos, this, this.tickRate(world));
+         world.scheduleTick(pos, this, this.tickRate(world));
       }
-   }
-
-   public Item getItemDropped(BlockState state, RandomSource random, int zero) {
-      return super.getItemDropped(state, random, zero);
-   }
-
-   public int damageDropped(BlockState state) {
-      return 0;
-   }
-
-   public int quantityDropped(RandomSource random) {
-      return 1;
-   }
-
-   public BlockStateContainer createBlockState() {
-      return super.createBlockState();
    }
 
    public BlockState getStateFromMeta(int meta) {
@@ -171,80 +249,61 @@ public class BlockBase extends Block {
       return 0;
    }
 
-   public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos triggerPos) {
+   @Override
+   protected void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos triggerPos, boolean moving) {
       if (this.canBeCrushed && (block == Blocks.SAND || block == Blocks.GRAVEL)) {
          world.removeBlock(pos, false);
       }
 
-      super.neighborChanged(state, world, pos, block, triggerPos);
+      super.neighborChanged(state, world, pos, block, triggerPos, moving);
    }
 
    public int tickRate(Level world) {
       return this.tickRate;
    }
 
-   public void updateTick(Level world, BlockPos pos, BlockState state, RandomSource rand) {
+   @Override
+   public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource rand) {
       if (!world.isClientSide) {
          if (this.removeOnTick && this.canRemove(world, pos, state, rand)) {
             world.removeBlock(pos, false);
          } else if (this.tickRate > 0 && this.loopTicks) {
-            world.scheduleBlockUpdate(pos, this, this.tickRate(world), 1);
+            world.scheduleTick(pos, this, this.tickRate(world));
          }
       }
    }
 
    public boolean getTickRandomly() {
-      return this.tickRate > 0;
+      return this.tickRandomly112 || this.tickRate > 0;
    }
 
    public boolean canRemove(Level world, BlockPos pos, BlockState state, RandomSource rand) {
       return true;
    }
 
-   public boolean isPassable(BlockGetter world, BlockPos pos) {
-      return this.noEntityCollision ? true : super.isPassable(world, pos);
+   @Override
+   protected VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+      return this.noEntityCollision ? Shapes.empty() : super.getCollisionShape(state, world, pos, context);
    }
 
-   public boolean isCollidable() {
-      return this.noBreakCollision ? false : super.isCollidable();
-   }
-
-   public boolean isSideSolid(BlockState base_state, BlockGetter world, BlockPos pos, Direction side) {
-      return this.noEntityCollision ? false : super.isSideSolid(base_state, world, pos, side);
-   }
-
-   public AABB getBoundingBox(BlockState state, BlockGetter world, BlockPos pos) {
-      return super.getBoundingBox(state, world, pos);
-   }
-
-   public AABB getCollisionBoundingBox(BlockState state, BlockGetter world, BlockPos pos) {
-      return this.noEntityCollision ? Block.NULL_AABB : super.getCollisionBoundingBox(state, world, pos);
-   }
-
-   public AABB getSelectedBoundingBox(BlockState state, Level world, BlockPos pos) {
-      return super.getSelectedBoundingBox(state, world, pos);
+   /** 1.12 isCollidable false: no outline to click on (noBreakCollision). */
+   @Override
+   protected VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
+      return this.noBreakCollision ? Shapes.empty() : super.getShape(state, world, pos, context);
    }
 
    public boolean isOpaqueCube(BlockState state) {
       return this.isOpaque;
    }
 
-   public int getLightOpacity(BlockState state, BlockGetter world, BlockPos pos) {
-      return this.isOpaqueCube(state) ? 255 : super.getLightOpacity(state, world, pos);
-   }
-
-   public void onEntityCollision(Level world, BlockPos pos, BlockState blockState, Entity entity) {
-      super.onEntityCollision(world, pos, blockState, entity);
-   }
-
-   public Boolean isEntityInsideMaterial(
-      BlockGetter world, BlockPos blockpos, BlockState blockState, Entity entity, double yToTest, Material materialIn, boolean testingHead
-   ) {
-      return super.isEntityInsideMaterial(world, blockpos, blockState, entity, yToTest, materialIn, testingHead);
+   /** 1.12 onEntityCollision */
+   @Override
+   protected void entityInside(BlockState blockState, Level world, BlockPos pos, Entity entity) {
+      super.entityInside(blockState, world, pos, entity);
    }
 
    public BlockBase setBlockStepSound(SoundType soundType) {
-      return (BlockBase)this.setSoundType(soundType);
+      return this.setSoundType(soundType);
    }
 
    public static enum RENDER_TYPE {

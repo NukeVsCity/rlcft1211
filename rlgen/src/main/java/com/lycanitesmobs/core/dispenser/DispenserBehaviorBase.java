@@ -115,7 +115,7 @@ public class DispenserBehaviorBase extends BehaviorProjectileDispense {
             (double)facing.getStepX(), (double)facing.getStepY(), (double)facing.getStepZ(), this.getProjectileVelocity(), this.getProjectileInaccuracy()
          );
          world.addFreshEntity((Entity)iprojectile);
-         stack.splitStack(1);
+         stack.split(1);
          return stack;
       }
    }

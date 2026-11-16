@@ -121,7 +121,7 @@ public class EntityAmalgalich extends BaseCreatureEntity implements Enemy, IGrou
       this.setAttackCooldownMax(30);
       this.hasJumpSound = false;
       this.trueSight = true;
-      this.entityCollisionReduction = 1.0F;
+      0.0F = 1.0F;
       this.setupMob();
       this.hitAreaWidthScale = 2.0F;
       this.damageMax = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;

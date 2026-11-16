@@ -96,7 +96,7 @@ import java.util.Random;
 
 
 public class BlockVeswax extends BlockBase {
-   public static final PropertyInteger HIVE = PropertyInteger.create("hive", 0, 15);
+   public static final IntegerProperty HIVE = IntegerProperty.create("hive", 0, 15);
 
    public BlockVeswax() {
       super(Material.WOOD);
@@ -111,19 +111,17 @@ public class BlockVeswax extends BlockBase {
       this.removeOnTick = true;
    }
 
-   @Override
-   public BlockState getStateFromMeta(int meta) {
+      public BlockState getStateFromMeta(int meta) {
       return this.defaultBlockState().setValue(HIVE, meta);
    }
 
-   @Override
-   public int getMetaFromState(BlockState state) {
+      public int getMetaFromState(BlockState state) {
       return (Integer)state.getValue(HIVE);
    }
 
    @Override
-   public BlockStateContainer createBlockState() {
-      return new BlockStateContainer(this, new IProperty[]{HIVE});
+   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+      builder.add(HIVE);
    }
 
    public void onBlockPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
@@ -133,13 +131,12 @@ public class BlockVeswax extends BlockBase {
       super.onBlockPlacedBy(world, pos, state, placer, itemStack);
    }
 
-   @Override
-   public int tickRate(Level world) {
+      public int tickRate(Level world) {
       return this.tickRate + world.random.nextInt(100);
    }
 
    @Override
-   public void updateTick(Level world, BlockPos pos, BlockState state, RandomSource random) {
+   public void tick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
       if (!world.isClientSide) {
          if (this.getMetaFromState(state) < 8) {
             double range = 32.0;
@@ -155,7 +152,7 @@ public class BlockVeswax extends BlockBase {
                   )
                )
                .isEmpty()) {
-               super.updateTick(world, pos, state, random);
+               super.tick(state, (ServerLevel)world, pos, random);
             }
          }
       }

@@ -110,6 +110,6 @@ public class FaceTargetGoal extends EntityAIBase {
    }
 
    public void updateTask() {
-      this.host.getLookControl().setLookAt(this.target, 10.0F, (float)this.host.getVerticalFaceSpeed());
+      this.host.getLookControl().setLookAt(this.target, 10.0F, (float)this.host.getMaxHeadXRot());
    }
 }

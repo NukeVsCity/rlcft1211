@@ -132,7 +132,7 @@ public class RevengeOwnerGoal extends FindAttackTargetGoal {
          return false;
       } else {
          LivingEntity owner = (LivingEntity)this.host.getOwner();
-         int i = owner.getRevengeTimer();
+         int i = owner.getLastHurtByMobTimestamp();
          return i == this.revengeTime ? false : this.isEntityTargetable(owner.getLastHurtByMob(), false);
       }
    }
@@ -141,7 +141,7 @@ public class RevengeOwnerGoal extends FindAttackTargetGoal {
    public void startExecuting() {
       LivingEntity owner = (LivingEntity)this.host.getOwner();
       this.target = owner.getLastHurtByMob();
-      this.revengeTime = owner.getRevengeTimer();
+      this.revengeTime = owner.getLastHurtByMobTimestamp();
       if (this.callForHelp) {
          this.callNearbyForHelp();
       }

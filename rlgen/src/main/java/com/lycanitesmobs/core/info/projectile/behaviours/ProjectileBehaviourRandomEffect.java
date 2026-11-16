@@ -121,7 +121,7 @@ public class ProjectileBehaviourRandomEffect extends ProjectileBehaviour {
       if (projectile.getOwner() != null && !(damage <= 0.0F)) {
          if (this.duration > 0 && this.amplifier >= 0) {
             int randomIndex = world.random.nextInt(this.effects.size());
-            Potion effect = (Potion)GameRegistry.findRegistry(Potion.class).getValue(ResourceLocation.parse(this.effects.get(randomIndex)));
+            Holder<MobEffect> effect = LycEffects.get(ResourceLocation.parse(this.effects.get(randomIndex)));
             if (effect != null) {
                target.addEffect(new MobEffectInstance(effect, this.duration, this.amplifier));
             }

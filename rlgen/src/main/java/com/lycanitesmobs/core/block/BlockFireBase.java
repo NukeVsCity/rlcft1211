@@ -96,13 +96,13 @@ import java.util.Random;
 
 
 public class BlockFireBase extends BlockBase {
-   public static final PropertyBool PERMANENT = PropertyBool.create("permanent");
-   public static final PropertyBool STATIC = PropertyBool.create("static");
-   public static final PropertyBool NORTH = PropertyBool.create("north");
-   public static final PropertyBool EAST = PropertyBool.create("east");
-   public static final PropertyBool SOUTH = PropertyBool.create("south");
-   public static final PropertyBool WEST = PropertyBool.create("west");
-   public static final PropertyBool UPPER = PropertyBool.create("up");
+   public static final BooleanProperty PERMANENT = BooleanProperty.create("permanent");
+   public static final BooleanProperty STATIC = BooleanProperty.create("static");
+   public static final BooleanProperty NORTH = BooleanProperty.create("north");
+   public static final BooleanProperty EAST = BooleanProperty.create("east");
+   public static final BooleanProperty SOUTH = BooleanProperty.create("south");
+   public static final BooleanProperty WEST = BooleanProperty.create("west");
+   public static final BooleanProperty UPPER = BooleanProperty.create("up");
    public static final DamageSource COLD_FIRE = EntityDamageSource.named("cold_fire").setDamageBypassesArmor().setMagicDamage();
    public boolean dieInRain = true;
    public boolean triggerTNT = true;
@@ -113,9 +113,7 @@ public class BlockFireBase extends BlockBase {
 
    public BlockFireBase(Material material, ModInfo group, String name) {
       super(material, group, name);
-      this.setDefaultState(
-         this.blockState
-            .getBaseState()
+      this.registerDefaultState(this.stateDefinition.any()
             .setValue(AGE, 0)
             .setValue(PERMANENT, false)
             .setValue(STATIC, false)
@@ -140,17 +138,15 @@ public class BlockFireBase extends BlockBase {
    }
 
    @Override
-   public BlockStateContainer createBlockState() {
-      return new BlockStateContainer(this, new IProperty[]{AGE, PERMANENT, STATIC, NORTH, EAST, SOUTH, WEST, UPPER});
+   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+      builder.add(AGE, PERMANENT, STATIC, NORTH, EAST, SOUTH, WEST, UPPER);
    }
 
-   @Override
-   public String getLocalizedName() {
+      public String getLocalizedName() {
       return LanguageManager.translate(this.getDescriptionId() + ".name");
    }
 
-   @Override
-   public void addInformation(ItemStack stack, Level world, List<String> tooltip, TooltipFlag advanced) {
+      public void addInformation(ItemStack stack, Level world, List<String> tooltip, TooltipFlag advanced) {
       tooltip.add(this.getDescription(stack, world));
    }
 
@@ -172,26 +168,23 @@ public class BlockFireBase extends BlockBase {
          : this.defaultBlockState();
    }
 
-   @Override
-   public BlockState getStateFromMeta(int meta) {
+      public BlockState getStateFromMeta(int meta) {
       return this.defaultBlockState().setValue(AGE, meta);
    }
 
-   @Override
-   public int getMetaFromState(BlockState state) {
+      public int getMetaFromState(BlockState state) {
       return (Integer)state.getValue(AGE);
    }
 
-   @Override
-   public int tickRate(Level world) {
+      public int tickRate(Level world) {
       return this.tickRate;
    }
 
    @Override
-   public void updateTick(Level world, BlockPos pos, BlockState blockState, RandomSource rand) {
+   public void tick(BlockState blockState, ServerLevel world, BlockPos pos, RandomSource rand) {
       if (!(Boolean)blockState.getValue(STATIC) && world.isAreaLoaded(pos, 2)) {
          boolean permanent = (Boolean)blockState.getValue(PERMANENT);
-         if (!world.getGameRules().getBoolean("doFireTick")) {
+         if (!world.getGameRules().getBoolean(GameRules.RULE_DOFIRETICK)) {
             if (this.removeOnNoFireTick && !permanent) {
                world.removeBlock(pos, false);
             }
@@ -212,7 +205,7 @@ public class BlockFireBase extends BlockBase {
                }
 
                if (this.loopTicks) {
-                  world.scheduleUpdate(pos, this, this.tickRate(world) + rand.nextInt(10));
+                  world.scheduleTick(pos, this, this.tickRate(world) + rand.nextInt(10));
                }
 
                if (!isOnFireSource) {
@@ -295,12 +288,12 @@ public class BlockFireBase extends BlockBase {
    }
 
    @Override
-   public void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos triggerPos) {
+   protected void neighborChanged(BlockState state, Level world, BlockPos pos, Block block, BlockPos triggerPos, boolean lycMoving) {
    }
 
    @Override
-   public void onBlockAdded(Level world, BlockPos pos, BlockState state) {
-      super.onBlockAdded(world, pos, state);
+   protected void onPlace(BlockState state, Level world, BlockPos pos, BlockState lycOldState, boolean lycMoved) {
+      super.onPlace(state, world, pos, lycOldState, lycMoved);
    }
 
    protected boolean canNeighborCatchFire(Level worldIn, BlockPos pos) {
@@ -381,8 +374,7 @@ public class BlockFireBase extends BlockBase {
          || world.isRainingAt(pos.south());
    }
 
-   @Override
-   public int quantityDropped(RandomSource random) {
+      public int quantityDropped(RandomSource random) {
       return 0;
    }
 

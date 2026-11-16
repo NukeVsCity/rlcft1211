@@ -116,7 +116,7 @@ public class EntityKrake extends AgeableCreatureEntity implements Enemy {
 
    @Override
    public boolean canEntityBeSeen(Entity target) {
-      if (target == this.getLastHurtByMob() && this.getRevengeTimer() + 60 > this.tickCount) {
+      if (target == this.getLastHurtByMob() && this.getLastHurtByMobTimestamp() + 60 > this.tickCount) {
          return true;
       } else {
          return !(target instanceof Player) && !(target instanceof Villager) ? true : target.isSprinting();

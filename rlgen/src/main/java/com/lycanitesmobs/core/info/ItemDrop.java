@@ -337,7 +337,7 @@ public class ItemDrop {
 
          for (Object potionEffect : entity.getActiveEffects()) {
             if (potionEffect instanceof MobEffectInstance) {
-               int effectId = Potion.getIdFromPotion(((MobEffectInstance)potionEffect).getEffect());
+               int effectId = LycEffects.id(((MobEffectInstance)potionEffect).getEffect());
                ItemStack effectStack = this.getEffectItemStack(effectId);
                if (!effectStack.isEmpty()) {
                   itemStack = effectStack;

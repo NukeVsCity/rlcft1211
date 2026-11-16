@@ -221,7 +221,7 @@ public class ExtendedEntity {
                return;
             }
 
-            Potion weight = ObjectManager.getEffect("weight");
+            Holder<MobEffect> weight = ObjectManager.getEffect("weight");
             if (weight != null && this.entity.hasEffect(weight)) {
                this.setPickedUpByEntity(null);
                return;
@@ -247,7 +247,7 @@ public class ExtendedEntity {
             this.entity.fallDistance = 0.0F;
             if (!this.entity.level().isClientSide && this.entity instanceof Player) {
                Player player = (Player)this.entity;
-               player.getAbilities().isFlying = true;
+               player.getAbilities().flying = true;
                this.entity.noPhysics = true;
             }
          }
@@ -265,9 +265,9 @@ public class ExtendedEntity {
             if (this.entity instanceof Player) {
                if (pickedUpByEntity != null) {
                   this.playerAllowFlyingSnapshot = ((Player)this.entity).getAbilities().allowFlying;
-                  this.playerIsFlyingSnapshot = ((Player)this.entity).getAbilities().isFlying;
+                  this.playerIsFlyingSnapshot = ((Player)this.entity).getAbilities().flying;
                } else {
-                  ((Player)this.entity).getAbilities().isFlying = this.playerIsFlyingSnapshot;
+                  ((Player)this.entity).getAbilities().flying = this.playerIsFlyingSnapshot;
                   this.entity.noPhysics = false;
                }
             }

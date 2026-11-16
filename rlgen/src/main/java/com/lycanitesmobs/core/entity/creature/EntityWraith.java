@@ -205,7 +205,7 @@ public class EntityWraith extends TameableCreatureEntity implements Enemy {
    }
 
    public int getBrightnessForRender() {
-      return super.getBrightnessForRender();
+      return super.getLightLevelDependentMagicValue();
    }
 
    public void readFromNBT(CompoundTag nbtTagCompound) {

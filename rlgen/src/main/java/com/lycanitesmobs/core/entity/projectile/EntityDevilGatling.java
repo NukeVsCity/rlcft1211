@@ -143,11 +143,11 @@ public class EntityDevilGatling extends BaseProjectileEntity {
    public void onDamage(LivingEntity target, float damage, boolean attackSuccess) {
       super.onDamage(target, damage, attackSuccess);
       if (this.random.nextBoolean()) {
-         List<Potion> goodEffects = new ArrayList<>();
+         List<Holder<MobEffect>> goodEffects = new ArrayList<>();
 
          for (Object potionEffectObj : target.getActiveEffects()) {
             if (potionEffectObj instanceof MobEffectInstance) {
-               Potion potion = ((MobEffectInstance)potionEffectObj).getEffect();
+               Holder<MobEffect> potion = ((MobEffectInstance)potionEffectObj).getEffect();
                if (potion != null && ObjectLists.inEffectList("buffs", potion)) {
                   goodEffects.add(potion);
                }

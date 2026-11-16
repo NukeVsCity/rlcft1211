@@ -575,7 +575,7 @@ public class CreatureInfo {
    }
 
    public String getBiomeNames() {
-      List<Biome> biomes = new ArrayList<>();
+      List<ResourceLocation> biomes = new ArrayList<>();
       if (this.creatureSpawn.biomesFromTags != null) {
          biomes.addAll(this.creatureSpawn.biomesFromTags);
       }
@@ -590,7 +590,7 @@ public class CreatureInfo {
          String biomeNames = "";
          boolean firstBiome = true;
 
-         for (Biome biome : biomes) {
+         for (ResourceLocation biome : biomes) {
             if (!firstBiome) {
                biomeNames = biomeNames + ", ";
             }

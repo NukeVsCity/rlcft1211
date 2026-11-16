@@ -125,8 +125,7 @@ public class ChargeItem extends ItemBase {
       return this.getProjectileName() + " " + LanguageManager.translate("item.lycanitesmobs.charge");
    }
 
-   @Override
-   public void addInformation(ItemStack itemStack, Level world, List<String> tooltip, TooltipFlag tooltipFlag) {
+      public void addInformation(ItemStack itemStack, Level world, List<String> tooltip, TooltipFlag tooltipFlag) {
       super.addInformation(itemStack, world, tooltip, tooltipFlag);
       FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
 

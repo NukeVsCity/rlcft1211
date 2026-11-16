@@ -447,12 +447,12 @@ public class Spawner {
       } else {
          Collections.shuffle(spawnPositions);
          LycanitesMobs.logDebug("JSONSpawner", "Positions Found: " + spawnPositions.size());
-         List<Biome> biomes = null;
+         List<ResourceLocation> biomes = null;
          if (!this.ignoreBiomes) {
             biomes = new ArrayList<>();
 
             for (BlockPos spawnPosx : spawnPositions) {
-               Biome biome = world.getBiome(spawnPosx).value();
+               ResourceLocation biome = LycBiomes.at(world, spawnPosx);
                if (!biomes.contains(biome)) {
                   biomes.add(biome);
                }
@@ -463,7 +463,7 @@ public class Spawner {
             LycanitesMobs.logDebug("JSONSpawner", "All biome checks are ignored by this Spawner.");
          }
 
-         Map<Biome, List<MobSpawn>> mobSpawns = this.getMobSpawns(world, player, spawnPositions.size(), biomes);
+         Map<ResourceLocation, List<MobSpawn>> mobSpawns = this.getMobSpawns(world, player, spawnPositions.size(), biomes);
          LycanitesMobs.logDebug("JSONSpawner", "Spawnable Mobs Found: " + mobSpawns.size());
          if (mobSpawns.size() == 0) {
             return false;
@@ -478,7 +478,7 @@ public class Spawner {
                LycanitesMobs.logDebug("JSONSpawner", "---------- Spawn Iteration: " + mobsSpawned + " ----------");
                LycanitesMobs.logDebug("JSONSpawner", "Spawn Position: " + spawnPosxx);
                MobSpawn mobSpawn = null;
-               Biome spawnBiome = world.getBiome(spawnPosxx).value();
+               ResourceLocation spawnBiome = LycBiomes.at(world, spawnPosxx);
                if (mobSpawns.containsKey(null)) {
                   mobSpawn = this.chooseMobToSpawn(world, mobSpawns.get(null));
                } else if (mobSpawns.containsKey(spawnBiome)) {
@@ -597,13 +597,13 @@ public class Spawner {
       }
    }
 
-   public Map<Biome, List<MobSpawn>> getMobSpawns(Level world, Player player, int blockCount, List<Biome> biomes) {
-      Map<Biome, List<MobSpawn>> mobSpawns = new HashMap<>();
+   public Map<ResourceLocation, List<MobSpawn>> getMobSpawns(Level world, Player player, int blockCount, List<ResourceLocation> biomes) {
+      Map<ResourceLocation, List<MobSpawn>> mobSpawns = new HashMap<>();
       if (biomes == null) {
          mobSpawns.put(null, this.getBiomeSpawns(world, player, blockCount, null));
          return mobSpawns;
       } else {
-         for (Biome biome : biomes) {
+         for (ResourceLocation biome : biomes) {
             mobSpawns.put(biome, this.getBiomeSpawns(world, player, blockCount, biome));
          }
 
@@ -611,7 +611,7 @@ public class Spawner {
       }
    }
 
-   public List<MobSpawn> getBiomeSpawns(Level world, Player player, int blockCount, Biome biome) {
+   public List<MobSpawn> getBiomeSpawns(Level world, Player player, int blockCount, ResourceLocation biome) {
       List<MobSpawn> biomeSpawns = new ArrayList<>();
       Collection<MobSpawn> globalSpawns = SpawnerMobRegistry.getMobSpawns(this.sharedName);
       if (globalSpawns != null) {

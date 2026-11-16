@@ -151,7 +151,7 @@ public class EntityPixen extends TameableCreatureEntity implements Enemy {
             LivingEntity target = (LivingEntity)entityObj;
             if (target != this && !(target instanceof EntityPixen) && target != this.getTarget() && target != this.getAvoidTarget()) {
                int randomIndex = this.getRandom().nextInt(this.auraEffects.size());
-               Potion effect = (Potion)GameRegistry.findRegistry(Potion.class).getValue(ResourceLocation.parse(this.auraEffects.get(randomIndex)));
+               Holder<MobEffect> effect = LycEffects.get(ResourceLocation.parse(this.auraEffects.get(randomIndex)));
                if (effect != null) {
                   target.addEffect(new MobEffectInstance(effect, this.auraDuration, this.auraAmplifier));
                }

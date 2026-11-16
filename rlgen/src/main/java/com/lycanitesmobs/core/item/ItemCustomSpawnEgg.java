@@ -132,8 +132,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
       return displayName;
    }
 
-   @Override
-   public void addInformation(ItemStack stack, Level worldIn, List<String> tooltip, TooltipFlag flagIn) {
+      public void addInformation(ItemStack stack, Level worldIn, List<String> tooltip, TooltipFlag flagIn) {
       String description = this.getDescription(stack, worldIn, tooltip, flagIn);
       if (!"".equalsIgnoreCase(description) && !("item." + this.itemName + ".description").equals(description)) {
          FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;

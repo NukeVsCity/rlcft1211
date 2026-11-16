@@ -166,7 +166,7 @@ public class WatchClosestGoal extends EntityAIBase {
             this.closestEntity.getY() + (double)this.closestEntity.getEyeHeight(),
             this.closestEntity.getZ(),
             10.0F,
-            (float)this.host.getVerticalFaceSpeed()
+            (float)this.host.getMaxHeadXRot()
          );
       this.lookTime--;
    }

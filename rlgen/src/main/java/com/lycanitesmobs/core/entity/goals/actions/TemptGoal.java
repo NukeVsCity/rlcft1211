@@ -308,7 +308,7 @@ public class TemptGoal extends EntityAIBase {
          this.host.setTarget(null);
       }
 
-      this.host.getLookControl().setLookAt(this.player, 30.0F, (float)this.host.getVerticalFaceSpeed());
+      this.host.getLookControl().setLookAt(this.player, 30.0F, (float)this.host.getMaxHeadXRot());
       if (this.host.distanceToSqr(this.player) < this.temptDistanceMin * this.temptDistanceMin) {
          this.host.clearMovement();
       } else if (!this.host.useDirectNavigator()) {

@@ -216,18 +216,18 @@ public class ConfigSpawning extends ConfigBase {
       return new ConfigSpawning.SpawnDimensionSet(dimensionIDs, dimensionTypes);
    }
 
-   public Biome[] getBiomes(String category, String key) {
+   public ResourceLocation[] getBiomes(String category, String key) {
       return this.getBiomes(category, key, "");
    }
 
-   public Biome[] getBiomes(String category, String key, String defaultValue) {
+   public ResourceLocation[] getBiomes(String category, String key, String defaultValue) {
       return this.getBiomes(category, key, defaultValue, null);
    }
 
-   public Biome[] getBiomes(String category, String key, String defaultValue, String comment) {
+   public ResourceLocation[] getBiomes(String category, String key, String defaultValue, String comment) {
       String biomeEntries = this.getString(category, key, defaultValue, comment);
       biomeEntries = biomeEntries.replace(" ", "");
-      List<Biome> biomeList = new ArrayList<>();
+      List<ResourceLocation> biomeList = new ArrayList<>();
 
       for (String biomeEntry : biomeEntries.split(",")) {
          if (!"".equals(biomeEntry)) {
@@ -240,17 +240,17 @@ public class ConfigSpawning extends ConfigBase {
                biomeEntry = biomeEntry.substring(1);
             }
 
-            Biome[] selectedBiomes = null;
+            ResourceLocation[] selectedBiomes = null;
             if ("ALL".equals(biomeEntry)) {
                for (Type biomeType : this.getAllBiomeTypes()) {
                   if (selectedBiomes == null) {
-                     Set<Biome> selectedBiomesSet = BiomeDictionary.getBiomes(biomeType);
-                     selectedBiomes = selectedBiomesSet.toArray(new Biome[selectedBiomesSet.size()]);
+                     Set<ResourceLocation> selectedBiomesSet = BiomeDictionary.getBiomes(biomeType);
+                     selectedBiomes = selectedBiomesSet.toArray(new ResourceLocation[selectedBiomesSet.size()]);
                   } else {
-                     Set<Biome> typeBiomesSet = BiomeDictionary.getBiomes(biomeType);
-                     Biome[] typeBiomes = typeBiomesSet.toArray(new Biome[typeBiomesSet.size()]);
+                     Set<ResourceLocation> typeBiomesSet = BiomeDictionary.getBiomes(biomeType);
+                     ResourceLocation[] typeBiomes = typeBiomesSet.toArray(new ResourceLocation[typeBiomesSet.size()]);
                      if (typeBiomes != null) {
-                        selectedBiomes = (Biome[])ArrayUtils.addAll(selectedBiomes, typeBiomes);
+                        selectedBiomes = (ResourceLocation[])ArrayUtils.addAll(selectedBiomes, typeBiomes);
                      }
                   }
                }
@@ -268,13 +268,13 @@ public class ConfigSpawning extends ConfigBase {
                }
 
                if (biomeTypex != null) {
-                  Set<Biome> selectedBiomesSet = BiomeDictionary.getBiomes(biomeTypex);
-                  selectedBiomes = selectedBiomesSet.toArray(new Biome[selectedBiomesSet.size()]);
+                  Set<ResourceLocation> selectedBiomesSet = BiomeDictionary.getBiomes(biomeTypex);
+                  selectedBiomes = selectedBiomesSet.toArray(new ResourceLocation[selectedBiomesSet.size()]);
                }
             }
 
             if (selectedBiomes != null) {
-               for (Biome biome : selectedBiomes) {
+               for (ResourceLocation biome : selectedBiomes) {
                   if (additive && !biomeList.contains(biome)) {
                      biomeList.add(biome);
                   } else if (!additive && biomeList.contains(biome)) {
@@ -285,7 +285,7 @@ public class ConfigSpawning extends ConfigBase {
          }
       }
 
-      return biomeList.toArray(new Biome[biomeList.size()]);
+      return biomeList.toArray(new ResourceLocation[biomeList.size()]);
    }
 
    public Type[] getBiomeTypes(boolean additive, String category, String key) {
