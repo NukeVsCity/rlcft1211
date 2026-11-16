@@ -96,3 +96,194 @@ look-alikes (convert_rc.py MOD_BLOCKS). After changing the mapping: re-run conve
 1. Re-run the jar scan; every jar with a hook must have a row above.
 2. Seed spot checks against the user's 1.12 screenshots (biome name + height), log them in CLAUDE.md.
 3. For each TODO turned DONE: dev server, forceload, top/side render, confirm no errors in the log.
+
+## All RLCraft 2.9.3 files (187, from the manifest)
+| File | Kind | Status |
+|---|---|---|
+| AIReducer-1.12.2-0.3.0.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
+| AdHooks-1.12.2-3.3.1.0-build.0626.jar | Library | only when a ported mod needs it |
+| Advanced-Fishing-1.12.2-1.3.3.jar | Gameplay (misc) | TODO |
+| AnimEmis_Forgottenitems.zip | Resource pack | with its mod |
+| AnimEmis_InF_SW_Blue.zip | Resource pack | with its mod |
+| AnimEmis_defiledlands.zip | Resource pack | with its mod |
+| AnimEmis_srparasites.zip | Resource pack | with its mod |
+| Aquaculture-1.12.2-1.6.8.jar | Gameplay (misc) | TODO |
+| AttributeFix-Forge-1.12.2-1.0.12.jar | RLCraft tweaks/scripts | TODO (apply what they change) |
+| AutoRegLib-1.3-32.jar | Library | only when a ported mod needs it |
+| BNBGamingLib-1.12.2-2.17.6.jar | Library | only when a ported mod needs it |
+| BQTweaker-1.3.5.jar | Gameplay (misc) | TODO |
+| BQ_Multiblock_Structure_Integration-1.0.9.jar | Gameplay (misc) | TODO |
+| BattleTowers-1.12.2.jar | World gen | DONE (world gen) |
+| Baubles-1.12-1.5.2.jar | Gameplay (items/baubles) | TODO |
+| BedBreakBegone-1.0.2.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
+| BetterFoliage-MC1.12-2.3.3.jar | Client visuals/feel | TODO later (client look/feel: port 1.12 or check) |
+| BetterMineshaftsForge-1.12.2-2.2.1.jar | World gen | DONE (world gen) |
+| BetterQuesting-3.5.329.jar | Gameplay (misc) | TODO |
+| BetterTabs-1.0.4.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
+| BlockOverlayFix-1.12.2-1.0.0.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
+| Bloodmoon-MC1.12.2-1.5.3.jar | Gameplay (mob difficulty/spawn rules) | TODO |
+| Born In A Barn V1.8-1.12-1.1.jar | Gameplay (mobs) | TODO |
+| Bountiful Baubles-1.12.2-0.1.8.jar | Gameplay (items/baubles) | TODO |
+| Bountiful-1.12.2-2.2.3.jar | World gen + gameplay | world gen DONE, gameplay TODO |
+| Charm-1.12.2-1.4.1.jar | World gen + gameplay | world gen DONE, gameplay TODO |
+| ChunkAnimator-1.12.2-1.2.1.jar | Client visuals/feel | install the 1.21 version (no gameplay change) |
+| CollisionDamage-1.2.2.jar | Gameplay (combat/items) | TODO |
+| CompatSkills-1.12.2-1.17.0.jar | Gameplay (skills) | TODO |
+| ContentTweaker-1.12.2-4.10.0.jar | RLCraft tweaks/scripts | TODO (apply what they change) |
+| Controlling-3.0.12.2.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
+| CoralReef-2.5-1.12.2.jar | World gen | DONE (world gen) |
+| CraftTweaker2-1.12-4.1.20.687.jar | RLCraft tweaks/scripts | TODO (apply what they change) |
+| CreativeCore_v1.10.70_mc1.12.2.jar | Library | only when a ported mod needs it |
+| CustomMainMenu-MC1.12.2-2.0.9.1.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
+| DoomlikeDungeons-1.14.12-MC1.12.2.jar | World gen | DONE (world gen) |
+| DynamicSurroundings-1.12.2-3.6.2.1.jar | Client visuals/feel | TODO later (client look/feel: port 1.12 or check) |
+| DynamicSurroundingsHuds-1.12.2-3.6.0.0.jar | Client visuals/feel | TODO later (client look/feel: port 1.12 or check) |
+| DynamicTrees-1.12.2-0.9.29.jar | World gen | DONE (world gen) |
+| DynamicTreesTraverse-1.12.2-2.1.jar | World gen | DONE (world gen) |
+| ElenaiDodge-1.12.2-2.1.jar | Gameplay (combat/items) | TODO |
+| Emis_Rlcraft.zip | Resource pack | with its mod |
+| EnchantmentDescriptions-1.12.2-1.1.20.jar | Client visuals/feel | TODO later (client look/feel: port 1.12 or check) |
+| EnhancedVisuals_v1.4.4_mc1.12.2.jar | Client visuals/feel | TODO later (client look/feel: port 1.12 or check) |
+| EntityCulling-1.12.2-6.3.1.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
+| FamiliarFauna-1.12.2-1.0.11.jar | Gameplay (mobs) | TODO |
+| FancyBlockParticles-1.12.x-2.4.1.jar | Client visuals/feel | TODO later (client look/feel: port 1.12 or check) |
+| FantasticLib-1.12.2.047.jar | Library | only when a ported mod needs it |
+| FishingMadeBetter-1.12.2-2.2.6.jar | Gameplay (misc) | TODO |
+| FoodExpansion1.3.3-1.12.2.jar | Gameplay (survival) | TODO |
+| ForgeEndertech-1.12.2-4.5.6.1-build.0648.jar | Library | only when a ported mod needs it |
+| Forgelin-1.8.4.jar | Library | only when a ported mod needs it |
+| FriendlyEndermite_v1.0.1_mc1.12.2.jar | Gameplay (mobs) | TODO |
+| GlobalGameRules-1.12.2-2.2.7.jar | RLCraft tweaks/scripts | TODO (apply what they change) |
+| GooglyEyes-1.12.2-7.1.1.jar | Gameplay (misc) | TODO |
+| HelpFixer-1.12.1-1.5.18.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
+| ISeeDragons-1.2.1.jar | Client visuals/feel | TODO later (client look/feel: port 1.12 or check) |
+| InfernalMobs-1.12.2.jar | Gameplay (mob difficulty/spawn rules) | TODO |
+| Inspirations-1.12.2-0.2.9.jar | Gameplay (misc) | TODO |
+| InventoryTweaks-1.64+dev.151.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
+| ItemPhysic_Full_1.4.37_mc1.12.2.jar | Gameplay (misc) | TODO |
+| IvToolkit-1.3.3-1.12.jar | World gen | DONE (world gen) |
+| Kiwi-1.12.2-0.5.3.32.jar | Library | only when a ported mod needs it |
+| LegendaryTooltips-1.12.2-1.1.9.jar | Client visuals/feel | TODO later (client look/feel: port 1.12 or check) |
+| Level Up! 2-1.1.23-1.12.jar | Gameplay (skills) | TODO |
+| Leviosa.zip | Resource pack | with its mod |
+| LoadingScreens-1.12.2-0.3.1.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
+| Locks-1.12.2-3.0.0.jar | Gameplay (misc) | TODO |
+| LootTweaker-0.3.1+MC1.12.2.jar | RLCraft tweaks/scripts | TODO (apply what they change) |
+| Lum.1.12.2.zip | Resource pack | with its mod |
+| LycanitesMobs32X.zip | Gameplay (mobs) | world gen DONE, mobs IN PROGRESS |
+| MTLib-3.0.7.jar | Library | only when a ported mod needs it |
+| MainMenuScale-1.3.2.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
+| Mantle-1.12-1.3.3.55.jar | Library | only when a ported mod needs it |
+| MaterialTweaker-1.1.1.jar | Gameplay (combat/items) | TODO |
+| MmmMmmMmmMmm-1.12-1.14.jar | Gameplay (misc) | TODO |
+| MoBends_1.12.2-1.2.1-19.12.21.jar | Client visuals/feel | TODO later (client look/feel: port 1.12 or check) |
+| MouseTweaks-2.10.1-mc1.12.2.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
+| MultiMine-1.12.2.jar | Gameplay (misc) | TODO |
+| Neat 1.4-17.jar | Client visuals/feel | TODO later (client look/feel: port 1.12 or check) |
+| OreLib-1.12.2-3.6.0.1.jar | Library | only when a ported mod needs it |
+| Placebo-1.12.2-1.6.0.jar | Library | only when a ported mod needs it |
+| PortalDupeBegone-1.0.0.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
+| PotionCore-1.9_for_1.12.2.jar | Gameplay (combat/items) | TODO |
+| PotionFingers-r1.0-8.jar | Client visuals/feel | TODO later (client look/feel: port 1.12 or check) |
+| QualityTools-1.0.7_for_1.12.2.jar | Gameplay (combat/items) | TODO |
+| Quark-r1.6-179.jar | World gen + gameplay | world gen DONE, gameplay TODO |
+| RLArtifacts-1.1.2.jar | Gameplay (items/baubles) | TODO |
+| RLCombat-1.12.2-2.0.8.jar | Gameplay (combat/items) | TODO |
+| RLMixins-1.2.15.jar | RLCraft tweaks/scripts | TODO (apply what they change) |
+| RLTooltips.zip | Resource pack | with its mod |
+| RLTweaker-1.12.2-0.5.12.jar | RLCraft tweaks/scripts | TODO (apply what they change) |
+| RTG-1.12.2-6.1.0.0-snapshot.1.jar | World gen | SKIP (user dropped / not used) |
+| ReachFix-1.12.2-1.0.8.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
+| RealBench-1.12.2-1.3.3.jar | Gameplay (misc) | TODO |
+| RealisticTorches-1.12.2-2.1.2.jar | Gameplay (survival) | TODO |
+| RebornCore-1.12.2-3.19.5-universal.jar | Library | only when a ported mod needs it |
+| RecurrentComplex-1.4.8.4.jar | World gen | DONE (world gen) |
+| RenderLib-1.12.2-1.2.8.jar | Library | only when a ported mod needs it |
+| Reskillable-1.12.2-1.13.0.jar | Gameplay (skills) | TODO |
+| ResourceLoader-MC1.12.1-1.5.3.jar | Library | only when a ported mod needs it |
+| RoguelikeDungeonsFnarEdition-1.12.2-2.4.4.jar | World gen | DONE (world gen) |
+| Ruins-1.12.2.jar | World gen | DONE (world gen) |
+| SRParasites-1.12.2v1.9.11.jar | Gameplay (mobs) | TODO |
+| ScalingHealth-1.12.2-1.3.42+147.jar | Gameplay (mob difficulty/spawn rules) | TODO |
+| SereneSeasons-1.12.2-1.2.18-universal.jar | Gameplay | TODO (1.12 port) |
+| SetBonus-1.12.2.020.jar | Gameplay (combat/items) | TODO |
+| ShieldBreak-1.1.3.jar | Gameplay (combat/items) | TODO |
+| SilentLib-1.12.2-3.0.14+168.jar | Library | only when a ported mod needs it |
+| SimpleDifficulty-1.12.2-0.3.9.jar | Gameplay (survival) | TODO |
+| SnowRealMagic-1.12.2-0.7.1.jar | World gen | DONE (world gen) |
+| SoManyEnchantments-0.5.5.jar | Gameplay (combat/items) | TODO |
+| SoundFilters-0.12.1_for_1.12.jar | Client visuals/feel | TODO later (client look/feel: port 1.12 or check) |
+| SpartanHUDBaubles-1.12.2-1.0.0.jar | Gameplay (items/baubles) | TODO |
+| SpartanShields-1.12.2-1.5.5.jar | Gameplay (combat/items) | TODO |
+| SpartanWeaponry-1.12.2-1.5.3.jar | Gameplay (combat/items) | TODO |
+| SpawnerControl-1.6.3b.jar | Gameplay (mob difficulty/spawn rules) | TODO |
+| StandardExpansion-3.4.173.jar | RLCraft tweaks/scripts | TODO (apply what they change) |
+| Surge-1.12.2-2.0.79.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
+| Toast Control-1.12.2-1.8.1.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
+| ToolBelt-1.12.2-1.9.14.jar | Gameplay (items/baubles) | TODO |
+| Traverse-1.12.2-1.6.0-69.jar | World gen | DONE (world gen) |
+| Trinkets and Baubles-32.4.jar | Gameplay (items/baubles) | TODO |
+| VariedCommodities_1.12.2-(31Mar23).jar | Gameplay (misc) | TODO |
+| Waystones_1.12.2-4.1.0.jar | World gen + gameplay | world gen DONE, gameplay TODO |
+| WearableBackpacks-RLCraft-1.12.2-3.2.6.jar | Gameplay (items/baubles) | TODO |
+| Wilhelm.zip | Resource pack | with its mod |
+| WolfArmorAndStorage-3.8.1+1.12.2.alpha.1-SNAPSHOT-signed.jar | Gameplay (items/baubles) | TODO |
+| XPFromHarvest-1.12.2-1.2.0.jar | Gameplay (survival) | TODO |
+| YungsLaw-1.12.2-1.0.4.jar | RLCraft tweaks/scripts | TODO (apply what they change) |
+| [___MixinCompat-0.8___].jar | Library | only when a ported mod needs it |
+| _MixinBootstrap-1.1.0.jar | Library | only when a ported mod needs it |
+| alcatrazcore-1.0.4.jar | Library | only when a ported mod needs it |
+| antiqueatlas-1.12.2-4.6.3.jar | Gameplay (misc) | TODO |
+| anvilpatch-1.1.1.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
+| armorunder-mc1.12.2-1.0.0.jar | Gameplay (misc) | TODO |
+| astikorcarts-1.12.2-0.1.2.8.jar | Gameplay (misc) | TODO |
+| base-1.12.2-3.14.0.jar | Library | only when a ported mod needs it |
+| better_survival-1.5.3.jar | Gameplay (combat/items) | TODO |
+| betterbiomeblend-1.12.2-1.1.7-forge.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
+| bettercaves-1.12.2-2.0.4.jar | World gen | DONE (world gen) |
+| betternether-0.1.8.6.jar | World gen | SKIP (user dropped / not used) |
+| callablehorses-1.12.2-1.1.1.jar | Gameplay (misc) | TODO |
+| carrotslib-mc1.12.2-1.0.0b1.jar | Library | only when a ported mod needs it |
+| carryon-1.12.2-1.12.7.23.jar | Gameplay (misc) | TODO |
+| champions-1.12.2-1.0.11.10.jar | Gameplay (mob difficulty/spawn rules) | TODO |
+| classyhats-1.6.0.jar | Gameplay (items/baubles) | TODO |
+| comforts-1.12.2-1.4.1.3.jar | Gameplay (survival) | TODO |
+| corpsecomplex-1.12.2-1.0.12.0.jar | Gameplay (survival) | TODO |
+| craftablechainmail-1.0.jar | Gameplay (survival) | TODO |
+| defiledlands-1.12.2-1.4.3.jar | World gen | DONE (world gen) |
+| disenchanter[1.12]1.8.jar | Gameplay (combat/items) | TODO |
+| dynamictreesdefiledlands-1.12.2-1.0.0.jar | World gen | DONE (world gen) |
+| firstaid-1.6.22.jar | Gameplay (survival) | TODO |
+| foamfix-0.10.15-1.12.2.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
+| forgottenitems-1.12.2-1.3.1.4.jar | Gameplay (items/baubles) | TODO |
+| framevoidpatch-1.0.0.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
+| fxcontrol-1.12-0.1.15.jar | Gameplay (mob difficulty/spawn rules) | TODO |
+| grapplemod-1.12.2-v12.3.jar | Gameplay (misc) | TODO |
+| iChunUtil-1.12.2-7.2.2.jar | Library | only when a ported mod needs it |
+| iceandfire-1.7.1-1.12.2.jar | Gameplay | DONE (v0.10.0) |
+| incontrol-1.12-3.9.18.jar | Gameplay (mob difficulty/spawn rules) | TODO |
+| itlt-1.12.x-1.0.4.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
+| jei_1.12.2-4.16.1.302.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
+| librarianlib-1.12.2-4.22.jar | Library | only when a ported mod needs it |
+| llibrary-1.7.20-1.12.2.jar | Gameplay | DONE (v0.10.0) |
+| lostcities-1.12-2.0.22.jar | World gen | SKIP (user dropped / not used) |
+| lycanitesmobs-1.12.2-2.0.8.9.jar | Gameplay (mobs) | world gen DONE, mobs IN PROGRESS |
+| mcw-bridges-1.0.6b-mc1.12.2.jar | Gameplay (misc) | TODO |
+| modtweaker-4.0.20.11.jar | RLCraft tweaks/scripts | TODO (apply what they change) |
+| notreepunching-2.0.21.jar | World gen + gameplay | world gen DONE, gameplay TODO |
+| particleculling-1.12.2-v1.4.1.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
+| phosphor-1.12.2-0.2.6+build50-universal.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
+| pigstep-1.12.jar | Gameplay (mobs) | TODO |
+| playerbosses-1.12.2-1.1.0.jar | Gameplay (mobs) | TODO |
+| roughTweaks0.2.4-1.12.2.jar | RLCraft tweaks/scripts | TODO (apply what they change) |
+| rustic-1.1.7.jar | World gen + gameplay | world gen DONE, gameplay TODO |
+| sit-1.12.2-v1.3.jar | Gameplay (misc) | TODO |
+| spark-forge.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
+| spartandefiled-1.0.jar | Gameplay (combat/items) | TODO |
+| spartanfire_rlcraft-1.1.0.jar | Gameplay (combat/items) | TODO |
+| switchbow-1.6.8.jar | Gameplay (combat/items) | TODO |
+| tnt_utilities-mc1.12-1.2.3.jar | Gameplay (misc) | TODO |
+| trumpetskeleton-1.12-1.0.2.1.jar | Gameplay (mobs) | TODO |
+| tschipplib-1.12.2-1.1.7.jar | Library | only when a ported mod needs it |
+| tumbleweed-1.12-0.4.7.jar | Gameplay (mobs) | TODO |
+| xptome-1.12.2-v1.1.6.jar | Gameplay (survival) | TODO |
