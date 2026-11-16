@@ -22,12 +22,19 @@ public final class StubTestEntities {
 
    static {
       for (CreatureInfo info : CreatureManager.getInstance().creatures.values()) {
-         TYPES.put(info.name, ENTITIES.register(info.name, () -> EntityType.Builder.<BaseCreatureEntity>of(BaseCreatureEntity::new, MobCategory.MONSTER)
+         TYPES.put(info.name, ENTITIES.register(info.name, () -> EntityType.Builder.<BaseCreatureEntity>of(StubCreature::new, MobCategory.MONSTER)
             .sized((float)info.width, (float)info.height).clientTrackingRange(10).build(LycanitesMobs.MODID + ":" + info.name)));
       }
    }
 
    private StubTestEntities() {
+   }
+
+   /** Rideable so the model casts of the real creatures (e.g. ModelIgnibus) work on the test entities. */
+   public static class StubCreature extends com.lycanitesmobs.core.entity.RideableCreatureEntity {
+      public StubCreature(EntityType<? extends BaseCreatureEntity> type, net.minecraft.world.level.Level level) {
+         super(type, level);
+      }
    }
 
    public static void register(IEventBus modBus) {
