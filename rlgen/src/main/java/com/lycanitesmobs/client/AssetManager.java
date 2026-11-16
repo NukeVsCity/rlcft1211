@@ -4,6 +4,7 @@ import com.lycanitesmobs.LycanitesMobs;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.info.CreatureInfo;
 import com.lycanitesmobs.core.info.ModInfo;
+import com.lycanitesmobs.core.info.projectile.ProjectileInfo;
 import java.util.HashMap;
 import java.util.Map;
 import net.ilexiconn.llibrary.client.model.legacy.ModelBase;
@@ -14,6 +15,7 @@ public class AssetManager {
    public static Map<String, ResourceLocation> textures = new HashMap<>();
    public static Map<String, ResourceLocation[]> textureGroups = new HashMap<>();
    public static Map<String, ModelBase> models = new HashMap<>();
+   public static Map<ProjectileInfo, ModelBase> projectileModels = new HashMap<>();
 
    public static void addTexture(String name, ModInfo modInfo, String path) {
       name = name.toLowerCase();
@@ -83,5 +85,22 @@ public class AssetManager {
       }
       models.put(key, creatureModel);
       return creatureModel;
+   }
+
+   /** 1.12 registerModels created every projectile's model (ProjectileInfo.modelClassName) at start; here on first use. */
+   public static ModelBase getProjectileModel(ProjectileInfo projectileInfo) {
+      if (projectileModels.containsKey(projectileInfo)) {
+         return projectileModels.get(projectileInfo);
+      }
+      ModelBase model = null;
+      if (projectileInfo.modelClassName != null) {
+         try {
+            model = (ModelBase)Class.forName(projectileInfo.modelClassName).getConstructor().newInstance();
+         } catch (Exception e) {
+            LycanitesMobs.logWarning("", "Unable to load a Projectile model, check that the model class name is correct in the associated projectile json. " + e);
+         }
+      }
+      projectileModels.put(projectileInfo, model);
+      return model;
    }
 }
