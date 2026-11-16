@@ -174,7 +174,7 @@ public class MateGoal extends EntityAIBase {
       double closestDistance = Double.MAX_VALUE;
       AgeableCreatureEntity newMate = null;
 
-      for (LivingEntity nextEntity : possibleMates) {
+      for (LivingEntity nextEntity : (List<LivingEntity>)possibleMates) {
          if (nextEntity instanceof AgeableCreatureEntity) {
             AgeableCreatureEntity testMate = (AgeableCreatureEntity)nextEntity;
             if (this.host.canBreedWith(testMate) && (double)this.host.distanceTo(testMate) < closestDistance) {

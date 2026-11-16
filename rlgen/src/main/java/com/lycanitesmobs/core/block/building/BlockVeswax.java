@@ -127,7 +127,7 @@ public class BlockVeswax extends BlockBase {
    }
 
    public void onBlockPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
-      int orientationMeta = placer.getDirection().getOpposite().getIndex();
+      int orientationMeta = placer.getDirection().getOpposite().get3DDataValue();
       orientationMeta += 8;
       world.setBlock(pos, state.setValue(HIVE, orientationMeta), 2);
       super.onBlockPlacedBy(world, pos, state, placer, itemStack);

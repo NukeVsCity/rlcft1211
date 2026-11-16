@@ -102,8 +102,6 @@ public class MoveVillageGoal extends EntityAIBase {
    private double speed;
    private boolean isNocturnal = true;
    private Path entityPathNavigate;
-   private VillageDoorInfo doorInfo;
-   private List doorList = new ArrayList();
 
    public MoveVillageGoal(BaseCreatureEntity setHost) {
       this.host = setHost;
@@ -120,127 +118,12 @@ public class MoveVillageGoal extends EntityAIBase {
       return this;
    }
 
+
+   /**
+    * 1.12 shouldExecute walked to the doors of the nearest village in World.getVillageCollection. 1.21 has no village
+    * collection (villages are POIs), so this goal never starts.
+    */
    public boolean shouldExecute() {
-      this.shuffleDoorList();
-      if (this.isNocturnal && this.host.level().isDay()) {
-         return false;
-      } else {
-         Object village = this.host
-            .level()
-            .getVillageCollection()
-            .getNearestVillage(
-               LycPos.of(
-                  Mth.floor(this.host.getX()),
-                  Mth.floor(this.host.getY()),
-                  Mth.floor(this.host.getZ())
-               ),
-               0
-            );
-         if (village == null) {
-            return false;
-         } else {
-            this.doorInfo = this.getDoorInfo(village);
-            if (this.doorInfo == null) {
-               return false;
-            } else if (!(this.host.getNavigation() instanceof CreaturePathNavigate)) {
-               return false;
-            } else {
-               CreaturePathNavigate pathNavigate = (CreaturePathNavigate)this.host.getNavigation();
-               boolean flag = pathNavigate.getEnterDoors();
-               pathNavigate.setCanOpenDoors(false);
-               this.entityPathNavigate = this.host
-                  .getNavigation()
-                  .createPath(
-                     (double)this.doorInfo.getInsideOffsetX(), (double)this.doorInfo.getInsideBlockPos().getY(), (double)this.doorInfo.getInsideOffsetZ()
-                  , 0);
-               pathNavigate.setCanOpenDoors(flag);
-               if (this.entityPathNavigate != null) {
-                  return true;
-               } else {
-                  Vec3 vec3 = RandomPositionGenerator.findRandomTargetTowards(
-                     this.host,
-                     10,
-                     7,
-                     new Vec3(
-                        (double)this.doorInfo.getInsideOffsetX(), (double)this.doorInfo.getInsideBlockPos().getY(), (double)this.doorInfo.getInsideOffsetZ()
-                     )
-                  );
-                  if (vec3 == null) {
-                     return false;
-                  } else {
-                     pathNavigate.setCanOpenDoors(false);
-                     this.entityPathNavigate = this.host.getNavigation().createPath(vec3.x, vec3.y, vec3.z, 0);
-                     pathNavigate.setCanOpenDoors(flag);
-                     return this.entityPathNavigate != null;
-                  }
-               }
-            }
-         }
-      }
-   }
-
-   public boolean shouldContinueExecuting() {
-      if (this.host.getNavigation().isDone()) {
-         return false;
-      } else {
-         float f = this.host.getBbWidth() + 4.0F;
-         return this.host
-               .distanceToSqr(
-                  (double)this.doorInfo.getInsideOffsetX(), (double)this.doorInfo.getInsideBlockPos().getY(), (double)this.doorInfo.getInsideOffsetZ()
-               )
-            > (double)(f * f);
-      }
-   }
-
-   public void startExecuting() {
-      this.host.getNavigation().moveTo(this.entityPathNavigate, this.speed);
-   }
-
-   public void resetTask() {
-      if (this.host.getNavigation().isDone()
-         || this.host
-               .distanceToSqr(
-                  (double)this.doorInfo.getInsideOffsetX(), (double)this.doorInfo.getInsideBlockPos().getY(), (double)this.doorInfo.getInsideOffsetZ()
-               )
-            < 16.0) {
-         this.doorList.add(this.doorInfo);
-      }
-   }
-
-   private VillageDoorInfo getDoorInfo(Object par1Village) {
-      VillageDoorInfo villagedoorinfo = null;
-      int i = Integer.MAX_VALUE;
-
-      for (VillageDoorInfo villagedoorinfo1 : par1Village.getVillageDoorInfoList()) {
-         int j = villagedoorinfo1.getDistanceSquared(
-            Mth.floor(this.host.getX()),
-            Mth.floor(this.host.getY()),
-            Mth.floor(this.host.getZ())
-         );
-         if (j < i && !this.doesDoorListContain(villagedoorinfo1)) {
-            villagedoorinfo = villagedoorinfo1;
-            i = j;
-         }
-      }
-
-      return villagedoorinfo;
-   }
-
-   private boolean doesDoorListContain(VillageDoorInfo par1VillageDoorInfo) {
-      for (VillageDoorInfo villagedoorinfo1 : this.doorList) {
-         if (par1VillageDoorInfo.getInsideOffsetX() == villagedoorinfo1.getInsideOffsetX()
-            && par1VillageDoorInfo.getInsideBlockPos().getY() == villagedoorinfo1.getInsideBlockPos().getY()
-            && par1VillageDoorInfo.getInsideOffsetZ() == villagedoorinfo1.getInsideOffsetZ()) {
-            return true;
-         }
-      }
-
       return false;
-   }
-
-   private void shuffleDoorList() {
-      if (this.doorList.size() > 15) {
-         this.doorList.remove(0);
-      }
    }
 }

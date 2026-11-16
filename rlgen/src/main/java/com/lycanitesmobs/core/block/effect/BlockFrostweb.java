@@ -132,7 +132,7 @@ public class BlockFrostweb extends BlockBase {
    @Override
    protected void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
       super.entityInside(state, world, pos, entity);
-      entity.setInWeb();
+      entity.makeStuckInBlock(blockState112(entity), new net.minecraft.world.phys.Vec3(0.25, 0.05F, 0.25));
    }
 
    public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {
@@ -161,7 +161,8 @@ public class BlockFrostweb extends BlockBase {
       }
    }
 
-   public Object getRenderLayer() {
-      return Object.CUTOUT;
+
+   private BlockState blockState112(Entity entity) {
+      return this.defaultBlockState();
    }
 }

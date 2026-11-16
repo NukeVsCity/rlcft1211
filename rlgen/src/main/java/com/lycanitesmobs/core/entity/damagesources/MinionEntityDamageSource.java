@@ -119,6 +119,6 @@ public class MinionEntityDamageSource extends EntityDamageSource {
    }
 
    public Component getDeathMessage(LivingEntity slainEntity) {
-      return this.minionDamageSource.getDeathMessage(slainEntity);
+      return this.minionDamageSource.getLocalizedDeathMessage(slainEntity);
    }
 }

@@ -393,8 +393,9 @@ public class BaseProjectileEntity extends ThrowableProjectile {
    public void onImpactVisuals() {
    }
 
+   /** 1.12 canBeCollidedWith (ray traces and attacks) */
    @Override
-   public boolean canBeCollidedWith() {
+   public boolean isPickable() {
       return false;
    }
 
@@ -412,8 +413,8 @@ public class BaseProjectileEntity extends ThrowableProjectile {
    }
 
    @Override
-   protected EntityDimensions getDefaultDimensions(Pose pose) {
-      return this.legacySize > 0.0F ? EntityDimensions.scalable(this.legacySize, this.legacySize) : super.getDefaultDimensions(pose);
+   public EntityDimensions getDimensions(Pose pose) {
+      return this.legacySize > 0.0F ? EntityDimensions.scalable(this.legacySize, this.legacySize) : super.getDimensions(pose);
    }
 
    public void setProjectileScale(float scale) {

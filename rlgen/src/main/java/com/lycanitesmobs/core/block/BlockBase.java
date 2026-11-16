@@ -306,6 +306,54 @@ public class BlockBase extends Block {
       return this.setSoundType(soundType);
    }
 
+   /** 1.12 onBlockPlacedBy */
+   public void onBlockPlacedBy(Level world, BlockPos pos, BlockState state, net.minecraft.world.entity.LivingEntity placer, ItemStack stack) {
+   }
+
+   @Override
+   public void setPlacedBy(Level world, BlockPos pos, BlockState state, net.minecraft.world.entity.LivingEntity placer, ItemStack stack) {
+      super.setPlacedBy(world, pos, state, placer, stack);
+      if (placer != null) {
+         this.onBlockPlacedBy(world, pos, state, placer, stack);
+      }
+   }
+
+   /** 1.12 breakBlock (block replaced by a different block) */
+   public void breakBlock(Level world, BlockPos pos, BlockState state) {
+   }
+
+   @Override
+   protected void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved) {
+      if (!state.is(newState.getBlock())) {
+         this.breakBlock(world, pos, state);
+      }
+      super.onRemove(state, world, pos, newState, moved);
+   }
+
+   /** 1.12 onBlockActivated */
+   public boolean onBlockActivated(Level world, BlockPos pos, BlockState state, Player player, net.minecraft.world.InteractionHand hand, net.minecraft.core.Direction side, float hitX, float hitY, float hitZ) {
+      return false;
+   }
+
+   @Override
+   protected net.minecraft.world.InteractionResult useWithoutItem(BlockState state, Level world, BlockPos pos, Player player, net.minecraft.world.phys.BlockHitResult hit) {
+      net.minecraft.world.phys.Vec3 v = hit.getLocation();
+      if (this.onBlockActivated(world, pos, state, player, net.minecraft.world.InteractionHand.MAIN_HAND, hit.getDirection(), (float)(v.x - pos.getX()), (float)(v.y - pos.getY()), (float)(v.z - pos.getZ()))) {
+         return net.minecraft.world.InteractionResult.sidedSuccess(world.isClientSide);
+      }
+      return super.useWithoutItem(state, world, pos, player, hit);
+   }
+
+   /** 1.12 eventReceived */
+   public boolean eventReceived(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
+      return false;
+   }
+
+   @Override
+   protected boolean triggerEvent(BlockState state, Level world, BlockPos pos, int eventID, int eventParam) {
+      return this.eventReceived(state, world, pos, eventID, eventParam);
+   }
+
    public static enum RENDER_TYPE {
       NONE(-1),
       NORMAL(0),

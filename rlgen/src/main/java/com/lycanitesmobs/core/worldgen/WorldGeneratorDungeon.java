@@ -100,7 +100,7 @@ import java.util.Random;
 import java.util.UUID;
 
 
-public class WorldGeneratorDungeon implements IWorldGenerator {
+public class WorldGeneratorDungeon {
    public static int DUNGEON_DISTANCE = 170;
    public static double TOWER_CHANCE = 0.25;
    public boolean enabled = true;
@@ -119,49 +119,8 @@ public class WorldGeneratorDungeon implements IWorldGenerator {
       TOWER_CHANCE = config.getDouble("Dungeons", "Tower Chance", TOWER_CHANCE, "The chance of a dungeon generating a tower on top (0.25 by default).");
    }
 
-   public void generate(RandomSource random, int chunkX, int chunkZ, Level world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-      if (this.enabled) {
-         ExtendedWorld extendedWorld = ExtendedWorld.getForWorld(world);
-         if (extendedWorld != null) {
-            try {
-               ChunkPos chunkPos = new ChunkPos(chunkX, chunkZ);
-               int dungeonSizeMax = DUNGEON_DISTANCE;
-               List<DungeonInstance> nearbyDungeons = extendedWorld.getNearbyDungeonInstances(chunkPos, dungeonSizeMax * 2);
-               if (nearbyDungeons.isEmpty()) {
-                  for (int x = -1; x <= 1; x++) {
-                     for (int z = -1; z <= 1; z++) {
-                        if ((x != 0 || z != 0) && (x == 0 || z == 0)) {
-                           LycanitesMobs.logDebug(
-                              "Dungeon", "Creating A New Dungeon At Chunk: X" + (chunkX + dungeonSizeMax * x) + " Z" + (chunkZ + dungeonSizeMax * z)
-                           );
-                           DungeonInstance dungeonInstance = new DungeonInstance();
-                           int yPos = world.getSeaLevel();
-                           if (yPos < 64) {
-                              yPos = 64;
-                           }
-
-                           BlockPos dungeonPos = new ChunkPos(chunkX + dungeonSizeMax * x, chunkZ + dungeonSizeMax * z).getBlock(7, yPos, 7);
-                           dungeonInstance.setOrigin(dungeonPos);
-                           if (dungeonInstance.init(world)) {
-                              extendedWorld.addDungeonInstance(dungeonInstance, new UUID(world.random.nextLong(), world.random.nextLong()));
-                           }
-                        }
-                     }
-                  }
-
-                  return;
-               }
-
-               for (DungeonInstance dungeonInstancex : extendedWorld.getNearbyDungeonInstances(chunkPos, 0)) {
-                  dungeonInstancex.buildChunk(world, chunkPos);
-               }
-            } catch (Exception var16) {
-               LycanitesMobs.logWarning("Dungeon", "An exception occurred when trying to generate a dungeon.");
-               if (LycanitesMobs.config.getBool("Debug", "Dungeon", false)) {
-                  var16.printStackTrace();
-               }
-            }
-         }
-      }
-   }
+   /**
+    * 1.12 IWorldGenerator.generate: Lycanites dungeons are placed by rlgen's legacy populate
+    * (com.nukevscity.rlgen.lyc.dungeon, SavedData rlgen_lyc_dungeons) with this class's config values.
+    */
 }

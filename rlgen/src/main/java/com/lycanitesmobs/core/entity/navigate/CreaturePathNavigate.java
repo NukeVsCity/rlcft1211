@@ -1,5 +1,7 @@
 package com.lycanitesmobs.core.entity.navigate;
 
+import com.lycanitesmobs.compat.LycMath;
+
 import com.lycanitesmobs.ObjectManager;
 import com.lycanitesmobs.compat.LycPos;
 import com.lycanitesmobs.compat.LycWorld;
@@ -370,7 +372,7 @@ public class CreaturePathNavigate extends PathNavigation {
       } else {
          Vec3 entityVector = this.getTempMobPos();
          float entitySize = this.mob.getBbWidth() * this.mob.getBbWidth();
-         if (LycMath.distSq(entityVector, this.path.getEntityPosAtNode(this.mob, this.path.getNextNodeIndex())) < (double)entitySize) {
+         if (entityVector.distanceToSqr(this.path.getEntityPosAtNode(this.mob, this.path.getNextNodeIndex())) < (double)entitySize) {
             this.path.advance();
          }
 
@@ -397,9 +399,9 @@ public class CreaturePathNavigate extends PathNavigation {
          super.tick();
       } else if (this.targetPosition != null) {
          double d0 = (double)(this.mob.getBbWidth() * this.mob.getBbWidth());
-         if (!(LycMath.distSq(this.mob, Vec3.atCenterOf(this.targetPosition)) >= d0)
+         if (!(this.mob.distanceToSqr(Vec3.atCenterOf(this.targetPosition)) >= d0)
             || !(this.mob.getY() <= (double)this.targetPosition.getY())
-               && !(LycMath.distSq(this.mob, Vec3.atCenterOf(new BlockPos(this.targetPosition.getX(), Mth.floor(this.mob.getY()), this.targetPosition.getZ()))) >= d0)) {
+               && !(this.mob.distanceToSqr(Vec3.atCenterOf(new BlockPos(this.targetPosition.getX(), Mth.floor(this.mob.getY()), this.targetPosition.getZ()))) >= d0)) {
             this.targetPosition = null;
          } else {
             this.mob.getMoveControl().setWantedPosition(

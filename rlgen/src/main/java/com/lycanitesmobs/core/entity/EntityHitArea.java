@@ -95,6 +95,14 @@ import net.neoforged.neoforge.event.tick.*;
 
 
 public class EntityHitArea extends Entity {
+
+   /** 1.12 isImmuneToFire */
+   public boolean isImmuneToFire = false;
+
+   @Override
+   public boolean fireImmune() {
+      return this.isImmuneToFire;
+   }
    public Entity owner;
    protected static final EntityDataAccessor<Float> WIDTH = SynchedEntityData.defineId(EntityHitArea.class, EntityDataSerializers.FLOAT);
    protected static final EntityDataAccessor<Float> HEIGHT = SynchedEntityData.defineId(EntityHitArea.class, EntityDataSerializers.FLOAT);
@@ -144,7 +152,9 @@ public class EntityHitArea extends Entity {
    protected void addAdditionalSaveData(CompoundTag nbtTagCompound) {
    }
 
-   public boolean canBeCollidedWith() {
+   /** 1.12 canBeCollidedWith (ray traces and attacks) */
+   @Override
+   public boolean isPickable() {
       return true;
    }
 
@@ -167,6 +177,23 @@ public class EntityHitArea extends Entity {
    }
 
    public Component getName() {
-      return this.owner != null ? this.owner.getName() : "Hit Area";
+      return this.owner != null ? this.owner.getName() : Component.literal("Hit Area");
+   }
+
+   /** 1.12 Entity.setSize */
+   protected float legacyWidth = 0.6F;
+   protected float legacyHeight = 1.8F;
+
+   public void setSize(float width, float height) {
+      if (width != this.legacyWidth || height != this.legacyHeight) {
+         this.legacyWidth = width;
+         this.legacyHeight = height;
+         this.refreshDimensions();
+      }
+   }
+
+   @Override
+   public EntityDimensions getDimensions(Pose pose) {
+      return EntityDimensions.scalable(this.legacyWidth, this.legacyHeight);
    }
 }

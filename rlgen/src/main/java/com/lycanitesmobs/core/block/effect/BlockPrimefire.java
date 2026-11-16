@@ -117,7 +117,7 @@ public class BlockPrimefire extends BlockFireBase {
    public void burnBlockReplace(Level world, BlockPos pos, int newFireAge) {
       BlockState replaceFireBlock = this.defaultBlockState().setValue(AGE, newFireAge);
       if (world.random.nextFloat() <= 0.25F) {
-         replaceFireBlock = Blocks.FIRE.defaultBlockState().setValue(BlockFire.AGE, newFireAge);
+         replaceFireBlock = Blocks.FIRE.defaultBlockState().setValue(net.minecraft.world.level.block.FireBlock.AGE, newFireAge);
       }
 
       world.setBlock(pos, replaceFireBlock, 3);

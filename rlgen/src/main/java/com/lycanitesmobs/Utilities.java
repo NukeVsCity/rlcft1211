@@ -149,20 +149,20 @@ public class Utilities {
    ) {
       HitResult blockResult = raytraceBlocks(world, start, end, stopOnLiquid, ignoreBlockWithoutBoundingBox);
       HitResult entityResult = raytraceEntities(world, start, end, rayWidth, entityPredicate);
-      if (blockResult != null && blockResult.getType() != Type.MISS) {
-         if (entityResult != null && entityResult.getType() != Type.MISS) {
+      if (blockResult != null && blockResult.getType() != HitResult.Type.MISS) {
+         if (entityResult != null && entityResult.getType() != HitResult.Type.MISS) {
             return start.distanceToSqr(blockResult.getLocation()) <= start.distanceToSqr(entityResult.getLocation()) ? blockResult : entityResult;
          } else {
             return blockResult;
          }
       } else {
-         return entityResult != null && entityResult.getType() != Type.MISS ? entityResult : new HitResult(Type.MISS, end, null, LycPos.of(end));
+         return entityResult != null && entityResult.getType() != HitResult.Type.MISS ? entityResult : net.minecraft.world.phys.BlockHitResult.miss(end, null, LycPos.of(end));
       }
    }
 
    public static HitResult raytraceBlocks(Level world, Vec3 start, Vec3 end, boolean stopOnLiquid, boolean ignoreBlockWithoutBoundingBox) {
       HitResult result = LycWorld.rayTraceBlocks(world, start, end, stopOnLiquid, ignoreBlockWithoutBoundingBox, false);
-      return result != null && result.getType() != Type.MISS ? result : new HitResult(Type.MISS, end, null, LycPos.of(end));
+      return result != null && result.getType() != HitResult.Type.MISS ? result : net.minecraft.world.phys.BlockHitResult.miss(end, null, LycPos.of(end));
    }
 
    public static <T extends Entity> HitResult raytraceEntities(Level world, Vec3 start, Vec3 end, float rayWidth, @Nullable Predicate<Entity> predicate) {
@@ -180,32 +180,32 @@ public class Utilities {
 
       for (Entity entity : possibleEntities) {
          AABB entityAabb = entity.getBoundingBox();
-         if (rayWidth + entity.getCollisionBorderSize() != 0.0F) {
-            entityAabb = entityAabb.inflate((double)(rayWidth + entity.getCollisionBorderSize()));
+         if (rayWidth + entity.getPickRadius() != 0.0F) {
+            entityAabb = entityAabb.inflate((double)(rayWidth + entity.getPickRadius()));
          }
 
-         HitResult currentHit = entityAabb.clip(start, end);
-         if (currentHit != null) {
-            double currentHitDistSqr = start.distanceToSqr(currentHit.getLocation());
+         java.util.Optional<Vec3> currentHit = entityAabb.clip(start, end);
+         if (currentHit.isPresent()) {
+            double currentHitDistSqr = start.distanceToSqr(currentHit.get());
             if (currentHitDistSqr < closestHitDistSqr) {
                closestHitEntity = entity;
-               closestHitLocation = currentHit.getLocation();
+               closestHitLocation = currentHit.get();
                closestHitDistSqr = currentHitDistSqr;
             }
          }
       }
 
       return closestHitEntity != null && closestHitLocation != null
-         ? new HitResult(closestHitEntity, closestHitLocation)
-         : new HitResult(Type.MISS, end, null, LycPos.of(end));
+         ? new net.minecraft.world.phys.EntityHitResult(closestHitEntity, closestHitLocation)
+         : net.minecraft.world.phys.BlockHitResult.miss(end, null, LycPos.of(end));
    }
 
    public static Predicate<Entity> collidable() {
-      return entity -> EntitySelectors.NOT_SPECTATING.test(entity) && entity.canBeCollidedWith();
+      return entity -> net.minecraft.world.entity.EntitySelector.NO_SPECTATORS.test(entity) && entity.isPickable();
    }
 
    public static Predicate<Entity> collidableExlcuding(Entity entityToIgnore) {
-      return entityToIgnore == null ? collidable() : entity -> EntitySelectors.NOT_SPECTATING.test(entity) && entity.canBeCollidedWith() && entity != entityToIgnore;
+      return entityToIgnore == null ? collidable() : entity -> net.minecraft.world.entity.EntitySelector.NO_SPECTATORS.test(entity) && entity.isPickable() && entity != entityToIgnore;
    }
 
    public static Predicate<Entity> collidableExlcuding(Entity entityToIgnore1, Entity entityToIgnore2) {
@@ -214,7 +214,7 @@ public class Utilities {
       } else {
          return entityToIgnore2 == null
             ? collidableExlcuding(entityToIgnore1)
-            : entity -> EntitySelectors.NOT_SPECTATING.test(entity) && entity.canBeCollidedWith() && entity != entityToIgnore1 && entity != entityToIgnore2;
+            : entity -> net.minecraft.world.entity.EntitySelector.NO_SPECTATORS.test(entity) && entity.isPickable() && entity != entityToIgnore1 && entity != entityToIgnore2;
       }
    }
 
@@ -226,8 +226,8 @@ public class Utilities {
       } else {
          return entityToIgnore3 == null
             ? collidableExlcuding(entityToIgnore1, entityToIgnore2)
-            : entity -> EntitySelectors.NOT_SPECTATING.test(entity)
-                  && entity.canBeCollidedWith()
+            : entity -> net.minecraft.world.entity.EntitySelector.NO_SPECTATORS.test(entity)
+                  && entity.isPickable()
                   && entity != entityToIgnore1
                   && entity != entityToIgnore2
                   && entity != entityToIgnore3;
@@ -254,7 +254,7 @@ public class Utilities {
       }
 
       Set<Entity> entitySet = Arrays.stream(entities).filter(Objects::nonNull).collect(Collectors.toSet());
-      return entity -> EntitySelectors.NOT_SPECTATING.test(entity) && entity.canBeCollidedWith() && !entitySet.contains(entity);
+      return entity -> net.minecraft.world.entity.EntitySelector.NO_SPECTATORS.test(entity) && entity.isPickable() && !entitySet.contains(entity);
    }
 
    public static boolean isValentines() {

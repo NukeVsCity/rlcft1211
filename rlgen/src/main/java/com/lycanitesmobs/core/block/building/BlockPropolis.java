@@ -106,7 +106,7 @@ public class BlockPropolis extends BlockBase {
       this.setup();
       this.setHardness(0.6F);
       this.setHarvestLevel("shovel", 0);
-      this.setSoundType(SoundType.GROUND);
+      this.setSoundType(SoundType.GRAVEL);
       this.tickRate = 100;
       this.removeOnTick = true;
    }
@@ -125,7 +125,7 @@ public class BlockPropolis extends BlockBase {
    }
 
    public void onBlockPlacedBy(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
-      int orientationMeta = placer.getDirection().getOpposite().getIndex();
+      int orientationMeta = placer.getDirection().getOpposite().get3DDataValue();
       orientationMeta += 8;
       world.setBlock(pos, state.setValue(BlockVeswax.HIVE, orientationMeta), 2);
       super.onBlockPlacedBy(world, pos, state, placer, itemStack);

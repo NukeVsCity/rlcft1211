@@ -149,19 +149,19 @@ public class EntityShadowfireBarrier extends BaseProjectileEntity {
       HitResult movingobjectposition = LycWorld.rayTraceBlocks(this.level(), vec3, vec31);
       if (!this.level().isClientSide) {
          List list = this.level()
-            .getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().inflate(this.getDeltaMovement().x, this.getDeltaMovement().y, this.getDeltaMovement().z).expandTowards(1.0, 1.0, 1.0));
+            .getEntities(this, this.getBoundingBox().inflate(this.getDeltaMovement().x, this.getDeltaMovement().y, this.getDeltaMovement().z).expandTowards(1.0, 1.0, 1.0));
          double d0 = 0.0;
          LivingEntity entitylivingbase = this.getThrower();
 
          for (int j = 0; j < list.size(); j++) {
             Entity entity = (Entity)list.get(j);
-            this.onImpact(new HitResult(entity));
+            this.onImpact(new net.minecraft.world.phys.EntityHitResult(entity));
          }
       }
    }
 
    @Override
-   public boolean handleWaterMovement() {
+   protected boolean updateInWaterStateAndDoFluidPushing() { // 1.12 handleWaterMovement
       return false;
    }
 

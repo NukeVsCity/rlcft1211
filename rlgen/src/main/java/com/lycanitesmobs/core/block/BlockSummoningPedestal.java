@@ -99,7 +99,12 @@ import com.lycanitesmobs.core.tileentity.TileEntityBase;
 import com.lycanitesmobs.core.tileentity.TileEntitySummoningPedestal;
 
 
-public class BlockSummoningPedestal extends BlockBase implements ITileEntityProvider {
+public class BlockSummoningPedestal extends BlockBase implements ITileEntityBlock {
+   @Override
+   public Class<TileEntitySummoningPedestal> getTileEntityClass() {
+      return TileEntitySummoningPedestal.class;
+   }
+
    public static final EnumProperty PROPERTY_OWNER = EnumProperty.create("owner", BlockSummoningPedestal.EnumSummoningPedestal.class);
 
    public BlockSummoningPedestal(ModInfo group) {
@@ -111,9 +116,8 @@ public class BlockSummoningPedestal extends BlockBase implements ITileEntityProv
       this.setResistance(10.0F);
       this.setHarvestLevel("pickaxe", 2);
       this.setSoundType(SoundType.METAL);
-      this.hasTileEntity = true;
       CreativeTabs.add(LycanitesMobs.blocksTab, this);
-      this.setDefaultState(this.getBlockState().getBaseState().setValue(PROPERTY_OWNER, BlockSummoningPedestal.EnumSummoningPedestal.NONE));
+      this.registerDefaultState(this.stateDefinition.any().setValue(PROPERTY_OWNER, BlockSummoningPedestal.EnumSummoningPedestal.NONE));
    }
 
    @Override
@@ -149,37 +153,33 @@ public class BlockSummoningPedestal extends BlockBase implements ITileEntityProv
       }
 
       super.breakBlock(worldIn, pos, state);
-      worldIn.removeTileEntity(pos);
    }
 
    public boolean eventReceived(BlockState state, Level worldIn, BlockPos pos, int eventID, int eventParam) {
       BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-      return tileEntity != null && tileEntity.receiveClientEvent(eventID, eventParam);
+      return tileEntity != null && tileEntity.triggerEvent(eventID, eventParam);
    }
 
    public boolean onBlockActivated(
       Level world, BlockPos pos, BlockState state, Player playerIn, InteractionHand hand, Direction side, float hitX, float hitY, float hitZ
    ) {
       if (!world.isClientSide && playerIn != null && playerIn.level() != null) {
-         playerIn.openGui(
-            LycanitesMobs.instance, GuiHandler.GuiType.TILEENTITY.id, playerIn.level(), pos.getX(), pos.getY(), pos.getZ()
+         GuiHandler.openGui(playerIn, GuiHandler.GuiType.TILEENTITY.id, playerIn.level(), pos.getX(), pos.getY(), pos.getZ()
          );
       }
 
       return true;
    }
 
-   public BlockEntity createNewTileEntity(Level world, int metadata) {
-      return new TileEntitySummoningPedestal();
-   }
 
    public static void setState(BlockSummoningPedestal.EnumSummoningPedestal owner, Level worldIn, BlockPos pos) {
       BlockState iblockstate = worldIn.getBlockState(pos);
       BlockEntity tileentity = worldIn.getBlockEntity(pos);
-      worldIn.setBlock(pos, iblockstate.getBlock().getBlockState().getBaseState().setValue(PROPERTY_OWNER, owner), 3);
+      worldIn.setBlock(pos, iblockstate.getBlock().defaultBlockState().setValue(PROPERTY_OWNER, owner), 3);
       if (tileentity != null) {
-         tileentity.validate();
-         worldIn.setTileEntity(pos, tileentity);
+         // 1.12 validate + setTileEntity: keep the same tile entity at pos
+         tileentity.clearRemoved();
+         worldIn.setBlockEntity(tileentity);
       }
    }
 
@@ -195,6 +195,11 @@ public class BlockSummoningPedestal extends BlockBase implements ITileEntityProv
       }
 
       public String getName() {
+         return this.name;
+      }
+
+      @Override
+      public String getSerializedName() {
          return this.name;
       }
    }

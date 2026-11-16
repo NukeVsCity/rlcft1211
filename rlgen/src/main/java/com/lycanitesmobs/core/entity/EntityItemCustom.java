@@ -95,6 +95,14 @@ import net.neoforged.neoforge.event.tick.*;
 
 
 public class EntityItemCustom extends ItemEntity {
+
+   /** 1.12 isImmuneToFire */
+   public boolean isImmuneToFire = false;
+
+   @Override
+   public boolean fireImmune() {
+      return this.isImmuneToFire;
+   }
    public EntityItemCustom(Level world) {
       super(EntityType.ITEM, world);
    }
@@ -115,14 +123,16 @@ public class EntityItemCustom extends ItemEntity {
 
    public void setCanBurn(boolean canBurn) {
       this.isImmuneToFire = !canBurn;
-      this.setFlag(0, false);
+      this.setSharedFlag(0, false);
    }
 
-   protected void setFlag(int flagID, boolean value) {
+   /** 1.12 setFlag: never shows as burning when immune */
+   @Override
+   protected void setSharedFlag(int flagID, boolean value) {
       if (flagID == 0 && this.fireImmune()) {
          value = false;
       }
 
-      super.setFlag(flagID, value);
+      super.setSharedFlag(flagID, value);
    }
 }

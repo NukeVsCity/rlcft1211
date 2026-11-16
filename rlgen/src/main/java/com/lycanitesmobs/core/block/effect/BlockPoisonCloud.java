@@ -181,7 +181,4 @@ public class BlockPoisonCloud extends BlockBase {
       }
    }
 
-   public Object getRenderLayer() {
-      return Object.CUTOUT;
-   }
 }

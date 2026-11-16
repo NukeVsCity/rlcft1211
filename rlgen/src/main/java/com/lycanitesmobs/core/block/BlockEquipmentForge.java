@@ -100,8 +100,13 @@ import com.lycanitesmobs.core.tileentity.TileEntityEquipmentForge;
 import java.util.List;
 
 
-public class BlockEquipmentForge extends BlockBase implements ITileEntityProvider {
-   public static final DirectionProperty FACING = BlockHorizontal.FACING;
+public class BlockEquipmentForge extends BlockBase implements ITileEntityBlock {
+   @Override
+   public Class<TileEntityEquipmentForge> getTileEntityClass() {
+      return TileEntityEquipmentForge.class;
+   }
+
+   public static final DirectionProperty FACING = net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING;
    public int level;
 
    public BlockEquipmentForge(ModInfo group, int level) {
@@ -127,7 +132,6 @@ public class BlockEquipmentForge extends BlockBase implements ITileEntityProvide
 
       this.setup();
       this.setHardness(5.0F);
-      this.hasTileEntity = true;
       CreativeTabs.add(LycanitesMobs.blocksTab, this);
       this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
    }
@@ -189,35 +193,37 @@ public class BlockEquipmentForge extends BlockBase implements ITileEntityProvide
       }
 
       super.breakBlock(worldIn, pos, state);
-      worldIn.removeTileEntity(pos);
    }
 
    public boolean eventReceived(BlockState state, Level worldIn, BlockPos pos, int eventID, int eventParam) {
       BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-      return tileEntity != null && tileEntity.receiveClientEvent(eventID, eventParam);
+      return tileEntity != null && tileEntity.triggerEvent(eventID, eventParam);
    }
 
    public boolean onBlockActivated(
       Level world, BlockPos pos, BlockState state, Player playerIn, InteractionHand hand, Direction side, float hitX, float hitY, float hitZ
    ) {
       if (!world.isClientSide && playerIn != null) {
-         playerIn.openGui(
-            LycanitesMobs.instance, GuiHandler.GuiType.TILEENTITY.id, playerIn.level(), pos.getX(), pos.getY(), pos.getZ()
+         GuiHandler.openGui(playerIn, GuiHandler.GuiType.TILEENTITY.id, playerIn.level(), pos.getX(), pos.getY(), pos.getZ()
          );
       }
 
       return true;
    }
 
-   public BlockEntity createNewTileEntity(Level world, int metadata) {
-      TileEntityEquipmentForge tileEntityEquipmentForge = new TileEntityEquipmentForge();
-      tileEntityEquipmentForge.setLevel(this.level);
-      return tileEntityEquipmentForge;
+   /** 1.12 createNewTileEntity: the forge tile takes this block's level. */
+   @Override
+   public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+      BlockEntity tileEntity = ITileEntityBlock.super.newBlockEntity(pos, state);
+      if (tileEntity instanceof TileEntityEquipmentForge tileEntityEquipmentForge) {
+         tileEntityEquipmentForge.setLevel(this.level);
+      }
+      return tileEntity;
    }
 
       public BlockState getStateFromMeta(int meta) {
-      Direction enumfacing = Direction.byIndex(meta);
-      if (enumfacing.getAxis() == Axis.Y) {
+      Direction enumfacing = Direction.from3DDataValue(meta);
+      if (enumfacing.getAxis() == Direction.Axis.Y) {
          enumfacing = Direction.NORTH;
       }
 
@@ -225,7 +231,7 @@ public class BlockEquipmentForge extends BlockBase implements ITileEntityProvide
    }
 
       public int getMetaFromState(BlockState state) {
-      return ((Direction)state.getValue(FACING)).getIndex();
+      return ((Direction)state.getValue(FACING)).get3DDataValue();
    }
 
    public BlockState getStateForPlacement(Level worldIn, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer) {

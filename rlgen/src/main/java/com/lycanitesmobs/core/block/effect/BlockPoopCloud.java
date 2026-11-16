@@ -176,7 +176,4 @@ public class BlockPoopCloud extends BlockBase {
       }
    }
 
-   public Object getRenderLayer() {
-      return Object.CUTOUT;
-   }
 }

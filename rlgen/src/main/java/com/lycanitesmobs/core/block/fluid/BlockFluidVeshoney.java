@@ -154,7 +154,7 @@ public class BlockFluidVeshoney extends BlockFluidBase {
 
       if (!(entity instanceof EntityVespid) & !(entity instanceof EntityVespidQueen)
          && (!(entity instanceof Player) || !((Player)entity).isCreative() || !((Player)entity).isSpectator())) {
-         entity.setInWeb();
+         entity.makeStuckInBlock(blockState112(entity), new net.minecraft.world.phys.Vec3(0.25, 0.05F, 0.25));
          entity.push(0.0, -0.02, 0.0);
       }
 
@@ -170,5 +170,9 @@ public class BlockFluidVeshoney extends BlockFluidBase {
       }
 
       super.animateTick(blockState, world, pos, random);
+   }
+
+   private BlockState blockState112(Entity entity) {
+      return this.defaultBlockState();
    }
 }

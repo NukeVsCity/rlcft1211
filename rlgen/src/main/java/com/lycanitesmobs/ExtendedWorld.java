@@ -108,7 +108,8 @@ import java.util.Random;
 import java.util.UUID;
 
 
-public class ExtendedWorld extends WorldSavedData {
+/** 1.12 ExtendedWorld (WorldSavedData in the per-dimension storage "LycanitesMobs"; 1.21 SavedData in the level's DataStorage). */
+public class ExtendedWorld extends net.minecraft.world.level.saveddata.SavedData {
    private static final String EXT_PROP_NAME = "LycanitesMobs";
    private static final Map<Level, ExtendedWorld> loadedExtWorlds = new HashMap<>();
    public Level world;
@@ -130,15 +131,24 @@ public class ExtendedWorld extends WorldSavedData {
 
    public static ExtendedWorld getForWorld(Level world) {
       return world == null ? null : loadedExtWorlds.computeIfAbsent(world, k -> {
-         WorldSavedData worldSavedData = world.getPerWorldStorage().getOrLoadData(ExtendedWorld.class, "LycanitesMobs");
          ExtendedWorld worldExt;
-         if (worldSavedData != null) {
-            worldExt = (ExtendedWorld)worldSavedData;
-            worldExt.world = world;
-            worldExt.init();
+         if (world instanceof ServerLevel serverLevel) {
+            boolean[] loaded = new boolean[1];
+            worldExt = serverLevel.getDataStorage().computeIfAbsent(new net.minecraft.world.level.saveddata.SavedData.Factory<>(
+               () -> new ExtendedWorld(world),
+               (tag, provider) -> {
+                  ExtendedWorld ext = new ExtendedWorld("LycanitesMobs");
+                  ext.readFromNBT(tag);
+                  loaded[0] = true;
+                  return ext;
+               }, null), "LycanitesMobs");
+            if (loaded[0]) {
+               worldExt.world = world;
+               worldExt.init();
+            }
          } else {
+            // 1.12 client worlds had their own (never saved) storage
             worldExt = new ExtendedWorld(world);
-            world.getPerWorldStorage().setData("LycanitesMobs", worldExt);
          }
 
          return worldExt;
@@ -150,21 +160,24 @@ public class ExtendedWorld extends WorldSavedData {
    }
 
    public ExtendedWorld(String prop_name) {
-      super("LycanitesMobs");
    }
 
    public ExtendedWorld(Level world) {
-      super("LycanitesMobs");
       this.world = world;
+   }
+
+   @Override
+   public CompoundTag save(CompoundTag tag, net.minecraft.core.HolderLookup.Provider registries) {
+      return this.writeToNBT(tag);
    }
 
    public void init() {
       if (!this.initialized) {
          this.initialized = true;
-         this.lastSpawnerTime = this.level().getGameTime() - 1L;
-         this.lastEventScheduleTime = this.level().getGameTime() - 1L;
-         this.lastEventUpdateTime = this.level().getGameTime() - 1L;
-         if (!this.level().isClientSide && !"".equals(this.getWorldEventName()) && this.serverWorldEventPlayer == null) {
+         this.lastSpawnerTime = this.world.getGameTime() - 1L;
+         this.lastEventScheduleTime = this.world.getGameTime() - 1L;
+         this.lastEventUpdateTime = this.world.getGameTime() - 1L;
+         if (!this.world.isClientSide && !"".equals(this.getWorldEventName()) && this.serverWorldEventPlayer == null) {
             long savedLastStartedTime = this.getWorldEventLastStartedTime();
             this.startMobEvent(this.getWorldEventName(), null, LycPos.of(0, 0, 0), 1, -1);
             if (this.serverWorldEventPlayer != null) {
@@ -179,7 +192,7 @@ public class ExtendedWorld extends WorldSavedData {
    }
 
    protected String getConfigEntryName(String name) {
-      return name + " " + this.level().provider.getDimensionType().getName() + " (" + LycDim.id(this.level()) + ")";
+      return name + " " + this.world.dimension().location().getPath() + " (" + LycDim.id(this.world) + ")";
    }
 
    public long getWorldEventStartTargetTime() {
@@ -206,18 +219,18 @@ public class ExtendedWorld extends WorldSavedData {
 
    public void setWorldEventStartTargetTime(long setLong) {
       if (this.worldEventStartTargetTime != setLong) {
-         this.markDirty();
+         this.setDirty();
       }
 
       this.worldEventStartTargetTime = setLong;
       if (setLong > 0L) {
-         LycanitesMobs.logDebug("MobEvents", "Next random mob will start after " + (this.worldEventStartTargetTime - this.level().getGameTime()) / 20L + "secs.");
+         LycanitesMobs.logDebug("MobEvents", "Next random mob will start after " + (this.worldEventStartTargetTime - this.world.getGameTime()) / 20L + "secs.");
       }
    }
 
    public void setWorldEventLastStartedTime(long setLong) {
       if (this.worldEventLastStartedTime != setLong) {
-         this.markDirty();
+         this.setDirty();
       }
 
       this.worldEventLastStartedTime = setLong;
@@ -225,7 +238,7 @@ public class ExtendedWorld extends WorldSavedData {
 
    public void setWorldEventName(String setString) {
       if (!this.worldEventName.equals(setString)) {
-         this.markDirty();
+         this.setDirty();
       }
 
       this.worldEventName = setString;
@@ -246,33 +259,33 @@ public class ExtendedWorld extends WorldSavedData {
          LycanitesMobs.logWarning("", "Tried to start a null world event, stopping any event instead.");
          this.stopWorldEvent();
       } else {
-         if (!this.level().isClientSide) {
+         if (!this.world.isClientSide) {
             boolean extended = false;
             if (this.serverWorldEventPlayer != null) {
                extended = this.serverWorldEventPlayer.mobEvent == mobEvent;
             }
 
             if (!extended) {
-               this.serverWorldEventPlayer = mobEvent.getServerEventPlayer(this.level());
+               this.serverWorldEventPlayer = mobEvent.getServerEventPlayer(this.world);
             }
 
             this.serverWorldEventPlayer.extended = extended;
             this.setWorldEventName(mobEvent.name);
             this.increaseMobEventCount();
             this.setWorldEventStartTargetTime(0L);
-            this.setWorldEventLastStartedTime(this.level().getGameTime());
+            this.setWorldEventLastStartedTime(this.world.getGameTime());
             this.serverWorldEventPlayer.onStart();
             this.updateAllClientsEvents();
          }
 
-         if (this.level().isClientSide) {
+         if (this.world.isClientSide) {
             boolean extendedx = false;
             if (this.clientWorldEventPlayer != null) {
                extendedx = this.clientWorldEventPlayer.mobEvent == mobEvent;
             }
 
             if (!extendedx) {
-               this.clientWorldEventPlayer = mobEvent.getClientEventPlayer(this.level());
+               this.clientWorldEventPlayer = mobEvent.getClientEventPlayer(this.world);
             }
 
             this.clientWorldEventPlayer.extended = extendedx;
@@ -304,8 +317,8 @@ public class ExtendedWorld extends WorldSavedData {
       if (mobEvent == null) {
          LycanitesMobs.logWarning("", "Tried to start a null mob event.");
       } else {
-         if (!this.level().isClientSide) {
-            MobEventPlayerServer mobEventPlayerServer = mobEvent.getServerEventPlayer(this.level());
+         if (!this.world.isClientSide) {
+            MobEventPlayerServer mobEventPlayerServer = mobEvent.getServerEventPlayer(this.world);
             this.serverMobEventPlayers.put(mobEvent.name, mobEventPlayerServer);
             mobEventPlayerServer.player = player;
             mobEventPlayerServer.origin = pos;
@@ -315,12 +328,12 @@ public class ExtendedWorld extends WorldSavedData {
             this.updateAllClientsEvents();
          }
 
-         if (this.level().isClientSide) {
+         if (this.world.isClientSide) {
             MobEventPlayerClient mobEventPlayerClient;
             if (this.clientMobEventPlayers.containsKey(mobEvent.name)) {
                mobEventPlayerClient = this.clientMobEventPlayers.get(mobEvent.name);
             } else {
-               mobEventPlayerClient = mobEvent.getClientEventPlayer(this.level());
+               mobEventPlayerClient = mobEvent.getClientEventPlayer(this.world);
                this.clientMobEventPlayers.put(mobEvent.name, mobEventPlayerClient);
             }
 
@@ -336,29 +349,29 @@ public class ExtendedWorld extends WorldSavedData {
          MobEvent mobEvent = MobEventManager.getInstance().mobEvents.get(mobEventName);
          if (!mobEvent.isEnabled()) {
             LycanitesMobs.logWarning(
-               "", "Tried to start a mob event that was disabled with the name: '" + mobEventName + "' on " + (this.level().isClientSide ? "Client" : "Server")
+               "", "Tried to start a mob event that was disabled with the name: '" + mobEventName + "' on " + (this.world.isClientSide ? "Client" : "Server")
             );
             return null;
          } else {
-            mobEvent.trigger(this.level(), player, pos, level, subspecies);
+            mobEvent.trigger(this.world, player, pos, level, subspecies);
             return mobEvent;
          }
       } else {
          LycanitesMobs.logWarning(
-            "", "Tried to start a mob event with the invalid name: '" + mobEventName + "' on " + (this.level().isClientSide ? "Client" : "Server")
+            "", "Tried to start a mob event with the invalid name: '" + mobEventName + "' on " + (this.world.isClientSide ? "Client" : "Server")
          );
          return null;
       }
    }
 
    public void stopMobEvent(String mobEventName) {
-      if (!this.level().isClientSide && this.serverMobEventPlayers.containsKey(mobEventName)) {
+      if (!this.world.isClientSide && this.serverMobEventPlayers.containsKey(mobEventName)) {
          this.serverMobEventPlayers.get(mobEventName).onFinish();
          this.serverMobEventPlayers.remove(mobEventName);
          this.updateAllClientsEvents();
       }
 
-      if (this.level().isClientSide && this.clientMobEventPlayers.containsKey(mobEventName)) {
+      if (this.world.isClientSide && this.clientMobEventPlayers.containsKey(mobEventName)) {
          if (LycanitesMobs.proxy.getClientPlayer() != null) {
             this.clientMobEventPlayers.get(mobEventName).onFinish(LycanitesMobs.proxy.getClientPlayer());
          }
@@ -426,7 +439,7 @@ public class ExtendedWorld extends WorldSavedData {
       int level = this.serverWorldEventPlayer != null ? this.serverWorldEventPlayer.level : 0;
       int subspecies = this.serverWorldEventPlayer != null ? this.serverWorldEventPlayer.variant : -1;
       MessageWorldEvent message = new MessageWorldEvent(this.getWorldEventName(), pos, level, subspecies);
-      LycanitesMobs.packetHandler.sendToDimension(message, LycDim.id(this.level()));
+      LycanitesMobs.packetHandler.sendToDimension(message, LycDim.id(this.world));
 
       for (MobEventPlayerServer mobEventPlayerServer : this.serverMobEventPlayers.values()) {
          MessageMobEvent messageMobEvent = new MessageMobEvent(
@@ -435,24 +448,20 @@ public class ExtendedWorld extends WorldSavedData {
             mobEventPlayerServer.level,
             mobEventPlayerServer.variant
          );
-         LycanitesMobs.packetHandler.sendToDimension(messageMobEvent, LycDim.id(this.level()));
+         LycanitesMobs.packetHandler.sendToDimension(messageMobEvent, LycDim.id(this.world));
       }
    }
 
    public void addDungeonInstance(DungeonInstance dungeonInstance, UUID uuid) {
       dungeonInstance.uuid = uuid;
       this.dungeons.put(dungeonInstance.uuid, dungeonInstance);
-      this.markDirty();
+      this.setDirty();
    }
 
    public List<DungeonInstance> getNearbyDungeonInstances(ChunkPos chunkPos, int range) {
       List<DungeonInstance> nearbyDungeons = new ArrayList<>();
 
       for (DungeonInstance dungeonInstance : this.dungeons.values()) {
-         if (dungeonInstance.world == null) {
-            dungeonInstance.init(this.level());
-         }
-
          if (dungeonInstance.isChunkPosWithin(chunkPos, range)) {
             nearbyDungeons.add(dungeonInstance);
          }
@@ -479,39 +488,19 @@ public class ExtendedWorld extends WorldSavedData {
       }
 
       if (nbtTagCompound.contains("Dungeons")) {
-         ListTag nbtDungeonList = nbtTagCompound.getList("Dungeons", 10);
-
-         for (int i = 0; i < nbtDungeonList.size(); i++) {
-            try {
-               CompoundTag dungeonNBT = nbtDungeonList.getCompound(i);
-               DungeonInstance dungeonInstance = new DungeonInstance();
-               dungeonInstance.readFromNBT(dungeonNBT);
-               if (dungeonInstance.uuid != null && !this.dungeons.containsKey(dungeonInstance.uuid)) {
-                  this.dungeons.put(dungeonInstance.uuid, dungeonInstance);
-               }
-            } catch (Exception var6) {
-               LycanitesMobs.logWarning("Dungeon", "An exception occurred when loading a dungeon from NBT.");
-            }
-         }
+         // 1.12 DungeonInstance list: dungeons are placed and saved by rlgen (lyc/dungeon); keep the tag as read
+         this.dungeonsTag = nbtTagCompound.getList("Dungeons", 10);
       }
    }
+
+   private ListTag dungeonsTag = new ListTag();
 
    public CompoundTag writeToNBT(CompoundTag nbtTagCompound) {
       nbtTagCompound.putLong("WorldEventStartTargetTime", this.worldEventStartTargetTime);
       nbtTagCompound.putLong("WorldEventLastStartedTime", this.worldEventLastStartedTime);
       nbtTagCompound.putString("WorldEventName", this.worldEventName);
       nbtTagCompound.putInt("WorldEventCount", this.worldEventCount);
-      ListTag nbtDungeonList = new ListTag();
-
-      for (DungeonInstance dungeonInstance : this.dungeons.values()) {
-         CompoundTag dungeonNBT = new CompoundTag();
-         dungeonNBT = dungeonInstance.writeToNBT(dungeonNBT);
-         if (dungeonNBT != null) {
-            nbtDungeonList.add(dungeonNBT);
-         }
-      }
-
-      nbtTagCompound.put("Dungeons", nbtDungeonList);
+      nbtTagCompound.put("Dungeons", this.dungeonsTag);
       return nbtTagCompound;
    }
 }

@@ -123,7 +123,7 @@ public class BlockFluidMoglava extends BlockFluidBase {
    public boolean canDisplace(BlockGetter world, BlockPos pos) {
       BlockState blockState = world.getBlockState(pos);
       if (blockState.getBlock() != this) {
-         if (blockState == Blocks.WATER) {
+         if (false) { // 1.12 compared the IBlockState to Blocks.WATER: never true
             if (world instanceof Level) {
                ((Level)world).setBlock(pos, Blocks.STONE.defaultBlockState(), 3);
             }
@@ -133,7 +133,7 @@ public class BlockFluidMoglava extends BlockFluidBase {
             return Material.of(blockState).isLiquid() ? false : super.canDisplace(world, pos);
          }
       } else {
-         if (blockState.getBlock().getMetaFromState(blockState) != 0) {
+         if (blockState.getValue(net.minecraft.world.level.block.LiquidBlock.LEVEL) != 0) {
             byte otherSourceBlocks = 0;
             ArrayList<BlockPos> adjBlockPositions = new ArrayList<>();
             adjBlockPositions.add(pos.offset(-1, 0, 0));
@@ -145,7 +145,7 @@ public class BlockFluidMoglava extends BlockFluidBase {
             for (BlockPos adjBlockPos : adjBlockPositions) {
                BlockState adjBlockState = world.getBlockState(adjBlockPos);
                Block adjBlock = adjBlockState.getBlock();
-               int adjMetadata = adjBlock.getMetaFromState(adjBlockState);
+               int adjMetadata = adjBlock == this ? adjBlockState.getValue(net.minecraft.world.level.block.LiquidBlock.LEVEL) : 0;
                if (adjBlock == this && adjMetadata == 0) {
                   otherSourceBlocks++;
                }

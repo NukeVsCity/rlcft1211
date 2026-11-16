@@ -135,7 +135,7 @@ public class BlockFireBase extends BlockBase {
       this.tickRate = 30;
       this.setLightOpacity(1);
       this.setTickRandomly(this.tickRandomly);
-      this.setSoundType(SoundType.CLOTH);
+      this.setSoundType(SoundType.WOOL);
       this.disableStats();
    }
 
@@ -158,8 +158,8 @@ public class BlockFireBase extends BlockBase {
    }
 
    public BlockState getActualState(BlockState state, BlockGetter worldIn, BlockPos pos) {
-      return !worldIn.getBlockState(pos.below()).isSideSolid(worldIn, pos.below(), Direction.UP)
-            && !Blocks.FIRE.canCatchFire(worldIn, pos.below(), Direction.UP)
+      return !com.lycanitesmobs.compat.LycMath.isSideSolid(worldIn, pos.below(), Direction.UP)
+            && !this.canCatchFire(worldIn, pos.below(), Direction.UP)
          ? state.setValue(NORTH, this.canCatchFire(worldIn, pos.north(), Direction.SOUTH))
             .setValue(EAST, this.canCatchFire(worldIn, pos.east(), Direction.WEST))
             .setValue(SOUTH, this.canCatchFire(worldIn, pos.south(), Direction.NORTH))
@@ -226,7 +226,7 @@ public class BlockFireBase extends BlockBase {
                }
 
                if (!(this.spreadChance <= 0.0F) && !permanent) {
-                  boolean highHumidity = world.isBlockinHighHumidity(pos);
+                  boolean highHumidity = world.getBiome(pos).value().getModifiedClimateSettings().downfall() > 0.85F;
                   int humidityChance = 0;
                   if (highHumidity) {
                      humidityChance = -50;
@@ -283,7 +283,7 @@ public class BlockFireBase extends BlockBase {
 
    public boolean canPlaceBlockAt(Level world, BlockPos pos) {
       try {
-         return world.getBlockState(pos.below()).isSideSolid(world, pos, Direction.UP) || this.canNeighborCatchFire(world, pos);
+         return com.lycanitesmobs.compat.LycMath.isSideSolid(world, pos, Direction.UP) || this.canNeighborCatchFire(world, pos);
       } catch (Exception var4) {
          return false;
       }
@@ -316,9 +316,7 @@ public class BlockFireBase extends BlockBase {
 
          for (Direction enumfacing : Direction.values()) {
             i = Math.max(
-               worldIn.getBlockState(pos.relative(enumfacing))
-                  .getBlock()
-                  .getFlammability(worldIn, pos.relative(enumfacing), enumfacing.getOpposite()),
+               worldIn.getBlockState(pos.relative(enumfacing)).getFlammability(worldIn, pos.relative(enumfacing), enumfacing.getOpposite()),
                i
             );
          }
@@ -343,7 +341,8 @@ public class BlockFireBase extends BlockBase {
          }
 
          if (this.triggerTNT && blockState.getBlock() == Blocks.TNT) {
-            Blocks.TNT.onPlayerDestroy(world, pos, blockState.setValue(BlockTNT.EXPLODE, true));
+            // 1.12 BlockTNT.onPlayerDestroy with EXPLODE: primes the TNT
+            net.minecraft.world.level.block.TntBlock.explode(world, pos);
          }
       }
    }
@@ -357,15 +356,15 @@ public class BlockFireBase extends BlockBase {
    }
 
    public boolean canCatchFire(BlockGetter world, BlockPos pos, Direction face) {
-      return world.getBlockState(pos).getBlock().isFlammable(world, pos, face);
+      return world.getBlockState(pos).isFlammable(world, pos, face);
    }
 
    public boolean isBlockFireSource(Block block, Level world, BlockPos pos, Direction side) {
-      return block.isFireSource(world, pos, side);
+      return world.getBlockState(pos).isFireSource(world, pos, side);
    }
 
    public int getBlockFlammability(BlockGetter world, BlockPos pos, Direction face) {
-      return world.getBlockState(pos).getBlock().getFlammability(world, pos, face);
+      return world.getBlockState(pos).getFlammability(world, pos, face);
    }
 
    protected boolean canDie(Level world, BlockPos pos) {
@@ -381,10 +380,7 @@ public class BlockFireBase extends BlockBase {
    }
 
    protected ItemStack getSilkTouchDrop(BlockState state) {
-      return new ItemStack(this.getItemDropped(state, null, 0), 1, 0);
+      return ItemStack.EMPTY;
    }
 
-   public Object getRenderLayer() {
-      return Object.CUTOUT;
-   }
 }

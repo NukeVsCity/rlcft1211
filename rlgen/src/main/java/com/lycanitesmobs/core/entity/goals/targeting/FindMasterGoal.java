@@ -153,7 +153,7 @@ public class FindMasterGoal extends TargetingGoal {
    protected boolean isValidTarget(LivingEntity target) {
       if (this.targetClass != null && !this.targetClass.isAssignableFrom(target.getClass())) {
          return false;
-      } else if (target instanceof Animal && ((Animal)target).getGrowingAge() < 0) {
+      } else if (target instanceof Animal && ((Animal)target).getAge() < 0) {
          return false;
       } else {
          return target instanceof AgeableCreatureEntity && ((AgeableCreatureEntity)target).getGrowingAge() < 0

@@ -101,6 +101,14 @@ import com.lycanitesmobs.core.tileentity.TileEntitySummoningPedestal;
 
 
 public class PortalEntity extends BaseProjectileEntity {
+
+   /** 1.12 isImmuneToFire */
+   public boolean isImmuneToFire = false;
+
+   @Override
+   public boolean fireImmune() {
+      return this.isImmuneToFire;
+   }
    @Override
    protected void defineSynchedData(SynchedEntityData.Builder builder) {
       super.defineSynchedData(builder);
@@ -182,7 +190,7 @@ public class PortalEntity extends BaseProjectileEntity {
 
       if (!this.level().isClientSide) {
          if (this.shootingEntity != null) {
-            this.entityData.set(OWNER_NAME, this.shootingEntity.getName());
+            this.entityData.set(OWNER_NAME, this.shootingEntity.getName().getString());
          } else if (this.summoningPedestal != null) {
             this.entityData.set(OWNER_NAME, this.summoningPedestal.getOwnerName());
          } else {
@@ -308,7 +316,7 @@ public class PortalEntity extends BaseProjectileEntity {
    }
 
    @Override
-   protected float getGravityVelocity() {
+   protected double getDefaultGravity() { // 1.12 getGravityVelocity
       return 0.0F;
    }
 
@@ -319,7 +327,7 @@ public class PortalEntity extends BaseProjectileEntity {
          this.targetY = this.shootingEntity.getY() + (double)this.shootingEntity.getEyeHeight() + lookDirection.y * this.portalRange;
          this.targetZ = this.shootingEntity.getZ() + lookDirection.z * this.portalRange;
          HitResult target = Utilities.raytraceBlocks(
-            this.level(), this.shootingEntity.getPositionEyes(1.0F), new Vec3(this.targetX, this.targetY, this.targetZ), false, true
+            this.level(), this.shootingEntity.getEyePosition(1.0F), new Vec3(this.targetX, this.targetY, this.targetZ), false, true
          );
          if (target != null && target.getLocation() != null) {
             this.targetX = target.getLocation().x;
@@ -359,7 +367,7 @@ public class PortalEntity extends BaseProjectileEntity {
       }
 
       if (this.ownerName != null) {
-         if (this.ownerName.equalsIgnoreCase(LycanitesMobs.proxy.getClientPlayer().getName())) {
+         if (this.ownerName.equalsIgnoreCase(LycanitesMobs.proxy.getClientPlayer().getName().getString())) {
             return AssetManager.getTexture(this.entityName + "_client");
          }
 

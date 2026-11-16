@@ -199,8 +199,8 @@ public class ProjectileBehaviourLaser extends ProjectileBehaviour {
             targetZ = rayTraceResult.getLocation().z;
          }
 
-         if (rayTraceResult.entityHit != null) {
-            entityHit = rayTraceResult.entityHit;
+         if (rayTraceResult instanceof net.minecraft.world.phys.EntityHitResult entityResult) {
+            entityHit = entityResult.getEntity();
             targetY += (double)(entityHit.getBbHeight() / 2.0F);
          }
       }

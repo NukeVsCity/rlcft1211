@@ -245,7 +245,6 @@ public class DirectNavigator {
          LycMotion.mulZ(this.host, (double)motion);
       }
 
-      this.host.prevLimbSwingAmount = this.host.walkAnimation.speed();
       double deltaX = this.host.getX() - this.host.xo;
       double deltaZ = this.host.getZ() - this.host.zo;
       float var7 = (float)Math.sqrt(deltaX * deltaX + deltaZ * deltaZ) * 4.0F;
@@ -253,8 +252,7 @@ public class DirectNavigator {
          var7 = 1.0F;
       }
 
-      this.host.walkAnimation.speed() = this.host.walkAnimation.speed() + (var7 - this.host.walkAnimation.speed()) * 0.4F;
-      this.host.limbSwing = this.host.limbSwing + this.host.walkAnimation.speed();
+      this.host.walkAnimation.update(var7, 0.4F);
    }
 
    protected void adjustRotationToWaypoint() {
@@ -270,7 +268,8 @@ public class DirectNavigator {
          angle = -30.0F;
       }
 
-      this.host.yBodyRot = this.host.setYRot(this.host.getYRot() + (angle));
+      this.host.setYRot(this.host.getYRot() + (angle));
+      this.host.yBodyRot = this.host.getYRot();
    }
 
    public void adjustRotationToTarget(BlockPos target) {

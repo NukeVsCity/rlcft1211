@@ -116,7 +116,7 @@ public class ArenaNode {
       if (adjacentNodesSize <= 0) {
          return null;
       } else {
-         return adjacentNodesSize == 1 ? this.adjacentNodes.get(0) : this.adjacentNodes.get(this.level().random.nextInt(adjacentNodesSize));
+         return adjacentNodesSize == 1 ? this.adjacentNodes.get(0) : this.adjacentNodes.get(this.world.random.nextInt(adjacentNodesSize));
       }
    }
 

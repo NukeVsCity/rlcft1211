@@ -183,7 +183,7 @@ public class ObjectLists {
 
    public static Holder<MobEffect>[] getEffects(String list) {
       list = list.toLowerCase();
-      return !effectLists.containsKey(list) ? new Holder<MobEffect>[0] : effectLists.get(list).toArray(new Holder<MobEffect>[effectLists.get(list).size()]);
+      return !effectLists.containsKey(list) ? new Holder[0] : effectLists.get(list).toArray(new Holder[effectLists.get(list).size()]);
    }
 
    public static boolean inItemList(String list, ItemStack testStack) {
@@ -269,11 +269,11 @@ public class ObjectLists {
       addItem("diet_carnivore", Items.COOKED_RABBIT);
       addItem("diet_carnivore", Items.COOKED_MUTTON);
       addItem("diet_piscivore", Items.COD);
-      addItem("diet_piscivore", new ItemStack(Items.COD, 1, 1));
-      addItem("diet_piscivore", new ItemStack(Items.COD, 1, 2));
-      addItem("diet_piscivore", new ItemStack(Items.COD, 1, 3));
+      addItem("diet_piscivore", new ItemStack(Items.SALMON, 1));
+      addItem("diet_piscivore", new ItemStack(Items.TROPICAL_FISH, 1));
+      addItem("diet_piscivore", new ItemStack(Items.PUFFERFISH, 1));
       addItem("diet_piscivore", Items.COOKED_COD);
-      addItem("diet_piscivore", new ItemStack(Items.COOKED_COD, 1, 1));
+      addItem("diet_piscivore", new ItemStack(Items.COOKED_SALMON, 1));
       addItem("diet_herbivore", Items.WHEAT);
       addItem("diet_herbivore", Items.CARROT);
       addItem("diet_herbivore", Items.POTATO);
@@ -281,11 +281,11 @@ public class ObjectLists {
       addItem("diet_frugivore", Items.MELON_SLICE);
       addItem("diet_frugivore", Blocks.PUMPKIN);
       addItem("diet_frugivore", Items.SUGAR);
-      addItem("diet_frugivore", new ItemStack(Items.INK_SAC, 1, 15));
+      addItem("diet_frugivore", new ItemStack(Items.BONE_MEAL, 1));
       addItem("diet_frugivore", Items.COOKIE);
       addItem("diet_frugivore", Blocks.CAKE);
       addItem("diet_frugivore", Items.PUMPKIN_PIE);
-      addItem("diet_exudativore", new ItemStack(Items.INK_SAC, 1, 2));
+      addItem("diet_exudativore", new ItemStack(Items.GREEN_DYE, 1));
       addItem("diet_fungivore", Items.MUSHROOM_STEW);
       addItem("diet_fungivore", Blocks.RED_MUSHROOM);
       addItem("diet_fungivore", Blocks.BROWN_MUSHROOM);
@@ -293,7 +293,7 @@ public class ObjectLists {
       addItem("diet_detritivore", Items.ROTTEN_FLESH);
       addItem("diet_detritivore", Items.FERMENTED_SPIDER_EYE);
       addItem("diet_geovore", Items.COAL);
-      addItem("diet_geovore", new ItemStack(Items.INK_SAC, 1, 4));
+      addItem("diet_geovore", new ItemStack(Items.LAPIS_LAZULI, 1));
       addItem("diet_geovore", Items.DIAMOND);
       addItem("diet_geovore", Items.EMERALD);
       addItem("diet_insectivore", Items.SPIDER_EYE);
@@ -350,14 +350,11 @@ public class ObjectLists {
                dropMeta = Integer.parseInt(customDropValues[1]);
             }
 
-            if (Item.getByNameOrId(dropName) != null) {
-               Item customItem = Item.getByNameOrId(dropName);
-               addItem(listName, new ItemStack(customItem, 1, dropMeta));
+            // 1.12 Item.getByNameOrId / Block.getBlockFromName with metadata: the flattened 1.21 item
+            Item customItem = com.nukevscity.rlgen.legacy.LegacyStates.item(dropName, dropMeta);
+            if (customItem != null && customItem != Items.AIR) {
+               addItem(listName, new ItemStack(customItem, 1));
                LycanitesMobs.logDebug("ItemSetup", "As Item: " + customItem);
-            } else if (Block.getBlockFromName(dropName) != null) {
-               Block customBlock = Block.getBlockFromName(dropName);
-               addItem(listName, new ItemStack(customBlock, 1, dropMeta));
-               LycanitesMobs.logDebug("ItemSetup", "As Block: " + customBlock);
             }
          }
       }
@@ -372,10 +369,10 @@ public class ObjectLists {
             if (toolNameParts.length >= 3 && "InfiTool".equalsIgnoreCase(toolNameParts[1])) {
                String toolName = toolNameParts[2];
                return "Pickaxe".equalsIgnoreCase(toolName) || "Hammer".equalsIgnoreCase(toolName);
-            } else if (itemStack.getItem() instanceof ItemPickaxe) {
+            } else if (itemStack.getItem() instanceof PickaxeItem) {
                return true;
             } else {
-               return itemStack.getItem().getHarvestLevel(itemStack, "pickaxe", null, null) != -1
+               return itemStack.canPerformAction(net.neoforged.neoforge.common.ItemAbilities.PICKAXE_DIG)
                   ? true
                   : itemStack.getDestroySpeed(Blocks.STONE.defaultBlockState()) > 1.0F;
             }
@@ -406,10 +403,10 @@ public class ObjectLists {
                }
             }
 
-            if (itemStack.getItem() instanceof ItemAxe) {
+            if (itemStack.getItem() instanceof AxeItem) {
                return true;
             } else {
-               return itemStack.getItem().getHarvestLevel(itemStack, "axe", null, null) != -1
+               return itemStack.canPerformAction(net.neoforged.neoforge.common.ItemAbilities.AXE_DIG)
                   ? true
                   : itemStack.getDestroySpeed(Blocks.OAK_LOG.defaultBlockState()) > 1.0F;
             }
@@ -428,10 +425,10 @@ public class ObjectLists {
             if (toolNameParts.length >= 3 && "InfiTool".equalsIgnoreCase(toolNameParts[1])) {
                String toolName = toolNameParts[2];
                return "Shovel".equalsIgnoreCase(toolName) || "Excavator".equalsIgnoreCase(toolName) || "Mattock".equalsIgnoreCase(toolName);
-            } else if (itemStack.getItem() instanceof ItemSpade) {
+            } else if (itemStack.getItem() instanceof ShovelItem) {
                return true;
             } else {
-               return itemStack.getItem().getHarvestLevel(itemStack, "shovel", null, null) != -1
+               return itemStack.canPerformAction(net.neoforged.neoforge.common.ItemAbilities.SHOVEL_DIG)
                   ? true
                   : itemStack.getDestroySpeed(Blocks.DIRT.defaultBlockState()) > 1.0F;
             }

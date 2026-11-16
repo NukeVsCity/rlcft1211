@@ -1396,7 +1396,7 @@ public abstract class BaseCreatureEntity extends Mob {
                         Entity var14 = ((TameableCreatureEntity)partnerCreature).getPlayerOwner();
                         if (var14 != null) {
                            transformedCreature.applyLevel(transformedLevel);
-                           fusionTameable.setPlayerOwner(var14);
+                           fusionTameable.setPlayerOwner((Player)var14);
                            ((TameableCreatureEntity)partnerCreature).copyPetBehaviourTo(fusionTameable);
                            if (partnerCreature.isTemporary) {
                               transformedCreature.setTemporary(partnerCreature.temporaryDuration);
@@ -4177,7 +4177,7 @@ public abstract class BaseCreatureEntity extends Mob {
    }
 
    public <T extends Entity> List<T> getNearbyEntities(Class<? extends T> clazz, Predicate<Entity> predicate, double range) {
-      return this.level().getEntitiesOfClass(clazz, this.getBoundingBox().inflate(range, range, range), predicate);
+      return (List<T>)(List)this.level().getEntitiesOfClass((Class<Entity>)clazz, this.getBoundingBox().inflate(range, range, range), predicate);
    }
 
    public <T extends Entity> T getNearestEntity(Class<? extends T> clazz, Class filterClass, double range, boolean canAttack) {

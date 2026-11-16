@@ -103,30 +103,9 @@ public class DefendVillageGoal extends FindAttackTargetGoal {
    }
 
    @Override
+   /** 1.12 shouldExecute targeted the aggressors of World.getVillageCollection villages: none in 1.21. */
    public boolean shouldExecute() {
-      if (this.host.getOwner() != null) {
-         return false;
-      } else {
-         if (this.village == null) {
-            this.village = this.host.level().getVillageCollection().getNearestVillage(LycPos.of(this.host), 32);
-         }
-
-         if (this.village == null) {
-            return false;
-         } else {
-            this.target = this.village.findNearestVillageAggressor(this.host);
-            if (this.target instanceof Creeper) {
-               return false;
-            } else if (this.isEntityTargetable(this.target, false)) {
-               return true;
-            } else if (this.host.getRandom().nextInt(20) == 0) {
-               this.target = this.village.getNearestTargetPlayer(this.host);
-               return this.isEntityTargetable(this.target, false);
-            } else {
-               return false;
-            }
-         }
-      }
+      return false;
    }
 
    @Override

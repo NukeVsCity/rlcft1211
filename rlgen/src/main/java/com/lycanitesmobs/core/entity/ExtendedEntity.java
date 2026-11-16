@@ -98,7 +98,6 @@ import com.lycanitesmobs.core.network.MessageEntityPerched;
 import com.lycanitesmobs.core.network.MessageEntityPickedUp;
 import java.util.HashMap;
 import java.util.Map;
-import javax.vecmath.Vector3d;
 
 
 public class ExtendedEntity {
@@ -107,7 +106,7 @@ public class ExtendedEntity {
    public LivingEntity entity;
    protected Map<String, Integer> projectileCooldownsPrimary = new HashMap<>();
    protected Map<String, Integer> projectileCooldownsSecondary = new HashMap<>();
-   Vector3d lastSafePos;
+   Vec3 lastSafePos;
    private boolean playerAllowFlyingSnapshot;
    private boolean playerIsFlyingSnapshot;
    public LivingEntity lastAttackedEntity;
@@ -166,7 +165,7 @@ public class ExtendedEntity {
             LycanitesMobs.logDebug("ForceRemoveEntity", "Forced entity removal, checking: " + this.entity.getName());
 
             for (String forceRemoveID : FORCE_REMOVE_ENTITY_IDS) {
-               if (forceRemoveID.equalsIgnoreCase(this.entity.getName())) {
+               if (forceRemoveID.equalsIgnoreCase(this.entity.getName().getString())) {
                   this.forceRemove = true;
                   break;
                }
@@ -180,12 +179,11 @@ public class ExtendedEntity {
          }
 
          if (this.lastSafePos == null) {
-            this.lastSafePos = new Vector3d(this.entity.getX(), this.entity.getY(), this.entity.getZ());
+            this.lastSafePos = new Vec3(this.entity.getX(), this.entity.getY(), this.entity.getZ());
          }
 
          if (!Material.of(this.entity.level().getBlockState(this.entity.blockPosition())).isSolid()) {
-            this.lastSafePos
-               .set(
+            this.lastSafePos = new Vec3(
                   Math.floor(this.entity.getX()) + 0.5, (double)this.entity.blockPosition().getY(), Math.floor(this.entity.getZ()) + 0.5
                );
          }
@@ -280,7 +278,8 @@ public class ExtendedEntity {
                   .randomTeleport(
                      this.pickedUpByEntity.getX() + pickupOffset[0],
                      this.pickedUpByEntity.getY() + pickupOffset[1],
-                     this.pickedUpByEntity.getZ() + pickupOffset[2]
+                     this.pickedUpByEntity.getZ() + pickupOffset[2],
+                     true
                   );
             }
 
@@ -290,7 +289,7 @@ public class ExtendedEntity {
 
          if (pickedUpByEntity == null) {
             if (this.lastSafePos != null) {
-               this.entity.setPos(this.lastSafePos.getX(), this.lastSafePos.getY(), this.lastSafePos.getZ());
+               this.entity.setPos(this.lastSafePos.x, this.lastSafePos.y, this.lastSafePos.z);
             }
 
             LycMotion.setX(this.entity, 0.0);

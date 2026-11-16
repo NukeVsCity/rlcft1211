@@ -137,7 +137,7 @@ public class EntityDevilGatling extends BaseProjectileEntity {
    }
 
    @Override
-   protected float getGravityVelocity() {
+   protected double getDefaultGravity() { // 1.12 getGravityVelocity
       return 0.0F;
    }
 

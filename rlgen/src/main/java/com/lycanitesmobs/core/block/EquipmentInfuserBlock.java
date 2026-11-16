@@ -100,8 +100,13 @@ import com.lycanitesmobs.core.tileentity.TileEntityBase;
 import java.util.List;
 
 
-public class EquipmentInfuserBlock extends BlockBase implements ITileEntityProvider {
-   public static final DirectionProperty FACING = BlockHorizontal.FACING;
+public class EquipmentInfuserBlock extends BlockBase implements ITileEntityBlock {
+   @Override
+   public Class<EquipmentInfuserTileEntity> getTileEntityClass() {
+      return EquipmentInfuserTileEntity.class;
+   }
+
+   public static final DirectionProperty FACING = net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING;
 
    public EquipmentInfuserBlock(ModInfo group) {
       super(Material.IRON);
@@ -109,7 +114,6 @@ public class EquipmentInfuserBlock extends BlockBase implements ITileEntityProvi
       this.blockName = "equipment_infuser";
       this.setup();
       this.setHardness(5.0F);
-      this.hasTileEntity = true;
       CreativeTabs.add(LycanitesMobs.blocksTab, this);
       this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
    }
@@ -171,33 +175,28 @@ public class EquipmentInfuserBlock extends BlockBase implements ITileEntityProvi
       }
 
       super.breakBlock(worldIn, pos, state);
-      worldIn.removeTileEntity(pos);
    }
 
    public boolean eventReceived(BlockState state, Level worldIn, BlockPos pos, int eventID, int eventParam) {
       BlockEntity tileEntity = worldIn.getBlockEntity(pos);
-      return tileEntity != null && tileEntity.receiveClientEvent(eventID, eventParam);
+      return tileEntity != null && tileEntity.triggerEvent(eventID, eventParam);
    }
 
    public boolean onBlockActivated(
       Level world, BlockPos pos, BlockState state, Player playerIn, InteractionHand hand, Direction side, float hitX, float hitY, float hitZ
    ) {
       if (!world.isClientSide && playerIn != null) {
-         playerIn.openGui(
-            LycanitesMobs.instance, GuiHandler.GuiType.TILEENTITY.id, playerIn.level(), pos.getX(), pos.getY(), pos.getZ()
+         GuiHandler.openGui(playerIn, GuiHandler.GuiType.TILEENTITY.id, playerIn.level(), pos.getX(), pos.getY(), pos.getZ()
          );
       }
 
       return true;
    }
 
-   public BlockEntity createNewTileEntity(Level world, int metadata) {
-      return new EquipmentInfuserTileEntity();
-   }
 
       public BlockState getStateFromMeta(int meta) {
-      Direction enumfacing = Direction.byIndex(meta);
-      if (enumfacing.getAxis() == Axis.Y) {
+      Direction enumfacing = Direction.from3DDataValue(meta);
+      if (enumfacing.getAxis() == Direction.Axis.Y) {
          enumfacing = Direction.NORTH;
       }
 
@@ -205,7 +204,7 @@ public class EquipmentInfuserBlock extends BlockBase implements ITileEntityProvi
    }
 
       public int getMetaFromState(BlockState state) {
-      return ((Direction)state.getValue(FACING)).getIndex();
+      return ((Direction)state.getValue(FACING)).get3DDataValue();
    }
 
    public BlockState getStateForPlacement(Level worldIn, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer) {

@@ -201,12 +201,14 @@ public class EntityProjectileLaser extends BaseProjectileEntity {
       this.noPhysics = true;
    }
 
-   public AABB getRenderBoundingBox() {
+   /** 1.12 getRenderBoundingBox: grown by the laser length. */
+   @Override
+   public AABB getBoundingBoxForCulling() {
       if (this.laserEnd == null) {
-         return super.getRenderBoundingBox();
+         return super.getBoundingBoxForCulling();
       } else {
          double distance = (double)this.distanceTo(this.laserEnd);
-         return super.getRenderBoundingBox().expandTowards(distance, distance, distance);
+         return super.getBoundingBoxForCulling().expandTowards(distance, distance, distance);
       }
    }
 
@@ -254,40 +256,40 @@ public class EntityProjectileLaser extends BaseProjectileEntity {
          double minZ = 0.0;
          double maxZ = 0.0;
          if (this.laserEnd != null) {
-            if (this.getX() - (double)this.getBbWidth() < this.laserEnd.getX() - (double)this.laserEnd.width) {
+            if (this.getX() - (double)this.getBbWidth() < this.laserEnd.getX() - (double)this.laserEnd.getBbWidth()) {
                minX = this.getX() - (double)this.getBbWidth();
             } else {
-               minX = this.laserEnd.getX() - (double)this.laserEnd.width;
+               minX = this.laserEnd.getX() - (double)this.laserEnd.getBbWidth();
             }
 
-            if (this.getX() + (double)this.getBbWidth() > this.laserEnd.getX() + (double)this.laserEnd.width) {
+            if (this.getX() + (double)this.getBbWidth() > this.laserEnd.getX() + (double)this.laserEnd.getBbWidth()) {
                maxX = this.getX() + (double)this.getBbWidth();
             } else {
-               maxX = this.laserEnd.getX() + (double)this.laserEnd.width;
+               maxX = this.laserEnd.getX() + (double)this.laserEnd.getBbWidth();
             }
 
-            if (this.getY() - (double)this.getBbHeight() < this.laserEnd.getY() - (double)this.laserEnd.height) {
+            if (this.getY() - (double)this.getBbHeight() < this.laserEnd.getY() - (double)this.laserEnd.getBbHeight()) {
                minY = this.getY() - (double)this.getBbHeight();
             } else {
-               minY = this.laserEnd.getY() - (double)this.laserEnd.height;
+               minY = this.laserEnd.getY() - (double)this.laserEnd.getBbHeight();
             }
 
-            if (this.getY() + (double)this.getBbWidth() > this.laserEnd.getY() + (double)this.laserEnd.height) {
+            if (this.getY() + (double)this.getBbWidth() > this.laserEnd.getY() + (double)this.laserEnd.getBbHeight()) {
                maxY = this.getY() + (double)this.getBbHeight();
             } else {
-               maxY = this.laserEnd.getY() + (double)this.laserEnd.height;
+               maxY = this.laserEnd.getY() + (double)this.laserEnd.getBbHeight();
             }
 
-            if (this.getZ() - (double)this.getBbWidth() < this.laserEnd.getZ() - (double)this.laserEnd.width) {
+            if (this.getZ() - (double)this.getBbWidth() < this.laserEnd.getZ() - (double)this.laserEnd.getBbWidth()) {
                minZ = this.getZ() - (double)this.getBbWidth();
             } else {
-               minZ = this.laserEnd.getZ() - (double)this.laserEnd.width;
+               minZ = this.laserEnd.getZ() - (double)this.laserEnd.getBbWidth();
             }
 
-            if (this.getZ() + (double)this.getBbWidth() > this.laserEnd.getZ() + (double)this.laserEnd.width) {
+            if (this.getZ() + (double)this.getBbWidth() > this.laserEnd.getZ() + (double)this.laserEnd.getBbWidth()) {
                maxZ = this.getZ() + (double)this.getBbWidth();
             } else {
-               maxZ = this.laserEnd.getZ() + (double)this.laserEnd.width;
+               maxZ = this.laserEnd.getZ() + (double)this.laserEnd.getBbWidth();
             }
          } else {
             minX = this.getX() - (double)this.getBbWidth();
@@ -375,16 +377,15 @@ public class EntityProjectileLaser extends BaseProjectileEntity {
          this.laserEnd.onUpdateEnd(newTargetX, newTargetY, newTargetZ);
          if (this.laserTime % this.laserDelay == 0
             && this.isAlive()
-            && target != null
-            && target.entityHit != null
-            && this.laserEnd.distanceTo(target.entityHit) <= this.laserWidth * 10.0F) {
+            && target instanceof net.minecraft.world.phys.EntityHitResult entityTarget
+            && this.laserEnd.distanceTo(entityTarget.getEntity()) <= this.laserWidth * 10.0F) {
             boolean doDamage = true;
-            if (target.entityHit instanceof LivingEntity) {
-               doDamage = this.canDamage((LivingEntity)target.entityHit);
+            if (entityTarget.getEntity() instanceof LivingEntity) {
+               doDamage = this.canDamage((LivingEntity)entityTarget.getEntity());
             }
 
             if (doDamage) {
-               this.updateDamage(target.entityHit);
+               this.updateDamage(entityTarget.getEntity());
             }
          }
       }
@@ -480,9 +481,10 @@ public class EntityProjectileLaser extends BaseProjectileEntity {
       this.targetZ = z;
    }
 
+   /** 1.12 getGravityVelocity */
    @Override
-   protected float getGravityVelocity() {
-      return 0.0F;
+   protected double getDefaultGravity() {
+      return 0.0;
    }
 
    @Override

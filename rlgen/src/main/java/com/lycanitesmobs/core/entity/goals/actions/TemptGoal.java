@@ -236,7 +236,7 @@ public class TemptGoal extends EntityAIBase {
                   return false;
                }
 
-               if (itemStack.getMetadata() != this.temptItemStack.getMetadata()) {
+               if (false /* 1.12 metadata: flattened into the item */) {
                   return false;
                }
 

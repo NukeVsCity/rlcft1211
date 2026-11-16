@@ -175,9 +175,9 @@ public class EntityHellfireBarrier extends BaseProjectileEntity {
                   double z = (double)((float)col / (float)this.hellfireWidth * (float)(this.hellfireSize * (this.hellfireWidth - 1)))
                         * Math.sin(rotationRadians)
                      - Math.cos(rotationRadians);
-                  this.hellfireWalls[row][col].posX = this.getX() + x;
-                  this.hellfireWalls[row][col].posY = this.getY() + (double)(this.hellfireSize * row);
-                  this.hellfireWalls[row][col].posZ = this.getZ() + z;
+                  LycMotion.setPosX(this.hellfireWalls[row][col], this.getX() + x);
+                  LycMotion.setPosY(this.hellfireWalls[row][col], this.getY() + (double)(this.hellfireSize * row));
+                  LycMotion.setPosZ(this.hellfireWalls[row][col], this.getZ() + z);
                   this.hellfireWalls[row][col].projectileLife = 40;
                   this.level().addFreshEntity(this.hellfireWalls[row][col]);
                   this.hellfireWalls[row][col].setProjectileScale((float)this.hellfireSize * 2.5F);
@@ -192,9 +192,9 @@ public class EntityHellfireBarrier extends BaseProjectileEntity {
                   + Math.sin(rotationRadians);
                double z = (double)((float)col / (float)this.hellfireWidth * (float)(this.hellfireSize * (this.hellfireWidth - 1))) * Math.sin(rotationRadians)
                   - Math.cos(rotationRadians);
-               this.hellfireWalls[row][col].posX = this.getX() + x;
-               this.hellfireWalls[row][col].posY = this.getY() + (double)(this.hellfireSize * row);
-               this.hellfireWalls[row][col].posZ = this.getZ() + z;
+               LycMotion.setPosX(this.hellfireWalls[row][col], this.getX() + x);
+               LycMotion.setPosY(this.hellfireWalls[row][col], this.getY() + (double)(this.hellfireSize * row));
+               LycMotion.setPosZ(this.hellfireWalls[row][col], this.getZ() + z);
                this.hellfireWalls[row][col].projectileLife = 40;
                if (this.isRemoved()) {
                   this.hellfireWalls[row][col].discard();

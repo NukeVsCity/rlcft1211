@@ -229,7 +229,7 @@ public abstract class TargetingGoal extends EntityAIBase {
    }
 
    public <T extends LivingEntity> List<T> getPossibleTargets(Class<? extends T> clazz, double rangeX, double rangeY, double rangeZ) {
-      return this.host.level().getEntitiesOfClass(clazz, this.host.getBoundingBox().inflate(rangeX, rangeY, rangeZ), this.targetSelector);
+      return (List<T>)(List)this.host.level().getEntitiesOfClass((Class<LivingEntity>)clazz, this.host.getBoundingBox().inflate(rangeX, rangeY, rangeZ), (java.util.function.Predicate)this.targetSelector);
    }
 
    protected double getTargetDistance() {
@@ -249,7 +249,7 @@ public abstract class TargetingGoal extends EntityAIBase {
             for (Mob possibleAlly : this.host
                .level()
                .getEntitiesOfClass(BaseCreatureEntity.class, this.host.getBoundingBox().inflate(targetDistance, 4.0, targetDistance), this.allySelector)) {
-               if (!possibleAlly.isAlliedTo(this.target) && possibleAlly.canAttackClass(this.target.getClass())) {
+               if (!possibleAlly.isAlliedTo(this.target) && possibleAlly.canAttackType(this.target.getType())) {
                   if (possibleAlly instanceof BaseCreatureEntity) {
                      BaseCreatureEntity possibleCreatureAlly = (BaseCreatureEntity)possibleAlly;
                      if (possibleCreatureAlly.getTarget() == null

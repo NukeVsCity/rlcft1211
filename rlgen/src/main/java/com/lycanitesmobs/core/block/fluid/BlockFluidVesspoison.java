@@ -106,7 +106,7 @@ public class BlockFluidVesspoison extends BlockFluidPoison {
       if (blockState.getBlock() != this) {
          return super.canDisplace(world, pos);
       } else {
-         if (blockState.getBlock().getMetaFromState(blockState) != 0) {
+         if (blockState.getValue(net.minecraft.world.level.block.LiquidBlock.LEVEL) != 0) {
             byte otherSourceBlocks = 0;
             ArrayList<BlockPos> adjBlockPositions = new ArrayList<>();
             adjBlockPositions.add(pos.offset(-1, 0, 0));
@@ -118,7 +118,7 @@ public class BlockFluidVesspoison extends BlockFluidPoison {
             for (BlockPos adjBlockPos : adjBlockPositions) {
                BlockState adjBlockState = world.getBlockState(adjBlockPos);
                Block adjBlock = adjBlockState.getBlock();
-               int adjMetadata = adjBlock.getMetaFromState(adjBlockState);
+               int adjMetadata = adjBlock == this ? adjBlockState.getValue(net.minecraft.world.level.block.LiquidBlock.LEVEL) : 0;
                if (adjBlock == this && adjMetadata == 0) {
                   otherSourceBlocks++;
                }

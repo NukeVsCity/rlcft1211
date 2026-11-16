@@ -107,7 +107,7 @@ public class ArenaNodeNetworkGrid extends ArenaNodeNetwork {
 
             for (int z = 0; z < arenaNodeZ; z++) {
                int posZ = z - (arenaNodeZ % 2 == 0 ? arenaNodeZ : arenaNodeZ - 1) / 2;
-               arenaNodes[x][y][z] = new ArenaNode(this.level(), centerPos.offset(posX * nodeDistance, posY * nodeDistance, posZ * nodeDistance));
+               arenaNodes[x][y][z] = new ArenaNode(this.world, centerPos.offset(posX * nodeDistance, posY * nodeDistance, posZ * nodeDistance));
                if (posX == 0 && posY == 0 && posZ == 0) {
                   this.centralNode = arenaNodes[x][y][z];
                }

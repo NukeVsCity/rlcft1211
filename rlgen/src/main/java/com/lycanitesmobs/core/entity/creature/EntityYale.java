@@ -188,7 +188,7 @@ public class EntityYale extends AgeableCreatureEntity implements IShearable {
          this.woolDrop = new ItemDrop(LycReg.key(Blocks.WHITE_WOOL).toString(), 0, 1.0F).setMinAmount(1).setMaxAmount(3);
       } else if (this.woolDrop.getItemStack().getItem() == Item.byBlock(Blocks.WHITE_WOOL)) {
          // 1.12 wool metadata = colour: 1.21 has one wool block per colour
-         this.woolDrop.setDrop(new ItemStack(net.minecraft.world.entity.animal.Sheep.ITEM_BY_DYE.get(DyeColor.byId(color))));
+         this.woolDrop.setDrop(new ItemStack(com.lycanitesmobs.compat.LycBlocks.wool(DyeColor.byId(color))));
       }
 
       super.setColor(color);

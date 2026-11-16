@@ -117,8 +117,7 @@ public class FearEntity extends BaseCreatureEntity {
    @Override
    public void setupMob() {
       this.xpReward = 0;
-      this.inventory = new InventoryCreature(this.getName(), this);
-      this.isImmuneToFire = true;
+      this.inventory = new InventoryCreature(this.getName().getString(), this);
    }
 
    @Override
@@ -182,9 +181,9 @@ public class FearEntity extends BaseCreatureEntity {
 
    public void setFearedEntity(Entity feared) {
       this.fearedEntity = feared;
-      this.setSize(feared.width, feared.height);
+      this.setSize(feared.getBbWidth(), feared.getBbHeight());
       this.noPhysics = feared.noPhysics;
-      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(feared.stepHeight);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(feared.maxUpStep());
       this.moveTo(feared.getX(), feared.getY(), feared.getZ(), feared.getYRot(), feared.getXRot());
       if (feared instanceof LivingEntity && !(feared instanceof Player)) {
          LivingEntity fearedEntityLiving = (LivingEntity)feared;
@@ -230,7 +229,9 @@ public class FearEntity extends BaseCreatureEntity {
       return true;
    }
 
-   public boolean canBeCollidedWith() {
+   /** 1.12 canBeCollidedWith (ray traces and attacks) */
+   @Override
+   public boolean isPickable() {
       return false;
    }
 
@@ -251,5 +252,11 @@ public class FearEntity extends BaseCreatureEntity {
 
    @Override
    public void playFlySound() {
+   }
+
+   /** 1.12 isImmuneToFire = true */
+   @Override
+   public boolean fireImmune() {
+      return true;
    }
 }

@@ -158,7 +158,7 @@ public class CustomProjectileEntity extends BaseProjectileEntity {
    public CustomProjectileEntity(EntityType<? extends CustomProjectileEntity> lycType, Level world, LivingEntity entityLiving, ProjectileInfo projectileInfo) {
       super(lycType, world, entityLiving);
       if (projectileInfo != null) {
-         this.shoot(entityLiving, entityLiving.getXRot(), entityLiving.getYRot(), 0.0F, (float)projectileInfo.velocity, 1.0F);
+         this.shootFromRotation(entityLiving, entityLiving.getXRot(), entityLiving.getYRot(), 0.0F, (float)projectileInfo.velocity, 1.0F);
       }
 
       this.modInfo = LycanitesMobs.modInfo;
@@ -251,13 +251,13 @@ public class CustomProjectileEntity extends BaseProjectileEntity {
       } else {
          this.throwerId = (Integer)this.entityData.get(THROWING_ENTITY_ID);
          if (this.throwerId == -1) {
-            this.thrower = null;
+            this.setOwner(null);
          } else if (this.getThrower() == null || this.getThrower().getId() != this.throwerId) {
             Entity possibleThrower = this.level().getEntity(this.throwerId);
             if (possibleThrower instanceof LivingEntity) {
-               this.thrower = (LivingEntity)possibleThrower;
+               this.setOwner(possibleThrower);
             } else {
-               this.thrower = null;
+               this.setOwner(null);
             }
          }
       }

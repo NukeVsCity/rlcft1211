@@ -125,13 +125,13 @@ public class BlockFluidAcid extends BlockFluidBase {
          return false;
       } else if (Material.of(blockState) == Material.WATER) {
          if (world instanceof Level) {
-            ((Level)world).setBlock(pos, Blocks.STONE.defaultBlockState().setValue(BlockStone.VARIANT, EnumType.DIORITE), 3);
+            ((Level)world).setBlock(pos, Blocks.DIORITE.defaultBlockState(), 3);
          }
 
          return false;
       } else if (Material.of(blockState) == Material.LAVA) {
          if (world instanceof Level) {
-            ((Level)world).setBlock(pos, Blocks.STONE.defaultBlockState().setValue(BlockStone.VARIANT, EnumType.GRANITE), 3);
+            ((Level)world).setBlock(pos, Blocks.GRANITE.defaultBlockState(), 3);
          }
 
          return false;

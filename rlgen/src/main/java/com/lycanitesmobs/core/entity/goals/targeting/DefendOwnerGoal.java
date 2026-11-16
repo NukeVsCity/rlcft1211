@@ -149,7 +149,7 @@ public class DefendOwnerGoal extends TargetingGoal {
       } else {
          if (target instanceof Mob) {
             Mob Mob = (Mob)target;
-            if (!Mob.canAttackClass(Player.class)) {
+            if (!this.host.canAttackType(EntityType.PLAYER)) {
                return false;
             }
          }

@@ -105,7 +105,7 @@ public class TileEntityEquipmentForge extends TileEntityBase {
    }
 
    protected NonNullList<ItemStack> itemStacks = NonNullList.withSize(ItemEquipment.PART_LIMIT + 1, ItemStack.EMPTY);
-   protected int level = 1;
+   protected int forgeLevel = 1;
 
    @Override
    public void onRemove() {
@@ -206,7 +206,7 @@ public class TileEntityEquipmentForge extends TileEntityBase {
    public CompoundTag getUpdateTag112() {
       CompoundTag syncData = new CompoundTag();
       if (!this.getWorld().isClientSide) {
-         syncData.putInt("ForgeLevel", this.level);
+         syncData.putInt("ForgeLevel", this.forgeLevel);
       }
 
       return syncData;
@@ -217,7 +217,7 @@ public class TileEntityEquipmentForge extends TileEntityBase {
       if (this.getWorld().isClientSide) {
          CompoundTag syncData = packetTag;
          if (syncData.contains("ForgeLevel")) {
-            this.level = syncData.getInt("ForgeLevel");
+            this.forgeLevel = syncData.getInt("ForgeLevel");
          }
       }
    }
@@ -230,7 +230,7 @@ public class TileEntityEquipmentForge extends TileEntityBase {
    @Override
    public void readFromNBT(CompoundTag nbtTagCompound) {
       if (nbtTagCompound.contains("ForgeLevel")) {
-         this.level = nbtTagCompound.getInt("ForgeLevel");
+         this.forgeLevel = nbtTagCompound.getInt("ForgeLevel");
       }
 
       if (nbtTagCompound.contains("Items")) {
@@ -242,7 +242,7 @@ public class TileEntityEquipmentForge extends TileEntityBase {
 
    @Override
    public CompoundTag writeToNBT(CompoundTag nbtTagCompound) {
-      nbtTagCompound.putInt("ForgeLevel", this.level);
+      nbtTagCompound.putInt("ForgeLevel", this.forgeLevel);
       ContainerHelper.saveAllItems(nbtTagCompound, this.itemStacks, LycReg.access());
       return super.writeToNBT(nbtTagCompound);
    }
@@ -260,18 +260,18 @@ public class TileEntityEquipmentForge extends TileEntityBase {
    }
 
    public int getForgeLevel() {
-      return this.level;
+      return this.forgeLevel;
    }
 
    public void setLevel(int level) {
-      this.level = level;
+      this.forgeLevel = level;
    }
 
    public String getName() {
       String levelName = "lesser";
-      if (this.level == 2) {
+      if (this.forgeLevel == 2) {
          levelName = "greater";
-      } else if (this.level >= 3) {
+      } else if (this.forgeLevel >= 3) {
          levelName = "master";
       }
 

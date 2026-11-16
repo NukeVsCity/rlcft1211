@@ -122,18 +122,18 @@ public class LookIdleGoal extends EntityAIBase {
    }
 
    public boolean shouldContinueExecuting() {
-      return this.noActionTime >= 0;
+      return this.idleTime >= 0;
    }
 
    public void startExecuting() {
       double d0 = (Math.PI * 2) * this.host.getRandom().nextDouble();
       this.lookX = Math.cos(d0);
       this.lookZ = Math.sin(d0);
-      this.noActionTime = this.idleTimeMin + this.host.getRandom().nextInt(this.idleTimeRange);
+      this.idleTime = this.idleTimeMin + this.host.getRandom().nextInt(this.idleTimeRange);
    }
 
    public void updateTask() {
-      this.noActionTime--;
+      this.idleTime--;
       this.host
          .getLookControl()
          .setLookAt(

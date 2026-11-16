@@ -127,7 +127,7 @@ public class EntityParticle extends ThrowableProjectile {
       }
 
       LycMotion.setY(this, this.getDeltaMovement().y - 0.04 * this.particleGravity);
-      this.move(MoverType.SELF, this.getDeltaMovement().x, this.getDeltaMovement().y, this.getDeltaMovement().z);
+      this.move(MoverType.SELF, this.getDeltaMovement());
       LycMotion.mulX(this, 0.98F);
       LycMotion.mulY(this, 0.98F);
       LycMotion.mulZ(this, 0.98F);

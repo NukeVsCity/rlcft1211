@@ -139,11 +139,11 @@ public class CreatureStructure {
                         if (Math.abs(x) < radius && Math.abs(y) < radius && Math.abs(z) < radius) {
                            blockState = Blocks.AIR.defaultBlockState();
                         } else if (y == radius) {
-                           blockState = this.dungeonTheme.getCeiling(null, '1', this.owner.getRandom());
+                           blockState = this.dungeonTheme.getCeiling(null, '1', com.lycanitesmobs.compat.LycRandom.of(this.owner.getRandom()));
                         } else if (y == -radius) {
-                           blockState = this.dungeonTheme.getFloor(null, '1', this.owner.getRandom());
+                           blockState = this.dungeonTheme.getFloor(null, '1', com.lycanitesmobs.compat.LycRandom.of(this.owner.getRandom()));
                         } else {
-                           blockState = this.dungeonTheme.getWall(null, '1', this.owner.getRandom());
+                           blockState = this.dungeonTheme.getWall(null, '1', com.lycanitesmobs.compat.LycRandom.of(this.owner.getRandom()));
                         }
                      } else {
                         blockState = Blocks.AIR.defaultBlockState();
@@ -164,14 +164,14 @@ public class CreatureStructure {
                   if (this.shouldBuildAt(blockPos)) {
                      for (int pitLayer = 1; pitLayer <= radius / 2; pitLayer++) {
                         if (y == radius - pitLayer && Math.abs(x) < radius - pitLayer && Math.abs(zx) < radius - pitLayer) {
-                           BlockState blockState = this.dungeonTheme.getPit('1', this.owner.getRandom());
+                           BlockState blockState = this.dungeonTheme.getPit('1', com.lycanitesmobs.compat.LycRandom.of(this.owner.getRandom()));
                            this.createBuildTask(blockState, blockPos, 1);
                         }
                      }
 
                      for (int pitLayerx = 1; pitLayerx <= radius / 2; pitLayerx++) {
                         if (y == -radius + pitLayerx && Math.abs(x) < radius - pitLayerx && Math.abs(zx) < radius - pitLayerx) {
-                           BlockState blockState = this.dungeonTheme.getPit('1', this.owner.getRandom());
+                           BlockState blockState = this.dungeonTheme.getPit('1', com.lycanitesmobs.compat.LycRandom.of(this.owner.getRandom()));
                            this.createBuildTask(blockState, blockPos, 1);
                         }
                      }
@@ -187,7 +187,7 @@ public class CreatureStructure {
                if (Math.abs(x) < radius / 4 + 1 && y <= -(radius / 2) && y > -radius && Math.abs(zxx) < radius / 4 + 1) {
                   BlockPos blockPos = this.origin.offset(x, y, zxx);
                   if (this.shouldBuildAt(blockPos)) {
-                     BlockState blockState = this.dungeonTheme.getPit('2', this.owner.getRandom());
+                     BlockState blockState = this.dungeonTheme.getPit('2', com.lycanitesmobs.compat.LycRandom.of(this.owner.getRandom()));
                      this.createBuildTask(blockState, blockPos, 1);
                   }
                }
@@ -269,9 +269,9 @@ public class CreatureStructure {
                BlockPos blockPos = this.getOrigin().offset(x, y, z);
                BlockState blockState = this.owner.level().getBlockState(blockPos);
                if (!(blockState.getBlock() instanceof BlockPropolis) && !(blockState.getBlock() instanceof BlockVeswax)) {
-                  if (blockState.getBlock() == this.dungeonTheme.getPit('1', this.owner.getRandom()).getBlock()) {
+                  if (blockState.getBlock() == this.dungeonTheme.getPit('1', com.lycanitesmobs.compat.LycRandom.of(this.owner.getRandom())).getBlock()) {
                      this.owner.level().removeBlock(blockPos, false);
-                  } else if (blockState.getBlock() == this.dungeonTheme.getPit('2', this.owner.getRandom()).getBlock()) {
+                  } else if (blockState.getBlock() == this.dungeonTheme.getPit('2', com.lycanitesmobs.compat.LycRandom.of(this.owner.getRandom())).getBlock()) {
                      this.owner.level().removeBlock(blockPos, false);
                   }
                }

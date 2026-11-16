@@ -276,7 +276,7 @@ public class AttackRangedGoal extends EntityAIBase {
          this.repathTime = this.repathTimeMax;
          BlockPos targetPosition = this.attackTarget.blockPosition();
          if (this.host.isFlying()) {
-            targetPosition = targetPosition.offset(0.0, (double)flyingHeightOffset, 0.0);
+            targetPosition = BlockPos.containing(targetPosition.getX(), targetPosition.getY() + (double)flyingHeightOffset, targetPosition.getZ());
          }
 
          if (!this.host.useDirectNavigator()) {

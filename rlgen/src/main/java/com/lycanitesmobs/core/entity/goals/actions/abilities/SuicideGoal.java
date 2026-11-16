@@ -119,7 +119,7 @@ public class SuicideGoal extends EntityAIBase {
 
    public void updateTask() {
       if (this.countdown-- <= 0) {
-         DamageSource damageSource = new EntityDamageSource("mob", this.host);
+         EntityDamageSource damageSource = new EntityDamageSource("mob", this.host);
          damageSource.setDamageIsAbsolute();
          damageSource.setDamageBypassesArmor();
          this.host.hurt(damageSource, this.host.getHealth());

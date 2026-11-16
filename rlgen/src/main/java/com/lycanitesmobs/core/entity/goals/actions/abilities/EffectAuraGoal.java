@@ -245,7 +245,7 @@ public class EffectAuraGoal extends BaseGoal {
             }
 
             if (this.damageAmount != 0.0F) {
-               DamageSource damageSource = new EntityDamageSource("mob", this.host);
+               EntityDamageSource damageSource = new EntityDamageSource("mob", this.host);
                damageSource.setDamageIsAbsolute();
                damageSource.setDamageBypassesArmor();
                target.hurt(damageSource, this.damageAmount);
