@@ -51,6 +51,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.*;
 import net.minecraft.world.entity.ai.navigation.*;
 import net.minecraft.world.entity.ambient.*;
+import net.minecraft.world.entity.boss.enderdragon.*;
+import net.minecraft.world.entity.boss.wither.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.item.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -144,7 +146,7 @@ public class EntityWarg extends RideableCreatureEntity {
                      && this.canAttackClass(possibleTargetx.getClass())
                      && this.canAttackEntity(possibleTargetx)
             );
-         PotionBase effect = ObjectManager.getEffect("paralysis");
+         Holder<MobEffect> effect = ObjectManager.getEffect("paralysis");
          if (!possibleTargets.isEmpty() && effect != null) {
             for (LivingEntity possibleTarget : possibleTargets) {
                boolean doDamage = true;

@@ -1,161 +1,95 @@
 package com.lycanitesmobs;
 
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
-import com.lycanitesmobs.LycEntities;
-import com.lycanitesmobs.compat.*;
-import io.netty.buffer.ByteBuf;
-import java.util.Optional;
-import javax.annotation.Nullable;
-import net.minecraft.core.*;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
-import net.minecraft.core.particles.*;
-import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.*;
-import net.minecraft.nbt.*;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.network.*;
-import net.minecraft.network.chat.*;
-import net.minecraft.network.syncher.*;
-import net.minecraft.resources.*;
-import net.minecraft.server.level.*;
-import net.minecraft.sounds.*;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.*;
-import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.util.*;
-import net.minecraft.world.*;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.*;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.*;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.*;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.*;
-import net.minecraft.world.entity.ai.navigation.*;
-import net.minecraft.world.entity.ambient.*;
-import net.minecraft.world.entity.animal.*;
-import net.minecraft.world.entity.item.*;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.*;
-import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.entity.npc.*;
-import net.minecraft.world.entity.player.*;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.*;
-import net.minecraft.world.entity.vehicle.*;
-import net.minecraft.world.item.*;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.*;
-import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.*;
-import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.*;
-import net.minecraft.world.level.block.state.*;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.*;
-import net.minecraft.world.level.material.*;
-import net.minecraft.world.level.pathfinder.*;
-import net.minecraft.world.phys.*;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
-import net.neoforged.bus.api.*;
-import net.neoforged.neoforge.common.*;
-import net.neoforged.neoforge.event.entity.*;
-import net.neoforged.neoforge.event.entity.living.*;
-import net.neoforged.neoforge.event.entity.player.*;
-import net.neoforged.neoforge.event.level.*;
-import net.neoforged.neoforge.event.tick.*;
 import com.lycanitesmobs.core.container.CreatureContainer;
 import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import com.lycanitesmobs.core.tileentity.TileEntityBase;
+import java.util.function.Supplier;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
+/**
+ * 1.12 GuiHandler (IGuiHandler with GuiType ids). Server GUIs are 1.21 menus of one menu type (lycanitesmobs:gui) whose
+ * open packet carries the 1.12 (id, x, y, z); both sides build the same container from it (getServerGuiElement).
+ * The client screens for these menus and the client-only GUIs (beastiary, minion selection) belong to lyc/client:
+ * it registers a screen factory for {@link #MENU} that picks the screen from the container class.
+ */
+public class GuiHandler {
+   public static GuiHandler instance = new GuiHandler();
+   private static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, LycanitesMobs.modid);
+   public static final Supplier<MenuType<AbstractContainerMenu>> MENU = MENUS.register("gui",
+      () -> IMenuTypeExtension.create((windowId, inventory, buf) -> GuiHandler.clientContainer(windowId, inventory, buf)));
+   /** Window id for the container being constructed (BaseContainer reads it, 1.12 containers had none). */
+   public static final ThreadLocal<Integer> WINDOW_ID = ThreadLocal.withInitial(() -> 0);
+   /** 1.12 GuiType of the container being constructed. */
+   public static final ThreadLocal<int[]> GUI_ARGS = ThreadLocal.withInitial(() -> new int[4]);
 
-public class GuiHandler implements IGuiHandler {
-   public static GuiHandler instance;
-
-   public GuiHandler() {
-      instance = this;
+   public static void init(IEventBus modBus) {
+      MENUS.register(modBus);
    }
 
-   public Object getServerGuiElement(int id, Player player, Level world, int x, int y, int z) {
-      if (id == GuiHandler.GuiType.TILEENTITY.id) {
-         BlockEntity tileEntity = world.getBlockEntity(LycPos.of(x, y, z));
-         if (tileEntity instanceof TileEntityBase) {
-            return ((TileEntityBase)tileEntity).getGUI(player);
-         }
-      } else if (id == GuiHandler.GuiType.ENTITY.id) {
-         Entity entity = world.getEntity(x);
-         if (entity instanceof BaseCreatureEntity) {
-            return new CreatureContainer((BaseCreatureEntity)entity, player.getInventory());
-         }
-      } else if (id == GuiHandler.GuiType.ITEM.id) {
+   /** 1.12 player.openGui(LycanitesMobs.instance, id, world, x, y, z). Client side: lyc/client opens client-only GUIs. */
+   public static void openGui(Player player, int id, Level world, int x, int y, int z) {
+      if (!(player instanceof ServerPlayer serverPlayer)) {
+         LycanitesMobs.proxy.openClientGui(player, id, world, x, y, z);
+         return;
       }
-
-      return null;
+      if (instance.getServerGuiElement(id, player, world, x, y, z, 0) == null) {
+         return;
+      }
+      serverPlayer.openMenu(new SimpleMenuProvider((windowId, inventory, p) -> {
+         Object container = instance.getServerGuiElement(id, p, world, x, y, z, windowId);
+         return container instanceof AbstractContainerMenu menu ? menu : null;
+      }, Component.literal("")), buf -> {
+         buf.writeByte(id);
+         buf.writeInt(x);
+         buf.writeInt(y);
+         buf.writeInt(z);
+      });
    }
 
-   public Object getClientGuiElement(int id, Player player, Level world, int x, int y, int z) {
-      if (id == GuiHandler.GuiType.TILEENTITY.id) {
-         BlockEntity tileEntity = world.getBlockEntity(LycPos.of(x, y, z));
-         if (tileEntity instanceof TileEntityBase) {
-            return ((TileEntityBase)tileEntity).getGUI(player);
+   private static AbstractContainerMenu clientContainer(int windowId, Inventory inventory, RegistryFriendlyByteBuf buf) {
+      int id = buf.readByte();
+      int x = buf.readInt();
+      int y = buf.readInt();
+      int z = buf.readInt();
+      Object container = instance.getServerGuiElement(id, inventory.player, inventory.player.level(), x, y, z, windowId);
+      return container instanceof AbstractContainerMenu menu ? menu : null;
+   }
+
+   /** 1.12 getServerGuiElement (the container), built with the given window id. */
+   public Object getServerGuiElement(int id, Player player, Level world, int x, int y, int z, int windowId) {
+      WINDOW_ID.set(windowId);
+      GUI_ARGS.set(new int[]{id, x, y, z});
+      try {
+         if (id == GuiHandler.GuiType.TILEENTITY.id) {
+            BlockEntity tileEntity = world.getBlockEntity(new BlockPos(x, y, z));
+            if (tileEntity instanceof TileEntityBase) {
+               return ((TileEntityBase)tileEntity).getGUI(player);
+            }
+         } else if (id == GuiHandler.GuiType.ENTITY.id) {
+            Entity entity = world.getEntity(x);
+            if (entity instanceof BaseCreatureEntity) {
+               return new CreatureContainer((BaseCreatureEntity)entity, player.getInventory());
+            }
          }
-      } else if (id == GuiHandler.GuiType.ENTITY.id) {
-         Entity entity = world.getEntity(x);
-         if (entity instanceof BaseCreatureEntity) {
-            return new CreatureInventoryScreen((BaseCreatureEntity)entity, player.getInventory());
-         }
-      } else if (id != GuiHandler.GuiType.ITEM.id) {
-         if (id == GuiHandler.GuiType.BEASTIARY.id) {
-            if (x == GuiHandler.Beastiary.INDEX.id) {
-               return new IndexBeastiaryScreen(player);
-            }
-
-            if (x == GuiHandler.Beastiary.CREATURES.id) {
-               return new CreaturesBeastiaryScreen(player);
-            }
-
-            if (x == GuiHandler.Beastiary.PETS.id) {
-               return new PetsBeastiaryScreen(player);
-            }
-
-            if (x == GuiHandler.Beastiary.SUMMONING.id) {
-               return new SummoningBeastiaryScreen(player);
-            }
-
-            if (x == GuiHandler.Beastiary.ELEMENTS.id) {
-               return new ElementsBeastiaryScreen(player);
-            }
-         } else if (id == GuiHandler.GuiType.PLAYER.id && x == GuiHandler.PlayerGuiType.MINION_SELECTION.id) {
-            return new MinionSelectionOverlay(player);
-         }
+         return null;
+      } finally {
+         WINDOW_ID.set(0);
       }
-
-      return null;
    }
 
    public static enum Beastiary {

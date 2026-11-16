@@ -13,3 +13,7 @@ com/lycanitesmobs/core/block/BlockBase.java
 com/lycanitesmobs/ObjectManager.java
 com/lycanitesmobs/PotionBase.java
 com/lycanitesmobs/core/block/BlockFluidBase.java
+com/lycanitesmobs/GuiHandler.java
+com/lycanitesmobs/core/tileentity/TileEntityBase.java
+com/lycanitesmobs/GameEventListener.java
+com/lycanitesmobs/PotionEffects.java

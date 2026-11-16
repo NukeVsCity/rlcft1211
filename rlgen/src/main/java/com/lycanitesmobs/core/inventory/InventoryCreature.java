@@ -51,6 +51,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.*;
 import net.minecraft.world.entity.ai.navigation.*;
 import net.minecraft.world.entity.ambient.*;
+import net.minecraft.world.entity.boss.enderdragon.*;
+import net.minecraft.world.entity.boss.wither.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.item.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -98,7 +100,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class InventoryCreature implements Container {
+public class InventoryCreature implements LegacyInventory {
    public static final Map<String, Integer> armorValues = new HashMap<>();
    public static final List<String> equipmentTypes = new ArrayList<>();
    public BaseCreatureEntity creature;
@@ -125,7 +127,7 @@ public class InventoryCreature implements Container {
       }
    }
 
-   public static void registerDataParameters(SynchedEntityData dataManager) {
+   public static void registerDataParameters(SynchedEntityData.Builder builder) {
       for (String equipmentType : equipmentTypes) {
          builder.define(getEquipmentDataParameter(equipmentType), ItemStack.EMPTY);
       }
@@ -471,19 +473,19 @@ public class InventoryCreature implements Container {
 
          if (!this.basicArmor && itemStack.getItem() instanceof ArmorItem) {
             ArmorItem armorstack = (ArmorItem)itemStack.getItem();
-            if (armorstack.armorType == EquipmentSlot.HEAD) {
+            if (armorstack.getEquipmentSlot() == EquipmentSlot.HEAD) {
                return "head";
             }
 
-            if (armorstack.armorType == EquipmentSlot.CHEST) {
+            if (armorstack.getEquipmentSlot() == EquipmentSlot.CHEST) {
                return "chest";
             }
 
-            if (armorstack.armorType == EquipmentSlot.LEGS) {
+            if (armorstack.getEquipmentSlot() == EquipmentSlot.LEGS) {
                return "legs";
             }
 
-            if (armorstack.armorType == EquipmentSlot.FEET) {
+            if (armorstack.getEquipmentSlot() == EquipmentSlot.FEET) {
                return "feet";
             }
          }
@@ -509,23 +511,23 @@ public class InventoryCreature implements Container {
       } else {
          if (equipmentStack.getItem() instanceof ArmorItem) {
             ArmorItem armor = (ArmorItem)equipmentStack.getItem();
-            if (armor.getArmorMaterial() == ArmorMaterial.LEATHER) {
+            if (armor.getMaterial().is(net.minecraft.world.item.ArmorMaterials.LEATHER)) {
                return "Leather";
             }
 
-            if (armor.getArmorMaterial() == ArmorMaterial.IRON) {
+            if (armor.getMaterial().is(net.minecraft.world.item.ArmorMaterials.IRON)) {
                return "Iron";
             }
 
-            if (armor.getArmorMaterial() == ArmorMaterial.CHAIN) {
+            if (armor.getMaterial().is(net.minecraft.world.item.ArmorMaterials.CHAIN)) {
                return "Chain";
             }
 
-            if (armor.getArmorMaterial() == ArmorMaterial.GOLD) {
+            if (armor.getMaterial().is(net.minecraft.world.item.ArmorMaterials.GOLD)) {
                return "Gold";
             }
 
-            if (armor.getArmorMaterial() == ArmorMaterial.DIAMOND) {
+            if (armor.getMaterial().is(net.minecraft.world.item.ArmorMaterials.DIAMOND)) {
                return "Diamond";
             }
          }
@@ -548,7 +550,7 @@ public class InventoryCreature implements Container {
          ItemStack armorStack = this.getEquipmentStack(armorSlot);
          if (armorStack != null) {
             if (armorStack.getItem() instanceof ArmorItem) {
-               totalArmor += ((ArmorItem)armorStack.getItem()).damageReduceAmount;
+               totalArmor += ((ArmorItem)armorStack.getItem()).getDefense();
             } else if (this.getEquipmentGrade(armorSlot) != null && armorValues.containsKey(this.getEquipmentGrade(armorSlot))) {
                totalArmor += armorValues.get(this.getEquipmentGrade(armorSlot));
             }
@@ -570,7 +572,7 @@ public class InventoryCreature implements Container {
 
    public void readFromNBT(CompoundTag nbtTagCompound) {
       NonNullList<ItemStack> itemStacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-      ContainerHelper.loadAllItems(nbtTagCompound, itemStacks);
+      ContainerHelper.loadAllItems(nbtTagCompound, itemStacks, LycReg.access());
 
       for (int i = 0; i < itemStacks.size(); i++) {
          if (i < this.getSizeInventory()) {
@@ -595,7 +597,7 @@ public class InventoryCreature implements Container {
          }
       }
 
-      ContainerHelper.saveAllItems(nbtTagCompound, itemStacks);
+      ContainerHelper.saveAllItems(nbtTagCompound, itemStacks, LycReg.access());
    }
 
    public void markDirty() {

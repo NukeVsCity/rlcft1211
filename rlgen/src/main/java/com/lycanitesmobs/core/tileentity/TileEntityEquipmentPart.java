@@ -51,6 +51,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.*;
 import net.minecraft.world.entity.ai.navigation.*;
 import net.minecraft.world.entity.ambient.*;
+import net.minecraft.world.entity.boss.enderdragon.*;
+import net.minecraft.world.entity.boss.wither.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.item.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -92,5 +94,5 @@ import net.neoforged.neoforge.event.tick.*;
 
 
 
-public class TileEntityEquipmentPart extends BlockEntity {
+public class TileEntityEquipmentPart {
 }

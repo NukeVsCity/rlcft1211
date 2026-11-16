@@ -51,6 +51,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.*;
 import net.minecraft.world.entity.ai.navigation.*;
 import net.minecraft.world.entity.ambient.*;
+import net.minecraft.world.entity.boss.enderdragon.*;
+import net.minecraft.world.entity.boss.wither.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.item.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -206,7 +208,7 @@ public class ForceGoal extends EntityAIBase {
                   }
 
                   if (player != null) {
-                     player.connection.sendPacket(new SPacketEntityVelocity(entity));
+                     player.connection.send(new net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket(entity));
                   }
                }
             }

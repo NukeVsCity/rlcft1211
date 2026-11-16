@@ -55,6 +55,10 @@ public class CommonProxy {
       return null;
    }
 
+   /** Client-only GUIs (beastiary, minion selection...) opened with GuiHandler.openGui on the client: lyc/client. */
+   public void openClientGui(Player player, int id, net.minecraft.world.level.Level world, int x, int y, int z) {
+   }
+
    public Player getPlayer(MessageContext ctx) {
       return ctx.player;
    }

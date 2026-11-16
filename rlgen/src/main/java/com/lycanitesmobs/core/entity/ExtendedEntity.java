@@ -51,6 +51,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.*;
 import net.minecraft.world.entity.ai.navigation.*;
 import net.minecraft.world.entity.ambient.*;
+import net.minecraft.world.entity.boss.enderdragon.*;
+import net.minecraft.world.entity.boss.wither.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.item.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -122,7 +124,7 @@ public class ExtendedEntity {
       if (entity == null) {
          return null;
       } else {
-         ExtendedEntity extendedEntity = (ExtendedEntity)entity.getCapability(LycanitesMobs.EXTENDED_ENTITY, null);
+         ExtendedEntity extendedEntity = entity.getData(com.lycanitesmobs.LycAttachments.EXTENDED_ENTITY);
          if (extendedEntity.entity != entity) {
             extendedEntity.setEntity(entity);
          }

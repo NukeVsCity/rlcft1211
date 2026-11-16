@@ -51,6 +51,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.*;
 import net.minecraft.world.entity.ai.navigation.*;
 import net.minecraft.world.entity.ambient.*;
+import net.minecraft.world.entity.boss.enderdragon.*;
+import net.minecraft.world.entity.boss.wither.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.item.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -98,6 +100,10 @@ import com.lycanitesmobs.core.item.equipment.ItemEquipmentPart;
 
 
 public class TileEntityEquipmentForge extends TileEntityBase {
+   public TileEntityEquipmentForge(BlockPos pos, BlockState state) {
+      super(pos, state);
+   }
+
    protected NonNullList<ItemStack> itemStacks = NonNullList.withSize(ItemEquipment.PART_LIMIT + 1, ItemStack.EMPTY);
    protected int level = 1;
 
@@ -140,11 +146,11 @@ public class TileEntityEquipmentForge extends TileEntityBase {
    }
 
    public ItemStack decrStackSize(int index, int count) {
-      return ContainerHelper.getAndSplit(this.itemStacks, index, count);
+      return ContainerHelper.removeItem(this.itemStacks, index, count);
    }
 
    public ItemStack removeStackFromSlot(int index) {
-      return ContainerHelper.getAndRemove(this.itemStacks, index);
+      return ContainerHelper.takeItem(this.itemStacks, index);
    }
 
    public void setInventorySlotContents(int index, ItemStack stack) {
@@ -197,19 +203,19 @@ public class TileEntityEquipmentForge extends TileEntityBase {
       return false;
    }
 
-   public SPacketUpdateTileEntity getUpdatePacket() {
+   public CompoundTag getUpdateTag112() {
       CompoundTag syncData = new CompoundTag();
       if (!this.getWorld().isClientSide) {
          syncData.putInt("ForgeLevel", this.level);
       }
 
-      return new SPacketUpdateTileEntity(this.getPos(), 1, syncData);
+      return syncData;
    }
 
    @Override
-   public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
+   public void onDataPacket112(CompoundTag packetTag) {
       if (this.getWorld().isClientSide) {
-         CompoundTag syncData = packet.getNbtCompound();
+         CompoundTag syncData = packetTag;
          if (syncData.contains("ForgeLevel")) {
             this.level = syncData.getInt("ForgeLevel");
          }
@@ -228,7 +234,7 @@ public class TileEntityEquipmentForge extends TileEntityBase {
       }
 
       if (nbtTagCompound.contains("Items")) {
-         ContainerHelper.loadAllItems(nbtTagCompound, this.itemStacks);
+         ContainerHelper.loadAllItems(nbtTagCompound, this.itemStacks, LycReg.access());
       }
 
       super.readFromNBT(nbtTagCompound);
@@ -237,24 +243,23 @@ public class TileEntityEquipmentForge extends TileEntityBase {
    @Override
    public CompoundTag writeToNBT(CompoundTag nbtTagCompound) {
       nbtTagCompound.putInt("ForgeLevel", this.level);
-      ContainerHelper.saveAllItems(nbtTagCompound, this.itemStacks);
+      ContainerHelper.saveAllItems(nbtTagCompound, this.itemStacks, LycReg.access());
       return super.writeToNBT(nbtTagCompound);
    }
 
    @Override
    public Object getGUI(Player player) {
-      if (player.level().isClientSide) {
-         return new EquipmentForgeScreen(this, player.getInventory());
-      } else {
+      // 1.12: the screen on the client (lyc/client builds it for this container)
+      {
          if (player instanceof ServerPlayer) {
-            ((ServerPlayer)player).connection.sendPacket(this.getUpdatePacket());
+            ((ServerPlayer)player).connection.send(this.getUpdatePacket());
          }
 
          return new EquipmentForgeContainer(this, player.getInventory());
       }
    }
 
-   public int getLevel() {
+   public int getForgeLevel() {
       return this.level;
    }
 

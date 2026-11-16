@@ -51,6 +51,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.*;
 import net.minecraft.world.entity.ai.navigation.*;
 import net.minecraft.world.entity.ambient.*;
+import net.minecraft.world.entity.boss.enderdragon.*;
+import net.minecraft.world.entity.boss.wither.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.item.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -280,7 +282,7 @@ public class SpawnerEventListener {
 
    @SubscribeEvent
    public void onEntityDeath(LivingDeathEvent event) {
-      LivingEntity killedEntity = event.getEntityLiving();
+      LivingEntity killedEntity = event.getEntity();
       if (killedEntity != null
          && killedEntity.level() != null
          && !killedEntity.level().isClientSide
@@ -297,7 +299,7 @@ public class SpawnerEventListener {
 
    @SubscribeEvent
    public void onEntitySpawn(LivingSpawnEvent event) {
-      LivingEntity spawnedEntity = event.getEntityLiving();
+      LivingEntity spawnedEntity = event.getEntity();
       if (spawnedEntity != null
          && spawnedEntity.level() != null
          && !spawnedEntity.level().isClientSide
@@ -369,7 +371,7 @@ public class SpawnerEventListener {
    }
 
    @SubscribeEvent
-   public void onSleep(PlayerSleepInBedEvent event) {
+   public void onSleep(CanPlayerSleepEvent event) {
       Player player = event.getEntityPlayer();
       if (player != null && player.level() != null && !player.level().isClientSide && !event.isCanceled()) {
          Level world = player.level();

@@ -42,6 +42,12 @@ public final class LycReg {
       return key;
    }
 
+   /** Registries for item NBT (server registries once a server runs, else the built-in ones). */
+   public static net.minecraft.core.HolderLookup.Provider access() {
+      net.minecraft.core.RegistryAccess access = LycDamage.registries();
+      return access != null ? access : net.minecraft.core.RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
+   }
+
    public static Object tab(Object obj) {
       return null;
    }

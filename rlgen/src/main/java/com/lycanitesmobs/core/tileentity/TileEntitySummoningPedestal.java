@@ -5,6 +5,7 @@ import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
 import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
+import com.lycanitesmobs.core.network.TargetPoint;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
 import javax.annotation.Nullable;
@@ -51,6 +52,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.*;
 import net.minecraft.world.entity.ai.navigation.*;
 import net.minecraft.world.entity.ambient.*;
+import net.minecraft.world.entity.boss.enderdragon.*;
+import net.minecraft.world.entity.boss.wither.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.item.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -125,7 +128,8 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
    protected String[] loadMinionIDs;
    protected boolean blockStateSet = false;
 
-   public TileEntitySummoningPedestal() {
+   public TileEntitySummoningPedestal(BlockPos pos, BlockState state) {
+      super(pos, state);
       this.summoningFuelAmount = LycanitesMobs.config
          .getInt(
             "Player",
@@ -295,7 +299,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
       if (entity instanceof Player) {
          Player entityPlayer = (Player)entity;
          this.ownerUUID = entityPlayer.getUUID();
-         this.ownerName = entity.getName();
+         this.ownerName = entity.getName().getString();
       }
    }
 
@@ -354,11 +358,11 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
    }
 
    public ItemStack decrStackSize(int index, int count) {
-      return ContainerHelper.getAndSplit(this.itemStacks, index, count);
+      return ContainerHelper.removeItem(this.itemStacks, index, count);
    }
 
    public ItemStack removeStackFromSlot(int index) {
-      return ContainerHelper.getAndRemove(this.itemStacks, index);
+      return ContainerHelper.takeItem(this.itemStacks, index);
    }
 
    public void setInventorySlotContents(int index, ItemStack stack) {
@@ -414,7 +418,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
       return false;
    }
 
-   public SPacketUpdateTileEntity getUpdatePacket() {
+   public CompoundTag getUpdateTag112() {
       CompoundTag syncData = new CompoundTag();
       if (this.summonSet != null) {
          CompoundTag summonSetNBT = new CompoundTag();
@@ -428,13 +432,13 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
          syncData.putString("InventoryName", this.getName());
       }
 
-      return new SPacketUpdateTileEntity(this.getPos(), 1, syncData);
+      return syncData;
    }
 
    @Override
-   public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
+   public void onDataPacket112(CompoundTag packetTag) {
       if (this.getWorld().isClientSide) {
-         CompoundTag syncData = packet.getNbtCompound();
+         CompoundTag syncData = packetTag;
          if (syncData.contains("OwnerUUID")) {
             this.ownerUUID = UUID.fromString(syncData.getString("OwnerUUID"));
          }
@@ -515,7 +519,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
 
       if (nbtTagCompound.contains("Items")) {
          NonNullList<ItemStack> itemStacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
-         ContainerHelper.loadAllItems(nbtTagCompound, itemStacks);
+         ContainerHelper.loadAllItems(nbtTagCompound, itemStacks, LycReg.access());
 
          for (int ix = 0; ix < itemStacks.size(); ix++) {
             if (ix < this.getSizeInventory()) {
@@ -562,12 +566,13 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
 
       nbtTagCompound.putInt("Fuel", this.summoningFuel);
       nbtTagCompound.putInt("FuelMax", this.summoningFuelMax);
-      ContainerHelper.saveAllItems(nbtTagCompound, this.itemStacks);
+      ContainerHelper.saveAllItems(nbtTagCompound, this.itemStacks, LycReg.access());
       return nbtTagCompound;
    }
 
    @Override
    public Object getGUI(Player player) {
-      return this.getWorld().isClientSide ? new SummoningPedestalScreen(player, this) : new SummoningPedestalContainer(this, player.getInventory());
+      // 1.12: the screen on the client (lyc/client builds it for this container)
+      return new SummoningPedestalContainer(this, player.getInventory());
    }
 }

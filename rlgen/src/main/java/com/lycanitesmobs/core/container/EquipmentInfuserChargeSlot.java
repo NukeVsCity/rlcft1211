@@ -51,6 +51,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.*;
 import net.minecraft.world.entity.ai.navigation.*;
 import net.minecraft.world.entity.ambient.*;
+import net.minecraft.world.entity.boss.enderdragon.*;
+import net.minecraft.world.entity.boss.wither.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.item.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -63,6 +65,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.*;
 import net.minecraft.world.entity.vehicle.*;
 import net.minecraft.world.item.*;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -103,7 +106,7 @@ public class EquipmentInfuserChargeSlot extends BaseSlot {
    @Override
    public boolean isItemValid(ItemStack itemStack) {
       return itemStack.getItem() instanceof ChargeItem
-         || itemStack.getItem() instanceof ItemDye
+         || itemStack.getItem() instanceof DyeItem
          || itemStack.getItem() == Items.WATER_BUCKET
          || itemStack.getItem() == Items.BUCKET;
    }
@@ -122,8 +125,8 @@ public class EquipmentInfuserChargeSlot extends BaseSlot {
       this.container.attemptInfusion();
    }
 
-   public ItemStack onTake(Player player, ItemStack itemStack) {
-      return super.onTake(player, itemStack);
+   public void onTake(Player player, ItemStack itemStack) {
+      super.onTake(player, itemStack);
    }
 
    public boolean canTakeStack(Player player) {

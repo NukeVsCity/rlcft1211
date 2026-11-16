@@ -51,6 +51,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.*;
 import net.minecraft.world.entity.ai.navigation.*;
 import net.minecraft.world.entity.ambient.*;
+import net.minecraft.world.entity.boss.enderdragon.*;
+import net.minecraft.world.entity.boss.wither.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.item.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -95,13 +97,15 @@ import com.lycanitesmobs.core.entity.EntityItemCustom;
 
 
 public class EquipmentStationTileEntity extends TileEntityBase {
+   public EquipmentStationTileEntity(BlockPos pos, BlockState state) {
+      super(pos, state);
+   }
+
    protected NonNullList<ItemStack> itemStacks = NonNullList.withSize(2, ItemStack.EMPTY);
 
    @Override
    public Object getGUI(Player player) {
-      return player.level().isClientSide
-         ? new EquipmentStationScreen(this, player.getInventory())
-         : new EquipmentStationContainer(this, player.getInventory());
+      return new EquipmentStationContainer(this, player.getInventory());
    }
 
    public String getName() {
@@ -149,11 +153,11 @@ public class EquipmentStationTileEntity extends TileEntityBase {
    }
 
    public ItemStack decrStackSize(int index, int count) {
-      return ContainerHelper.getAndSplit(this.itemStacks, index, count);
+      return ContainerHelper.removeItem(this.itemStacks, index, count);
    }
 
    public ItemStack removeStackFromSlot(int index) {
-      return ContainerHelper.getAndRemove(this.itemStacks, index);
+      return ContainerHelper.takeItem(this.itemStacks, index);
    }
 
    public void setInventorySlotContents(int index, ItemStack stack) {
@@ -206,13 +210,13 @@ public class EquipmentStationTileEntity extends TileEntityBase {
    public void readFromNBT(CompoundTag nbtTagCompound) {
       super.readFromNBT(nbtTagCompound);
       if (nbtTagCompound.contains("Items")) {
-         ContainerHelper.loadAllItems(nbtTagCompound, this.itemStacks);
+         ContainerHelper.loadAllItems(nbtTagCompound, this.itemStacks, LycReg.access());
       }
    }
 
    @Override
    public CompoundTag writeToNBT(CompoundTag nbtTagCompound) {
-      ContainerHelper.saveAllItems(nbtTagCompound, this.itemStacks);
+      ContainerHelper.saveAllItems(nbtTagCompound, this.itemStacks, LycReg.access());
       return super.writeToNBT(nbtTagCompound);
    }
 }

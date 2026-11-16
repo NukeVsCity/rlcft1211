@@ -274,13 +274,18 @@ public class ObjectManager {
          Block[] validBlocks = blocks.values().stream()
             .filter(b -> b instanceof com.lycanitesmobs.core.block.ITileEntityBlock teb && teb.getTileEntityClass() == cls)
             .toArray(Block[]::new);
-         return BlockEntityType.Builder.of((pos, state) -> {
+         BlockEntityType<?>[] typeRef = new BlockEntityType<?>[1];
+         typeRef[0] = BlockEntityType.Builder.of((pos, state) -> {
+            com.lycanitesmobs.core.tileentity.TileEntityBase.CONSTRUCTING.set(typeRef[0]);
             try {
                return (BlockEntity)ctor.newInstance(pos, state);
             } catch (ReflectiveOperationException ex) {
                throw new RuntimeException(ex);
+            } finally {
+               com.lycanitesmobs.core.tileentity.TileEntityBase.CONSTRUCTING.remove();
             }
          }, validBlocks).build(null);
+         return typeRef[0];
       } catch (NoSuchMethodException ex) {
          throw new RuntimeException("[LycanitesMobs] " + cls.getName() + " needs a (BlockPos, BlockState) constructor", ex);
       }

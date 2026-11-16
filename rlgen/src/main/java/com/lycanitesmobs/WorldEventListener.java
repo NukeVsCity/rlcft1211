@@ -51,6 +51,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.*;
 import net.minecraft.world.entity.ai.navigation.*;
 import net.minecraft.world.entity.ambient.*;
+import net.minecraft.world.entity.boss.enderdragon.*;
+import net.minecraft.world.entity.boss.wither.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.item.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -94,7 +96,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class WorldEventListener implements IWorldEventListener {
+public class WorldEventListener {
    protected GameEventListener gameEventListener;
    protected List<Entity> customBlockProtectionEntities = new ArrayList<>();
    protected String[] customProtectionEntityEntries;
@@ -142,7 +144,7 @@ public class WorldEventListener implements IWorldEventListener {
       if (this.customProtectionEntityEntries.length > 0) {
          ExtendedWorld extendedWorld = ExtendedWorld.getForWorld(entity.level());
          if (extendedWorld != null) {
-            ResourceLocation entityResourceLocation = EntityList.getKey(entity);
+            ResourceLocation entityResourceLocation = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType());
             if (entityResourceLocation != null) {
                String entityId = entityResourceLocation.toString();
 

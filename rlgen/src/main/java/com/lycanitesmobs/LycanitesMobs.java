@@ -101,6 +101,8 @@ public class LycanitesMobs {
       modInfo = new ModInfo(this, "Lycanites Mobs", 1000);
       installDefaultConfigs();
       LycEntities.init(modBus);
+      LycAttachments.init(modBus);
+      GuiHandler.init(modBus);
       modBus.addListener(packetHandler::registerPayloads);
       packetHandler.init();
       NeoForge.EVENT_BUS.addListener((RegisterCommandsEvent event) -> CommandMain.register(event.getDispatcher()));

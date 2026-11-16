@@ -51,6 +51,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.*;
 import net.minecraft.world.entity.ai.navigation.*;
 import net.minecraft.world.entity.ambient.*;
+import net.minecraft.world.entity.boss.enderdragon.*;
+import net.minecraft.world.entity.boss.wither.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.item.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -150,7 +152,7 @@ public class BlockShadowfire extends BlockFireBase {
       if (!(entity instanceof ItemEntity)) {
          if (entity instanceof LivingEntity) {
             LivingEntity entityLiving = (LivingEntity)entity;
-            PotionBase decay = ObjectManager.getEffect("decay");
+            Holder<MobEffect> decay = ObjectManager.getEffect("decay");
             if (decay != null) {
                MobEffectInstance effectDecay = new MobEffectInstance(decay, 100, 0);
                if (entityLiving.canBeAffected(effectDecay)) {

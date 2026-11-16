@@ -51,6 +51,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.*;
 import net.minecraft.world.entity.ai.navigation.*;
 import net.minecraft.world.entity.ambient.*;
+import net.minecraft.world.entity.boss.enderdragon.*;
+import net.minecraft.world.entity.boss.wither.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.item.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -120,7 +122,7 @@ public class BlockHellfire extends BlockFireBase {
    protected void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
       super.entityInside(state, world, pos, entity);
       if (entity instanceof LivingEntity) {
-         PotionBase decay = ObjectManager.getEffect("decay");
+         Holder<MobEffect> decay = ObjectManager.getEffect("decay");
          if (decay != null) {
             MobEffectInstance effect = new MobEffectInstance(decay, 100, 0);
             LivingEntity entityLiving = (LivingEntity)entity;

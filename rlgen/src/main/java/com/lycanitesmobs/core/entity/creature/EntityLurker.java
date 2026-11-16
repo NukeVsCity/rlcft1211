@@ -51,6 +51,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.*;
 import net.minecraft.world.entity.ai.navigation.*;
 import net.minecraft.world.entity.ambient.*;
+import net.minecraft.world.entity.boss.enderdragon.*;
+import net.minecraft.world.entity.boss.wither.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.item.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -116,7 +118,7 @@ public class EntityLurker extends TameableCreatureEntity {
    public void aiStep() {
       super.aiStep();
       if (this.getTarget() != null) {
-         PotionBase stalkingEffect = ObjectManager.getEffect("plague");
+         Holder<MobEffect> stalkingEffect = ObjectManager.getEffect("plague");
          if (stalkingEffect != null && this.getTarget().hasEffect(stalkingEffect)) {
             this.setAvoidTarget(this.getTarget());
          } else {
@@ -149,7 +151,7 @@ public class EntityLurker extends TameableCreatureEntity {
                }
             }
 
-            PotionBase stalkingEffect = ObjectManager.getEffect("plague");
+            Holder<MobEffect> stalkingEffect = ObjectManager.getEffect("plague");
             if (stalkingEffect != null && !this.getTarget().hasEffect(stalkingEffect)) {
                return false;
             }

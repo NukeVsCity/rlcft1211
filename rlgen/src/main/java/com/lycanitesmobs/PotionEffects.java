@@ -51,6 +51,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.*;
 import net.minecraft.world.entity.ai.navigation.*;
 import net.minecraft.world.entity.ambient.*;
+import net.minecraft.world.entity.boss.enderdragon.*;
+import net.minecraft.world.entity.boss.wither.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.item.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -103,18 +105,14 @@ import java.util.UUID;
 
 
 public class PotionEffects {
-   private static final UUID swiftswimmingMoveBoostUUID = UUID.fromString("6d4fe17f-06eb-4ebc-a573-364b79faed5e");
-   private static final AttributeModifier swiftswimmingMoveBoost = new AttributeModifier(swiftswimmingMoveBoostUUID, "Swiftswimming Speed Boost", 1.0, 2)
-      .setSaved(false);
-   private static final UUID swiftswimmingMoveBoostUUID2 = UUID.fromString("6d4fe17f-06eb-4ebc-a573-364b79faed5d");
-   private static final AttributeModifier swiftswimmingMoveBoost2 = new AttributeModifier(swiftswimmingMoveBoostUUID2, "Swiftswimming Speed Boost 2", 2.0, 2)
-      .setSaved(false);
-   private static final UUID swiftswimmingMoveBoostUUID3 = UUID.fromString("6d4fe17f-06eb-4ebc-a573-364b79faed5c");
-   private static final AttributeModifier swiftswimmingMoveBoost3 = new AttributeModifier(swiftswimmingMoveBoostUUID3, "Swiftswimming Speed Boost 3", 3.0, 2)
-      .setSaved(false);
-   private static final UUID swiftswimmingMoveBoostUUID4 = UUID.fromString("6d4fe17f-06eb-4ebc-a573-364b79faed5b");
-   private static final AttributeModifier swiftswimmingMoveBoost4 = new AttributeModifier(swiftswimmingMoveBoostUUID4, "Swiftswimming Speed Boost 4", 4.0, 2)
-      .setSaved(false);
+   private static final ResourceLocation swiftswimmingMoveBoostUUID = ResourceLocation.fromNamespaceAndPath("lycanitesmobs", "6d4fe17f-06eb-4ebc-a573-364b79faed5e");
+   private static final AttributeModifier swiftswimmingMoveBoost = new AttributeModifier(swiftswimmingMoveBoostUUID, 1.0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+   private static final ResourceLocation swiftswimmingMoveBoostUUID2 = ResourceLocation.fromNamespaceAndPath("lycanitesmobs", "6d4fe17f-06eb-4ebc-a573-364b79faed5d");
+   private static final AttributeModifier swiftswimmingMoveBoost2 = new AttributeModifier(swiftswimmingMoveBoostUUID2, 2.0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+   private static final ResourceLocation swiftswimmingMoveBoostUUID3 = ResourceLocation.fromNamespaceAndPath("lycanitesmobs", "6d4fe17f-06eb-4ebc-a573-364b79faed5c");
+   private static final AttributeModifier swiftswimmingMoveBoost3 = new AttributeModifier(swiftswimmingMoveBoostUUID3, 3.0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+   private static final ResourceLocation swiftswimmingMoveBoostUUID4 = ResourceLocation.fromNamespaceAndPath("lycanitesmobs", "6d4fe17f-06eb-4ebc-a573-364b79faed5b");
+   private static final AttributeModifier swiftswimmingMoveBoost4 = new AttributeModifier(swiftswimmingMoveBoostUUID4, 4.0, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
    public boolean disableNausea = false;
 
    public void init(ConfigBase config) {
@@ -159,9 +157,9 @@ public class PotionEffects {
    }
 
    @SubscribeEvent
-   public void onEntityUpdate(LivingUpdateEvent event) {
-      LivingEntity entity = event.getEntityLiving();
-      if (entity != null) {
+   public void onEntityUpdate(EntityTickEvent.Pre event) {
+      // 1.12 LivingUpdateEvent
+      if (event.getEntity() instanceof LivingEntity entity) {
          for (Object potionEffectObj : entity.getActiveEffects()) {
             if (potionEffectObj == null) {
                entity.removeAllEffects();
@@ -173,7 +171,7 @@ public class PotionEffects {
             entity.removeEffect(MobEffects.BLINDNESS);
          }
 
-         if (this.disableNausea && event.getEntityLiving() instanceof Player && entity.hasEffect(MobEffects.CONFUSION)) {
+         if (this.disableNausea && entity instanceof Player && entity.hasEffect(MobEffects.CONFUSION)) {
             entity.removeEffect(MobEffects.CONFUSION);
          }
 
@@ -183,7 +181,7 @@ public class PotionEffects {
             invulnerable = player.isCreative() || player.isSpectator();
          }
 
-         PotionBase paralysis = ObjectManager.getEffect("paralysis");
+         Holder<MobEffect> paralysis = ObjectManager.getEffect("paralysis");
          if (paralysis != null && !invulnerable && entity.hasEffect(paralysis)) {
             LycMotion.setX(entity, 0.0);
             if (entity.getDeltaMovement().y > 0.0) {
@@ -191,15 +189,15 @@ public class PotionEffects {
             }
 
             LycMotion.setZ(entity, 0.0);
-            entity.onGround = false;
+            entity.setOnGround(false);
          }
 
-         PotionBase weight = ObjectManager.getEffect("weight");
+         Holder<MobEffect> weight = ObjectManager.getEffect("weight");
          if (weight != null && !invulnerable && entity.hasEffect(weight) && !entity.hasEffect(MobEffects.DAMAGE_BOOST) && entity.getDeltaMovement().y > -0.2) {
             LycMotion.setY(entity, -0.2);
          }
 
-         PotionBase fear = ObjectManager.getEffect("fear");
+         Holder<MobEffect> fear = ObjectManager.getEffect("fear");
          if (fear != null && !entity.level().isClientSide && !invulnerable && !this.isBoss(entity) && entity.hasEffect(fear)) {
             ExtendedEntity extendedEntity = ExtendedEntity.getForEntity(entity);
             if (extendedEntity != null && extendedEntity.fearEntity == null) {
@@ -209,7 +207,7 @@ public class PotionEffects {
             }
          }
 
-         PotionBase instability = ObjectManager.getEffect("instability");
+         Holder<MobEffect> instability = ObjectManager.getEffect("instability");
          if (instability != null
             && !entity.level().isClientSide
             && !(entity instanceof IGroupBoss)
@@ -224,7 +222,7 @@ public class PotionEffects {
             try {
                if (entity instanceof ServerPlayer) {
                   ServerPlayer player = (ServerPlayer)entity;
-                  player.connection.sendPacket(new SPacketEntityVelocity(entity));
+                  player.connection.send(new net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket(entity));
                   MessageEntityVelocity messageEntityVelocity = new MessageEntityVelocity(
                      player,
                      strength * (entity.level().random.nextDouble() - 0.5),
@@ -239,7 +237,7 @@ public class PotionEffects {
             }
          }
 
-         PotionBase plague = ObjectManager.getEffect("plague");
+         Holder<MobEffect> plague = ObjectManager.getEffect("plague");
          if (plague != null && !entity.level().isClientSide && !invulnerable && entity.hasEffect(plague)) {
             int poisonAmplifier = entity.getEffect(plague).getAmplifier();
             int poisonDuration = entity.getEffect(plague).getDuration();
@@ -265,7 +263,7 @@ public class PotionEffects {
             }
          }
 
-         PotionBase smited = ObjectManager.getEffect("smited");
+         Holder<MobEffect> smited = ObjectManager.getEffect("smited");
          if (smited != null
             && !entity.level().isClientSide
             && !invulnerable
@@ -277,18 +275,18 @@ public class PotionEffects {
             }
          }
 
-         PotionBase bleed = ObjectManager.getEffect("bleed");
+         Holder<MobEffect> bleed = ObjectManager.getEffect("bleed");
          if (bleed != null
             && !entity.level().isClientSide
             && !invulnerable
             && entity.hasEffect(bleed)
             && entity.level().getGameTime() % 20L == 0L
             && !entity.isPassenger()
-            && entity.prevDistanceWalkedModified != entity.distanceWalkedModified) {
+            && entity.walkDistO != entity.walkDist) {
             entity.hurt(LycDamage.src(DamageTypes.MAGIC), (float)(entity.getEffect(bleed).getAmplifier() + 1));
          }
 
-         PotionBase smouldering = ObjectManager.getEffect("smouldering");
+         Holder<MobEffect> smouldering = ObjectManager.getEffect("smouldering");
          if (smouldering != null
             && !entity.level().isClientSide
             && !invulnerable
@@ -297,41 +295,41 @@ public class PotionEffects {
             entity.igniteForSeconds(4 + 4 * entity.getEffect(smouldering).getAmplifier());
          }
 
-         PotionBase swiftswimming = ObjectManager.getEffect("swiftswimming");
+         Holder<MobEffect> swiftswimming = ObjectManager.getEffect("swiftswimming");
          if (swiftswimming != null && entity instanceof Player) {
             Player player = (Player)entity;
-            AttributeInstance movement = entity.getAttribute(LivingEntity.SWIM_SPEED);
+            AttributeInstance movement = entity.getAttribute(net.neoforged.neoforge.common.NeoForgeMod.SWIM_SPEED);
             int amplifier = -1;
             if (entity.hasEffect(swiftswimming)) {
                amplifier = entity.getEffect(swiftswimming).getAmplifier();
             }
 
             if (amplifier == 0 && movement.getModifier(swiftswimmingMoveBoostUUID) == null) {
-               movement.applyModifier(swiftswimmingMoveBoost);
+               movement.addTransientModifier(swiftswimmingMoveBoost);
             } else if (amplifier != 0 && movement.getModifier(swiftswimmingMoveBoostUUID) != null) {
-               movement.removeModifier(swiftswimmingMoveBoost);
+               movement.removeModifier(swiftswimmingMoveBoostUUID);
             }
 
             if (amplifier == 1 && movement.getModifier(swiftswimmingMoveBoostUUID2) == null) {
-               movement.applyModifier(swiftswimmingMoveBoost2);
+               movement.addTransientModifier(swiftswimmingMoveBoost2);
             } else if (amplifier != 1 && movement.getModifier(swiftswimmingMoveBoostUUID2) != null) {
-               movement.removeModifier(swiftswimmingMoveBoost2);
+               movement.removeModifier(swiftswimmingMoveBoostUUID2);
             }
 
             if (amplifier == 2 && movement.getModifier(swiftswimmingMoveBoostUUID3) == null) {
-               movement.applyModifier(swiftswimmingMoveBoost3);
+               movement.addTransientModifier(swiftswimmingMoveBoost3);
             } else if (amplifier != 2 && movement.getModifier(swiftswimmingMoveBoostUUID3) != null) {
-               movement.removeModifier(swiftswimmingMoveBoost3);
+               movement.removeModifier(swiftswimmingMoveBoostUUID3);
             }
 
             if (amplifier >= 3 && movement.getModifier(swiftswimmingMoveBoostUUID4) == null) {
-               movement.applyModifier(swiftswimmingMoveBoost4);
+               movement.addTransientModifier(swiftswimmingMoveBoost4);
             } else if (amplifier < 3 && movement.getModifier(swiftswimmingMoveBoostUUID4) != null) {
-               movement.removeModifier(swiftswimmingMoveBoost4);
+               movement.removeModifier(swiftswimmingMoveBoostUUID4);
             }
          }
 
-         PotionBase immunization = ObjectManager.getEffect("immunization");
+         Holder<MobEffect> immunization = ObjectManager.getEffect("immunization");
          if (immunization != null && !entity.level().isClientSide && entity.hasEffect(ObjectManager.getEffect("immunization"))) {
             if (entity.hasEffect(MobEffects.POISON)) {
                entity.removeEffect(MobEffects.POISON);
@@ -354,7 +352,7 @@ public class PotionEffects {
             }
          }
 
-         PotionBase cleansed = ObjectManager.getEffect("cleansed");
+         Holder<MobEffect> cleansed = ObjectManager.getEffect("cleansed");
          if (ObjectManager.getEffect("cleansed") != null && !entity.level().isClientSide && entity.hasEffect(ObjectManager.getEffect("cleansed"))) {
             if (entity.hasEffect(MobEffects.WITHER)) {
                entity.removeEffect(MobEffects.WITHER);
@@ -376,8 +374,8 @@ public class PotionEffects {
    }
 
    @SubscribeEvent
-   public void onEntityJump(LivingJumpEvent event) {
-      LivingEntity entity = event.getEntityLiving();
+   public void onEntityJump(LivingEvent.LivingJumpEvent event) {
+      LivingEntity entity = event.getEntity();
       if (entity != null) {
          boolean invulnerable = false;
          if (entity instanceof Player) {
@@ -386,35 +384,33 @@ public class PotionEffects {
          }
 
          if (!invulnerable) {
-            PotionBase paralysis = ObjectManager.getEffect("paralysis");
-            if (paralysis != null && entity.hasEffect(paralysis) && event.isCancelable()) {
-               event.setCanceled(true);
+            Holder<MobEffect> paralysis = ObjectManager.getEffect("paralysis");
+            if (paralysis != null && entity.hasEffect(paralysis) && false) {
+               // 1.12 LivingJumpEvent is not cancelable
             }
 
-            PotionBase weight = ObjectManager.getEffect("weight");
-            if (weight != null && entity.hasEffect(weight) && event.isCancelable()) {
-               event.setCanceled(true);
+            Holder<MobEffect> weight = ObjectManager.getEffect("weight");
+            if (weight != null && entity.hasEffect(weight) && false) {
+               // 1.12 LivingJumpEvent is not cancelable
             }
          }
       }
    }
 
    @SubscribeEvent
-   public void onLivingAttack(LivingAttackEvent event) {
-      if (!event.isCancelable() || !event.isCanceled()) {
-         if (event.getEntityLiving() != null) {
-            LivingEntity target = event.getEntityLiving();
+   public void onLivingAttack(LivingIncomingDamageEvent event) {
+      if (!event.isCanceled()) {
+         if (event.getEntity() != null) {
+            LivingEntity target = event.getEntity();
             LivingEntity attacker = null;
             if (event.getSource().getEntity() != null && event.getSource().getEntity() instanceof LivingEntity) {
                attacker = (LivingEntity)event.getSource().getEntity();
             }
 
             if (attacker != null) {
-               PotionBase lifeleak = ObjectManager.getEffect("lifeleak");
-               if (lifeleak != null && !event.getEntityLiving().level().isClientSide && attacker.hasEffect(lifeleak)) {
-                  if (event.isCancelable()) {
-                     event.setCanceled(true);
-                  }
+               Holder<MobEffect> lifeleak = ObjectManager.getEffect("lifeleak");
+               if (lifeleak != null && !event.getEntity().level().isClientSide && attacker.hasEffect(lifeleak)) {
+                  event.setCanceled(true);
 
                   target.heal(event.getAmount());
                }
@@ -424,34 +420,34 @@ public class PotionEffects {
    }
 
    @SubscribeEvent
-   public void onLivingHurt(LivingHurtEvent event) {
-      if (!event.isCancelable() || !event.isCanceled()) {
-         if (event.getEntityLiving() != null) {
-            LivingEntity target = event.getEntityLiving();
+   public void onLivingHurt(LivingIncomingDamageEvent event) {
+      if (!event.isCanceled()) {
+         if (event.getEntity() != null) {
+            LivingEntity target = event.getEntity();
             Entity attacker = event.getSource().getEntity();
-            PotionBase fallresist = ObjectManager.getEffect("fallresist");
-            if (fallresist != null && event.getEntityLiving().hasEffect(fallresist) && "fall".equals(event.getSource().getMsgId())) {
+            Holder<MobEffect> fallresist = ObjectManager.getEffect("fallresist");
+            if (fallresist != null && event.getEntity().hasEffect(fallresist) && "fall".equals(event.getSource().getMsgId())) {
                event.setAmount(0.0F);
                event.setCanceled(true);
             }
 
-            PotionBase penetration = ObjectManager.getEffect("penetration");
-            if (penetration != null && event.getEntityLiving().hasEffect(penetration)) {
+            Holder<MobEffect> penetration = ObjectManager.getEffect("penetration");
+            if (penetration != null && event.getEntity().hasEffect(penetration)) {
                float damage = event.getAmount();
-               float multiplier = 0.25F * (float)(event.getEntityLiving().getEffect(penetration).getAmplifier() + 1);
+               float multiplier = 0.25F * (float)(event.getEntity().getEffect(penetration).getAmplifier() + 1);
                event.setAmount(damage + damage * multiplier);
             }
 
-            PotionBase fear = ObjectManager.getEffect("fear");
+            Holder<MobEffect> fear = ObjectManager.getEffect("fear");
             if (fear != null
-               && !this.isBoss(event.getEntityLiving())
-               && event.getEntityLiving().hasEffect(fear)
+               && !this.isBoss(event.getEntity())
+               && event.getEntity().hasEffect(fear)
                && "inWall".equals(event.getSource().getMsgId())) {
                event.setAmount(0.0F);
                event.setCanceled(true);
             }
 
-            PotionBase leech = ObjectManager.getEffect("leech");
+            Holder<MobEffect> leech = ObjectManager.getEffect("leech");
             if (leech != null && event.getSource().getEntity() != null) {
                LivingEntity leechingEntity = null;
                if (event.getSource().getDirectEntity() instanceof LivingEntity) {
@@ -466,7 +462,7 @@ public class PotionEffects {
                }
             }
 
-            PotionBase repulsion = ObjectManager.getEffect("repulsion");
+            Holder<MobEffect> repulsion = ObjectManager.getEffect("repulsion");
             if (repulsion != null) {
                boolean attackerIsBoss = attacker instanceof IGroupBoss;
                if (!attackerIsBoss && CreatureManager.getInstance().getCreatureGroup("boss") != null) {
@@ -495,14 +491,14 @@ public class PotionEffects {
 
    @SubscribeEvent
    public void onEntityHeal(LivingHealEvent event) {
-      LivingEntity entity = event.getEntityLiving();
+      LivingEntity entity = event.getEntity();
       if (entity != null) {
-         PotionBase rejuvenation = ObjectManager.getEffect("rejuvenation");
+         Holder<MobEffect> rejuvenation = ObjectManager.getEffect("rejuvenation");
          if (rejuvenation != null && entity.hasEffect(rejuvenation)) {
             event.setAmount((float)Math.ceil((double)(event.getAmount() * (float)(2 * (1 + entity.getEffect(rejuvenation).getAmplifier())))));
          }
 
-         PotionBase decay = ObjectManager.getEffect("decay");
+         Holder<MobEffect> decay = ObjectManager.getEffect("decay");
          if (decay != null && entity.hasEffect(decay)) {
             event.setAmount((float)Math.floor((double)(event.getAmount() / (float)(2 * (1 + entity.getEffect(decay).getAmplifier())))));
          }
@@ -510,35 +506,49 @@ public class PotionEffects {
    }
 
    @SubscribeEvent
-   public void onSleep(PlayerSleepInBedEvent event) {
-      Player player = event.getEntityPlayer();
-      if (player != null && !player.level().isClientSide && !event.isCanceled()) {
-         PotionBase insomnia = ObjectManager.getEffect("insomnia");
+   public void onSleep(CanPlayerSleepEvent event) {
+      Player player = event.getEntity();
+      if (player != null && !player.level().isClientSide && event.getProblem() == null) {
+         Holder<MobEffect> insomnia = ObjectManager.getEffect("insomnia");
          if (insomnia != null && player.hasEffect(insomnia)) {
-            event.setResult(SleepResult.NOT_SAFE);
+            event.setProblem(Player.BedSleepingProblem.NOT_SAFE);
          }
       }
    }
 
    @SubscribeEvent
-   public void onLivingUseItem(LivingEntityUseItemEvent event) {
-      if (!event.isCancelable() || !event.isCanceled()) {
-         if (event.getEntityLiving() != null) {
-            PotionBase aphagia = ObjectManager.getEffect("aphagia");
+   public void onLivingUseItem(LivingEntityUseItemEvent.Start event) {
+      this.onLivingUseItem(event, event);
+   }
+
+   @SubscribeEvent
+   public void onLivingUseItem(LivingEntityUseItemEvent.Tick event) {
+      this.onLivingUseItem(event, event);
+   }
+
+   @SubscribeEvent
+   public void onLivingUseItem(LivingEntityUseItemEvent.Stop event) {
+      this.onLivingUseItem(event, event);
+   }
+
+   /** 1.12 handler for every LivingEntityUseItemEvent (Start, Tick and Stop are the cancelable ones). */
+   private void onLivingUseItem(LivingEntityUseItemEvent event, net.neoforged.bus.api.ICancellableEvent cancellable) {
+      if (!cancellable.isCanceled()) {
+         if (event.getEntity() != null) {
+            Holder<MobEffect> aphagia = ObjectManager.getEffect("aphagia");
             if (aphagia != null
-               && !event.getEntityLiving().level().isClientSide
-               && event.getEntityLiving().hasEffect(aphagia)
-               && event.isCancelable()) {
-               event.setCanceled(true);
+               && !event.getEntity().level().isClientSide
+               && event.getEntity().hasEffect(aphagia)) {
+               cancellable.setCanceled(true);
             }
          }
       }
    }
 
    public <T extends Entity> List<T> getNearbyEntities(Entity searchEntity, Class<? extends T> clazz, Class filterClass, double range) {
-      return searchEntity.level()
+      return (List<T>)searchEntity.level()
          .getEntitiesOfClass(
-            clazz,
+            (Class<T>)clazz,
             searchEntity.getBoundingBox().inflate(range, range, range),
             entity -> filterClass == null ? true : filterClass.isAssignableFrom(entity.getClass())
          );

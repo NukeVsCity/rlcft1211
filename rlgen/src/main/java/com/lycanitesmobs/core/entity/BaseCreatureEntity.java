@@ -3,6 +3,8 @@ package com.lycanitesmobs.core.entity;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import net.minecraft.world.entity.vehicle.*;
 import net.minecraft.world.entity.ambient.*;
+import net.minecraft.world.entity.boss.enderdragon.*;
+import net.minecraft.world.entity.boss.wither.*;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
 import com.lycanitesmobs.LycEntities;
@@ -53,6 +55,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.*;
 import net.minecraft.world.entity.ai.navigation.*;
 import net.minecraft.world.entity.ambient.*;
+import net.minecraft.world.entity.boss.enderdragon.*;
+import net.minecraft.world.entity.boss.wither.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.item.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -2854,7 +2858,7 @@ public abstract class BaseCreatureEntity extends Mob {
       return false;
    }
 
-   /** 1.12 BaseCreatureEntity.damageEntity (1.21 LivingEntity.actuallyHurt; the Forge LivingHurtEvent already ran in hurt). */
+   /** 1.12 BaseCreatureEntity.damageEntity (1.21 LivingEntity.actuallyHurt; the Forge LivingIncomingDamageEvent already ran in hurt). */
    @Override
    protected void actuallyHurt(DamageSource damageSrc, float damageAmount) {
       if (!this.isInvulnerableTo(damageSrc)) {

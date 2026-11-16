@@ -51,6 +51,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.*;
 import net.minecraft.world.entity.ai.navigation.*;
 import net.minecraft.world.entity.ambient.*;
+import net.minecraft.world.entity.boss.enderdragon.*;
+import net.minecraft.world.entity.boss.wither.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.item.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -121,7 +123,7 @@ public class EntityEechetik extends TameableCreatureEntity implements Enemy {
    public void aiStep() {
       super.aiStep();
       if (!this.level().isClientSide && this.updateTick % 40L == 0L && this.hasAttackTarget()) {
-         PotionBase plague = ObjectManager.getEffect("plague");
+         Holder<MobEffect> plague = ObjectManager.getEffect("plague");
          if (plague != null) {
             MobEffectInstance potionEffect = new MobEffectInstance(plague, this.getEffectDuration(2), 1);
 

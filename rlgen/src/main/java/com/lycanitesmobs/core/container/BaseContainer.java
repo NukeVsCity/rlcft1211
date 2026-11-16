@@ -51,6 +51,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.*;
 import net.minecraft.world.entity.ai.navigation.*;
 import net.minecraft.world.entity.ambient.*;
+import net.minecraft.world.entity.boss.enderdragon.*;
+import net.minecraft.world.entity.boss.wither.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.item.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -63,6 +65,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.*;
 import net.minecraft.world.entity.vehicle.*;
 import net.minecraft.world.item.*;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -90,10 +93,22 @@ import net.neoforged.neoforge.event.entity.player.*;
 import net.neoforged.neoforge.event.level.*;
 import net.neoforged.neoforge.event.tick.*;
 import java.util.HashMap;
+import java.util.List;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.Container;
 import java.util.Map;
 
 
-public class BaseContainer extends Container {
+/**
+ * 1.12 BaseContainer (a Container): a 1.21 menu of GuiHandler.MENU with the 1.12 method names kept
+ * (addSlotToContainer, inventorySlots, transferStackInSlot, canInteractWith, mergeItemStack, onContainerClosed).
+ */
+public class BaseContainer extends AbstractContainerMenu {
+   /** 1.12 Container.inventorySlots */
+   public final List<Slot> inventorySlots;
+   /** 1.12 GuiHandler (id, x, y, z) this container was opened with. */
+   public final int[] guiArgs;
    public Map<Integer, String> specialSlots = new HashMap<>();
    public int playerInventoryStart = -1;
    public int playerInventoryFinish = -1;
@@ -101,6 +116,43 @@ public class BaseContainer extends Container {
    public int inventoryFinish = -1;
    public int specialStart = -1;
    public int specialFinish = -1;
+
+   public BaseContainer() {
+      super(com.lycanitesmobs.GuiHandler.MENU.get(), com.lycanitesmobs.GuiHandler.WINDOW_ID.get());
+      this.inventorySlots = this.slots;
+      this.guiArgs = com.lycanitesmobs.GuiHandler.GUI_ARGS.get();
+   }
+
+   public Slot addSlotToContainer(Slot slot) {
+      return this.addSlot(slot);
+   }
+
+   public boolean mergeItemStack(ItemStack stack, int start, int end, boolean reverse) {
+      return this.moveItemStackTo(stack, start, end, reverse);
+   }
+
+   @Override
+   public ItemStack quickMoveStack(Player player, int slotID) {
+      return this.transferStackInSlot(player, slotID);
+   }
+
+   @Override
+   public boolean stillValid(Player player) {
+      return this.canInteractWith(player);
+   }
+
+   public void onContainerClosed(Player player) {
+   }
+
+   @Override
+   public void removed(Player player) {
+      super.removed(player);
+      this.onContainerClosed(player);
+   }
+
+   public void detectAndSendChanges() {
+      this.broadcastChanges();
+   }
 
    public Slot addSlot(Container inventory, int slotIndex, int x, int y) {
       return this.addSlotToContainer(new BaseSlot(inventory, slotIndex, x, y));
@@ -142,7 +194,7 @@ public class BaseContainer extends Container {
    }
 
    public void addSlotGrid(Container inventory, int x, int y, int totalRows, int start) {
-      this.addSlotGrid(inventory, x, y, totalRows, start, inventory.getSizeInventory() - 1);
+      this.addSlotGrid(inventory, x, y, totalRows, start, inventory.getContainerSize() - 1);
    }
 
    public void addSlotsByColumn(Container inventory, int x, int y, int columnMax, int start, int finish) {
@@ -163,15 +215,15 @@ public class BaseContainer extends Container {
    public ItemStack transferStackInSlot(Player player, int slotID) {
       ItemStack itemStack = ItemStack.EMPTY;
       Slot slot = (Slot)this.inventorySlots.get(slotID);
-      if (slot != null && slot.getHasStack()) {
-         ItemStack slotStack = slot.getStack();
+      if (slot != null && slot.hasItem()) {
+         ItemStack slotStack = slot.getItem();
          itemStack = slotStack.copy();
          if (this.isPlayerSlot(slotID)) {
             if (this.specialStart >= 0 && this.specialFinish >= 0) {
                for (int i = this.specialStart; i <= this.specialFinish; i++) {
                   if (i < this.inventorySlots.size()) {
                      Slot targetSlot = (Slot)this.inventorySlots.get(i);
-                     if (targetSlot.isItemValid(itemStack) && !this.mergeItemStack(slotStack, i, i + 1, false)) {
+                     if (targetSlot.mayPlace(itemStack) && !this.mergeItemStack(slotStack, i, i + 1, false)) {
                         return ItemStack.EMPTY;
                      }
                   }
@@ -189,9 +241,9 @@ public class BaseContainer extends Container {
          }
 
          if (slotStack.getCount() == 0) {
-            slot.putStack(ItemStack.EMPTY);
+            slot.set(ItemStack.EMPTY);
          } else {
-            slot.onSlotChanged();
+            slot.setChanged();
          }
 
          return ItemStack.EMPTY;

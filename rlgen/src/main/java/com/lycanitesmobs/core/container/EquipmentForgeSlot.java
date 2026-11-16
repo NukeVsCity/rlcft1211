@@ -51,6 +51,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.*;
 import net.minecraft.world.entity.ai.navigation.*;
 import net.minecraft.world.entity.ambient.*;
+import net.minecraft.world.entity.boss.enderdragon.*;
+import net.minecraft.world.entity.boss.wither.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.item.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -63,6 +65,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.*;
 import net.minecraft.world.entity.vehicle.*;
 import net.minecraft.world.item.*;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -114,12 +117,12 @@ public class EquipmentForgeSlot extends BaseSlot {
       Item item = itemStack.getItem();
       if (item instanceof ItemEquipmentPart) {
          ItemEquipmentPart equipmentPart = (ItemEquipmentPart)item;
-         return this.type.equals(equipmentPart.slotType) && equipmentPart.getLevel(itemStack) <= this.containerForge.equipmentForge.getLevel();
+         return this.type.equals(equipmentPart.slotType) && equipmentPart.getLevel(itemStack) <= this.containerForge.equipmentForge.getForgeLevel();
       } else if (item instanceof ItemEquipment) {
-         if (this.containerForge.equipmentForge.getLevel() < 3) {
+         if (this.containerForge.equipmentForge.getForgeLevel() < 3) {
             ItemEquipment equipment = (ItemEquipment)item;
             int equipmentLevel = equipment.getHighestLevel(itemStack);
-            if (equipmentLevel > this.containerForge.equipmentForge.getLevel()) {
+            if (equipmentLevel > this.containerForge.equipmentForge.getForgeLevel()) {
                return false;
             }
          }
@@ -149,7 +152,7 @@ public class EquipmentForgeSlot extends BaseSlot {
    public int getSlotStackLimit() {
       return this.inventory instanceof InventoryCreature && ((InventoryCreature)this.inventory).getTypeFromSlot(this.getSlotIndex()) != null
          ? 1
-         : this.inventory.getInventoryStackLimit();
+         : this.inventory.getMaxStackSize();
    }
 
    public void setType(String type) {
@@ -188,16 +191,16 @@ public class EquipmentForgeSlot extends BaseSlot {
       }
    }
 
-   public ItemStack onTake(Player player, ItemStack itemStack) {
+   public void onTake(Player player, ItemStack itemStack) {
       Item item = itemStack.getItem();
       if (item instanceof ItemEquipmentPart) {
          this.updateChildSlots();
       }
 
       if (item instanceof ItemEquipment) {
-         int forgeLevel = this.containerForge.equipmentForge.getLevel();
+         int forgeLevel = this.containerForge.equipmentForge.getForgeLevel();
          if (forgeLevel < 3) {
-            ((ItemEquipment)item).applyLevelCap(itemStack, this.containerForge.equipmentForge.getLevel());
+            ((ItemEquipment)item).applyLevelCap(itemStack, this.containerForge.equipmentForge.getForgeLevel());
          }
       }
 
@@ -207,7 +210,7 @@ public class EquipmentForgeSlot extends BaseSlot {
          this.containerForge.onEquipmentPartSlotChanged(this);
       }
 
-      return super.onTake(player, itemStack);
+      super.onTake(player, itemStack);
    }
 
    public boolean canTakeStack(Player player) {

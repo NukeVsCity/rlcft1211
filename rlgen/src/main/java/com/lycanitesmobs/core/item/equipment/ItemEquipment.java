@@ -51,6 +51,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.*;
 import net.minecraft.world.entity.ai.navigation.*;
 import net.minecraft.world.entity.ambient.*;
+import net.minecraft.world.entity.boss.enderdragon.*;
+import net.minecraft.world.entity.boss.wither.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.item.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -245,7 +247,7 @@ public class ItemEquipment extends ItemBase {
       NonNullList<ItemStack> itemStacks = NonNullList.withSize(PART_LIMIT, ItemStack.EMPTY);
       CompoundTag nbt = LycNBT.get(this);
       if (nbt.contains("Items")) {
-         ContainerHelper.loadAllItems(nbt, itemStacks);
+         ContainerHelper.loadAllItems(nbt, itemStacks, LycReg.access());
       }
 
       return itemStacks;
@@ -276,7 +278,7 @@ public class ItemEquipment extends ItemBase {
          NonNullList<ItemStack> itemStacks = this.getEquipmentPartStacks(equipmentStack);
          itemStacks.set(slotIndex, equipmentPartStack);
          CompoundTag nbt = LycNBT.get(this);
-         ContainerHelper.saveAllItems(nbt, itemStacks);
+         ContainerHelper.saveAllItems(nbt, itemStacks, LycReg.access());
          LycNBT.put(equipmentStack, nbt);
       }
    }
@@ -378,7 +380,7 @@ public class ItemEquipment extends ItemBase {
       }
 
       CompoundTag nbt = LycNBT.get(this);
-      ContainerHelper.saveAllItems(nbt, itemStacks);
+      ContainerHelper.saveAllItems(nbt, itemStacks, LycReg.access());
       LycNBT.put(equipmentStack, nbt);
       return sharpnessIncreased;
    }
@@ -395,7 +397,7 @@ public class ItemEquipment extends ItemBase {
       }
 
       CompoundTag nbt = LycNBT.get(this);
-      ContainerHelper.saveAllItems(nbt, itemStacks);
+      ContainerHelper.saveAllItems(nbt, itemStacks, LycReg.access());
       LycNBT.put(equipmentStack, nbt);
       return sharpnessDecreased;
    }
@@ -428,7 +430,7 @@ public class ItemEquipment extends ItemBase {
       }
 
       CompoundTag nbt = LycNBT.get(this);
-      ContainerHelper.saveAllItems(nbt, itemStacks);
+      ContainerHelper.saveAllItems(nbt, itemStacks, LycReg.access());
       LycNBT.put(equipmentStack, nbt);
       return manaIncreased;
    }
@@ -445,7 +447,7 @@ public class ItemEquipment extends ItemBase {
       }
 
       CompoundTag nbt = LycNBT.get(this);
-      ContainerHelper.saveAllItems(nbt, itemStacks);
+      ContainerHelper.saveAllItems(nbt, itemStacks, LycReg.access());
       LycNBT.put(equipmentStack, nbt);
       return manaDecreased;
    }
