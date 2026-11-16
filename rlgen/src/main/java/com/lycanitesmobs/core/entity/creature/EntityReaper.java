@@ -179,7 +179,7 @@ public class EntityReaper extends TameableCreatureEntity implements Enemy {
 
    @Override
    protected SoundEvent getAmbientSound() {
-      if (this.hasAttackTarget() && this.getTarget() instanceof Player && "jbams".equalsIgnoreCase(this.getTarget().getName())) {
+      if (this.hasAttackTarget() && this.getTarget() instanceof Player && "jbams".equalsIgnoreCase(this.getTarget().getName().getString())) {
          return AssetManager.getSound(this.creatureInfo.getName() + "_say_jon");
       } else {
          return this.isTamed() && this.getOwner() != null && "jbams".equalsIgnoreCase(this.getOwnerName())

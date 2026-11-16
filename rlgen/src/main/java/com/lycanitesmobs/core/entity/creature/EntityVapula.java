@@ -107,7 +107,7 @@ public class EntityVapula extends TameableCreatureEntity implements Enemy {
       this.attribute = EnumCreatureAttribute.UNDEFINED;
       this.hasAttackSound = true;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
       this.attackPhaseMax = 8;
       this.setAttackCooldownMax(60);
    }

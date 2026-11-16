@@ -191,7 +191,7 @@ public class TemptGoal extends EntityAIBase {
          return false;
       } else {
          if (this.player == null) {
-            this.player = this.host.level().getClosestPlayerToEntity(this.host, this.temptDistanceMax);
+            this.player = Legacy112.getClosestPlayerToEntity(this.host, this.temptDistanceMax);
             if (this.player == null) {
                return false;
             }
@@ -278,7 +278,7 @@ public class TemptGoal extends EntityAIBase {
       this.isRunning = true;
       if (this.host.getNavigation() instanceof GroundPathNavigation) {
          GroundPathNavigation navigateGround = (GroundPathNavigation)this.host.getNavigation();
-         this.canSwim = !navigateGround.getCanSwim();
+         this.canSwim = !navigateGround.canFloat();
          navigateGround.setCanFloat(true);
       }
 

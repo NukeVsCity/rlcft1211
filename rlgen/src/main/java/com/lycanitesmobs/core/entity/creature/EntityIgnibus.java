@@ -115,7 +115,7 @@ public class EntityIgnibus extends RideableCreatureEntity implements IGroupHeavy
       this.hasAttackSound = false;
       this.setAttackCooldownMax(20);
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
       this.hitAreaWidthScale = 1.5F;
    }
 
@@ -358,10 +358,10 @@ public class EntityIgnibus extends RideableCreatureEntity implements IGroupHeavy
    }
 
    public float getBrightness() {
-      return this.isAttackOnCooldown() ? 1.0F : super.getLightLevelDependentMagicValue();
+      return this.isAttackOnCooldown() ? 1.0F : -1;
    }
 
    public int getBrightnessForRender() {
-      return this.isAttackOnCooldown() ? 15728880 : super.getLightLevelDependentMagicValue();
+      return this.isAttackOnCooldown() ? 15728880 : -1;
    }
 }

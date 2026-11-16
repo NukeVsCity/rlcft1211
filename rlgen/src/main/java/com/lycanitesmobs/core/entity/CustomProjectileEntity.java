@@ -103,6 +103,16 @@ import java.util.List;
 
 
 public class CustomProjectileEntity extends BaseProjectileEntity {
+   @Override
+   protected void defineSynchedData(SynchedEntityData.Builder builder) {
+      super.defineSynchedData(builder);
+      builder.define(PROJECTILE_NAME, "");
+      builder.define(THROWING_ENTITY_ID, -1);
+      builder.define(PARENT_PROJECTILE_ID, -1);
+      builder.define(TARGET_ID, -1);
+      builder.define(LASER_ANGLE, 0.0F);
+   }
+
    public ProjectileInfo projectileInfo;
    protected int throwerId = -1;
    protected BaseProjectileEntity parent;
@@ -121,44 +131,57 @@ public class CustomProjectileEntity extends BaseProjectileEntity {
    protected static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(CustomProjectileEntity.class, EntityDataSerializers.INT);
    protected static final EntityDataAccessor<Float> LASER_ANGLE = SynchedEntityData.defineId(CustomProjectileEntity.class, EntityDataSerializers.FLOAT);
 
-   public CustomProjectileEntity(Level world) {
-      super(world);
-      builder.define(PROJECTILE_NAME, "");
+   public CustomProjectileEntity(EntityType<? extends CustomProjectileEntity> lycType, Level world) {
+      super(lycType, world);
       this.modInfo = LycanitesMobs.modInfo;
+      // 1.21: one entity type per JSON projectile (1.12 loaded the info from NBT / the synced name only)
+      ProjectileInfo typeInfo = LycEntities.projectileInfo(lycType);
+      if (typeInfo != null && this.projectileInfo == null) {
+         this.setProjectileInfo(typeInfo);
+      }
+   }
+
+   public CustomProjectileEntity(Level world) {
+      this(LycEntities.type(CustomProjectileEntity.class), world);
+   }
+
+   public CustomProjectileEntity(EntityType<? extends CustomProjectileEntity> lycType, Level world, ProjectileInfo projectileInfo) {
+      super(lycType, world);
+      this.modInfo = LycanitesMobs.modInfo;
+      this.setProjectileInfo(projectileInfo);
    }
 
    public CustomProjectileEntity(Level world, ProjectileInfo projectileInfo) {
-      super(world);
-      builder.define(PROJECTILE_NAME, "");
+      this((EntityType<? extends CustomProjectileEntity>)LycEntities.projectileTypeFor(projectileInfo, CustomProjectileEntity.class), world, projectileInfo);
+   }
+
+   public CustomProjectileEntity(EntityType<? extends CustomProjectileEntity> lycType, Level world, LivingEntity entityLiving, ProjectileInfo projectileInfo) {
+      super(lycType, world, entityLiving);
+      if (projectileInfo != null) {
+         this.shoot(entityLiving, entityLiving.getXRot(), entityLiving.getYRot(), 0.0F, (float)projectileInfo.velocity, 1.0F);
+      }
+
       this.modInfo = LycanitesMobs.modInfo;
       this.setProjectileInfo(projectileInfo);
    }
 
    public CustomProjectileEntity(Level world, LivingEntity entityLiving, ProjectileInfo projectileInfo) {
-      super(world, entityLiving);
-      if (projectileInfo != null) {
-         this.shoot(entityLiving, entityLiving.getXRot(), entityLiving.getYRot(), 0.0F, (float)projectileInfo.velocity, 1.0F);
-      }
+      this((EntityType<? extends CustomProjectileEntity>)LycEntities.projectileTypeFor(projectileInfo, CustomProjectileEntity.class), world, entityLiving, projectileInfo);
+   }
 
-      builder.define(PROJECTILE_NAME, "");
+   public CustomProjectileEntity(EntityType<? extends CustomProjectileEntity> lycType, Level world, double x, double y, double z, ProjectileInfo projectileInfo) {
+      super(lycType, world, x, y, z);
       this.modInfo = LycanitesMobs.modInfo;
       this.setProjectileInfo(projectileInfo);
    }
 
    public CustomProjectileEntity(Level world, double x, double y, double z, ProjectileInfo projectileInfo) {
-      super(world, x, y, z);
-      builder.define(PROJECTILE_NAME, "");
-      this.modInfo = LycanitesMobs.modInfo;
-      this.setProjectileInfo(projectileInfo);
+      this((EntityType<? extends CustomProjectileEntity>)LycEntities.projectileTypeFor(projectileInfo, CustomProjectileEntity.class), world, x, y, z, projectileInfo);
    }
 
    @Override
    public void setup() {
       super.setup();
-      builder.define(THROWING_ENTITY_ID, this.throwerId);
-      builder.define(PARENT_PROJECTILE_ID, this.parentId);
-      builder.define(TARGET_ID, this.targetId);
-      builder.define(LASER_ANGLE, this.laserAngle);
    }
 
    public void loadProjectileInfo(String projectileName) {
@@ -223,13 +246,13 @@ public class CustomProjectileEntity extends BaseProjectileEntity {
 
    public void syncThrower() {
       if (!this.level().isClientSide) {
-         this.throwerId = this.getOwner() != null ? this.getOwner().getId() : -1;
+         this.throwerId = this.getThrower() != null ? this.getThrower().getId() : -1;
          this.entityData.set(THROWING_ENTITY_ID, this.throwerId);
       } else {
          this.throwerId = (Integer)this.entityData.get(THROWING_ENTITY_ID);
          if (this.throwerId == -1) {
             this.thrower = null;
-         } else if (this.getOwner() == null || this.getOwner().getId() != this.throwerId) {
+         } else if (this.getThrower() == null || this.getThrower().getId() != this.throwerId) {
             Entity possibleThrower = this.level().getEntity(this.throwerId);
             if (possibleThrower instanceof LivingEntity) {
                this.thrower = (LivingEntity)possibleThrower;
@@ -395,11 +418,11 @@ public class CustomProjectileEntity extends BaseProjectileEntity {
    }
 
    public float getBrightness() {
-      return this.projectileInfo != null && this.projectileInfo.glow ? 1.0F : super.getLightLevelDependentMagicValue();
+      return this.projectileInfo != null && this.projectileInfo.glow ? 1.0F : -1;
    }
 
    public int getBrightnessForRender() {
-      return this.projectileInfo != null && this.projectileInfo.glow ? 15728880 : super.getLightLevelDependentMagicValue();
+      return this.projectileInfo != null && this.projectileInfo.glow ? 15728880 : -1;
    }
 
    @Override

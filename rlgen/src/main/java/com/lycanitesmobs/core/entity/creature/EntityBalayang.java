@@ -102,7 +102,7 @@ public class EntityBalayang extends TameableCreatureEntity implements Enemy {
       this.hasAttackSound = true;
       this.flySoundSpeed = 20;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
    }
 
    @Override

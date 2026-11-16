@@ -104,11 +104,6 @@ import java.util.Random;
 public class EntityYale extends AgeableCreatureEntity implements IShearable {
    protected static final EntityDataAccessor<Byte> FUR = SynchedEntityData.defineId(EntityYale.class, EntityDataSerializers.BYTE);
    public ItemDrop woolDrop;
-   private final InventoryCrafting colorMixer = new InventoryCrafting(new Container() {
-      public boolean canInteractWith(Player par1EntityPlayer) {
-         return false;
-      }
-   }, 2, 1);
 
    public EntityYale(Level world) {
       super(LycEntities.type(EntityYale.class), world);
@@ -192,7 +187,8 @@ public class EntityYale extends AgeableCreatureEntity implements IShearable {
       if (this.woolDrop == null) {
          this.woolDrop = new ItemDrop(LycReg.key(Blocks.WHITE_WOOL).toString(), 0, 1.0F).setMinAmount(1).setMaxAmount(3);
       } else if (this.woolDrop.getItemStack().getItem() == Item.byBlock(Blocks.WHITE_WOOL)) {
-         this.woolDrop.setDrop(new ItemStack(Blocks.WHITE_WOOL, 1, color));
+         // 1.12 wool metadata = colour: 1.21 has one wool block per colour
+         this.woolDrop.setDrop(new ItemStack(net.minecraft.world.entity.animal.Sheep.ITEM_BY_DYE.get(DyeColor.byId(color))));
       }
 
       super.setColor(color);
@@ -209,12 +205,14 @@ public class EntityYale extends AgeableCreatureEntity implements IShearable {
       if (i == j) {
          return 15 - i;
       } else {
-         this.colorMixer.getStackInSlot(0).setDamageValue(i);
-         this.colorMixer.getStackInSlot(1).setDamageValue(j);
-         ItemStack itemstack = CraftingManager.findMatchingResult(this.colorMixer, entityA.world);
+         // 1.12 CraftingManager.findMatchingResult of the two dyes (dye damage = 15 - wool colour)
+         net.minecraft.world.item.crafting.CraftingInput mix = net.minecraft.world.item.crafting.CraftingInput.of(2, 1, java.util.List.of(
+            new ItemStack(DyeItem.byColor(DyeColor.byId(15 - i))), new ItemStack(DyeItem.byColor(DyeColor.byId(15 - j)))));
+         ItemStack itemstack = entityA.level().getRecipeManager().getRecipeFor(net.minecraft.world.item.crafting.RecipeType.CRAFTING, mix, entityA.level())
+            .map(r -> r.value().assemble(mix, entityA.level().registryAccess())).orElse(ItemStack.EMPTY);
          int k;
-         if (!itemstack.isEmpty() && itemstack.getItem() == Items.INK_SAC) {
-            k = itemstack.getDamageValue();
+         if (!itemstack.isEmpty() && itemstack.getItem() instanceof DyeItem dye) {
+            k = 15 - dye.getDyeColor().getId();
          } else {
             k = this.level().random.nextBoolean() ? i : j;
          }
@@ -277,7 +275,7 @@ public class EntityYale extends AgeableCreatureEntity implements IShearable {
       if (this.woolDrop != null
          && itemStack.getItem() instanceof BlockItem
          && ((BlockItem)itemStack.getItem()).getBlock() == Blocks.WHITE_WOOL) {
-         itemStack = new ItemStack(itemStack.getItem(), itemStack.getCount(), this.woolDrop.getItemStack().getMetadata());
+         itemStack = new ItemStack(this.woolDrop.getItemStack().getItem(), itemStack.getCount());
       }
 
       super.spawnAtLocation(itemStack);

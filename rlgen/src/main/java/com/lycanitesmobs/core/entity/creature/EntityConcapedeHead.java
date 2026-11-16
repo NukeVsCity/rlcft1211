@@ -249,7 +249,7 @@ public class EntityConcapedeHead extends AgeableCreatureEntity {
          return false;
       } else {
          this.level();
-         return this.isDay() ? this.testLightLevel() < 2 : super.isAggressive();
+         return this.isDaytime() ? this.testLightLevel() < 2 : super.isAggressive();
       }
    }
 

@@ -105,7 +105,7 @@ public class EntityVolcan extends TameableCreatureEntity implements Enemy {
       this.attribute = EnumCreatureAttribute.UNDEFINED;
       this.hasAttackSound = true;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
    }
 
    @Override
@@ -143,7 +143,7 @@ public class EntityVolcan extends TameableCreatureEntity implements Enemy {
                for (int h = -((int)Math.ceil((double)this.getBbHeight()) + range); (double)h <= Math.ceil((double)this.getBbHeight()); h++) {
                   Block block = this.level().getBlockState(this.blockPosition().offset(w, h, d)).getBlock();
                   if (block == Blocks.COBBLESTONE || block == Blocks.GRAVEL) {
-                     BlockState blockState = Blocks.LAVA.getStateFromMeta(11);
+                     BlockState blockState = Blocks.LAVA.defaultBlockState().setValue(LiquidBlock.LEVEL, 11);
                      this.level().setBlock(this.blockPosition().offset(w, h, d), blockState, 3);
                   }
                }

@@ -108,7 +108,7 @@ public class RapidFireProjectileEntity extends BaseProjectileEntity {
    public double offsetZ = 0.0;
 
    public RapidFireProjectileEntity(Class entityClass, Level world, int setTime, int setDelay) {
-      super(world);
+      super(LycEntities.type(RapidFireProjectileEntity.class), world);
       this.setSize(this.projectileWidth, this.projectileHeight);
       this.projectileClass = entityClass;
       this.rapidTime = setTime;
@@ -117,7 +117,7 @@ public class RapidFireProjectileEntity extends BaseProjectileEntity {
    }
 
    public RapidFireProjectileEntity(Class entityClass, Level world, double par2, double par4, double par6, int setTime, int setDelay) {
-      super(world, par2, par4, par6);
+      super(LycEntities.type(RapidFireProjectileEntity.class), world, par2, par4, par6);
       this.setSize(this.projectileWidth, this.projectileHeight);
       this.projectileClass = entityClass;
       this.rapidTime = setTime;
@@ -126,7 +126,7 @@ public class RapidFireProjectileEntity extends BaseProjectileEntity {
    }
 
    public RapidFireProjectileEntity(Class entityClass, Level world, LivingEntity entityLivingBase, int setTime, int setDelay) {
-      super(world, entityLivingBase);
+      super(LycEntities.type(RapidFireProjectileEntity.class), world, entityLivingBase);
       this.setSize(this.projectileWidth, this.projectileHeight);
       this.projectileClass = entityClass;
       this.shootingEntity = entityLivingBase;
@@ -139,7 +139,7 @@ public class RapidFireProjectileEntity extends BaseProjectileEntity {
    }
 
    public RapidFireProjectileEntity(ProjectileInfo projectileInfo, Level world, double par2, double par4, double par6, int setTime, int setDelay) {
-      super(world, par2, par4, par6);
+      super(LycEntities.type(RapidFireProjectileEntity.class), world, par2, par4, par6);
       this.setSize(this.projectileWidth, this.projectileHeight);
       this.projectileInfo = projectileInfo;
       this.rapidTime = setTime;
@@ -148,7 +148,7 @@ public class RapidFireProjectileEntity extends BaseProjectileEntity {
    }
 
    public RapidFireProjectileEntity(ProjectileInfo projectileInfo, Level world, LivingEntity entityLivingBase, int setTime, int setDelay) {
-      super(world, entityLivingBase);
+      super(LycEntities.type(RapidFireProjectileEntity.class), world, entityLivingBase);
       this.setSize(this.projectileWidth, this.projectileHeight);
       this.projectileInfo = projectileInfo;
       this.shootingEntity = entityLivingBase;

@@ -170,7 +170,7 @@ public class EntityConcapedeSegment extends AgeableCreatureEntity {
 
          if (this.hasParent()) {
             this.getLookControl().setLookAt(this.getParentTarget(), 360.0F, 360.0F);
-            this.faceEntity(this.getParentTarget(), 360.0F, 360.0F);
+            this.lookAt(this.getParentTarget(), 360.0F, 360.0F);
             Vec3 parentPos = this.getFacingPositionDouble(
                this.getParentTarget().getX(),
                this.getParentTarget().getY(),

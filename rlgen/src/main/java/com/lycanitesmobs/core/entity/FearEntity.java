@@ -100,7 +100,7 @@ public class FearEntity extends BaseCreatureEntity {
    public Entity fearedEntity;
 
    public FearEntity(Level world) {
-      super(world);
+      super(LycEntities.type(FearEntity.class), world);
       this.attribute = EnumCreatureAttribute.UNDEFINED;
       this.hasStepSound = false;
       this.hasAttackSound = false;
@@ -184,7 +184,7 @@ public class FearEntity extends BaseCreatureEntity {
       this.fearedEntity = feared;
       this.setSize(feared.width, feared.height);
       this.noPhysics = feared.noPhysics;
-      this.setStepHeightCompat(feared.stepHeight);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(feared.stepHeight);
       this.moveTo(feared.getX(), feared.getY(), feared.getZ(), feared.getYRot(), feared.getXRot());
       if (feared instanceof LivingEntity && !(feared instanceof Player)) {
          LivingEntity fearedEntityLiving = (LivingEntity)feared;

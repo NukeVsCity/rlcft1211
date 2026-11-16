@@ -106,7 +106,7 @@ public class EntityDjinn extends TameableCreatureEntity implements Enemy, IFusab
       this.attribute = EnumCreatureAttribute.UNDEFINED;
       this.hasAttackSound = false;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
    }
 
    @Override

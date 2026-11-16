@@ -96,6 +96,17 @@ import java.lang.reflect.Constructor;
 
 
 public class EntityProjectileLaser extends BaseProjectileEntity {
+   @Override
+   protected void defineSynchedData(SynchedEntityData.Builder builder) {
+      super.defineSynchedData(builder);
+      builder.define(SHOOTING_ENTITY_ID, -1);
+      builder.define(LASER_END_ID, -1);
+      builder.define(LASER_TIME, 100);
+      builder.define(OFFSET_X, 0.0F);
+      builder.define(OFFSET_Y, 0.0F);
+      builder.define(OFFSET_Z, 0.0F);
+   }
+
    public LivingEntity shootingEntity;
    public Entity followEntity;
    public int shootingEntityRef = -1;
@@ -127,36 +138,56 @@ public class EntityProjectileLaser extends BaseProjectileEntity {
    protected static final EntityDataAccessor<Float> OFFSET_Y = SynchedEntityData.defineId(EntityProjectileLaser.class, EntityDataSerializers.FLOAT);
    protected static final EntityDataAccessor<Float> OFFSET_Z = SynchedEntityData.defineId(EntityProjectileLaser.class, EntityDataSerializers.FLOAT);
 
-   public EntityProjectileLaser(Level world) {
-      super(world);
+   public EntityProjectileLaser(EntityType<? extends EntityProjectileLaser> lycType, Level world) {
+      super(lycType, world);
       this.setStats();
       this.setTime(0);
    }
 
-   public EntityProjectileLaser(Level world, double par2, double par4, double par6, int setTime, int setDelay) {
-      super(world, par2, par4, par6);
+   public EntityProjectileLaser(Level world) {
+      this(LycEntities.type(EntityProjectileLaser.class), world);
+   }
+
+   public EntityProjectileLaser(EntityType<? extends EntityProjectileLaser> lycType, Level world, double par2, double par4, double par6, int setTime, int setDelay) {
+      super(lycType, world, par2, par4, par6);
       this.laserTime = setTime;
       this.laserDelay = setDelay;
       this.setStats();
    }
 
-   public EntityProjectileLaser(Level world, double par2, double par4, double par6, int setTime, int setDelay, Entity followEntity) {
-      this(world, par2, par4, par6, setTime, setDelay);
+   public EntityProjectileLaser(Level world, double par2, double par4, double par6, int setTime, int setDelay) {
+      this(LycEntities.type(EntityProjectileLaser.class), world, par2, par4, par6, setTime, setDelay);
+   }
+
+   public EntityProjectileLaser(EntityType<? extends EntityProjectileLaser> lycType, Level world, double par2, double par4, double par6, int setTime, int setDelay, Entity followEntity) {
+      this(lycType, world, par2, par4, par6, setTime, setDelay);
       this.followEntity = followEntity;
    }
 
-   public EntityProjectileLaser(Level world, LivingEntity par2EntityLivingBase, int setTime, int setDelay) {
-      this(world, par2EntityLivingBase, setTime, setDelay, null);
+   public EntityProjectileLaser(Level world, double par2, double par4, double par6, int setTime, int setDelay, Entity followEntity) {
+      this(LycEntities.type(EntityProjectileLaser.class), world, par2, par4, par6, setTime, setDelay, followEntity);
    }
 
-   public EntityProjectileLaser(Level world, LivingEntity entityLiving, int setTime, int setDelay, Entity followEntity) {
-      super(world, entityLiving);
+   public EntityProjectileLaser(EntityType<? extends EntityProjectileLaser> lycType, Level world, LivingEntity par2EntityLivingBase, int setTime, int setDelay) {
+      this(lycType, world, par2EntityLivingBase, setTime, setDelay, null);
+   }
+
+   public EntityProjectileLaser(Level world, LivingEntity par2EntityLivingBase, int setTime, int setDelay) {
+      this(LycEntities.type(EntityProjectileLaser.class), world, par2EntityLivingBase, setTime, setDelay);
+   }
+
+   public EntityProjectileLaser(EntityType<? extends EntityProjectileLaser> lycType, Level world, LivingEntity entityLiving, int setTime, int setDelay, Entity followEntity) {
+      super(lycType, world, entityLiving);
       this.shootingEntity = entityLiving;
       this.laserTime = setTime;
       this.laserDelay = setDelay;
       this.setStats();
       this.followEntity = followEntity;
       this.syncOffset();
+   }
+
+   public EntityProjectileLaser(Level world, LivingEntity entityLiving, int setTime, int setDelay, Entity followEntity) {
+      this(LycEntities.type(EntityProjectileLaser.class), world, entityLiving, setTime, setDelay, followEntity);
    }
 
    public void setStats() {
@@ -167,12 +198,6 @@ public class EntityProjectileLaser extends BaseProjectileEntity {
       this.targetX = this.getX();
       this.targetY = this.getY();
       this.targetZ = this.getZ();
-      builder.define(SHOOTING_ENTITY_ID, this.shootingEntityRef);
-      builder.define(LASER_END_ID, this.laserEndRef);
-      builder.define(LASER_TIME, this.laserTime);
-      builder.define(OFFSET_X, (float)this.offsetX);
-      builder.define(OFFSET_Y, (float)this.offsetY);
-      builder.define(OFFSET_Z, (float)this.offsetZ);
       this.noPhysics = true;
    }
 
@@ -475,19 +500,19 @@ public class EntityProjectileLaser extends BaseProjectileEntity {
          ((LivingEntity)target).getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0);
       }
 
-      if (this.getOwner() instanceof BaseCreatureEntity) {
-         BaseCreatureEntity creatureThrower = (BaseCreatureEntity)this.getOwner();
+      if (this.getThrower() instanceof BaseCreatureEntity) {
+         BaseCreatureEntity creatureThrower = (BaseCreatureEntity)this.getThrower();
          attackSuccess = creatureThrower.doRangedDamage(target, this, damage, this.isBlockedByEntity(target, this.position()));
       } else {
          double pierceDamage = 1.0;
          if ((double)damage <= pierceDamage) {
-            attackSuccess = target.hurt(EntityDamageSource.causeThrownDamage(this, this.getOwner()).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
+            attackSuccess = target.hurt(EntityDamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
          } else {
             int hurtResistantTimeBefore = target.invulnerableTime;
-            target.hurt(EntityDamageSource.causeThrownDamage(this, this.getOwner()).setDamageBypassesArmor().setDamageIsAbsolute(), (float)pierceDamage);
+            target.hurt(EntityDamageSource.causeThrownDamage(this, this.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), (float)pierceDamage);
             target.invulnerableTime = hurtResistantTimeBefore;
             damage = (float)((double)damage - pierceDamage);
-            attackSuccess = target.hurt(EntityDamageSource.causeThrownDamage(this, this.getOwner()), damage);
+            attackSuccess = target.hurt(EntityDamageSource.causeThrownDamage(this, this.getThrower()), damage);
          }
       }
 

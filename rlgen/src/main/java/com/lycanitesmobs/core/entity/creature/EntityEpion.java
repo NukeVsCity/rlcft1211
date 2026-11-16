@@ -109,7 +109,7 @@ public class EntityEpion extends RideableCreatureEntity implements Enemy {
       this.flySoundSpeed = 20;
       this.trueSight = true;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
    }
 
    @Override
@@ -145,9 +145,9 @@ public class EntityEpion extends RideableCreatureEntity implements Enemy {
 
          explosionRadius = Math.max(2, Math.round((float)explosionRadius * (float)this.sizeScale));
          if (this.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING) && this.griefing) {
-            this.level().createExplosion(this, this.getX(), this.getY(), this.getZ(), (float)explosionRadius, true);
+            LycWorld.createExplosion(this.level(), this, this.getX(), this.getY(), this.getZ(), (float)explosionRadius, true);
          } else {
-            this.level().createExplosion(this, this.getX(), this.getY(), this.getZ(), (float)explosionRadius, false);
+            LycWorld.createExplosion(this.level(), this, this.getX(), this.getY(), this.getZ(), (float)explosionRadius, false);
          }
 
          this.discard();
@@ -264,6 +264,6 @@ public class EntityEpion extends RideableCreatureEntity implements Enemy {
 
    @Override
    public AABB getRenderBoundingBox() {
-      return this.getBoundingBox().inflate(10.0, 10.0, 10.0).offset(0.0, -5.0, 0.0);
+      return this.getBoundingBox().inflate(10.0, 10.0, 10.0).move(0.0, -5.0, 0.0);
    }
 }

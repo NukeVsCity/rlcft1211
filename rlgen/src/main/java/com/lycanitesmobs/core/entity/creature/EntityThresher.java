@@ -116,7 +116,6 @@ public class EntityThresher extends RideableCreatureEntity implements Enemy, IGr
       this.setupMob();
       this.hitAreaWidthScale = 2.0F;
       this.hitAreaHeightScale = 1.0F;
-      0.0F = 0.9F;
    }
 
    @Override

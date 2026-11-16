@@ -133,11 +133,9 @@ public class WatchClosestGoal extends EntityAIBase {
          }
 
          if (this.watchedClass == Player.class) {
-            this.closestEntity = this.host.level().getClosestPlayerToEntity(this.host, (double)this.maxDistance);
+            this.closestEntity = Legacy112.getClosestPlayerToEntity(this.host, (double)this.maxDistance);
          } else {
-            this.closestEntity = this.host
-               .level()
-               .findNearestEntityWithinAABB(this.watchedClass, this.host.getBoundingBox().inflate((double)this.maxDistance, 3.0, (double)this.maxDistance), this.host);
+            this.closestEntity = Legacy112.findNearestEntityWithinAABB(this.watchedClass, this.host.getBoundingBox().inflate((double)this.maxDistance, 3.0, (double)this.maxDistance), this.host);
          }
 
          return this.closestEntity != null;

@@ -109,7 +109,7 @@ public class EntityAfrit extends TameableCreatureEntity implements Enemy {
       this.hasAttackSound = false;
       this.flySoundSpeed = 20;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
       this.setPathfindingMalus(PathType.LAVA, 0.0F);
    }
 

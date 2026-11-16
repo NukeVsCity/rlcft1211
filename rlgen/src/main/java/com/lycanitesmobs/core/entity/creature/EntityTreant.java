@@ -108,7 +108,7 @@ public class EntityTreant extends BaseCreatureEntity implements Enemy, IGroupHea
       this.solidCollision = true;
       this.setupMob();
       this.hitAreaWidthScale = 1.5F;
-      this.setStepHeightCompat(2.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(2.0F);
    }
 
    @Override
@@ -211,6 +211,6 @@ public class EntityTreant extends BaseCreatureEntity implements Enemy, IGroupHea
 
    @Override
    public AABB getRenderBoundingBox() {
-      return this.getBoundingBox().inflate(50.0, 20.0, 50.0).offset(0.0, -10.0, 0.0);
+      return this.getBoundingBox().inflate(50.0, 20.0, 50.0).move(0.0, -10.0, 0.0);
    }
 }

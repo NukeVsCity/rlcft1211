@@ -189,12 +189,12 @@ public class AvoidGoal extends EntityAIBase {
    public void updateTask() {
       if ((double)this.host.distanceTo(this.avoidTarget) < this.nearDistance) {
          if (!this.host.useDirectNavigator()) {
-            this.host.getNavigation().setSpeed(this.nearSpeed);
+            this.host.getNavigation().setSpeedModifier(this.nearSpeed);
          } else {
             this.host.directNavigator.speedModifier = this.nearSpeed;
          }
       } else if (!this.host.useDirectNavigator()) {
-         this.host.getNavigation().setSpeed(this.farSpeed);
+         this.host.getNavigation().setSpeedModifier(this.farSpeed);
       } else {
          this.host.directNavigator.speedModifier = this.farSpeed;
       }

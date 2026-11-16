@@ -217,8 +217,8 @@ public class ExtendedPlayer {
 
    public void meleeAttack(Entity targetEntity) {
       if (!this.hasAttacked && !this.player.getMainHandItem().isEmpty() && this.canMeleeBigEntity(targetEntity)) {
-         this.player.attackTargetEntityWithCurrentItem(targetEntity);
-         this.player.resetCooldown();
+         this.player.attack(targetEntity);
+         this.player.resetAttackStrengthTicker();
          this.player.swing(InteractionHand.MAIN_HAND);
       }
    }
@@ -294,7 +294,7 @@ public class ExtendedPlayer {
       this.needsFullSync = false;
       if (!this.isControlActive(ExtendedPlayer.CONTROL_ID.RIGHT_MOUSE)
          && (this.player.getMainHandItem().getItem() instanceof ItemEquipment || this.player.getOffhandItem().getItem() instanceof ItemEquipment)) {
-         this.player.stopActiveHand();
+         this.player.stopUsingItem();
       }
    }
 

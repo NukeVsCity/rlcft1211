@@ -116,7 +116,7 @@ public class EntityVespidQueen extends TameableCreatureEntity implements Enemy {
       this.setupMob();
       this.canGrow = true;
       this.babySpawnChance = 0.0;
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
       this.setAttackCooldownMax(10);
       this.creatureStructure = new CreatureStructure(this, DungeonManager.getInstance().getTheme("vespid_hive"));
    }

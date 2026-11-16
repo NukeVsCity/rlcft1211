@@ -172,7 +172,7 @@ public class EntityLobber extends BaseCreatureEntity implements Enemy {
                      || block == Blocks.DIRT
                      || block == Blocks.GRAVEL
                      || block == Blocks.SAND) {
-                     BlockState blockState = Blocks.LAVA.getStateFromMeta(11);
+                     BlockState blockState = Blocks.LAVA.defaultBlockState().setValue(LiquidBlock.LEVEL, 11);
                      this.level().setBlock(this.blockPosition().offset(w, h, d), blockState, 3);
                   }
                }

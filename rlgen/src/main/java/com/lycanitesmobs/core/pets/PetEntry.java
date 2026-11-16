@@ -444,14 +444,14 @@ public class PetEntry {
                }
 
                BlockPos spawnPos = entityCreature.getFacingPosition(this.host, -1.0, (double)randomAngle);
-               if (!this.entity.level().isSideSolid(spawnPos, Direction.UP)) {
+               if (!LycMath.isSideSolid(this.entity.level(), spawnPos, Direction.UP)) {
                   this.entity
                      .moveTo(
                         (double)spawnPos.getX(), (double)spawnPos.getY(), (double)spawnPos.getZ(), this.host.getYRot(), 0.0F
                      );
                } else {
                   spawnPos = entityCreature.getFacingPosition(this.host, -1.0, (double)(-randomAngle));
-                  if (this.entity.level().isSideSolid(spawnPos, Direction.UP)) {
+                  if (LycMath.isSideSolid(this.entity.level(), spawnPos, Direction.UP)) {
                      this.entity
                         .moveTo(
                            (double)spawnPos.getX(), (double)spawnPos.getY(), (double)spawnPos.getZ(), this.host.getYRot(), 0.0F
@@ -495,7 +495,7 @@ public class PetEntry {
    public void onSpawnEntity(Entity entity) {
    }
 
-   public void despawnEntity() {
+   public void checkDespawn() {
       if (this.entity != null) {
          this.onDespawnEntity(this.entity);
          this.saveEntityNBT();

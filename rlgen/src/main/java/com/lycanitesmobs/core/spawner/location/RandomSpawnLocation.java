@@ -285,7 +285,7 @@ public class RandomSpawnLocation extends BlockSpawnLocation {
          BlockState possibleGroundBlockState = world.getBlockState(pos.below());
 
          try {
-            if (possibleGroundBlockState.isNormalCube()) {
+            if (possibleGroundBlockState.isSolidRender(this.level(), this.blockPosition())) {
                return true;
             }
          } catch (Exception var6) {

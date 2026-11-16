@@ -101,7 +101,7 @@ public class EntityTremor extends TameableCreatureEntity implements Enemy {
       this.attribute = EnumCreatureAttribute.UNDEFINED;
       this.hasAttackSound = true;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
    }
 
    @Override
@@ -148,7 +148,7 @@ public class EntityTremor extends TameableCreatureEntity implements Enemy {
             damageTerrain = false;
          }
 
-         this.level().createExplosion(this, this.getX(), this.getY(), this.getZ(), (float)explosionStrength, damageTerrain);
+         LycWorld.createExplosion(this.level(), this, this.getX(), this.getY(), this.getZ(), (float)explosionStrength, damageTerrain);
          return true;
       }
    }

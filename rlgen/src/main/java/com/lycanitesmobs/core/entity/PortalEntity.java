@@ -101,6 +101,12 @@ import com.lycanitesmobs.core.tileentity.TileEntitySummoningPedestal;
 
 
 public class PortalEntity extends BaseProjectileEntity {
+   @Override
+   protected void defineSynchedData(SynchedEntityData.Builder builder) {
+      super.defineSynchedData(builder);
+      builder.define(OWNER_NAME, "");
+   }
+
    private double targetX;
    private double targetY;
    private double targetZ;
@@ -116,27 +122,39 @@ public class PortalEntity extends BaseProjectileEntity {
    public TileEntitySummoningPedestal summoningPedestal;
    protected static final EntityDataAccessor<String> OWNER_NAME = SynchedEntityData.defineId(PortalEntity.class, EntityDataSerializers.STRING);
 
-   public PortalEntity(Level world) {
-      super(world);
+   public PortalEntity(EntityType<? extends PortalEntity> lycType, Level world) {
+      super(lycType, world);
       this.setStats();
       this.isImmuneToFire = true;
    }
 
-   public PortalEntity(Level world, Player shooter, Class summonClass, ItemStaffSummoning portalItem) {
-      super(world, shooter);
+   public PortalEntity(Level world) {
+      this(LycEntities.type(PortalEntity.class), world);
+   }
+
+   public PortalEntity(EntityType<? extends PortalEntity> lycType, Level world, Player shooter, Class summonClass, ItemStaffSummoning portalItem) {
+      super(lycType, world, shooter);
       this.shootingEntity = shooter;
       this.summonClass = summonClass;
       this.portalItem = portalItem;
       this.setStats();
    }
 
-   public PortalEntity(Level world, TileEntitySummoningPedestal summoningPedestal) {
-      super(world);
+   public PortalEntity(Level world, Player shooter, Class summonClass, ItemStaffSummoning portalItem) {
+      this(LycEntities.type(PortalEntity.class), world, shooter, summonClass, portalItem);
+   }
+
+   public PortalEntity(EntityType<? extends PortalEntity> lycType, Level world, TileEntitySummoningPedestal summoningPedestal) {
+      super(lycType, world);
       this.summoningPedestal = summoningPedestal;
       this.setStats();
       LycMotion.setPosX(this, (double)summoningPedestal.getPos().getX() + 0.5);
       LycMotion.setPosY(this, (double)summoningPedestal.getPos().getY() + 1.5);
       LycMotion.setPosZ(this, (double)summoningPedestal.getPos().getZ() + 0.5);
+   }
+
+   public PortalEntity(Level world, TileEntitySummoningPedestal summoningPedestal) {
+      this(LycEntities.type(PortalEntity.class), world, summoningPedestal);
    }
 
    public void setStats() {
@@ -148,7 +166,6 @@ public class PortalEntity extends BaseProjectileEntity {
       this.movement = false;
       this.waterProof = true;
       this.lavaProof = true;
-      builder.define(OWNER_NAME, "");
    }
 
    @Override
@@ -277,7 +294,7 @@ public class PortalEntity extends BaseProjectileEntity {
                }
 
                if (this.shootingEntity != null) {
-                  this.shootingEntity.addStat(ObjectManager.getStat(entityCreature.creatureInfo.getName() + ".summon"), 1);
+                  // 1.12 this.shootingEntity.addStat(...): Lycanites statistics are not registered in 1.21
                }
             }
 

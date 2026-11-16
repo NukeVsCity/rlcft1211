@@ -96,11 +96,11 @@ import net.neoforged.neoforge.event.tick.*;
 
 public class EntityItemCustom extends ItemEntity {
    public EntityItemCustom(Level world) {
-      super(world);
+      super(EntityType.ITEM, world);
    }
 
    public EntityItemCustom(Level world, double x, double y, double z) {
-      super(world, x, y, z);
+      super(world, x, y, z, ItemStack.EMPTY);
    }
 
    public EntityItemCustom(Level world, double x, double y, double z, ItemStack itemStack) {

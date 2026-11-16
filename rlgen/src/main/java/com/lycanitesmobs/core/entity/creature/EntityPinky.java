@@ -108,7 +108,7 @@ public class EntityPinky extends RideableCreatureEntity {
       this.hasAttackSound = true;
       this.spreadFire = true;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
    }
 
    @Override
@@ -135,7 +135,7 @@ public class EntityPinky extends RideableCreatureEntity {
    @Override
    public void aiStep() {
       super.aiStep();
-      if (this.level().getWorldType().getId() != -1) {
+      if (true) { // 1.12 world.getWorldType().getId() != -1: always true
          this.setFarmed();
       }
    }
@@ -208,7 +208,7 @@ public class EntityPinky extends RideableCreatureEntity {
       if (!possibleTargets.isEmpty()) {
          for (LivingEntity possibleTarget : possibleTargets) {
             boolean doDamage = true;
-            if (this.getRider() instanceof Player && NeoForge.EVENT_BUS.post(new AttackEntityEvent((Player)this.getRider(), possibleTarget))) {
+            if (this.getRider() instanceof Player && NeoForge.EVENT_BUS.post(new AttackEntityEvent((Player)this.getRider(), possibleTarget)).isCanceled()) {
                doDamage = false;
             }
 

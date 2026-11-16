@@ -103,7 +103,7 @@ public class EntityWraith extends TameableCreatureEntity implements Enemy {
       this.attribute = EnumCreatureAttribute.UNDEFINED;
       this.hasAttackSound = true;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
    }
 
    @Override
@@ -116,7 +116,7 @@ public class EntityWraith extends TameableCreatureEntity implements Enemy {
    public void aiStep() {
       if (!this.level().isClientSide) {
          if (this.detonateTimer == 0) {
-            this.level().createExplosion(this, this.getX(), this.getY(), this.getZ(), 1.0F, true);
+            LycWorld.createExplosion(this.level(), this, this.getX(), this.getY(), this.getZ(), 1.0F, true);
             this.discard();
          } else if (this.detonateTimer > 0) {
             this.detonateTimer--;
@@ -176,7 +176,7 @@ public class EntityWraith extends TameableCreatureEntity implements Enemy {
          }
 
          explosionRadius = Math.max(1, Math.round((float)explosionRadius * (float)this.sizeScale));
-         this.level().createExplosion(this, this.getX(), this.getY(), this.getZ(), (float)explosionRadius, true);
+         LycWorld.createExplosion(this.level(), this, this.getX(), this.getY(), this.getZ(), (float)explosionRadius, true);
       }
 
       super.die(par1DamageSource);
@@ -203,15 +203,15 @@ public class EntityWraith extends TameableCreatureEntity implements Enemy {
    }
 
    public float getBrightness() {
-      return super.getLightLevelDependentMagicValue();
+      return -1; // 1.12 Entity.getBrightnessForRender (world light): the client renderer keeps its default
    }
 
    public int getBrightnessForRender() {
-      return super.getLightLevelDependentMagicValue();
+      return -1; // 1.12 Entity.getBrightnessForRender (world light): the client renderer keeps its default
    }
 
-   public void readFromNBT(CompoundTag nbtTagCompound) {
-      super.readFromNBT(nbtTagCompound);
+   public void load(CompoundTag nbtTagCompound) {
+      super.load(nbtTagCompound);
       if (nbtTagCompound.contains("DetonateTimer")) {
          this.detonateTimer = nbtTagCompound.getInt("DetonateTimer");
       }

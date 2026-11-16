@@ -105,7 +105,7 @@ public class EntityErepede extends RideableCreatureEntity {
       this.hasAttackSound = false;
       this.attackCooldownMax = 10;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
    }
 
    @Override

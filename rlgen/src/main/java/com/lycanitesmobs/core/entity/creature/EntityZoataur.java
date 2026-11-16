@@ -105,7 +105,7 @@ public class EntityZoataur extends RideableCreatureEntity implements Enemy {
       this.canGrow = true;
       this.babySpawnChance = 0.1;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
    }
 
    @Override

@@ -109,7 +109,7 @@ public class EntityArgus extends TameableCreatureEntity implements Enemy, IFusab
       this.hasAttackSound = true;
       this.spawnsInWater = true;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
       this.setAttackCooldownMax(40);
    }
 

@@ -142,7 +142,6 @@ public class EntityAsmodeus extends BaseCreatureEntity implements Enemy, IGroupH
       this.hasJumpSound = true;
       this.solidCollision = true;
       this.trueSight = true;
-      0.0F = 1.0F;
       this.setupMob();
       this.hitAreaWidthScale = 2.0F;
       this.damageMax = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
@@ -184,7 +183,7 @@ public class EntityAsmodeus extends BaseCreatureEntity implements Enemy, IGroupH
 
    @Override
    public AABB getRenderBoundingBox() {
-      return this.getBoundingBox().inflate(200.0, 50.0, 200.0).offset(0.0, -25.0, 0.0);
+      return this.getBoundingBox().inflate(200.0, 50.0, 200.0).move(0.0, -25.0, 0.0);
    }
 
    @Override
@@ -245,7 +244,7 @@ public class EntityAsmodeus extends BaseCreatureEntity implements Enemy, IGroupH
 
       if (this.level().isClientSide
          && ((Byte)this.entityData.get(ANIMATION_STATES) & EntityAsmodeus.ANIMATION_STATES_ID.COOLDOWN.id) > 0) {
-         BlockPos particlePos = this.getFacingPosition(this, 13.0, (double)(this.getRotationYawHead() - this.getYRot()));
+         BlockPos particlePos = this.getFacingPosition(this, 13.0, (double)(this.getYHeadRot() - this.getYRot()));
 
          for (int i = 0; i < 4; i++) {
             this.level()
@@ -312,7 +311,7 @@ public class EntityAsmodeus extends BaseCreatureEntity implements Enemy, IGroupH
 
             if (this.arenaJumpingTime == 0) {
                this.playStepSound(
-                  this.currentArenaNode.pos.below(), this.level().getBlockState(this.currentArenaNode.pos.below()).getBlock()
+                  this.currentArenaNode.pos.below(), this.level().getBlockState(this.currentArenaNode.pos.below())
                );
             }
          } else {
@@ -529,8 +528,8 @@ public class EntityAsmodeus extends BaseCreatureEntity implements Enemy, IGroupH
       return super.hurt(damageSrc, damageAmount);
    }
 
-   public void readFromNBT(CompoundTag nbtTagCompound) {
-      super.readFromNBT(nbtTagCompound);
+   public void load(CompoundTag nbtTagCompound) {
+      super.load(nbtTagCompound);
       if (nbtTagCompound.contains("DevilstarStreamCharge")) {
          this.devilstarStreamCharge = nbtTagCompound.getInt("DevilstarStreamCharge");
       }

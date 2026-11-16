@@ -106,7 +106,7 @@ public class EntityArix extends TameableCreatureEntity implements Enemy {
       this.spawnsInWater = true;
       this.hasAttackSound = false;
       this.flySoundSpeed = 20;
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
       this.setupMob();
    }
 

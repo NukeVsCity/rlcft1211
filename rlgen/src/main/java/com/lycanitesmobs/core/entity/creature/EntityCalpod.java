@@ -130,7 +130,7 @@ public class EntityCalpod extends BaseCreatureEntity implements Enemy {
          && this.griefing) {
          float distance = this.getTarget().distanceTo(this);
          if (distance <= this.getBbWidth() + 1.0F) {
-            this.destroyAreaBlock((int)this.getX(), (int)this.getY(), (int)this.getZ(), BlockLog.class, true, 0);
+            this.destroyAreaBlock((int)this.getX(), (int)this.getY(), (int)this.getZ(), RotatedPillarBlock.class, true, 0);
          }
       }
 

@@ -145,7 +145,7 @@ public class EntityLurker extends TameableCreatureEntity {
          if (this.hasAttackTarget()) {
             if (this.getTarget() instanceof Player) {
                Player playerTarget = (Player)this.getTarget();
-               ItemStack itemstack = playerTarget.inventory.getCurrentItem();
+               ItemStack itemstack = playerTarget.getInventory().getSelected();
                if (this.isTamingItem(itemstack)) {
                   return false;
                }

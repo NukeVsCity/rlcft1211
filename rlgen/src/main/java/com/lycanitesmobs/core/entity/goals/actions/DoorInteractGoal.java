@@ -96,7 +96,7 @@ import net.neoforged.neoforge.event.tick.*;
 
 public abstract class DoorInteractGoal extends EntityAIBase {
    protected Mob host;
-   protected BlockDoor targetDoor;
+   protected DoorBlock targetDoor;
    boolean hasStoppedDoorInteraction;
    protected int entityPosX;
    protected int entityPosY;
@@ -157,9 +157,9 @@ public abstract class DoorInteractGoal extends EntityAIBase {
       }
    }
 
-   private BlockDoor findUsableDoor(BlockPos pos) {
+   private DoorBlock findUsableDoor(BlockPos pos) {
       BlockState BlockState = this.host.level().getBlockState(pos);
       Block block = BlockState.getBlock();
-      return block instanceof BlockDoor && Material.of(BlockState) == Material.WOOD ? (BlockDoor)block : null;
+      return block instanceof DoorBlock && Material.of(BlockState) == Material.WOOD ? (DoorBlock)block : null;
    }
 }

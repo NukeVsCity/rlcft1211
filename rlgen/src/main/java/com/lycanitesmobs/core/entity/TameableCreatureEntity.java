@@ -724,7 +724,7 @@ public class TameableCreatureEntity extends AgeableCreatureEntity implements Own
                      tameMessage = tameMessage.replace("%creature%", this.getSpeciesName());
                      player.sendSystemMessage(Component.literal(tameMessage));
                      this.playTameEffect(this.isTamed());
-                     player.addStat(ObjectManager.getStat(this.creatureInfo.getName() + ".tame"), 1);
+                     // 1.12 player.addStat(...): Lycanites statistics are not registered in 1.21
                      if (this.getPortalCooldown() > this.getDimensionChangingDelay()) {
                         this.setPortalCooldown(this.getDimensionChangingDelay());
                      }

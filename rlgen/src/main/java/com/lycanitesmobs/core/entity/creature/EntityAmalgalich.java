@@ -123,7 +123,6 @@ public class EntityAmalgalich extends BaseCreatureEntity implements Enemy, IGrou
       this.setAttackCooldownMax(30);
       this.hasJumpSound = false;
       this.trueSight = true;
-      0.0F = 1.0F;
       this.setupMob();
       this.hitAreaWidthScale = 2.0F;
       this.damageMax = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
@@ -258,7 +257,7 @@ public class EntityAmalgalich extends BaseCreatureEntity implements Enemy, IGrou
 
    @Override
    public AABB getRenderBoundingBox() {
-      return this.getBoundingBox().inflate(200.0, 50.0, 200.0).offset(0.0, -25.0, 0.0);
+      return this.getBoundingBox().inflate(200.0, 50.0, 200.0).move(0.0, -25.0, 0.0);
    }
 
    @Override
@@ -453,8 +452,8 @@ public class EntityAmalgalich extends BaseCreatureEntity implements Enemy, IGrou
       return super.hurt(damageSrc, damageAmount);
    }
 
-   public void readFromNBT(CompoundTag nbtTagCompound) {
-      super.readFromNBT(nbtTagCompound);
+   public void load(CompoundTag nbtTagCompound) {
+      super.load(nbtTagCompound);
    }
 
    @Override

@@ -153,8 +153,8 @@ public class EntityHellfireWave extends BaseProjectileEntity {
 
             for (int row = 0; row < this.hellfireHeight; row++) {
                for (int col = 0; col < this.hellfireWidth; col++) {
-                  if (this.getOwner() != null) {
-                     this.hellfireWalls[row][col] = new EntityHellfireWavePart(this.level(), this.getOwner());
+                  if (this.getThrower() != null) {
+                     this.hellfireWalls[row][col] = new EntityHellfireWavePart(this.level(), this.getThrower());
                   } else {
                      this.hellfireWalls[row][col] = new EntityHellfireWavePart(
                         this.level(), this.getX(), this.getY() + 5.0 + (double)(this.hellfireSize * row), this.getZ()
@@ -198,7 +198,7 @@ public class EntityHellfireWave extends BaseProjectileEntity {
 
    @Override
    public boolean canDamage(LivingEntity targetEntity) {
-      LivingEntity owner = this.getOwner();
+      LivingEntity owner = this.getThrower();
       if (owner == null) {
          if (targetEntity instanceof EntityRahovart) {
             return false;

@@ -111,7 +111,7 @@ public class BegGoal extends EntityAIBase {
    }
 
    public boolean shouldExecute() {
-      this.player = this.host.level().getClosestPlayerToEntity(this.host, (double)this.range);
+      this.player = Legacy112.getClosestPlayerToEntity(this.host, (double)this.range);
       return this.player != null && this.gotBegItem(this.player);
    }
 
@@ -146,7 +146,7 @@ public class BegGoal extends EntityAIBase {
    }
 
    private boolean gotBegItem(Player player) {
-      ItemStack itemstack = player.getInventory().getCurrentItem();
+      ItemStack itemstack = player.getInventory().getSelected();
       if (itemstack.isEmpty()) {
          return false;
       } else {

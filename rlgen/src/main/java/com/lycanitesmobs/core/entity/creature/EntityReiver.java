@@ -101,7 +101,7 @@ public class EntityReiver extends TameableCreatureEntity implements Enemy {
       this.attribute = EnumCreatureAttribute.UNDEFINED;
       this.hasAttackSound = false;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
    }
 
    @Override

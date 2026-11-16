@@ -108,7 +108,7 @@ public class EntityJengu extends TameableCreatureEntity implements Enemy, IFusab
       this.spawnsInWater = true;
       this.hasAttackSound = false;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
    }
 
    @Override

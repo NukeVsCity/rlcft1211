@@ -199,7 +199,7 @@ public class CreatureStructure {
    public void createBuildTask(BlockState blockState, BlockPos blockPos, int phase) {
       BlockState targetBlockState = this.owner.level().getBlockState(blockPos);
       if (blockState == targetBlockState
-         || !(blockState.getBlock() instanceof IFluidBlock) && blockState.getBlock() == targetBlockState.getBlock()) {
+         || !(blockState.getBlock() instanceof net.minecraft.world.level.block.LiquidBlock) && blockState.getBlock() == targetBlockState.getBlock()) {
          for (Map<BlockPos, CreatureBuildTask> phasedBuildTasks : this.buildTasks.values()) {
             phasedBuildTasks.remove(blockPos);
          }

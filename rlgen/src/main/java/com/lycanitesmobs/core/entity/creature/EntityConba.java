@@ -250,8 +250,8 @@ public class EntityConba extends TameableCreatureEntity implements Enemy {
       return 100.0F;
    }
 
-   public void readFromNBT(CompoundTag nbtTagCompound) {
-      super.readFromNBT(nbtTagCompound);
+   public void load(CompoundTag nbtTagCompound) {
+      super.load(nbtTagCompound);
       if (nbtTagCompound.contains("VespidInfection")) {
          this.vespidInfection = nbtTagCompound.getBoolean("VespidInfection");
       }

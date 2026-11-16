@@ -109,7 +109,7 @@ public class EntityGrue extends TameableCreatureEntity implements Enemy {
       this.hasAttackSound = true;
       this.spawnsInWater = true;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
    }
 
    @Override
@@ -142,7 +142,7 @@ public class EntityGrue extends TameableCreatureEntity implements Enemy {
    public boolean canTeleportTo(BlockPos pos) {
       for (int y = 0; y <= 1; y++) {
          BlockState blockState = this.level().getBlockState(pos.offset(0, y, 0));
-         if (blockState.isNormalCube()) {
+         if (blockState.isSolidRender(this.level(), this.blockPosition())) {
             return false;
          }
       }

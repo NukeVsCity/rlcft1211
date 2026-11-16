@@ -157,7 +157,7 @@ public class StayByWaterGoal extends EntityAIBase {
                   for (int searchY = hostPos.getY() - searchRangeY; searchY <= hostPos.getY() + searchRangeY; searchY++) {
                      for (int searchZ = hostPos.getZ() - searchRangeZ; searchZ <= hostPos.getZ() + searchRangeZ; searchZ++) {
                         BlockPos searchPos = LycPos.of(searchX, searchY, searchZ);
-                        double searchDistance = this.host.distanceToSqr(searchPos);
+                        double searchDistance = LycMath.distSq(this.host, searchPos);
                         if ((!this.hasWaterPos || searchDistance < closestDistance) && this.isValidWaterPosition(searchPos)) {
                            boolean enoughSpace = Math.round(this.host.getBbWidth()) <= 1;
                            if (!enoughSpace) {
@@ -231,6 +231,6 @@ public class StayByWaterGoal extends EntityAIBase {
    }
 
    public double getDistanceFromWater() {
-      return !this.hasWaterPos ? 0.0 : this.host.distanceToSqr(this.waterPos);
+      return !this.hasWaterPos ? 0.0 : LycMath.distSq(this.host, this.waterPos);
    }
 }

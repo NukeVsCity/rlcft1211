@@ -95,16 +95,28 @@ import com.lycanitesmobs.core.AssetManager;
 
 
 public class EntityProjectileModel extends BaseProjectileEntity {
+   public EntityProjectileModel(EntityType<? extends EntityProjectileModel> lycType, Level world) {
+      super(lycType, world);
+   }
+
    public EntityProjectileModel(Level world) {
-      super(world);
+      this(LycEntities.type(EntityProjectileModel.class), world);
+   }
+
+   public EntityProjectileModel(EntityType<? extends EntityProjectileModel> lycType, Level world, LivingEntity entityLiving) {
+      super(lycType, world, entityLiving);
    }
 
    public EntityProjectileModel(Level world, LivingEntity entityLiving) {
-      super(world, entityLiving);
+      this(LycEntities.type(EntityProjectileModel.class), world, entityLiving);
+   }
+
+   public EntityProjectileModel(EntityType<? extends EntityProjectileModel> lycType, Level world, double x, double y, double z) {
+      super(lycType, world, x, y, z);
    }
 
    public EntityProjectileModel(Level world, double x, double y, double z) {
-      super(world, x, y, z);
+      this(LycEntities.type(EntityProjectileModel.class), world, x, y, z);
    }
 
    @Override

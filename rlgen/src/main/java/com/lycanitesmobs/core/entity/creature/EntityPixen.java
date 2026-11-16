@@ -113,7 +113,7 @@ public class EntityPixen extends TameableCreatureEntity implements Enemy {
       this.spawnsInWater = true;
       this.hasAttackSound = false;
       this.flySoundSpeed = 5;
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
       this.setupMob();
       this.auraEffects.add("minecraft:speed");
       this.auraEffects.add("minecraft:haste");

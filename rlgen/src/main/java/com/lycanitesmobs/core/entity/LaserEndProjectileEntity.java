@@ -95,6 +95,14 @@ import net.neoforged.neoforge.event.tick.*;
 
 
 public class LaserEndProjectileEntity extends BaseProjectileEntity {
+   @Override
+   protected void defineSynchedData(SynchedEntityData.Builder builder) {
+      super.defineSynchedData(builder);
+      builder.define(POS_X, 0.0F);
+      builder.define(POS_Y, 0.0F);
+      builder.define(POS_Z, 0.0F);
+   }
+
    private double targetX;
    private double targetY;
    private double targetZ;
@@ -105,22 +113,34 @@ public class LaserEndProjectileEntity extends BaseProjectileEntity {
    protected static final EntityDataAccessor<Float> POS_Y = SynchedEntityData.defineId(LaserEndProjectileEntity.class, EntityDataSerializers.FLOAT);
    protected static final EntityDataAccessor<Float> POS_Z = SynchedEntityData.defineId(LaserEndProjectileEntity.class, EntityDataSerializers.FLOAT);
 
+   public LaserEndProjectileEntity(EntityType<? extends LaserEndProjectileEntity> lycType, Level world) {
+      super(lycType, world);
+      this.setStats();
+   }
+
    public LaserEndProjectileEntity(Level world) {
-      super(world);
+      this(LycEntities.type(LaserEndProjectileEntity.class), world);
+   }
+
+   public LaserEndProjectileEntity(EntityType<? extends LaserEndProjectileEntity> lycType, Level world, double par2, double par4, double par6, EntityProjectileLaser laser) {
+      super(lycType, world, par2, par4, par6);
+      this.laserEntity = laser;
       this.setStats();
    }
 
    public LaserEndProjectileEntity(Level world, double par2, double par4, double par6, EntityProjectileLaser laser) {
-      super(world, par2, par4, par6);
+      this(LycEntities.type(LaserEndProjectileEntity.class), world, par2, par4, par6, laser);
+   }
+
+   public LaserEndProjectileEntity(EntityType<? extends LaserEndProjectileEntity> lycType, Level world, LivingEntity shooter, EntityProjectileLaser laser) {
+      super(lycType, world, shooter);
+      this.shootingEntity = shooter;
       this.laserEntity = laser;
       this.setStats();
    }
 
    public LaserEndProjectileEntity(Level world, LivingEntity shooter, EntityProjectileLaser laser) {
-      super(world, shooter);
-      this.shootingEntity = shooter;
-      this.laserEntity = laser;
-      this.setStats();
+      this(LycEntities.type(LaserEndProjectileEntity.class), world, shooter, laser);
    }
 
    public void setStats() {
@@ -131,9 +151,6 @@ public class LaserEndProjectileEntity extends BaseProjectileEntity {
          this.targetZ = this.laserEntity.getZ();
       }
 
-      builder.define(POS_X, (float)this.getX());
-      builder.define(POS_Y, (float)this.getY());
-      builder.define(POS_Z, (float)this.getZ());
       this.noPhysics = true;
    }
 

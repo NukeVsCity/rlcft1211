@@ -114,7 +114,7 @@ public class EntityStrider extends RideableCreatureEntity implements IGroupHeavy
       this.hitAreaWidthScale = 1.5F;
       this.hitAreaHeightScale = 1.0F;
       this.setPathfindingMalus(PathType.WATER, 0.0F);
-      this.setStepHeightCompat(4.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(4.0F);
    }
 
    @Override

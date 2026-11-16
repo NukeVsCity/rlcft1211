@@ -106,7 +106,7 @@ public class EntityGnekk extends TameableCreatureEntity {
       this.canGrow = true;
       this.babySpawnChance = 0.01;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
    }
 
    @Override

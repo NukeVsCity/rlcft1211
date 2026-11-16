@@ -134,7 +134,7 @@ public class EntityKobold extends TameableCreatureEntity implements Enemy {
    }
 
    protected void despawnEntity() {
-      super.despawnEntity();
+      super.checkDespawn();
       if (this.isRemoved() && !this.isTamed() && this.inventory.hasBagItems()) {
          this.inventory.dropInventory();
       }

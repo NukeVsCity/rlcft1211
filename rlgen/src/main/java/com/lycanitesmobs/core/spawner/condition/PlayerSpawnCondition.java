@@ -233,8 +233,8 @@ public class PlayerSpawnCondition extends SpawnCondition {
                return false;
             } else {
                if (this.position != null) {
-                  double positionDistance = player.blockPosition()
-                     .distanceTo(this.position.getX(), this.position.getY(), this.position.getZ());
+                  double positionDistance = LycMath.dist(player.blockPosition()
+                     , this.position.getX(), this.position.getY(), this.position.getZ());
                   if (this.positionDistanceMin >= 0.0F && positionDistance < (double)this.positionDistanceMin) {
                      return false;
                   }

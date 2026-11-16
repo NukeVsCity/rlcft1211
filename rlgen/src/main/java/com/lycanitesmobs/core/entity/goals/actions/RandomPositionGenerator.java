@@ -142,8 +142,8 @@ public class RandomPositionGenerator {
       float pathMin = -99999.0F;
       boolean pastHome;
       if (entity.hasHome()) {
-         double homeDist = entity.getHomePosition()
-               .distanceTo(
+         double homeDist = LycMath.dist(entity.getHomePosition()
+               , 
                   Mth.floor(entity.getX()), Mth.floor(entity.getY()), Mth.floor(entity.getZ())
                )
             + 4.0;
@@ -158,9 +158,9 @@ public class RandomPositionGenerator {
          int possibleY = random.nextInt(2 * height) - height;
          int possibleZ = random.nextInt(2 * range) - range;
          if (entity.isFlying() || entity.isStrongSwimmer() && entity.isInWater()) {
-            if (entity.getY() > (double)entity.level().getPrecipitationHeight(entity.blockPosition()).getY() + (double)heightLevel * 1.25) {
+            if (entity.getY() > (double)entity.level().getHeightmapPos(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, entity.blockPosition()).getY() + (double)heightLevel * 1.25) {
                possibleY = random.nextInt(2 * height) - height * 3 / 2;
-            } else if (entity.getY() < (double)(entity.level().getPrecipitationHeight(entity.blockPosition()).getY() + heightLevel)) {
+            } else if (entity.getY() < (double)(entity.level().getHeightmapPos(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, entity.blockPosition()).getY() + heightLevel)) {
                possibleY = random.nextInt(2 * height) - height / 2;
             }
          }
@@ -171,7 +171,7 @@ public class RandomPositionGenerator {
             possibleZ += Mth.floor(entity.getZ());
             BlockPos possiblePos = LycPos.of(possibleX, possibleY, possibleZ);
             if ((!pastHome || entity.positionNearHome(possibleX, possibleY, possibleZ))
-               && (entity.useDirectNavigator() || pathNavigate.canEntityStandOnPos(possiblePos))) {
+               && (entity.useDirectNavigator() || pathNavigate.isStableDestination(possiblePos))) {
                float pathWeight = entity.getBlockPathWeight(possibleX, possibleY, possibleZ);
                if (pathWeight > pathMin) {
                   pathMin = pathWeight;

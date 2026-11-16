@@ -186,6 +186,10 @@ public class LycanitesMobs {
       ObjectManager.addTileEntity("equipment_infuser", EquipmentInfuserTileEntity.class);
       ObjectManager.addTileEntity("equipment_station", EquipmentStationTileEntity.class);
       ObjectManager.addSpecialEntity("hitarea", EntityHitArea.class);
+      // 1.12 EntityParticle was spawned unregistered (client only); 1.21 entities need a type
+      ObjectManager.addSpecialEntity("particle", com.lycanitesmobs.core.entity.EntityParticle.class);
+      // 1.12 RapidFireProjectileEntity was spawned unregistered (server side only)
+      ObjectManager.addSpecialEntity("rapidfireprojectile", com.lycanitesmobs.core.entity.RapidFireProjectileEntity.class);
       CreatureManager.getInstance().startup(modInfo);
       ProjectileManager.getInstance().startup(modInfo);
       NeoForge.EVENT_BUS.register(SpawnerEventListener.getInstance());

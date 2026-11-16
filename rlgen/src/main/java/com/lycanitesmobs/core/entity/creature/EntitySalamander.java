@@ -112,7 +112,7 @@ public class EntitySalamander extends RideableCreatureEntity implements Enemy {
       this.babySpawnChance = 0.01;
       this.solidCollision = false;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
       this.setPathfindingMalus(PathType.LAVA, 0.0F);
    }
 
@@ -183,7 +183,7 @@ public class EntitySalamander extends RideableCreatureEntity implements Enemy {
       if (!possibleTargets.isEmpty()) {
          for (LivingEntity possibleTarget : possibleTargets) {
             boolean doDamage = true;
-            if (this.getRider() instanceof Player && NeoForge.EVENT_BUS.post(new AttackEntityEvent((Player)this.getRider(), possibleTarget))) {
+            if (this.getRider() instanceof Player && NeoForge.EVENT_BUS.post(new AttackEntityEvent((Player)this.getRider(), possibleTarget)).isCanceled()) {
                doDamage = false;
             }
 

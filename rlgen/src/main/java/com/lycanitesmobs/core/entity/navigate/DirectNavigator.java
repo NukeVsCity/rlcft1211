@@ -145,8 +145,8 @@ public class DirectNavigator {
    }
 
    public double distanceToTargetPosition() {
-      return this.host
-         .distanceTo((double)this.targetPosition.getX(), (double)this.targetPosition.getY(), (double)this.targetPosition.getZ());
+      return LycMath.dist(this.host
+         , (double)this.targetPosition.getX(), (double)this.targetPosition.getY(), (double)this.targetPosition.getZ());
    }
 
    public boolean atTargetPosition() {

@@ -144,15 +144,16 @@ public class EntityDarkling extends TameableCreatureEntity implements Enemy {
          this.noPhysics = true;
          Vec3 latchPos = this.getFacingPositionDouble(
             this.getLatchTarget().getX(),
-            this.getLatchTarget().getY() + (double)this.getLatchTarget().height * this.latchHeight,
+            this.getLatchTarget().getY() + (double)this.getLatchTarget().getBbHeight() * this.latchHeight,
             this.getLatchTarget().getZ(),
-            (double)this.getLatchTarget().width * 0.5,
+            (double)this.getLatchTarget().getBbWidth() * 0.5,
             this.latchAngle
          );
          this.setPos(latchPos.x, latchPos.y, latchPos.z);
          double distanceX = this.getLatchTarget().getX() - this.getX();
          double distanceZ = this.getLatchTarget().getZ() - this.getZ();
-         this.yBodyRot = this.setYRot(-((float)Mth.atan2(distanceX, distanceZ)) * (180.0F / (float)Math.PI));
+         this.setYRot(-((float)Mth.atan2(distanceX, distanceZ)) * (180.0F / (float)Math.PI));
+      this.yBodyRot = this.getYRot();
          if (!this.level().isClientSide) {
             if (this.getLatchTarget().isAlive() && !this.isInWater()) {
                this.setTarget(this.getLatchTarget());

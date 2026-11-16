@@ -112,7 +112,7 @@ public class EntityCockatrice extends RideableCreatureEntity implements Enemy {
       this.hasAttackSound = true;
       this.flySoundSpeed = 20;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
    }
 
    @Override
@@ -224,7 +224,7 @@ public class EntityCockatrice extends RideableCreatureEntity implements Enemy {
       if (!possibleTargets.isEmpty()) {
          for (LivingEntity possibleTarget : possibleTargets) {
             boolean doDamage = true;
-            if (this.getRider() instanceof Player && NeoForge.EVENT_BUS.post(new AttackEntityEvent((Player)this.getRider(), possibleTarget))) {
+            if (this.getRider() instanceof Player && NeoForge.EVENT_BUS.post(new AttackEntityEvent((Player)this.getRider(), possibleTarget)).isCanceled()) {
                doDamage = false;
             }
 

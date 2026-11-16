@@ -135,28 +135,23 @@ public class EntityCryptkeeper extends AgeableCreatureEntity implements Enemy {
       return this.creatureInfo.bagSize;
    }
 
+   /** 1.12 onKillEntity: a killed villager turns into a zombie villager (hard: always, normal: half the time), like 1.12 EntityZombie. */
+   @Override
    public boolean killedEntity(ServerLevel lycLevel, LivingEntity entityLivingBase) {
-      super.onKillEntity(entityLivingBase);
+      boolean result = super.killedEntity(lycLevel, entityLivingBase);
       if (this.level().getDifficulty().getId() >= 2 && entityLivingBase instanceof Villager) {
          if (this.level().getDifficulty().getId() == 2 && this.random.nextBoolean()) {
-            return;
+            return result;
          }
 
          Villager entityvillager = (Villager)entityLivingBase;
-         ZombieVillager entityzombievillager = new ZombieVillager(this.level());
-         entityzombievillager.copyPosition(entityvillager);
-         this.level().removeEntity(entityvillager);
-         entityzombievillager.onInitialSpawn(this.level().getCurrentDifficultyAt(LycPos.of(entityzombievillager)), new BaseCreatureEntity.GroupData(false));
-         entityzombievillager.setProfession(entityvillager.getProfession());
-         entityzombievillager.setChild(entityvillager.isBaby());
-         entityzombievillager.setNoAi(entityvillager.isNoAi());
-         if (entityvillager.hasCustomName()) {
-            entityzombievillager.setCustomName(Component.literal(entityvillager.getCustomName().getString()));
-            entityzombievillager.setCustomNameVisible(entityvillager.getAlwaysRenderNameTag());
+         ZombieVillager entityzombievillager = entityvillager.convertTo(EntityType.ZOMBIE_VILLAGER, false);
+         if (entityzombievillager != null) {
+            entityzombievillager.finalizeSpawn(lycLevel, lycLevel.getCurrentDifficultyAt(entityzombievillager.blockPosition()), MobSpawnType.CONVERSION, new Zombie.ZombieGroupData(false, true));
+            entityzombievillager.setVillagerData(entityvillager.getVillagerData());
+            this.level().levelEvent(null, 1016, entityzombievillager.blockPosition(), 0);
          }
-
-         this.level().addFreshEntity(entityzombievillager);
-         this.level().playEvent(null, 1016, entityzombievillager.blockPosition(), 0);
       }
+      return result;
    }
 }

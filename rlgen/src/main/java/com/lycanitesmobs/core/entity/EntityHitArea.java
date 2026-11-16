@@ -100,7 +100,7 @@ public class EntityHitArea extends Entity {
    protected static final EntityDataAccessor<Float> HEIGHT = SynchedEntityData.defineId(EntityHitArea.class, EntityDataSerializers.FLOAT);
 
    public EntityHitArea(Entity ownerEntity, float width, float height) {
-      super(ownerEntity.level());
+      super(LycEntities.type(EntityHitArea.class), ownerEntity.level());
       this.owner = ownerEntity;
       this.setSize(width, height);
       this.noPhysics = true;
@@ -108,7 +108,7 @@ public class EntityHitArea extends Entity {
    }
 
    public EntityHitArea(Level world) {
-      super(world);
+      super(LycEntities.type(EntityHitArea.class), world);
    }
 
    protected void defineSynchedData(SynchedEntityData.Builder builder) {

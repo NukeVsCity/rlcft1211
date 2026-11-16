@@ -184,9 +184,9 @@ public class FollowOwnerGoal extends FollowGoal {
          for (int l = 0; l <= 4; l++) {
             for (int i1 = 0; i1 <= 4; i1++) {
                if ((l < 1 || i1 < 1 || l > 3 || i1 > 3)
-                  && this.host.level().isSideSolid(LycPos.of(i + l, j - 1, k + i1), Direction.UP)
-                  && !this.host.level().isBlockNormalCube(LycPos.of(i + l, j, k + i1), true)
-                  && !this.host.level().isBlockNormalCube(LycPos.of(i + l, j + 1, k + i1), true)) {
+                  && LycMath.isSideSolid(this.host.level(), LycPos.of(i + l, j - 1, k + i1), Direction.UP)
+                  && !LycMath.isBlockNormalCube(this.host.level(), LycPos.of(i + l, j, k + i1))
+                  && !LycMath.isBlockNormalCube(this.host.level(), LycPos.of(i + l, j + 1, k + i1))) {
                   this.host
                      .moveTo(
                         (double)((float)(i + l) + 0.5F), (double)j, (double)((float)(k + i1) + 0.5F), this.host.getYRot(), this.host.getXRot()

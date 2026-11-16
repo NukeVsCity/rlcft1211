@@ -237,7 +237,7 @@ public class SpawnerEventListener {
                      boolean nearOtherPlayers = false;
 
                      for (BlockPos triggerPosition : triggerPositions) {
-                        if (player.distanceToSqr(triggerPosition) <= 10000.0) {
+                        if (LycMath.distSq(player, triggerPosition) <= 10000.0) {
                            nearOtherPlayers = true;
                         }
                      }

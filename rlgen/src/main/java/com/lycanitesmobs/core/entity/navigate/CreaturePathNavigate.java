@@ -370,7 +370,7 @@ public class CreaturePathNavigate extends PathNavigation {
       } else {
          Vec3 entityVector = this.getTempMobPos();
          float entitySize = this.mob.getBbWidth() * this.mob.getBbWidth();
-         if (entityVector.distanceToSqr(this.path.getEntityPosAtNode(this.mob, this.path.getNextNodeIndex())) < (double)entitySize) {
+         if (LycMath.distSq(entityVector, this.path.getEntityPosAtNode(this.mob, this.path.getNextNodeIndex())) < (double)entitySize) {
             this.path.advance();
          }
 
@@ -397,9 +397,9 @@ public class CreaturePathNavigate extends PathNavigation {
          super.tick();
       } else if (this.targetPosition != null) {
          double d0 = (double)(this.mob.getBbWidth() * this.mob.getBbWidth());
-         if (!(this.mob.distanceToSqr(Vec3.atCenterOf(this.targetPosition)) >= d0)
+         if (!(LycMath.distSq(this.mob, Vec3.atCenterOf(this.targetPosition)) >= d0)
             || !(this.mob.getY() <= (double)this.targetPosition.getY())
-               && !(this.mob.distanceToSqr(Vec3.atCenterOf(new BlockPos(this.targetPosition.getX(), Mth.floor(this.mob.getY()), this.targetPosition.getZ()))) >= d0)) {
+               && !(LycMath.distSq(this.mob, Vec3.atCenterOf(new BlockPos(this.targetPosition.getX(), Mth.floor(this.mob.getY()), this.targetPosition.getZ()))) >= d0)) {
             this.targetPosition = null;
          } else {
             this.mob.getMoveControl().setWantedPosition(

@@ -107,7 +107,7 @@ public class EntityAstaroth extends TameableCreatureEntity implements Enemy {
       this.solidCollision = false;
       this.setupMob();
       this.hitAreaWidthScale = 1.5F;
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
    }
 
    @Override
@@ -129,7 +129,7 @@ public class EntityAstaroth extends TameableCreatureEntity implements Enemy {
          projectile.setProjectileScale(3.0F);
          LycMotion.setPosY(projectile, projectile.getY() - (double)this.getBbHeight() * 0.35);
          double dX = this.getMasterTarget().getX() - this.getX();
-         double dY = this.getMasterTarget().getY() + (double)this.getMasterTarget().height * 0.75 - projectile.getY();
+         double dY = this.getMasterTarget().getY() + (double)this.getMasterTarget().getBbHeight() * 0.75 - projectile.getY();
          double dZ = this.getMasterTarget().getZ() - this.getZ();
          double distance = (double)((float)Math.sqrt(dX * dX + dZ * dZ) * 0.1F);
          float velocity = 0.8F;

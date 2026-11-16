@@ -152,11 +152,11 @@ public class EntityHellfireBarrier extends BaseProjectileEntity {
 
             for (int row = 0; row < this.hellfireHeight; row++) {
                for (int col = 0; col < this.hellfireWidth; col++) {
-                  if (this.getOwner() != null) {
+                  if (this.getThrower() != null) {
                      if (this.wall) {
-                        this.hellfireWalls[row][col] = new EntityHellfireWall(this.level(), this.getOwner());
+                        this.hellfireWalls[row][col] = new EntityHellfireWall(this.level(), this.getThrower());
                      } else {
-                        this.hellfireWalls[row][col] = new EntityHellfireBarrierPart(this.level(), this.getOwner());
+                        this.hellfireWalls[row][col] = new EntityHellfireBarrierPart(this.level(), this.getThrower());
                      }
                   } else if (this.wall) {
                      this.hellfireWalls[row][col] = new EntityHellfireWall(
@@ -215,7 +215,7 @@ public class EntityHellfireBarrier extends BaseProjectileEntity {
 
    @Override
    public boolean canDamage(LivingEntity targetEntity) {
-      LivingEntity owner = this.getOwner();
+      LivingEntity owner = this.getThrower();
       if (owner == null) {
          if (targetEntity instanceof EntityRahovart) {
             return false;

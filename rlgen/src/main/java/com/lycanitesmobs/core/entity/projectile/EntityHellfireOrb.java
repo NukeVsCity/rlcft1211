@@ -145,7 +145,7 @@ public class EntityHellfireOrb extends BaseProjectileEntity {
 
    @Override
    public boolean canDamage(LivingEntity targetEntity) {
-      LivingEntity owner = this.getOwner();
+      LivingEntity owner = this.getThrower();
       if (owner == null) {
          if (targetEntity instanceof EntityRahovart) {
             return false;

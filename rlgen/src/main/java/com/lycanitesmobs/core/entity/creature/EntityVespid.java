@@ -112,7 +112,7 @@ public class EntityVespid extends AgeableCreatureEntity implements Enemy {
       this.setupMob();
       this.canGrow = true;
       this.babySpawnChance = 0.1;
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
       this.setAttackCooldownMax(10);
    }
 

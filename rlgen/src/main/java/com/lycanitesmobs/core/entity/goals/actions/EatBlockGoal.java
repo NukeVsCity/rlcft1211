@@ -180,7 +180,7 @@ public class EatBlockGoal extends EntityAIBase {
             this.host.level().removeBlock(LycPos.of(i, j - 1, k), false);
          }
 
-         this.host.level().playEvent(2001, LycPos.of(i, j - 1, k), Block.getStateId(BlockState));
+         this.host.level().levelEvent(2001, LycPos.of(i, j - 1, k), Block.getId(BlockState));
          this.host.level().setBlock(LycPos.of(i, j - 1, k), this.replaceBlock.defaultBlockState(), 2);
          this.host.onEat();
       }

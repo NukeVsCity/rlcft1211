@@ -113,7 +113,7 @@ public class EntitySpectre extends TameableCreatureEntity implements Enemy, IGro
       this.hasAttackSound = true;
       this.spawnsInWater = true;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
    }
 
    @Override

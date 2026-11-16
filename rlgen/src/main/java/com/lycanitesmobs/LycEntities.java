@@ -73,6 +73,12 @@ public final class LycEntities {
       return NAME_TYPES.get(info.getName().toLowerCase());
    }
 
+   /** The type of a JSON projectile, or the class's type when it has none. */
+   public static EntityType<?> projectileTypeFor(ProjectileInfo info, Class<? extends Entity> cls) {
+      EntityType<?> type = info == null ? null : projectileType(info);
+      return type != null ? type : type(cls);
+   }
+
    public static ProjectileInfo projectileInfo(EntityType<?> type) {
       return PROJECTILE_TYPES.get(type);
    }

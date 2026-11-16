@@ -96,20 +96,36 @@ import com.lycanitesmobs.core.info.projectile.ProjectileInfo;
 
 
 public class CustomProjectileModelEntity extends CustomProjectileEntity {
+   public CustomProjectileModelEntity(EntityType<? extends CustomProjectileModelEntity> lycType, Level world) {
+      super(lycType, world);
+   }
+
    public CustomProjectileModelEntity(Level world) {
-      super(world);
+      this(LycEntities.type(CustomProjectileModelEntity.class), world);
+   }
+
+   public CustomProjectileModelEntity(EntityType<? extends CustomProjectileModelEntity> lycType, Level world, ProjectileInfo projectileInfo) {
+      super(lycType, world, projectileInfo);
    }
 
    public CustomProjectileModelEntity(Level world, ProjectileInfo projectileInfo) {
-      super(world, projectileInfo);
+      this((EntityType<? extends CustomProjectileModelEntity>)LycEntities.projectileTypeFor(projectileInfo, CustomProjectileModelEntity.class), world, projectileInfo);
+   }
+
+   public CustomProjectileModelEntity(EntityType<? extends CustomProjectileModelEntity> lycType, Level world, LivingEntity entityLiving, ProjectileInfo projectileInfo) {
+      super(lycType, world, entityLiving, projectileInfo);
    }
 
    public CustomProjectileModelEntity(Level world, LivingEntity entityLiving, ProjectileInfo projectileInfo) {
-      super(world, entityLiving, projectileInfo);
+      this((EntityType<? extends CustomProjectileModelEntity>)LycEntities.projectileTypeFor(projectileInfo, CustomProjectileModelEntity.class), world, entityLiving, projectileInfo);
+   }
+
+   public CustomProjectileModelEntity(EntityType<? extends CustomProjectileModelEntity> lycType, Level world, double x, double y, double z, ProjectileInfo projectileInfo) {
+      super(lycType, world, x, y, z, projectileInfo);
    }
 
    public CustomProjectileModelEntity(Level world, double x, double y, double z, ProjectileInfo projectileInfo) {
-      super(world, x, y, z, projectileInfo);
+      this((EntityType<? extends CustomProjectileModelEntity>)LycEntities.projectileTypeFor(projectileInfo, CustomProjectileModelEntity.class), world, x, y, z, projectileInfo);
    }
 
    @Override

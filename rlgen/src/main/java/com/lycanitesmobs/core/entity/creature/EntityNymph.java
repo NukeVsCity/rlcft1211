@@ -105,7 +105,7 @@ public class EntityNymph extends TameableCreatureEntity {
       this.fleeHealthPercent = 1.0F;
       this.isAggressiveByDefault = false;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
    }
 
    @Override

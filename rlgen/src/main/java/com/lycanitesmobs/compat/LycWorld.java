@@ -30,6 +30,16 @@ public final class LycWorld {
       return r.getType() == HitResult.Type.MISS ? null : r;
    }
 
+   /** 1.12 World.createExplosion(entity, x, y, z, strength, damagesTerrain) (no fire). */
+   public static net.minecraft.world.level.Explosion createExplosion(Level level, Entity entity, double x, double y, double z, float strength, boolean damagesTerrain) {
+      return level.explode(entity, x, y, z, strength, false, damagesTerrain ? Level.ExplosionInteraction.MOB : Level.ExplosionInteraction.NONE);
+   }
+
+   /** 1.12 World.newExplosion(entity, x, y, z, strength, isFlaming, damagesTerrain) */
+   public static net.minecraft.world.level.Explosion createExplosion(Level level, Entity entity, double x, double y, double z, float strength, boolean isFlaming, boolean damagesTerrain) {
+      return level.explode(entity, x, y, z, strength, isFlaming, damagesTerrain ? Level.ExplosionInteraction.MOB : Level.ExplosionInteraction.NONE);
+   }
+
    /** 1.12 World.getPlayers(class, predicate): every player of the world that matches. */
    public static <T extends net.minecraft.world.entity.player.Player> java.util.List<T> getPlayers(Level level, Class<T> cls, java.util.function.Predicate<? super T> predicate) {
       java.util.List<T> list = new java.util.ArrayList<>();

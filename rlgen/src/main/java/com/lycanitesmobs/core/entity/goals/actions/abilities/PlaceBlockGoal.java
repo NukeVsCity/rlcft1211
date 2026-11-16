@@ -191,14 +191,14 @@ public class PlaceBlockGoal extends EntityAIBase {
       this.host
          .getLookControl()
          .setLookAt((double)this.pos.getX(), (double)this.pos.getY(), (double)this.pos.getZ(), 30.0F, 30.0F);
-      if (Math.sqrt(this.host.distanceToSqr(this.pos)) <= this.range) {
+      if (Math.sqrt(LycMath.distSq(this.host, this.pos)) <= this.range) {
          this.host.level().setBlock(this.pos, this.blockState, 3);
          this.host.onBlockPlaced(this.pos, this.blockState);
          this.blockState = null;
          this.host.clearMovement();
       }
 
-      if (this.host.distanceToSqr(LycPos.of(this.pos)) >= this.maxDistance * this.maxDistance) {
+      if (LycMath.distSq(this.host, LycPos.of(this.pos)) >= this.maxDistance * this.maxDistance) {
          this.blockState = null;
          this.host.clearMovement();
       }

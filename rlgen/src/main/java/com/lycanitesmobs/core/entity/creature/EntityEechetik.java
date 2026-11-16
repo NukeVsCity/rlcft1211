@@ -105,7 +105,7 @@ public class EntityEechetik extends TameableCreatureEntity implements Enemy {
       this.attribute = EnumCreatureAttribute.ARTHROPOD;
       this.hasAttackSound = true;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
    }
 
    @Override

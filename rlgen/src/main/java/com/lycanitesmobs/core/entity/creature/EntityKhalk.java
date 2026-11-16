@@ -167,9 +167,9 @@ public class EntityKhalk extends TameableCreatureEntity implements Enemy, IGroup
                for (int z = (int)this.getZ() - lavaWidth; z <= (int)this.getZ() + lavaWidth; z++) {
                   Block block = this.level().getBlockState(LycPos.of(x, y, z)).getBlock();
                   if (block == Blocks.AIR) {
-                     BlockState blockState = Blocks.LAVA.getStateFromMeta(11);
+                     BlockState blockState = Blocks.LAVA.defaultBlockState().setValue(LiquidBlock.LEVEL, 11);
                      if (x == (int)this.getX() && y == (int)this.getY() && z == (int)this.getZ()) {
-                        blockState = Blocks.LAVA.getStateFromMeta(12);
+                        blockState = Blocks.LAVA.defaultBlockState().setValue(LiquidBlock.LEVEL, 12);
                      }
 
                      this.level().setBlock(LycPos.of(x, y, z), blockState, 3);

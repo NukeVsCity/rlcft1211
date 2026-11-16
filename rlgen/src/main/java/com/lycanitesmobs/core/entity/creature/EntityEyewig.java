@@ -108,7 +108,7 @@ public class EntityEyewig extends RideableCreatureEntity {
       this.attribute = EnumCreatureAttribute.ARTHROPOD;
       this.hasAttackSound = true;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
    }
 
    @Override

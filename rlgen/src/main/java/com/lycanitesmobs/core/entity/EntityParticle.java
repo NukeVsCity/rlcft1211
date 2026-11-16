@@ -103,7 +103,7 @@ public class EntityParticle extends ThrowableProjectile {
    public ModInfo group;
 
    public EntityParticle(Level world, double x, double y, double z, String texture, ModInfo group) {
-      super(world);
+      super(LycEntities.type(EntityParticle.class), world);
       LycMotion.setPosX(this, x);
       LycMotion.setPosY(this, y);
       LycMotion.setPosZ(this, z);

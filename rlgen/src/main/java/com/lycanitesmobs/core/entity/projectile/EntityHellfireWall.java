@@ -149,7 +149,7 @@ public class EntityHellfireWall extends BaseProjectileEntity {
          List list = this.level()
             .getEntitiesWithinAABBExcludingEntity(this, this.getBoundingBox().inflate(this.getDeltaMovement().x, this.getDeltaMovement().y, this.getDeltaMovement().z).expandTowards(1.0, 1.0, 1.0));
          double d0 = 0.0;
-         LivingEntity entitylivingbase = this.getOwner();
+         LivingEntity entitylivingbase = this.getThrower();
 
          for (int j = 0; j < list.size(); j++) {
             Entity entity = (Entity)list.get(j);
@@ -174,7 +174,7 @@ public class EntityHellfireWall extends BaseProjectileEntity {
 
    @Override
    public boolean canDamage(LivingEntity targetEntity) {
-      LivingEntity owner = this.getOwner();
+      LivingEntity owner = this.getThrower();
       if (owner == null) {
          if (targetEntity instanceof EntityRahovart) {
             return false;

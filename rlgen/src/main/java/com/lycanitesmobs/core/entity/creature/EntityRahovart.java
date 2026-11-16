@@ -131,7 +131,6 @@ public class EntityRahovart extends BaseCreatureEntity implements Enemy, IGroupH
       this.setAttackCooldownMax(40);
       this.solidCollision = true;
       this.trueSight = true;
-      0.0F = 1.0F;
       this.setupMob();
       this.hitAreaWidthScale = 2.0F;
       this.damageMax = BaseCreatureEntity.BOSS_DAMAGE_LIMIT;
@@ -173,7 +172,7 @@ public class EntityRahovart extends BaseCreatureEntity implements Enemy, IGroupH
 
    @Override
    public AABB getRenderBoundingBox() {
-      return this.getBoundingBox().inflate(200.0, 50.0, 200.0).offset(0.0, -25.0, 0.0);
+      return this.getBoundingBox().inflate(200.0, 50.0, 200.0).move(0.0, -25.0, 0.0);
    }
 
    @Override
@@ -248,7 +247,7 @@ public class EntityRahovart extends BaseCreatureEntity implements Enemy, IGroupH
                   if (minion.hellfireEnergy >= 100) {
                      this.hellfireEnergy += 20;
                      this.onMinionDeath(minion, null);
-                     this.level().createExplosion(minion, minion.getX(), minion.getY(), minion.getZ(), 1.0F, false);
+                     LycWorld.createExplosion(this.level(), minion, minion.getX(), minion.getY(), minion.getZ(), 1.0F, false);
                      minion.hellfireEnergy = 0;
                      minion.discard();
                   }
@@ -300,7 +299,7 @@ public class EntityRahovart extends BaseCreatureEntity implements Enemy, IGroupH
                   if (minionx.hellfireEnergy >= 100) {
                      this.hellfireEnergy += 20;
                      this.onMinionDeath(minionx, null);
-                     this.level().createExplosion(minionx, minionx.getX(), minionx.getY(), minionx.getZ(), 1.0F, false);
+                     LycWorld.createExplosion(this.level(), minionx, minionx.getX(), minionx.getY(), minionx.getZ(), 1.0F, false);
                      minionx.hellfireEnergy = 0;
                      minionx.discard();
                   }
@@ -652,8 +651,8 @@ public class EntityRahovart extends BaseCreatureEntity implements Enemy, IGroupH
       return super.hurt(damageSrc, damageAmount);
    }
 
-   public void readFromNBT(CompoundTag nbtTagCompound) {
-      super.readFromNBT(nbtTagCompound);
+   public void load(CompoundTag nbtTagCompound) {
+      super.load(nbtTagCompound);
       if (nbtTagCompound.contains("HellfireEnergy")) {
          this.hellfireEnergy = nbtTagCompound.getInt("HellfireEnergy");
       }
@@ -722,7 +721,7 @@ public class EntityRahovart extends BaseCreatureEntity implements Enemy, IGroupH
    }
 
    @Override
-   protected void playStepSound(BlockPos pos, Block block) {
+   protected void playStepSound(BlockPos pos, BlockState block) {
       if (!this.hasArenaCenter()) {
          super.playStepSound(pos, block);
       }

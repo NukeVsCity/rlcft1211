@@ -147,7 +147,7 @@ public class RahovartStructureBuilder extends StructureBuilder {
       }
 
       if (ticks >= 200 && ticks % 10 == 0) {
-         world.createExplosion(
+         LycWorld.createExplosion(world, 
             null,
             (double)(originX - 20 + world.random.nextInt(40)),
             (double)(originY + 25 + world.random.nextInt(10)),

@@ -166,8 +166,8 @@ public class BlockSpawnLocation extends SpawnLocation {
             for (int z = triggerPos.getZ() - this.rangeMax.getZ(); z <= triggerPos.getZ() + this.rangeMax.getZ(); z++) {
                BlockPos spawnPos = LycPos.of(x, y, z);
                BlockState blockState = world.getBlockState(spawnPos);
-               if (blockState.getBlock() instanceof IFluidBlock) {
-                  float filled = ((IFluidBlock)blockState.getBlock()).getFilledPercentage(world, spawnPos);
+               if (blockState.getBlock() instanceof net.minecraft.world.level.block.LiquidBlock) {
+                  float filled = ((net.minecraft.world.level.block.LiquidBlock)blockState.getBlock()).getFilledPercentage(world, spawnPos);
                   if (filled != 1.0F && filled != -1.0F) {
                      continue;
                   }

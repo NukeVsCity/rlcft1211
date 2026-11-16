@@ -266,7 +266,7 @@ public class ExtendedEntity {
          if (!this.entity.level().isClientSide) {
             if (this.entity instanceof Player) {
                if (pickedUpByEntity != null) {
-                  this.playerAllowFlyingSnapshot = ((Player)this.entity).getAbilities().allowFlying;
+                  this.playerAllowFlyingSnapshot = ((Player)this.entity).getAbilities().mayfly;
                   this.playerIsFlyingSnapshot = ((Player)this.entity).getAbilities().flying;
                } else {
                   ((Player)this.entity).getAbilities().flying = this.playerIsFlyingSnapshot;
@@ -277,7 +277,7 @@ public class ExtendedEntity {
             if (this.pickedUpByEntity != null && !(this.entity instanceof Player)) {
                double[] pickupOffset = this.getPickedUpOffset();
                this.entity
-                  .attemptTeleport(
+                  .randomTeleport(
                      this.pickedUpByEntity.getX() + pickupOffset[0],
                      this.pickedUpByEntity.getY() + pickupOffset[1],
                      this.pickedUpByEntity.getZ() + pickupOffset[2]
@@ -285,7 +285,7 @@ public class ExtendedEntity {
             }
 
             MessageEntityPickedUp message = new MessageEntityPickedUp(this.entity, pickedUpByEntity);
-            LycanitesMobs.packetHandler.sendToDimension(message, this.entity.dimension);
+            LycanitesMobs.packetHandler.sendToDimension(message, LycDim.id(this.entity));
          }
 
          if (pickedUpByEntity == null) {
@@ -337,7 +337,7 @@ public class ExtendedEntity {
 
       if (!this.entity.level().isClientSide) {
          MessageEntityPerched message = new MessageEntityPerched(this.entity, this.perchedByEntity);
-         LycanitesMobs.packetHandler.sendToDimension(message, this.entity.dimension);
+         LycanitesMobs.packetHandler.sendToDimension(message, LycDim.id(this.entity));
       }
    }
 

@@ -109,7 +109,7 @@ public class EntityGeonach extends TameableCreatureEntity implements Enemy, IFus
       this.attribute = EnumCreatureAttribute.UNDEFINED;
       this.hasAttackSound = true;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
       this.attackPhaseMax = 3;
       this.setAttackCooldownMax(10);
    }

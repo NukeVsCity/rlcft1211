@@ -104,7 +104,7 @@ public class EntityWisp extends TameableCreatureEntity {
       this.attribute = EnumCreatureAttribute.UNDEFINED;
       this.hasAttackSound = false;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
       this.setAttackCooldownMax(this.getRangedCooldown());
    }
 
@@ -118,7 +118,7 @@ public class EntityWisp extends TameableCreatureEntity {
    public void tick() {
       super.tick();
       if (this.playPartner != null && !this.hasAttackTarget()) {
-         this.faceEntity(this.playPartner, 360.0F, 360.0F);
+         this.lookAt(this.playPartner, 360.0F, 360.0F);
       }
    }
 

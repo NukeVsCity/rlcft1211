@@ -105,7 +105,7 @@ public class BlockFireBase extends BlockBase {
    public static final BooleanProperty SOUTH = BooleanProperty.create("south");
    public static final BooleanProperty WEST = BooleanProperty.create("west");
    public static final BooleanProperty UPPER = BooleanProperty.create("up");
-   public static final DamageSource COLD_FIRE = EntityDamageSource.named("cold_fire").setDamageBypassesArmor().setMagicDamage();
+   public static final EntityDamageSource COLD_FIRE = EntityDamageSource.named("cold_fire").setDamageBypassesArmor().setMagicDamage();
    public boolean dieInRain = true;
    public boolean triggerTNT = true;
    public boolean tickRandomly = true;

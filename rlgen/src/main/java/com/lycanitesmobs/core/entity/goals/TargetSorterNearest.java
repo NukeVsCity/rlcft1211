@@ -118,8 +118,8 @@ public class TargetSorterNearest implements Comparator {
 
    public int compareDistanceSq(BlockPos targetA, BlockPos targetB) {
       BlockPos hostCoords = LycPos.of((int)this.host.getX(), (int)this.host.getY(), (int)this.host.getZ());
-      double distanceA = hostCoords.distanceTo(targetA.getX(), targetA.getY(), targetA.getZ());
-      double distanceB = hostCoords.distanceTo(targetB.getX(), targetB.getY(), targetB.getZ());
+      double distanceA = LycMath.dist(hostCoords, targetA.getX(), targetA.getY(), targetA.getZ());
+      double distanceB = LycMath.dist(hostCoords, targetB.getX(), targetB.getY(), targetB.getZ());
       return distanceA < distanceB ? -1 : (distanceA > distanceB ? 1 : 0);
    }
 }

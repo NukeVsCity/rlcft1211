@@ -106,7 +106,7 @@ public class CreatureNodeProcessor extends NodeEvaluator implements ICreatureNod
    public Node getStart() {
       if (!this.flying() && !this.swimming()) {
          int posY;
-         if (this.getCanSwim() && this.mob.isInWater()) {
+         if (this.canFloat() && this.mob.isInWater()) {
             posY = (int)this.mob.getBoundingBox().minY;
             BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(Mth.floor(this.mob.getX()), posY, Mth.floor(this.mob.getZ()));
 

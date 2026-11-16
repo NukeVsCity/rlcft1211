@@ -104,7 +104,7 @@ public class EntityGrigori extends TameableCreatureEntity implements Enemy {
       this.hasAttackSound = true;
       this.trueSight = true;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
    }
 
    @Override

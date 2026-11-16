@@ -123,10 +123,10 @@ public abstract class TargetingGoal extends EntityAIBase {
             return false;
          } else if (!this.isEntityTargetable(entity, false)) {
             return false;
-         } else if (this.shouldCheckSight() && !entity.isGlowing() && !this.host.hasLineOfSight(entity)) {
+         } else if (this.shouldCheckSight() && !entity.isCurrentlyGlowing() && !this.host.hasLineOfSight(entity)) {
             return false;
          } else {
-            if (this.shouldCheckSight() && !entity.isGlowing() && entity.isInvisible() && !this.host.trueSight) {
+            if (this.shouldCheckSight() && !entity.isCurrentlyGlowing() && entity.isInvisible() && !this.host.trueSight) {
                if (!(entity instanceof Player)) {
                   return false;
                }
@@ -136,7 +136,7 @@ public abstract class TargetingGoal extends EntityAIBase {
                   d0 *= 0.8F;
                }
 
-               float f = ((Player)entity).getArmorVisibility();
+               float f = ((Player)entity).getArmorCoverPercentage();
                if (f < 0.1F) {
                   f = 0.1F;
                }
@@ -156,7 +156,7 @@ public abstract class TargetingGoal extends EntityAIBase {
          } else if ((double)entity.distanceTo(this.host) > this.getTargetDistance()) {
             return false;
          } else {
-            return !this.isAllyTarget(entity) ? false : !this.shouldCheckSight() || entity.isGlowing() || this.host.hasLineOfSight(entity);
+            return !this.isAllyTarget(entity) ? false : !this.shouldCheckSight() || entity.isCurrentlyGlowing() || this.host.hasLineOfSight(entity);
          }
       };
       this.nearestSorter = new TargetSorterNearest(setHost);

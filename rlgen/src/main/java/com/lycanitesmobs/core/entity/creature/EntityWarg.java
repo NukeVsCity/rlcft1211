@@ -110,7 +110,7 @@ public class EntityWarg extends RideableCreatureEntity {
       this.canGrow = true;
       this.babySpawnChance = 0.1;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
    }
 
    @Override
@@ -151,7 +151,7 @@ public class EntityWarg extends RideableCreatureEntity {
             for (LivingEntity possibleTarget : possibleTargets) {
                boolean doDamage = true;
                if (this.getRider() instanceof Player
-                  && NeoForge.EVENT_BUS.post(new AttackEntityEvent((Player)this.getRider(), possibleTarget))) {
+                  && NeoForge.EVENT_BUS.post(new AttackEntityEvent((Player)this.getRider(), possibleTarget)).isCanceled()) {
                   doDamage = false;
                }
 

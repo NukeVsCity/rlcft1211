@@ -135,10 +135,10 @@ public class EntityTroll extends TameableCreatureEntity implements Enemy {
    public void aiStep() {
       super.aiStep();
       if (!this.stoneForm) {
-         if (this.isDay() && this.level().canSeeSky(this.blockPosition())) {
+         if (this.isDaytime() && this.level().canSeeSky(this.blockPosition())) {
             this.stoneForm = true;
          }
-      } else if (!this.isDay() || !this.level().canSeeSky(this.blockPosition())) {
+      } else if (!this.isDaytime() || !this.level().canSeeSky(this.blockPosition())) {
          this.stoneForm = false;
       }
 

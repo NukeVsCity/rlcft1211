@@ -109,7 +109,7 @@ public class BreakDoorGoal extends DoorInteractGoal {
       } else {
          return !this.host.level().getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)
             ? false
-            : !BlockDoor.isOpen(this.host.level(), LycPos.of(this.entityPosX, this.entityPosY, this.entityPosZ));
+            : !LycMath.isDoorOpen(this.host.level(), LycPos.of(this.entityPosX, this.entityPosY, this.entityPosZ));
       }
    }
 
@@ -123,33 +123,33 @@ public class BreakDoorGoal extends DoorInteractGoal {
    public boolean shouldContinueExecuting() {
       double distance = this.host.distanceToSqr((double)this.entityPosX, (double)this.entityPosY, (double)this.entityPosZ);
       return this.breakingTime <= 240
-         && !BlockDoor.isOpen(this.host.level(), LycPos.of(this.entityPosX, this.entityPosY, this.entityPosZ))
+         && !LycMath.isDoorOpen(this.host.level(), LycPos.of(this.entityPosX, this.entityPosY, this.entityPosZ))
          && distance < 4.0;
    }
 
    public void resetTask() {
       super.resetTask();
-      this.host.level().sendBlockBreakProgress(this.host.getId(), LycPos.of(this.entityPosX, this.entityPosY, this.entityPosZ), -1);
+      this.host.level().destroyBlockProgress(this.host.getId(), LycPos.of(this.entityPosX, this.entityPosY, this.entityPosZ), -1);
    }
 
    @Override
    public void updateTask() {
       super.updateTask();
       if (this.host.getRandom().nextInt(20) == 0) {
-         this.host.level().playEvent(1010, LycPos.of(this.entityPosX, this.entityPosY, this.entityPosZ), 0);
+         this.host.level().levelEvent(1010, LycPos.of(this.entityPosX, this.entityPosY, this.entityPosZ), 0);
       }
 
       this.breakingTime++;
       int breaking = (int)((float)this.breakingTime / 240.0F * 10.0F);
       if (breaking != this.lastBreakTime) {
-         this.host.level().sendBlockBreakProgress(this.host.getId(), LycPos.of(this.entityPosX, this.entityPosY, this.entityPosZ), breaking);
+         this.host.level().destroyBlockProgress(this.host.getId(), LycPos.of(this.entityPosX, this.entityPosY, this.entityPosZ), breaking);
          this.lastBreakTime = breaking;
       }
 
       if (this.breakingTime == 240 && this.host.level().getDifficulty() == Difficulty.HARD) {
          this.host.level().removeBlock(LycPos.of(this.entityPosX, this.entityPosY, this.entityPosZ), false);
-         this.host.level().playEvent(1012, LycPos.of(this.entityPosX, this.entityPosY, this.entityPosZ), 0);
-         this.host.level().playEvent(2001, LycPos.of(this.entityPosX, this.entityPosY, this.entityPosZ), 0);
+         this.host.level().levelEvent(1012, LycPos.of(this.entityPosX, this.entityPosY, this.entityPosZ), 0);
+         this.host.level().levelEvent(2001, LycPos.of(this.entityPosX, this.entityPosY, this.entityPosZ), 0);
       }
    }
 }

@@ -110,7 +110,7 @@ public class EntitySpriggan extends TameableCreatureEntity implements Enemy {
       this.attribute = EnumCreatureAttribute.UNDEFINED;
       this.hasAttackSound = false;
       this.setupMob();
-      this.setStepHeightCompat(1.0F);
+      this.getAttribute(Attributes.STEP_HEIGHT).setBaseValue(1.0F);
    }
 
    @Override
@@ -154,13 +154,16 @@ public class EntitySpriggan extends TameableCreatureEntity implements Enemy {
             for (int y = (int)this.getY() - farmingHeight; y <= (int)this.getY() + farmingHeight; y++) {
                for (int z = (int)this.getZ() - farmingRange; z <= (int)this.getZ() + farmingRange; z++) {
                   BlockPos pos = LycPos.of(x, y, z);
-                  Block farmingBlock = this.level().getBlockState(pos).getBlock();
-                  if (farmingBlock instanceof IPlantable
-                     && farmingBlock instanceof IGrowable
+                  BlockState farmingState = this.level().getBlockState(pos);
+                  Block farmingBlock = farmingState.getBlock();
+                  // 1.12 IPlantable && IGrowable: plants on soil that bonemeal grows
+                  if (farmingBlock instanceof BushBlock
+                     && farmingBlock instanceof BonemealableBlock
                      && farmingBlock != Blocks.SHORT_GRASS
                      && farmingBlock != Blocks.TALL_GRASS) {
-                     if (!this.level().isClientSide && this.farmingTick % currentFarmingRate == 0 && farmingBlock.getTickRandomly()) {
-                        this.level().scheduleTick(pos, farmingBlock, currentFarmingRate);
+                     if (!this.level().isClientSide && this.farmingTick % currentFarmingRate == 0 && farmingState.isRandomlyTicking()) {
+                        // 1.12 scheduleUpdate -> updateTick grew the crop; 1.21 crops grow in randomTick
+                        farmingState.randomTick((ServerLevel)this.level(), pos, this.getRandom());
                      }
 
                      if (this.level().isClientSide && this.farmingTick % 40 == 0) {

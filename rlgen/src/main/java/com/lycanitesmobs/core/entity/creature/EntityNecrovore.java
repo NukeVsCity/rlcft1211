@@ -120,7 +120,7 @@ public class EntityNecrovore extends TameableCreatureEntity {
                   ZombieVillager.class,
                   ZombifiedPiglin.class,
                   Skeleton.class,
-                  SkeletonHorse.class,
+                  net.minecraft.world.entity.animal.horse.SkeletonHorse.class,
                   WitherSkeleton.class,
                   Husk.class,
                   Stray.class,
