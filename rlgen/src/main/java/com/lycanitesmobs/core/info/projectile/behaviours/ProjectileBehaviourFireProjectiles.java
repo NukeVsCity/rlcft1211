@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.info.projectile.behaviours;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -152,7 +153,7 @@ public class ProjectileBehaviourFireProjectiles extends ProjectileBehaviour {
          BaseProjectileEntity childProjectile;
          if (projectile.getOwner() != null) {
             childProjectile = projectileInfo.createProjectile(projectile.level(), projectile.getOwner());
-            childProjectile.set(
+            childProjectile.setPos(
                projectile.position().x, projectile.position().y, projectile.position().z
             );
          } else {

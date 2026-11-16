@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.projectile;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -102,15 +103,15 @@ public class EntityDevilGatling extends BaseProjectileEntity {
    public int expireTime = 15;
 
    public EntityDevilGatling(Level world) {
-      super(world);
+      super(LycEntities.type(EntityDevilGatling.class), world);
    }
 
    public EntityDevilGatling(Level world, LivingEntity entityLivingBase) {
-      super(world, entityLivingBase);
+      super(LycEntities.type(EntityDevilGatling.class), world, entityLivingBase);
    }
 
    public EntityDevilGatling(Level world, double x, double y, double z) {
-      super(world, x, y, z);
+      super(LycEntities.type(EntityDevilGatling.class), world, x, y, z);
    }
 
    @Override

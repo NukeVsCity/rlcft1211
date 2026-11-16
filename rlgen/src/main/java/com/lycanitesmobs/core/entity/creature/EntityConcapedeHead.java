@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.creature;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -102,7 +103,7 @@ public class EntityConcapedeHead extends AgeableCreatureEntity {
    public boolean isHungry = true;
 
    public EntityConcapedeHead(Level world) {
-      super(world);
+      super(LycEntities.type(EntityConcapedeHead.class), world);
       this.attribute = EnumCreatureAttribute.ARTHROPOD;
       this.hasAttackSound = true;
       this.canGrow = true;
@@ -126,7 +127,7 @@ public class EntityConcapedeHead extends AgeableCreatureEntity {
    @Override
    public void onFirstSpawn() {
       if (!this.level().isClientSide && this.backSegment == null) {
-         this.setAge(-this.growthTime / 4);
+         this.setGrowingAge(-this.growthTime / 4);
          int segmentCount = this.getRandom().nextInt(CONCAPEDE_SIZE_MAX);
          AgeableCreatureEntity parentSegment = this;
 
@@ -210,7 +211,7 @@ public class EntityConcapedeHead extends AgeableCreatureEntity {
          }
       }
 
-      super.setAge(age);
+      super.setGrowingAge(age);
    }
 
    @Override
@@ -286,7 +287,7 @@ public class EntityConcapedeHead extends AgeableCreatureEntity {
 
    @Override
    public boolean canBreed() {
-      return this.getAge() >= 0;
+      return this.getGrowingAge() >= 0;
    }
 
    @Override
@@ -294,7 +295,7 @@ public class EntityConcapedeHead extends AgeableCreatureEntity {
       if (super.breed()) {
          this.isHungry = false;
          if (this.getAge() == 0) {
-            this.setAge(0);
+            this.setGrowingAge(0);
          }
 
          return true;

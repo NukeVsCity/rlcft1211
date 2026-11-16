@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.creature;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -106,7 +107,7 @@ public class EntityVespidQueen extends TameableCreatureEntity implements Enemy {
    protected int swarmLimit = 10;
 
    public EntityVespidQueen(Level world) {
-      super(world);
+      super(LycEntities.type(EntityVespidQueen.class), world);
       this.attribute = EnumCreatureAttribute.ARTHROPOD;
       this.hasAttackSound = true;
       this.solidCollision = true;
@@ -197,7 +198,7 @@ public class EntityVespidQueen extends TameableCreatureEntity implements Enemy {
                   this.getX() - 2.0 + (double)(random * 4.0F), this.getY(), this.getZ() - 2.0 + (double)(random * 4.0F)
                );
                if (minion instanceof AgeableCreatureEntity) {
-                  ((AgeableCreatureEntity)minion).setAge(((AgeableCreatureEntity)minion).growthTime);
+                  ((AgeableCreatureEntity)minion).setGrowingAge(((AgeableCreatureEntity)minion).growthTime);
                }
             }
          }

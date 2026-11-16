@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.projectile;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -96,15 +97,15 @@ import com.lycanitesmobs.core.entity.LaserEndProjectileEntity;
 
 public class EntityHellLaserEnd extends LaserEndProjectileEntity {
    public EntityHellLaserEnd(Level world) {
-      super(world);
+      super(LycEntities.type(EntityHellLaserEnd.class), world);
    }
 
    public EntityHellLaserEnd(Level world, double par2, double par4, double par6, EntityProjectileLaser laser) {
-      super(world, par2, par4, par6, laser);
+      super(LycEntities.type(EntityHellLaserEnd.class), world, par2, par4, par6, laser);
    }
 
    public EntityHellLaserEnd(Level world, LivingEntity shooter, EntityProjectileLaser laser) {
-      super(world, shooter, laser);
+      super(LycEntities.type(EntityHellLaserEnd.class), world, shooter, laser);
    }
 
    @Override

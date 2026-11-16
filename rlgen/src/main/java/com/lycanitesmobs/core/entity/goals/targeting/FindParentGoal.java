@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.goals.targeting;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -196,7 +197,7 @@ public class FindParentGoal extends TargetingGoal {
 
    @Override
    public boolean shouldContinueExecuting() {
-      if (this.host.getAge() >= 0) {
+      if (this.host.getGrowingAge() >= 0) {
          this.host.setParentTarget(null);
          return false;
       } else {

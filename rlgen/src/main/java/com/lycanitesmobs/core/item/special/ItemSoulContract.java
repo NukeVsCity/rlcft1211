@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.item.special;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -130,7 +131,7 @@ public class ItemSoulContract extends ItemBase {
       UUID ownerUUID = this.getOwnerUUID(itemStack);
       UUID petEntryUUID = this.getPetEntryUUID(itemStack);
       if (ownerUUID != null && petEntryUUID != null) {
-         Player owner = world.getPlayerEntityByUUID(ownerUUID);
+         Player owner = world.getPlayerByUUID(ownerUUID);
          ExtendedPlayer extendedOwner = ExtendedPlayer.getForPlayer(owner);
          if (owner == null || extendedOwner == null) {
             tooltip.add(LanguageManager.translate("item.lycanitesmobs.soul_contract.offline"));
@@ -211,7 +212,7 @@ public class ItemSoulContract extends ItemBase {
 
          return false;
       } else {
-         Player owner = player.level().getPlayerEntityByUUID(ownerUUID);
+         Player owner = player.level().getPlayerByUUID(ownerUUID);
          ExtendedPlayer extendedOwner = ExtendedPlayer.getForPlayer(owner);
          if (owner != null && extendedOwner != null) {
             ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(player);

@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.block.fluid;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -98,7 +99,7 @@ import java.util.Random;
 
 
 public class BlockFluidVeshoney extends BlockFluidBase {
-   public BlockFluidVeshoney(Fluid fluid, String name) {
+   public BlockFluidVeshoney(ForgeFluid fluid, String name) {
       super(fluid, Material.WATER, LycanitesMobs.modInfo, name);
       this.setLightOpacity(0);
       this.setLightLevel(0.25F);

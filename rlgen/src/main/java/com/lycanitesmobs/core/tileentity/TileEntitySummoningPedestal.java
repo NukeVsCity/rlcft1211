@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.tileentity;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -307,7 +308,7 @@ public class TileEntitySummoningPedestal extends TileEntityBase {
    }
 
    public Player getPlayer() {
-      return this.ownerUUID == null ? null : this.getWorld().getPlayerEntityByUUID(this.ownerUUID);
+      return this.ownerUUID == null ? null : this.getWorld().getPlayerByUUID(this.ownerUUID);
    }
 
    public Class getSummonClass() {

@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.info;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -172,7 +173,7 @@ public class ItemManager extends JSONLoader {
          if (itemInfo.name.contains("raw_")) {
             String cookedName = itemInfo.name.replace("raw_", "cooked_");
             if (this.items.containsKey(cookedName)) {
-               GameRegistry.addSmelting(itemInfo.item, new ItemStack(this.items.get(cookedName).item, 1), 0.5F);
+               // 1.12 GameRegistry.addSmelting(itemInfo.item, new ItemStack(this.items.get(cookedName).item, 1), 0.5F): smelting recipes are data/lycanitesmobs/recipe JSON
             }
          }
       }
@@ -227,7 +228,7 @@ public class ItemManager extends JSONLoader {
       ObjectManager.addItem("geistliver", new ItemGeistLiver());
       ObjectLists.addItem("diet_detritivore", ObjectManager.getItem("geistliver"));
       ObjectManager.addItem("wraithsigil", new ItemWraithSigil());
-      Fluid fluid = ObjectManager.addFluid("ooze");
+      ForgeFluid fluid = ObjectManager.addFluid("ooze");
       this.addFluid("ooze", fluid, new BlockFluidOoze(fluid, "ooze"), 10, 3000, 5000, 0, true, true);
       fluid = ObjectManager.addFluid("rabbitooze");
       this.addFluid("rabbitooze", fluid, new BlockFluidRabbitooze(fluid, "rabbitooze"), 10, 3000, 5000, 0, true, true);
@@ -260,9 +261,9 @@ public class ItemManager extends JSONLoader {
       ObjectManager.addBlock("soulcubeundead", new BlockSoulcube(group, "soulcubeundead"));
       ObjectManager.addBlock("soulcubeaberrant", new BlockSoulcube(group, "soulcubeaberrant"));
       ObjectManager.addBlock("propolis", new BlockPropolis());
-      GameRegistry.addSmelting(ObjectManager.getBlock("propolis"), new ItemStack(Blocks.TERRACOTTA, 1), 0.5F);
+      // 1.12 GameRegistry.addSmelting(ObjectManager.getBlock("propolis"), new ItemStack(Blocks.TERRACOTTA, 1), 0.5F): smelting recipes are data/lycanitesmobs/recipe JSON
       ObjectManager.addBlock("veswax", new BlockVeswax());
-      GameRegistry.addSmelting(ObjectManager.getBlock("veswax"), new ItemStack(Items.SUGAR, 6), 0.5F);
+      // 1.12 GameRegistry.addSmelting(ObjectManager.getBlock("veswax"), new ItemStack(Items.SUGAR, 6), 0.5F): smelting recipes are data/lycanitesmobs/recipe JSON
       AssetManager.addSound("frostcloud", group, "block.frostcloud");
       ObjectManager.addBlock("frostcloud", new BlockFrostCloud());
       AssetManager.addSound("frostfire", group, "block.frostfire");
@@ -287,7 +288,7 @@ public class ItemManager extends JSONLoader {
    }
 
    public void addFluid(
-      String name, Fluid fluid, BlockFluidBase block, int luminosity, int density, int viscosity, int temperature, boolean addSound, boolean addDamageSource
+      String name, ForgeFluid fluid, BlockFluidBase block, int luminosity, int density, int viscosity, int temperature, boolean addSound, boolean addDamageSource
    ) {
       fluid.setLuminosity(luminosity).setDensity(density).setViscosity(viscosity).setTemperature(temperature);
       ObjectManager.addBlock(name, block);

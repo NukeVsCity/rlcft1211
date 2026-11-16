@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.pets;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -358,7 +359,7 @@ public class PetEntry {
                            this.entity.changeDimension(LycDim.id(this.host.level()));
                         }
 
-                        this.entity.set(this.host.getX(), this.host.getY(), this.host.getZ());
+                        this.entity.setPos(this.host.getX(), this.host.getY(), this.host.getZ());
                      }
                   } catch (Exception var3) {
                      LycanitesMobs.logDebug("Pet", "Unable to teleport a pet.");
@@ -461,7 +462,7 @@ public class PetEntry {
                }
 
                if (this.entityName != null && !"".equals(this.entityName)) {
-                  entityCreature.setCustomNameTag(this.entityName);
+                  entityCreature.setCustomName(Component.literal(this.entityName));
                }
 
                entityCreature.setSizeScale(this.entitySize);
@@ -525,7 +526,7 @@ public class PetEntry {
          }
 
          if (this.entityName != null && !"".equals(this.entityName)) {
-            entityCreature.setCustomNameTag(this.entityName);
+            entityCreature.setCustomName(Component.literal(this.entityName));
          }
 
          entityCreature.setSizeScale(this.entitySize);
@@ -645,7 +646,7 @@ public class PetEntry {
          this.entityNBT.put("ExtraBehaviour", extTagCompound);
          if (this.entity instanceof AgeableCreatureEntity) {
             AgeableCreatureEntity ageableCreatureEntity = (AgeableCreatureEntity)this.entity;
-            this.entityNBT.putInt("Age", ageableCreatureEntity.getAge());
+            this.entityNBT.putInt("Age", ageableCreatureEntity.getGrowingAge());
          }
 
          if (this.entity.hasCustomName()) {
@@ -672,9 +673,9 @@ public class PetEntry {
             if (this.entity instanceof AgeableCreatureEntity) {
                AgeableCreatureEntity ageableCreatureEntity = (AgeableCreatureEntity)this.entity;
                if (this.entityNBT.contains("Age")) {
-                  ageableCreatureEntity.setAge(this.entityNBT.getInt("Age"));
+                  ageableCreatureEntity.setGrowingAge(this.entityNBT.getInt("Age"));
                } else {
-                  ageableCreatureEntity.setAge(0);
+                  ageableCreatureEntity.setGrowingAge(0);
                }
             }
          }

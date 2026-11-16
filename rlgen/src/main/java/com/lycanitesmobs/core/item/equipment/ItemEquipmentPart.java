@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.item.equipment;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -126,7 +127,7 @@ public class ItemEquipmentPart extends ItemBase {
    public ItemEquipmentPart(ModInfo groupInfo) {
       this.modInfo = groupInfo;
       this.setMaxStackSize(1);
-      this.setCreativeTab(LycanitesMobs.equipmentPartsTab);
+      CreativeTabs.add(LycanitesMobs.equipmentPartsTab, this);
    }
 
    public void loadFromJSON(JsonObject json) {

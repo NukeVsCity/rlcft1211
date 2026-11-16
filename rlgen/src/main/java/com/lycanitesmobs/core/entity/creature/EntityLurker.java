@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.creature;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -97,7 +98,7 @@ import com.lycanitesmobs.core.entity.goals.actions.abilities.StealthGoal;
 
 public class EntityLurker extends TameableCreatureEntity {
    public EntityLurker(Level world) {
-      super(world);
+      super(LycEntities.type(EntityLurker.class), world);
       this.attribute = EnumCreatureAttribute.ARTHROPOD;
       this.hasAttackSound = true;
       this.trueSight = true;
@@ -167,7 +168,7 @@ public class EntityLurker extends TameableCreatureEntity {
    @Override
    public void startStealth() {
       if (this.level().isClientSide) {
-         EnumParticleTypes particle = ParticleTypes.LARGE_SMOKE;
+         ParticleOptions particle = ParticleTypes.LARGE_SMOKE;
          double d0 = this.random.nextGaussian() * 0.02;
          double d1 = this.random.nextGaussian() * 0.02;
          double d2 = this.random.nextGaussian() * 0.02;

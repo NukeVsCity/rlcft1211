@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.creature;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -122,7 +123,7 @@ public class EntityRahovart extends BaseCreatureEntity implements Enemy, IGroupH
    public int hellfireBarrierHealth = 100;
 
    public EntityRahovart(Level world) {
-      super(world);
+      super(LycEntities.type(EntityRahovart.class), world);
       this.attribute = EnumCreatureAttribute.UNDEAD;
       this.hasAttackSound = false;
       this.setAttackCooldownMax(40);
@@ -203,7 +204,7 @@ public class EntityRahovart extends BaseCreatureEntity implements Enemy, IGroupH
          }
 
          if (this.getX() != (double)arenaPos.getX() || this.getY() != arenaY || this.getZ() != (double)arenaPos.getZ()) {
-            this.set((double)arenaPos.getX(), arenaY, (double)arenaPos.getZ());
+            this.setPos((double)arenaPos.getX(), arenaY, (double)arenaPos.getZ());
          }
       }
 
@@ -467,7 +468,7 @@ public class EntityRahovart extends BaseCreatureEntity implements Enemy, IGroupH
             LycMotion.setPosX(hellfireOrb, entity.getX() - x);
             LycMotion.setPosY(hellfireOrb, entity.getY() + (double)(entity.getBbHeight() * 0.75F));
             LycMotion.setPosZ(hellfireOrb, entity.getZ() - z);
-            hellfireOrb.set(entity.getX() - x, entity.getY() + (double)(entity.getBbHeight() * 0.75F), entity.getZ() - z);
+            hellfireOrb.setPos(entity.getX() - x, entity.getY() + (double)(entity.getBbHeight() * 0.75F), entity.getZ() - z);
             hellfireOrb.projectileLife = 5;
          }
       }

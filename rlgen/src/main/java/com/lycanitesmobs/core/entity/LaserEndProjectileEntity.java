@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -172,7 +173,7 @@ public class LaserEndProjectileEntity extends BaseProjectileEntity {
    }
 
    public void moveToTarget() {
-      this.set(this.targetX, this.targetY, this.targetZ);
+      this.setPos(this.targetX, this.targetY, this.targetZ);
    }
 
    public double moveCoordToTarget(double coord, double targetCoord, double originCoord) {

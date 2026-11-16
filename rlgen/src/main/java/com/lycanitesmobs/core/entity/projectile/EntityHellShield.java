@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.projectile;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -96,15 +97,15 @@ public class EntityHellShield extends BaseProjectileEntity {
    public Entity shootingEntity;
 
    public EntityHellShield(Level world) {
-      super(world);
+      super(LycEntities.type(EntityHellShield.class), world);
    }
 
    public EntityHellShield(Level world, LivingEntity entityLivingBase) {
-      super(world, entityLivingBase);
+      super(LycEntities.type(EntityHellShield.class), world, entityLivingBase);
    }
 
    public EntityHellShield(Level world, double x, double y, double z) {
-      super(world, x, y, z);
+      super(LycEntities.type(EntityHellShield.class), world, x, y, z);
    }
 
    @Override

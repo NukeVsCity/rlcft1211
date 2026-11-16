@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.creature;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -132,7 +133,7 @@ public class EntityAsmodeus extends BaseCreatureEntity implements Enemy, IGroupH
    protected double jumpHeight = 6.0;
 
    public EntityAsmodeus(Level world) {
-      super(world);
+      super(LycEntities.type(EntityAsmodeus.class), world);
       this.attribute = EnumCreatureAttribute.UNDEFINED;
       this.hasAttackSound = true;
       this.setAttackCooldownMax(30);
@@ -300,7 +301,7 @@ public class EntityAsmodeus extends BaseCreatureEntity implements Enemy, IGroupH
                double dropForce = -0.5;
                this.noPhysics = this.getY() > (double)(this.currentArenaNode.pos.getY() + 8);
                if (this.getY() < (double)this.currentArenaNode.pos.getY()) {
-                  this.set(this.getX(), (double)this.currentArenaNode.pos.getY(), this.getZ());
+                  this.setPos(this.getX(), (double)this.currentArenaNode.pos.getY(), this.getZ());
                   dropForce = 0.0;
                }
 
@@ -324,7 +325,7 @@ public class EntityAsmodeus extends BaseCreatureEntity implements Enemy, IGroupH
             if (this.getX() != (double)arenaPos.getX()
                || this.getY() != arenaY
                || this.getZ() != (double)arenaPos.getZ()) {
-               this.set((double)arenaPos.getX(), arenaY, (double)arenaPos.getZ());
+               this.setPos((double)arenaPos.getX(), arenaY, (double)arenaPos.getZ());
             }
          }
       }

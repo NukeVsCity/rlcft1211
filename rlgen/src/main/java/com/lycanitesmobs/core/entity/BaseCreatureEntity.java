@@ -1,10 +1,11 @@
 package com.lycanitesmobs.core.entity;
 
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
 import net.minecraft.world.entity.vehicle.*;
 import net.minecraft.world.entity.ambient.*;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
+import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -51,6 +52,7 @@ import net.minecraft.world.entity.ai.attributes.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.*;
 import net.minecraft.world.entity.ai.navigation.*;
+import net.minecraft.world.entity.ambient.*;
 import net.minecraft.world.entity.animal.*;
 import net.minecraft.world.entity.item.*;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -61,6 +63,7 @@ import net.minecraft.world.entity.player.*;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.*;
+import net.minecraft.world.entity.vehicle.*;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -315,29 +318,6 @@ public abstract class BaseCreatureEntity extends Mob {
          GroundPathNavigation groundNavigator = (GroundPathNavigation)this.getNavigation();
          groundNavigator.setCanFloat(true);
       }
-   }
-
-   /**
-    * 1.21 Mob creates the navigation in its constructor on both sides, before registerGoals: this is where 1.12 EntityLivingBase
-    * ran applyEntityAttributes (then setHealth(getMaxHealth())) and EntityLiving created the task lists and its navigator.
-    */
-   @Override
-   protected PathNavigation createNavigation(Level world) {
-      if (!this.legacyConstructed) {
-         this.legacyConstructed = true;
-         this.tasks = new EntityAITasks();
-         this.targetTasks = new EntityAITasks();
-         this.applyEntityAttributes();
-         this.setHealth(this.getMaxHealth());
-      }
-      return this.createNavigator(world);
-   }
-
-   /** 1.12 EntityLiving constructor: initEntityAI (server only). */
-   @Override
-   protected void registerGoals() {
-      Legacy112.install(this, this.tasks, this.targetTasks);
-      this.initEntityAI();
    }
 
    /**
@@ -636,15 +616,6 @@ public abstract class BaseCreatureEntity extends Mob {
       } catch (Exception var3) {
          return Optional.empty();
       }
-   }
-
-   /** 1.21 replacement for 1.12 Entity.width/height. */
-   @Override
-   protected EntityDimensions getDefaultDimensions(Pose pose) {
-      if (this.legacyWidth <= 0.0F) {
-         return super.getDefaultDimensions(pose);
-      }
-      return EntityDimensions.scalable(this.legacyWidth, this.legacyHeight);
    }
 
    /** 1.21 replacement for 1.12 Entity.width/height. */
@@ -1527,8 +1498,8 @@ public abstract class BaseCreatureEntity extends Mob {
          }
 
          if (!this.level().isClientSide && this.updateTick % 40L == 0L) {
-            for (Player player : this.level()
-               .getEntitiesOfClass(Player.class, this.getBoundingBox().inflate(64.0), playerx -> playerx != null && this.distanceTo(playerx) <= 5.0F)) {
+            for (Player player : LycWorld.getPlayers(this.level()
+               , Player.class, playerx -> playerx != null && this.distanceTo(playerx) <= 5.0F)) {
                ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(player);
                if (extendedPlayer != null) {
                   CreatureKnowledge creatureKnowledge = extendedPlayer.getBeastiary().getCreatureKnowledge(this.creatureInfo.getName());
@@ -3150,11 +3121,11 @@ public abstract class BaseCreatureEntity extends Mob {
       return super.hasLineOfSight(target);
    }
 
-   public Entity getOwner() {
+   public LivingEntity getOwner() {
       return null;
    }
 
-   public UUID getOwnerId() {
+   public UUID getOwnerUUID() {
       return null;
    }
 
@@ -4053,15 +4024,6 @@ public abstract class BaseCreatureEntity extends Mob {
 
    public boolean canBreatheUnderwater112() {
       return this.extraMobBehaviour != null && this.extraMobBehaviour.waterBreathingOverride;
-   }
-
-   /** 1.12 canBreatheUnderwater() decided vanilla drowning; 1.21 asks NeoForge canDrownInFluidType. */
-   @Override
-   public boolean canDrownInFluidType(net.neoforged.neoforge.fluids.FluidType type) {
-      if (type == net.neoforged.neoforge.common.NeoForgeMod.WATER_TYPE.value()) {
-         return !this.canBreatheUnderwater112();
-      }
-      return super.canDrownInFluidType(type);
    }
 
    /** 1.12 canBreatheUnderwater() decided vanilla drowning; 1.21 asks NeoForge canDrownInFluidType. */

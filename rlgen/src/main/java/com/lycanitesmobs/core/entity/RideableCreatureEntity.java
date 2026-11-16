@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -103,8 +104,8 @@ public class RideableCreatureEntity extends TameableCreatureEntity {
    public boolean abilityToggled = false;
    public boolean inventoryToggled = false;
 
-   public RideableCreatureEntity(Level world) {
-      super(world);
+   public RideableCreatureEntity(EntityType<? extends BaseCreatureEntity> type, Level world) {
+      super(type, world);
       this.hasJumpSound = true;
    }
 
@@ -174,7 +175,7 @@ public class RideableCreatureEntity extends TameableCreatureEntity {
    }
 
    public void riderEffects(LivingEntity rider) {
-      if (!rider.canBreatheUnderwater112() && this.canBreatheUnderwater112() && rider.isInWater()) {
+      if (!(rider instanceof BaseCreatureEntity riderCreature ? riderCreature.canBreatheUnderwater112() : rider.canBreatheUnderwater()) && this.canBreatheUnderwater112() && rider.isInWater()) {
          rider.setAirSupply(300);
       }
    }
@@ -194,7 +195,7 @@ public class RideableCreatureEntity extends TameableCreatureEntity {
    }
 
    @Override
-   public boolean canBePushed() {
+   public boolean isPushable() {
       return this.getControllingPassenger() != null ? false : super.isPushable();
    }
 
@@ -208,24 +209,30 @@ public class RideableCreatureEntity extends TameableCreatureEntity {
       }
    }
 
-   protected boolean isMovementBlocked() {
-      return super.isMovementBlocked();
+   /** 1.12 updatePassenger (1.21 positionRider). */
+   @Override
+   protected void positionRider(Entity passenger, Entity.MoveFunction moveFunction) {
+      this.updatePassenger(passenger);
    }
 
    public void updatePassenger(Entity passenger) {
-      if (this.isPassenger(passenger)) {
+      if (this.hasPassenger(passenger)) {
          double zOffset = this.getMountedZOffset();
          if (zOffset == 0.0) {
             zOffset = 1.0E-5;
          }
 
          Vec3 mountOffset = this.getFacingPositionDouble(0.0, 0.0, 0.0, zOffset, (double)this.getYRot());
-         this.getControllingPassenger()
-            .set(
-               this.getX() + mountOffset.x,
-               this.getY() + this.getMountedYOffset() + passenger.getStepY(),
-               this.getZ() + mountOffset.z
-            );
+         // 1.12 Entity.getYOffset() of the passenger: -0.35 for players, 0 for most others
+         double passengerYOffset = passenger instanceof Player ? -0.35 : 0.0;
+         if (this.getControllingPassenger() != null) {
+            this.getControllingPassenger()
+               .setPos(
+                  this.getX() + mountOffset.x,
+                  this.getY() + this.getMountedYOffset() + passengerYOffset,
+                  this.getZ() + mountOffset.z
+               );
+         }
       }
    }
 
@@ -253,9 +260,10 @@ public class RideableCreatureEntity extends TameableCreatureEntity {
    public void moveMountedWithHeading(float strafe, float up, float forward) {
       if (this.getControllingPassenger() instanceof LivingEntity) {
          LivingEntity rider = (LivingEntity)this.getControllingPassenger();
-         this.yRotO = this.setYRot(rider.getYRot());
+         this.setYRot(rider.getYRot());
+         this.yRotO = this.getYRot();
          this.setXRot(rider.getXRot() * 0.5F);
-         this.setRotation(this.getYRot(), this.getXRot());
+         this.setRot(this.getYRot(), this.getXRot());
          this.yHeadRot = this.yBodyRot = this.getYRot();
          strafe = rider.xxa * this.getStafeSpeed();
          forward = rider.zza;
@@ -294,7 +302,7 @@ public class RideableCreatureEntity extends TameableCreatureEntity {
             CommonHooks.onLivingJump(this);
          }
 
-         this.flyingSpeed = (float)((double)this.getSpeed() * this.getGlideScale());
+         this.legacyFlyingSpeed = (float)((double)this.getSpeed() * this.getGlideScale());
       } else if (this.getControllingPassenger() instanceof Player) {
          Player player = (Player)this.getControllingPassenger();
          ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
@@ -334,7 +342,7 @@ public class RideableCreatureEntity extends TameableCreatureEntity {
          this.setSpeed((float)this.getAttribute(Attributes.MOVEMENT_SPEED).getValue());
          if (!this.useDirectNavigator()) {
             if (this.isFlying() && !this.isInWater() && !this.isInLava()) {
-               this.moveRelative(strafe, 0.0F, forward, 0.1F);
+               this.moveRelative(0.1F, new Vec3(strafe, 0.0F, forward));
                this.move(MoverType.SELF, this.getDeltaMovement().x, verticalMotion / 16.0, this.getDeltaMovement().z);
                LycMotion.mulX(this, 0.9F);
                LycMotion.mulY(this, 0.9F);
@@ -346,7 +354,7 @@ public class RideableCreatureEntity extends TameableCreatureEntity {
                   forward *= 0.25F;
                }
 
-               this.moveRelative(strafe, 0.0F, forward, 0.1F);
+               this.moveRelative(0.1F, new Vec3(strafe, 0.0F, forward));
                this.move(MoverType.SELF, this.getDeltaMovement().x, verticalMotion / 16.0, this.getDeltaMovement().z);
                LycMotion.mulX(this, 0.9F);
                LycMotion.mulY(this, 0.9F);
@@ -358,7 +366,7 @@ public class RideableCreatureEntity extends TameableCreatureEntity {
                   forward *= 0.25F;
                }
 
-               this.moveRelative(strafe, 0.0F, forward, 0.1F);
+               this.moveRelative(0.1F, new Vec3(strafe, 0.0F, forward));
                this.move(MoverType.SELF, this.getDeltaMovement().x, verticalMotion / 16.0, this.getDeltaMovement().z);
                LycMotion.mulX(this, 0.9F);
                LycMotion.mulY(this, 0.9F);
@@ -376,7 +384,6 @@ public class RideableCreatureEntity extends TameableCreatureEntity {
          this.setMountJumping(false);
       }
 
-      this.prevLimbSwingAmount = this.walkAnimation.speed();
       double d0 = this.getX() - this.xo;
       double d1 = this.getZ() - this.zo;
       float f4 = (float)Math.sqrt(d0 * d0 + d1 * d1) * 4.0F;
@@ -384,8 +391,15 @@ public class RideableCreatureEntity extends TameableCreatureEntity {
          f4 = 1.0F;
       }
 
-      this.walkAnimation.speed() = this.walkAnimation.speed() + (f4 - this.walkAnimation.speed()) * 0.4F;
-      this.limbSwing = this.limbSwing + this.walkAnimation.speed();
+      this.walkAnimation.update(f4, 0.4F);
+   }
+
+   /** 1.12 EntityLivingBase.jumpMovementFactor set by moveMountedWithHeading (1.21 asks getFlyingSpeed). */
+   protected float legacyFlyingSpeed = -1.0F;
+
+   @Override
+   protected float getFlyingSpeed() {
+      return this.legacyFlyingSpeed >= 0.0F && this.getControllingPassenger() instanceof Player ? this.legacyFlyingSpeed : super.getFlyingSpeed();
    }
 
    public void startJumping() {
@@ -466,7 +480,7 @@ public class RideableCreatureEntity extends TameableCreatureEntity {
    }
 
    @Override
-   public Team getTeam() {
+   public net.minecraft.world.scores.PlayerTeam getTeam() {
       if (this.hasRiderTarget()) {
          LivingEntity rider = this.getRider();
          if (rider != null) {

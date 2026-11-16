@@ -30,6 +30,17 @@ public final class LycWorld {
       return r.getType() == HitResult.Type.MISS ? null : r;
    }
 
+   /** 1.12 World.getPlayers(class, predicate): every player of the world that matches. */
+   public static <T extends net.minecraft.world.entity.player.Player> java.util.List<T> getPlayers(Level level, Class<T> cls, java.util.function.Predicate<? super T> predicate) {
+      java.util.List<T> list = new java.util.ArrayList<>();
+      for (net.minecraft.world.entity.player.Player player : level.players()) {
+         if (cls.isInstance(player) && predicate.test(cls.cast(player))) {
+            list.add(cls.cast(player));
+         }
+      }
+      return list;
+   }
+
    /** 1.12 World.getCollisionBoxes(entity, box) */
    public static java.util.List<net.minecraft.world.phys.shapes.VoxelShape> getCollisionBoxes(Level level, Entity entity, net.minecraft.world.phys.AABB box) {
       java.util.List<net.minecraft.world.phys.shapes.VoxelShape> list = new java.util.ArrayList<>();

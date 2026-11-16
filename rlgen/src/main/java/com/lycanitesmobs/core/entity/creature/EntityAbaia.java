@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.creature;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -98,7 +99,7 @@ public class EntityAbaia extends TameableCreatureEntity implements Enemy {
    protected short aoeAttackTick = 0;
 
    public EntityAbaia(Level world) {
-      super(world);
+      super(LycEntities.type(EntityAbaia.class), world);
       this.attribute = EnumCreatureAttribute.UNDEFINED;
       this.spawnsOnLand = false;
       this.spawnsInWater = true;

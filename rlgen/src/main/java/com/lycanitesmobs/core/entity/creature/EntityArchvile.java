@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.creature;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -103,7 +104,7 @@ import com.lycanitesmobs.core.info.projectile.ProjectileManager;
 
 public class EntityArchvile extends TameableCreatureEntity implements Enemy {
    public EntityArchvile(Level world) {
-      super(world);
+      super(LycEntities.type(EntityArchvile.class), world);
       this.attribute = EnumCreatureAttribute.UNDEAD;
       this.hasAttackSound = false;
       this.setupMob();
@@ -179,7 +180,7 @@ public class EntityArchvile extends TameableCreatureEntity implements Enemy {
       if (projectile != null) {
          projectile.setProjectileScale(2.0F);
          projectile.shoot(0.0, -1.0, 0.0, 0.5F, 4.0F);
-         projectile.set(
+         projectile.setPos(
             (double)target.blockPosition().getX(),
             (double)(target.blockPosition().getY() + 4) + this.random.nextDouble() * 3.0,
             (double)target.blockPosition().getZ()

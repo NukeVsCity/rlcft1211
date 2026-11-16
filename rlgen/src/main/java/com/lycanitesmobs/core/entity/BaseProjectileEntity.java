@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -156,7 +157,7 @@ public class BaseProjectileEntity extends ThrowableProjectile {
       this.updateTick++;
       if (!this.movement) {
          this.inGround = false;
-         this.timeUntilPortal = this.getPortalCooldown();
+         this.setPortalCooldown(this.getDimensionChangingDelay());
       }
 
       double initX = this.getX();
@@ -170,7 +171,7 @@ public class BaseProjectileEntity extends ThrowableProjectile {
          LycMotion.setX(this, 0.0);
          LycMotion.setY(this, 0.0);
          LycMotion.setZ(this, 0.0);
-         this.set(this.getX(), this.getY(), this.getZ());
+         this.setPos(this.getX(), this.getY(), this.getZ());
       }
 
       this.isInWeb = false;

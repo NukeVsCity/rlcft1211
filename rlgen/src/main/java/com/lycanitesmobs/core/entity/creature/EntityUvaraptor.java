@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.creature;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -94,7 +95,7 @@ import com.lycanitesmobs.core.entity.goals.actions.AttackMeleeGoal;
 
 public class EntityUvaraptor extends RideableCreatureEntity {
    public EntityUvaraptor(Level world) {
-      super(world);
+      super(LycEntities.type(EntityUvaraptor.class), world);
       this.attribute = EnumCreatureAttribute.UNDEFINED;
       this.spawnsUnderground = false;
       this.hasAttackSound = true;

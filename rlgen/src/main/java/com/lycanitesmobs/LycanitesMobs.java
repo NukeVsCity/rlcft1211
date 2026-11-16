@@ -1,103 +1,13 @@
 package com.lycanitesmobs;
 
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
-import com.lycanitesmobs.compat.*;
-import io.netty.buffer.ByteBuf;
-import java.util.Optional;
-import javax.annotation.Nullable;
-import net.minecraft.core.*;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
-import net.minecraft.core.particles.*;
-import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.*;
-import net.minecraft.nbt.*;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.network.*;
-import net.minecraft.network.chat.*;
-import net.minecraft.network.syncher.*;
-import net.minecraft.resources.*;
-import net.minecraft.server.level.*;
-import net.minecraft.sounds.*;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.*;
-import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.util.*;
-import net.minecraft.world.*;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.*;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.*;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.*;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.*;
-import net.minecraft.world.entity.ai.navigation.*;
-import net.minecraft.world.entity.ambient.*;
-import net.minecraft.world.entity.animal.*;
-import net.minecraft.world.entity.item.*;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.*;
-import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.entity.npc.*;
-import net.minecraft.world.entity.player.*;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.*;
-import net.minecraft.world.entity.vehicle.*;
-import net.minecraft.world.item.*;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.*;
-import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.*;
-import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.*;
-import net.minecraft.world.level.block.state.*;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.*;
-import net.minecraft.world.level.material.*;
-import net.minecraft.world.level.pathfinder.*;
-import net.minecraft.world.phys.*;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
-import net.neoforged.bus.api.*;
-import net.neoforged.neoforge.common.*;
-import net.neoforged.neoforge.event.entity.*;
-import net.neoforged.neoforge.event.entity.living.*;
-import net.neoforged.neoforge.event.entity.player.*;
-import net.neoforged.neoforge.event.level.*;
-import net.neoforged.neoforge.event.tick.*;
+import com.lycanitesmobs.compat.CreativeTabs;
+import com.lycanitesmobs.compat.LycDamage;
 import com.lycanitesmobs.core.VersionChecker;
-import com.lycanitesmobs.core.capabilities.ExtendedEntityStorage;
-import com.lycanitesmobs.core.capabilities.ExtendedPlayerStorage;
 import com.lycanitesmobs.core.command.CommandMain;
 import com.lycanitesmobs.core.config.ConfigBase;
 import com.lycanitesmobs.core.dungeon.DungeonManager;
 import com.lycanitesmobs.core.entity.EntityHitArea;
 import com.lycanitesmobs.core.entity.ExtendedEntity;
-import com.lycanitesmobs.core.entity.ExtendedPlayer;
-import com.lycanitesmobs.core.helpers.LMReflectionHelper;
 import com.lycanitesmobs.core.info.AltarInfo;
 import com.lycanitesmobs.core.info.CreatureManager;
 import com.lycanitesmobs.core.info.ElementManager;
@@ -124,19 +34,30 @@ import com.lycanitesmobs.core.tileentity.EquipmentStationTileEntity;
 import com.lycanitesmobs.core.tileentity.TileEntityEquipmentForge;
 import com.lycanitesmobs.core.tileentity.TileEntitySummoningPedestal;
 import com.lycanitesmobs.core.worldgen.WorldGeneratorDungeon;
-import com.lycanitesmobs.core.worldgen.WorldGeneratorFluids;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
+import net.neoforged.neoforge.event.server.ServerStoppedEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-
-@Mod(
-   modid = "lycanitesmobs",
-   name = "Lycanites Mobs",
-   version = "2.0.8.9 - MC 1.12.2",
-   useMetadata = false,
-   acceptedMinecraftVersions = "[1.12,1.13)",
-   dependencies = "after:thaumcraft"
-)
+/**
+ * Lycanites Mobs 2.0.8.9 (RLCraft 2.9.3) ported to 1.21.1. 1.12 preInit runs once, at the first registry event (1.21 objects
+ * can only be created while the registries are open), then each registry event registers what 1.12 registered in its
+ * RegistryEvent.Register. Config: <game>/config/lycanitesmobs, written from RLCraft's files on first start (see
+ * {@link #installDefaultConfigs}), then read by the 1.12 loaders (cfg + JSON, custom JSON replacing the jar JSON like 1.12).
+ */
+@Mod(LycanitesMobs.modid)
 public class LycanitesMobs {
    public static final String modid = "lycanitesmobs";
    public static final String name = "Lycanites Mobs";
@@ -150,32 +71,59 @@ public class LycanitesMobs {
    public static final String guilded = "https://www.guilded.gg/i/jpLvd6J2";
    public static final String discord = "https://discord.gg/bFpV3z4";
    public static final String acceptedMinecraftVersions = "[1.12,1.13)";
+   public static final Logger LOGGER = LogManager.getLogger("LycanitesMobs");
    public static final PacketHandler packetHandler = new PacketHandler();
    public static ModInfo modInfo;
    public static ConfigBase config;
-   @Instance("lycanitesmobs")
    public static LycanitesMobs instance;
-   @SidedProxy(
-      clientSide = "com.lycanitesmobs.client.ClientProxy",
-      serverSide = "com.lycanitesmobs.CommonProxy"
-   )
-   public static CommonProxy proxy;
-   @CapabilityInject(ExtendedEntity.class)
-   public static final Capability<ExtendedEntity> EXTENDED_ENTITY = null;
-   @CapabilityInject(ExtendedPlayer.class)
-   public static final Capability<ExtendedPlayer> EXTENDED_PLAYER = null;
-   public static final CreativeTabs itemsTab = new CreativeTabItems(CreativeTabs.getNextID(), "lycanitesmobs.items");
-   public static final CreativeTabs blocksTab = new CreativeTabBlocks(CreativeTabs.getNextID(), "lycanitesmobs.blocks");
-   public static final CreativeTabs creaturesTab = new CreativeTabCreatures(CreativeTabs.getNextID(), "lycanitesmobs.creatures");
-   public static final CreativeTabs chargesTab = new CreativeTabCharges(CreativeTabs.getNextID(), "lycanitesmobs.charges");
-   public static final CreativeTabs equipmentPartsTab = new CreativeTabEquipmentParts(CreativeTabs.getNextID(), "lycanitesmobs.equipmentparts");
+   public static CommonProxy proxy = new CommonProxy();
+   public static final CreativeTabs itemsTab = new CreativeTabItems("lycanitesmobs.items");
+   public static final CreativeTabs blocksTab = new CreativeTabBlocks("lycanitesmobs.blocks");
+   public static final CreativeTabs creaturesTab = new CreativeTabCreatures("lycanitesmobs.creatures");
+   public static final CreativeTabs chargesTab = new CreativeTabCharges("lycanitesmobs.charges");
+   public static final CreativeTabs equipmentPartsTab = new CreativeTabEquipmentParts("lycanitesmobs.equipmentparts");
    public static String texturePath = "mods/lycanitesmobs/";
    public PotionEffects potionEffects;
    public static WorldGeneratorDungeon dungeonGenerator;
+   private static boolean preInitDone;
 
-   @EventHandler
-   public void preInit(FMLPreInitializationEvent event) {
+   public LycanitesMobs(IEventBus modBus) {
+      instance = this;
+      if (FMLEnvironment.dist.isClient()) {
+         try {
+            proxy = (CommonProxy)Class.forName("com.lycanitesmobs.client.ClientProxy").getDeclaredConstructor().newInstance();
+         } catch (ClassNotFoundException e) {
+            LOGGER.warn("[LycanitesMobs] No client proxy yet (lyc/client), using the common one.");
+         } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
+         }
+      }
       modInfo = new ModInfo(this, "Lycanites Mobs", 1000);
+      installDefaultConfigs();
+      LycEntities.init(modBus);
+      modBus.addListener(packetHandler::registerPayloads);
+      packetHandler.init();
+      NeoForge.EVENT_BUS.addListener((RegisterCommandsEvent event) -> CommandMain.register(event.getDispatcher()));
+      NeoForge.EVENT_BUS.addListener((ServerAboutToStartEvent event) -> LycDamage.setRegistries(event.getServer().registryAccess()));
+      NeoForge.EVENT_BUS.addListener((ServerStoppedEvent event) -> LycDamage.setRegistries(null));
+   }
+
+   /** 1.12 preInit, run at the first RegisterEvent. */
+   public static void preInitOnce() {
+      if (preInitDone) {
+         return;
+      }
+      preInitDone = true;
+      try {
+         instance.preInit();
+      } catch (RuntimeException e) {
+         LOGGER.error("[LycanitesMobs] preInit failed", e);
+         throw e;
+      }
+   }
+
+   /** 1.12 preInit(FMLPreInitializationEvent) */
+   public void preInit() {
       ObjectManager.setCurrentModInfo(modInfo);
       proxy.initLanguageManager();
       ConfigBase.versionCheck("2.0.0.0", "2.0.8.9 - MC 1.12.2");
@@ -203,11 +151,8 @@ public class LycanitesMobs {
       VersionChecker.INSTANCE.enabled = config.getBool(
          "Extras", "Version Checker", VersionChecker.INSTANCE.enabled, "Set to false to disable the version checker."
       );
-      packetHandler.init();
-      NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
-      LMReflectionHelper.setPrivateFinalValue(
-         RangedAttribute.class, (RangedAttribute)Attributes.MAX_HEALTH, 100000, "maximumValue", "maximumValue"
-      );
+      // 1.12: RangedAttribute MAX_HEALTH maximumValue raised to 100000 by reflection (1.21: see LycAttributeLimits mixin-free hook)
+      LycAttributeLimits.raiseMaxHealth(100000.0);
       config.setCategoryComment("Admin", "Special tools for server admins.");
       ExtendedEntity.FORCE_REMOVE_ENTITY_IDS = config.getStringList(
          "Admin", "Force Remove Entity Names", new String[0], "Here you can add a list of entity IDs for entity that you want to be forcefully removed."
@@ -224,7 +169,7 @@ public class LycanitesMobs {
          "Admin",
          "Force Remove Entity Ticks",
          40,
-         "How many ticks it takes for an entity to be forcefully removed (1 second = 20 ticks). This only applies to Mob, other entities are instantly removed."
+         "How many ticks it takes for an entity to be forcefully removed (1 second = 20 ticks). This only applies to EntityLiving, other entities are instantly removed."
       );
       ElementManager.getInstance().loadConfig();
       ElementManager.getInstance().loadAllFromJSON(modInfo);
@@ -239,8 +184,6 @@ public class LycanitesMobs {
       ObjectManager.addTileEntity("equipment_infuser", EquipmentInfuserTileEntity.class);
       ObjectManager.addTileEntity("equipment_station", EquipmentStationTileEntity.class);
       ObjectManager.addSpecialEntity("hitarea", EntityHitArea.class);
-      CapabilityManager.INSTANCE.register(ExtendedPlayer.class, new ExtendedPlayerStorage(), ExtendedPlayer::new);
-      CapabilityManager.INSTANCE.register(ExtendedEntity.class, new ExtendedEntityStorage(), ExtendedEntity::new);
       CreatureManager.getInstance().startup(modInfo);
       ProjectileManager.getInstance().startup(modInfo);
       NeoForge.EVENT_BUS.register(SpawnerEventListener.getInstance());
@@ -251,51 +194,66 @@ public class LycanitesMobs {
       NeoForge.EVENT_BUS.register(MobEventListener.getInstance());
       MobEventManager.getInstance().loadConfig();
       MobEventManager.getInstance().loadAllFromJSON(modInfo);
-      GameRegistry.registerWorldGenerator(new WorldGeneratorFluids(), 0);
+      // 1.12 GameRegistry.registerWorldGenerator(WorldGeneratorFluids, 0) and (WorldGeneratorDungeon, 1000): Lycanites world
+      // gen runs from rlgen's legacy populate (com.nukevscity.rlgen.lyc).
       DungeonManager.getInstance().loadAllFromJSON();
       dungeonGenerator = new WorldGeneratorDungeon();
-      GameRegistry.registerWorldGenerator(dungeonGenerator, 1000);
       ItemHalloweenTreat.createObjectLists();
       ItemWinterGift.createObjectLists();
       proxy.registerEvents();
       proxy.registerRenders(modInfo);
       proxy.registerTextures();
-   }
-
-   @EventHandler
-   public void init(FMLInitializationEvent event) {
+      // 1.12 init + postInit
       proxy.registerModels(modInfo);
-   }
-
-   @EventHandler
-   public void postInit(FMLPostInitializationEvent event) {
       CreatureManager.getInstance().lateStartup(modInfo);
    }
 
-   @EventHandler
-   public void serverLoad(FMLServerStartingEvent event) {
-      event.registerServerCommand(new CommandMain());
+   /** Writes RLCraft 2.9.3's config/lycanitesmobs files (bundled in lycanitesmobs_defaults) when that folder has no general.cfg. */
+   public static void installDefaultConfigs() {
+      File configDir = new File(proxy.getMinecraftDir(), "config/lycanitesmobs");
+      if (new File(configDir, "general.cfg").exists()) {
+         return;
+      }
+      try (InputStream index = LycanitesMobs.class.getResourceAsStream("/lycanitesmobs_defaults/index.txt")) {
+         if (index == null) {
+            LOGGER.warn("[LycanitesMobs] No bundled RLCraft config found.");
+            return;
+         }
+         for (String line : new String(index.readAllBytes(), StandardCharsets.UTF_8).split("\n")) {
+            line = line.trim();
+            if (line.isEmpty()) {
+               continue;
+            }
+            try (InputStream in = LycanitesMobs.class.getResourceAsStream("/lycanitesmobs_defaults/" + line)) {
+               if (in == null) {
+                  continue;
+               }
+               File out = new File(configDir, line);
+               out.getParentFile().mkdirs();
+               Files.write(out.toPath(), in.readAllBytes());
+            }
+         }
+         LOGGER.info("[LycanitesMobs] Installed the RLCraft 2.9.3 Lycanites Mobs config into " + configDir);
+      } catch (IOException e) {
+         LOGGER.error("[LycanitesMobs] Unable to install the RLCraft config", e);
+      }
    }
 
    public static void logInfo(String key, String message) {
       if ("".equals(key) || config.getBool("Debug", key, false)) {
-         System.out.println("[LycanitesMobs] [Info] [" + key + "] " + message);
+         LOGGER.info("[LycanitesMobs] [Info] [" + key + "] " + message);
       }
    }
 
    public static void logDebug(String key, String message) {
       if ("".equals(key) || config.getBool("Debug", key, false)) {
-         System.out.println("[LycanitesMobs] [Debug] [" + key + "] " + message);
+         LOGGER.info("[LycanitesMobs] [Debug] [" + key + "] " + message);
       }
    }
 
    public static void logWarning(String key, String message) {
       if ("".equals(key) || config.getBool("Debug", key, false)) {
-         System.err.println("[LycanitesMobs] [WARNING] [" + key + "] " + message);
+         LOGGER.warn("[LycanitesMobs] [WARNING] [" + key + "] " + message);
       }
-   }
-
-   static {
-      FluidRegistry.enableUniversalBucket();
    }
 }

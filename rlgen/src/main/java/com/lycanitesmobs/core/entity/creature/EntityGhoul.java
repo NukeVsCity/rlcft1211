@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.creature;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -97,7 +98,7 @@ import com.lycanitesmobs.core.entity.goals.actions.MoveVillageGoal;
 
 public class EntityGhoul extends AgeableCreatureEntity implements Enemy {
    public EntityGhoul(Level world) {
-      super(world);
+      super(LycEntities.type(EntityGhoul.class), world);
       this.attribute = EnumCreatureAttribute.UNDEAD;
       this.hasAttackSound = false;
       this.spreadFire = true;
@@ -136,8 +137,8 @@ public class EntityGhoul extends AgeableCreatureEntity implements Enemy {
          entityzombievillager.setChild(entityvillager.isBaby());
          entityzombievillager.setNoAi(entityvillager.isNoAi());
          if (entityvillager.hasCustomName()) {
-            entityzombievillager.setCustomNameTag(entityvillager.getCustomName().getString());
-            entityzombievillager.setAlwaysRenderNameTag(entityvillager.getAlwaysRenderNameTag());
+            entityzombievillager.setCustomName(Component.literal(entityvillager.getCustomName().getString()));
+            entityzombievillager.setCustomNameVisible(entityvillager.getAlwaysRenderNameTag());
          }
 
          this.level().addFreshEntity(entityzombievillager);

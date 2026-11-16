@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.item;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -99,12 +100,12 @@ public class GenericBucketItem extends ItemBucket {
    public String itemName;
    public ModInfo group = LycanitesMobs.modInfo;
 
-   public GenericBucketItem(Fluid fluid, Block fluidBlock, String fluidName) {
+   public GenericBucketItem(ForgeFluid fluid, Block fluidBlock, String fluidName) {
       super(fluidBlock);
       this.itemName = "bucket" + fluidName;
       LycReg.setName(this, this.group.modid, this.itemName);
       this.setTranslationKey(this.itemName);
-      this.setCreativeTab(LycanitesMobs.itemsTab);
+      CreativeTabs.add(LycanitesMobs.itemsTab, this);
       ObjectManager.addBucket(this, fluidBlock, fluid);
    }
 

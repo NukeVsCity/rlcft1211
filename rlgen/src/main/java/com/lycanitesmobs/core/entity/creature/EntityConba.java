@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.creature;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -102,7 +103,7 @@ public class EntityConba extends TameableCreatureEntity implements Enemy {
    public int vespidInfectionTime = 0;
 
    public EntityConba(Level world) {
-      super(world);
+      super(LycEntities.type(EntityConba.class), world);
       this.attribute = EnumCreatureAttribute.UNDEFINED;
       this.hasAttackSound = true;
       this.setupMob();
@@ -213,7 +214,7 @@ public class EntityConba extends TameableCreatureEntity implements Enemy {
             this.getX() + (double)f, this.getY() + 0.5, this.getZ() + (double)f1, this.random.nextFloat() * 360.0F, 0.0F
          );
          vespid.applyVariant(this.getVariantIndex());
-         vespid.setAge(vespid.growthTime);
+         vespid.setGrowingAge(vespid.growthTime);
          vespid.spawnEventType = this.spawnEventType;
          this.level().addFreshEntity(vespid);
          if (this.getTarget() != null) {

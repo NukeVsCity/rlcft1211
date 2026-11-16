@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.block.fluid;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -92,7 +93,7 @@ import java.util.ArrayList;
 
 
 public class BlockFluidRabbitooze extends BlockFluidOoze {
-   public BlockFluidRabbitooze(Fluid fluid, String name) {
+   public BlockFluidRabbitooze(ForgeFluid fluid, String name) {
       super(fluid, name);
       this.destroyItems = false;
    }

@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.spawner;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -408,7 +409,7 @@ public class Spawner {
       }
 
       if (player != null && this.mobCountPlayerScaling) {
-         List<Player> nearbyPlayers = world.getPlayers(
+         List<Player> nearbyPlayers = LycWorld.getPlayers(world, 
             Player.class,
             targetPlayer -> (targetPlayer.isCreative() || targetPlayer.isSpectator()) && !SpawnerEventListener.testOnCreative
                   ? false
@@ -703,7 +704,7 @@ public class Spawner {
    }
 
    public void spawnEntity(Level world, ExtendedWorld worldExt, Mob entityLiving, int level, MobSpawn mobSpawn, Player player, int chain) {
-      entityLiving.timeUntilPortal = entityLiving.getPortalCooldown();
+      entityLiving.timeUntilPortal = entityLiving.getDimensionChangingDelay();
       if (entityLiving instanceof BaseCreatureEntity) {
          BaseCreatureEntity entityCreature = (BaseCreatureEntity)entityLiving;
          entityCreature.forceNoDespawn = this.forceNoDespawn;

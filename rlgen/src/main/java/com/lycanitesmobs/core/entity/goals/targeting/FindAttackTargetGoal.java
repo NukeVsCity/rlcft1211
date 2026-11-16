@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.goals.targeting;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -238,7 +239,7 @@ public class FindAttackTargetGoal extends TargetingGoal {
          LivingEntity newTarget = null;
 
          try {
-            List<? extends Player> players = this.host.level().getPlayers(Player.class, this.targetSelector);
+            List<? extends Player> players = LycWorld.getPlayers(this.host.level(), Player.class, this.targetSelector);
             if (!players.isEmpty()) {
                List<Player> possibleTargets = new ArrayList<>();
 

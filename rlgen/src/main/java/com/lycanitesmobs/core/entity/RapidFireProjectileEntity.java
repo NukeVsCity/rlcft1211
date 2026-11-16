@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -213,7 +214,7 @@ public class RapidFireProjectileEntity extends BaseProjectileEntity {
 
                if (projectile instanceof ThrowableProjectile) {
                   ThrowableProjectile entityThrowable = (ThrowableProjectile)projectile;
-                  entityThrowable.set(
+                  entityThrowable.setPos(
                      this.shootingEntity.getX() + this.offsetX,
                      this.shootingEntity.getY() + this.offsetY,
                      this.shootingEntity.getZ() + this.offsetZ
@@ -239,7 +240,7 @@ public class RapidFireProjectileEntity extends BaseProjectileEntity {
    }
 
    public void setPos(double x, double y, double z) {
-      super.set(x, y, z);
+      super.setPos(x, y, z);
       if (this.shootingEntity != null) {
          this.offsetX = x - this.shootingEntity.getX();
          this.offsetY = y - this.shootingEntity.getY();

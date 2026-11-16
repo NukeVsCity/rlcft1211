@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.creature;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -101,7 +102,7 @@ public class EntityGeist extends AgeableCreatureEntity implements Enemy {
    public boolean shadowfireDeath = true;
 
    public EntityGeist(Level world) {
-      super(world);
+      super(LycEntities.type(EntityGeist.class), world);
       this.attribute = EnumCreatureAttribute.UNDEAD;
       this.hasAttackSound = true;
       this.spreadFire = true;
@@ -145,8 +146,8 @@ public class EntityGeist extends AgeableCreatureEntity implements Enemy {
          entityzombievillager.setChild(entityvillager.isBaby());
          entityzombievillager.setNoAi(entityvillager.isNoAi());
          if (entityvillager.hasCustomName()) {
-            entityzombievillager.setCustomNameTag(entityvillager.getCustomName().getString());
-            entityzombievillager.setAlwaysRenderNameTag(entityvillager.getAlwaysRenderNameTag());
+            entityzombievillager.setCustomName(Component.literal(entityvillager.getCustomName().getString()));
+            entityzombievillager.setCustomNameVisible(entityvillager.getAlwaysRenderNameTag());
          }
 
          this.level().addFreshEntity(entityzombievillager);

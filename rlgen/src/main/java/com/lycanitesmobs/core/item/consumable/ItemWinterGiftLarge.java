@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.item.consumable;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -142,17 +143,17 @@ public class ItemWinterGiftLarge extends ItemBase {
                         BaseCreatureEntity entityCreature = (BaseCreatureEntity)entity;
                         entityCreature.addLevel(world.random.nextInt(10));
                         if (entityCreature.creatureInfo.getName().equals("wildkin")) {
-                           entityCreature.setCustomNameTag("Gooderness");
+                           entityCreature.setCustomName(Component.literal("Gooderness"));
                         } else if (entityCreature.creatureInfo.getName().equals("jabberwock")) {
-                           entityCreature.setCustomNameTag("Rudolph");
+                           entityCreature.setCustomName(Component.literal("Rudolph"));
                         } else if (entityCreature.creatureInfo.getName().equals("ent")) {
-                           entityCreature.setCustomNameTag("Salty Tree");
+                           entityCreature.setCustomName(Component.literal("Salty Tree"));
                         } else if (entityCreature.creatureInfo.getName().equals("treant")) {
-                           entityCreature.setCustomNameTag("Salty Tree");
+                           entityCreature.setCustomName(Component.literal("Salty Tree"));
                         } else if (entityCreature.creatureInfo.getName().equals("reaper")) {
-                           entityCreature.setCustomNameTag("Satan Claws");
+                           entityCreature.setCustomName(Component.literal("Satan Claws"));
                         } else if (entityCreature.creatureInfo.getName().equals("behemoth")) {
-                           entityCreature.setCustomNameTag("Krampus");
+                           entityCreature.setCustomName(Component.literal("Krampus"));
                         }
                      }
 

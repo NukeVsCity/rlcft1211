@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.creature;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -101,7 +102,7 @@ public class EntityArgus extends TameableCreatureEntity implements Enemy, IFusab
    protected IFusable fusionTarget;
 
    public EntityArgus(Level world) {
-      super(world);
+      super(LycEntities.type(EntityArgus.class), world);
       this.attribute = EnumCreatureAttribute.UNDEFINED;
       this.hasAttackSound = true;
       this.spawnsInWater = true;

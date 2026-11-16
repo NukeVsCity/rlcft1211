@@ -1,119 +1,59 @@
 package com.lycanitesmobs.core.entity.navigate;
 
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
-import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
-import com.lycanitesmobs.compat.*;
-import io.netty.buffer.ByteBuf;
-import java.util.Optional;
-import javax.annotation.Nullable;
-import net.minecraft.core.*;
+import com.lycanitesmobs.ObjectManager;
+import com.lycanitesmobs.compat.LycPos;
+import com.lycanitesmobs.compat.LycWorld;
+import com.lycanitesmobs.compat.Material;
+import com.lycanitesmobs.core.entity.BaseCreatureEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
-import net.minecraft.core.particles.*;
-import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.*;
-import net.minecraft.nbt.*;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.network.*;
-import net.minecraft.network.chat.*;
-import net.minecraft.network.syncher.*;
-import net.minecraft.resources.*;
-import net.minecraft.server.level.*;
-import net.minecraft.sounds.*;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.*;
-import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.util.*;
-import net.minecraft.world.*;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.*;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.*;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.*;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.*;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.*;
-import net.minecraft.world.entity.ai.navigation.*;
-import net.minecraft.world.entity.ambient.*;
-import net.minecraft.world.entity.animal.*;
-import net.minecraft.world.entity.item.*;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.*;
-import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.entity.npc.*;
-import net.minecraft.world.entity.player.*;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.*;
-import net.minecraft.world.entity.vehicle.*;
-import net.minecraft.world.item.*;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.*;
-import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.biome.*;
-import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.*;
-import net.minecraft.world.level.block.state.*;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.*;
-import net.minecraft.world.level.material.*;
-import net.minecraft.world.level.pathfinder.*;
-import net.minecraft.world.phys.*;
-import net.minecraft.world.phys.AABB;
+import net.minecraft.world.level.pathfinder.Node;
+import net.minecraft.world.level.pathfinder.Path;
+import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.level.pathfinder.PathFinder;
+import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.bus.api.*;
-import net.neoforged.neoforge.common.*;
-import net.neoforged.neoforge.event.entity.*;
-import net.neoforged.neoforge.event.entity.living.*;
-import net.neoforged.neoforge.event.entity.player.*;
-import net.neoforged.neoforge.event.level.*;
-import net.neoforged.neoforge.event.tick.*;
-import com.lycanitesmobs.ObjectManager;
-import com.lycanitesmobs.core.entity.BaseCreatureEntity;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 
-
+/**
+ * Lycanites 1.12 CreaturePathNavigate (a 1.12 PathNavigate) on the 1.21 PathNavigation.
+ * 1.12 names: getPathFinder = createPathFinder, canNavigate = canUpdatePath, getEntityPosition = getTempMobPos,
+ * pathFollow = followThePath, removeSunnyPath = trimPath, isDirectPathBetweenPoints = canMoveDirectly, onUpdateNavigation = tick,
+ * canEntityStandOnPos = isStableDestination, checkForStuck = doStuckDetection, currentPath = path, speed = speedModifier.
+ */
 public class CreaturePathNavigate extends PathNavigation {
    public BaseCreatureEntity entityCreature;
    protected BlockPos targetPosition;
+   protected CreatureNodeProcessor nodeProcessor;
 
    public CreaturePathNavigate(BaseCreatureEntity entityCreature, Level world) {
       super(entityCreature, world);
       this.entityCreature = entityCreature;
    }
 
-   protected PathFinder getPathFinder() {
+   @Override
+   protected PathFinder createPathFinder(int maxVisitedNodes) {
       this.nodeProcessor = new CreatureNodeProcessor();
-      this.nodeProcessor.setCanEnterDoors(true);
-      return new PathFinder(this.nodeProcessor);
+      this.nodeProcessor.setCanPassDoors(true);
+      this.nodeEvaluator = this.nodeProcessor;
+      return new PathFinder(this.nodeProcessor, maxVisitedNodes);
    }
 
-   protected boolean canNavigate() {
+   @Override
+   protected boolean canUpdatePath() {
       if (this.entityCreature.isFlying()) {
          return true;
       } else {
          return this.entityCreature.isInWater()
             ? this.entityCreature.canWade() || this.entityCreature.isStrongSwimmer()
-            : this.entity.onGround() || this.entity.isPassenger();
+            : this.mob.onGround() || this.mob.isPassenger();
       }
    }
 
@@ -122,29 +62,33 @@ public class CreaturePathNavigate extends PathNavigation {
    }
 
    public boolean getCanOpenDoors() {
-      return this.nodeProcessor.getCanOpenDoors();
+      return this.nodeProcessor.canOpenDoors();
    }
 
    public void setEnterDoors(boolean setBreakDoors) {
-      this.nodeProcessor.setCanEnterDoors(setBreakDoors);
+      this.nodeProcessor.setCanPassDoors(setBreakDoors);
    }
 
    public boolean getEnterDoors() {
-      return this.nodeProcessor.getCanEnterDoors();
+      return this.nodeProcessor.canPassDoors();
    }
 
-   public Path getPathToPos(BlockPos pos) {
+   /** 1.12 getPathToPos */
+   @Override
+   public Path createPath(BlockPos pos, int accuracy) {
       this.targetPosition = this.getSuitableDestination(pos);
-      return super.createPath(this.targetPosition, 0);
+      return super.createPath(this.targetPosition, accuracy);
    }
 
-   public Path getPathToEntityLiving(Entity entity) {
+   /** 1.12 getPathToEntityLiving */
+   @Override
+   public Path createPath(Entity entity, int accuracy) {
       this.targetPosition = LycPos.of(entity);
-      return super.createPath(entity, 0);
+      return super.createPath(entity, accuracy);
    }
 
    protected BlockPos getSuitableDestination(BlockPos pos) {
-      BlockState targetBlockState = this.level().getBlockState(pos);
+      BlockState targetBlockState = this.level.getBlockState(pos);
       if (Material.of(targetBlockState) == Material.AIR) {
          return this.entityCreature.isFlying() ? pos : this.getGround(pos);
       } else {
@@ -152,44 +96,39 @@ public class CreaturePathNavigate extends PathNavigation {
       }
    }
 
-   protected Vec3 getEntityPosition() {
-      return new Vec3(this.entity.posX, (double)this.getPathablePosY(), this.entity.getZ());
+   @Override
+   protected Vec3 getTempMobPos() {
+      return new Vec3(this.mob.getX(), (double)this.getPathablePosY(), this.mob.getZ());
    }
 
    protected int getPathablePosY() {
       if (this.entityCreature.isInWater() && this.entityCreature.canFloat() && !this.entityCreature.canDive()) {
-         int posY = (int)this.entity.getBoundingBox().minY;
-         Block block = this.level()
-            .getBlockState(
-               LycPos.of(Mth.floor(this.entity.posX), posY, Mth.floor(this.entity.getZ()))
-            )
-            .getBlock();
+         int posY = (int)this.mob.getBoundingBox().minY;
+         Block block = this.level.getBlockState(new BlockPos(Mth.floor(this.mob.getX()), posY, Mth.floor(this.mob.getZ()))).getBlock();
          int searchCount = 0;
 
          while (this.isSwimmableBlock(block)) {
-            block = this.level()
-               .getBlockState(
-                  LycPos.of(Mth.floor(this.entity.posX), ++posY, Mth.floor(this.entity.getZ()))
-               )
-               .getBlock();
+            block = this.level.getBlockState(new BlockPos(Mth.floor(this.mob.getX()), ++posY, Mth.floor(this.mob.getZ()))).getBlock();
             if (++searchCount > 16) {
-               return (int)this.entity.getBoundingBox().minY;
+               return (int)this.mob.getBoundingBox().minY;
             }
          }
 
          return posY;
       } else {
-         return (int)(this.entity.getBoundingBox().minY + 0.5);
+         return (int)(this.mob.getBoundingBox().minY + 0.5);
       }
    }
 
-   public boolean tryMoveToEntityLiving(Entity entityIn, double speedIn) {
+   /** 1.12 tryMoveToEntityLiving */
+   @Override
+   public boolean moveTo(Entity entityIn, double speedIn) {
       Path path = this.createPath(entityIn, 0);
       if (path != null) {
          return this.moveTo(path, speedIn);
       } else if (this.entityCreature.canClimb()) {
          this.targetPosition = LycPos.of(entityIn);
-         this.speed = speedIn;
+         this.speedModifier = speedIn;
          return true;
       } else {
          return false;
@@ -213,47 +152,55 @@ public class CreaturePathNavigate extends PathNavigation {
    }
 
    protected boolean isWaterBlock(Block block) {
-      return block == Blocks.WATER || block == Blocks.WATER;
+      return block == Blocks.WATER;
    }
 
    protected boolean isLavaBlock(Block block) {
-      return block == Blocks.LAVA || block == Blocks.LAVA || block == ObjectManager.getBlock("purelava");
+      return block == Blocks.LAVA || block == ObjectManager.getBlock("purelava");
    }
 
    protected boolean isOozeBlock(Block block) {
       return block == ObjectManager.getBlock("ooze");
    }
 
-   public boolean canEntityStandOnPos(BlockPos pos) {
+   @Override
+   public boolean isStableDestination(BlockPos pos) {
       if (this.entityCreature.isFlying() || this.entityCreature.isInWater() && this.entityCreature.isStrongSwimmer()) {
-         BlockState blockState = this.level().getBlockState(pos);
+         BlockState blockState = this.level.getBlockState(pos);
          return Material.of(blockState).isLiquid() ? this.entityCreature.isStrongSwimmer() : !Material.of(blockState).isSolid();
       } else {
-         return super.canEntityStandOnPos(pos);
+         return super.isStableDestination(pos);
       }
    }
 
    public BlockPos getGround(BlockPos pos) {
       BlockPos resultPos = pos.below();
+      int minY = this.level.getMinBuildHeight();
 
-      while (resultPos.getY() > 0 && !Material.of(this.level().getBlockState(resultPos)).isSolid()) {
+      while (resultPos.getY() > minY && !Material.of(this.level.getBlockState(resultPos)).isSolid()) {
          resultPos = resultPos.below();
       }
 
       resultPos = resultPos.above();
-      return resultPos.getY() == 0 && !this.level().getBlockState(resultPos).isTopSolid() ? pos : resultPos;
+      return resultPos.getY() == minY && !this.level.getBlockState(resultPos).isFaceSturdy(this.level, resultPos, net.minecraft.core.Direction.UP) ? pos : resultPos;
    }
 
    public BlockPos getSurface(BlockPos pos) {
       BlockPos resultPos = pos.above();
+      int height = this.level.getMaxBuildHeight();
 
-      while (resultPos.getY() < this.level().getHeight() && Material.of(this.level().getBlockState(resultPos)).isSolid()) {
+      while (resultPos.getY() < height && Material.of(this.level.getBlockState(resultPos)).isSolid()) {
          resultPos = resultPos.above();
       }
 
-      return resultPos.getY() == this.level().getHeight() && Material.of(this.level().getBlockState(resultPos)).isSolid()
-         ? pos
-         : resultPos;
+      return resultPos.getY() == height && Material.of(this.level.getBlockState(resultPos)).isSolid() ? pos : resultPos;
+   }
+
+   /** 1.12 PathNavigate.pathFollow called isDirectPathBetweenPoints with the ceil'd entity size. */
+   @Override
+   protected boolean canMoveDirectly(Vec3 startVec, Vec3 endVec) {
+      int w = Mth.ceil(this.mob.getBbWidth());
+      return this.isDirectPathBetweenPoints(startVec, endVec, w, Mth.ceil(this.mob.getBbHeight()), w);
    }
 
    protected boolean isDirectPathBetweenPoints(Vec3 startVec, Vec3 endVec, int sizeX, int sizeY, int sizeZ) {
@@ -317,21 +264,16 @@ public class CreaturePathNavigate extends PathNavigation {
             }
          }
       } else {
-         HitResult raytraceresult = LycWorld.rayTraceBlocks(this.level()
-            , 
-               startVec,
-               new Vec3(endVec.x, endVec.y + (double)this.entity.getBbHeight() * 0.5, endVec.z),
-               false,
-               true,
-               false
-            );
+         BlockHitResult raytraceresult = LycWorld.rayTraceBlocks(
+            this.level, startVec, new Vec3(endVec.x, endVec.y + (double)this.mob.getBbHeight() * 0.5, endVec.z), false, true, false
+         );
          if (raytraceresult == null) {
             return true;
-         } else if (raytraceresult.getType() == Type.BLOCK) {
-            BlockState hitState = this.level().getBlockState(raytraceresult.getBlockPos());
+         } else if (raytraceresult.getType() == HitResult.Type.BLOCK) {
+            BlockState hitState = this.level.getBlockState(raytraceresult.getBlockPos());
             return !Material.of(hitState).isSolid();
          } else {
-            return raytraceresult.getType() == Type.MISS;
+            return raytraceresult.getType() == HitResult.Type.MISS;
          }
       }
    }
@@ -350,8 +292,7 @@ public class CreaturePathNavigate extends PathNavigation {
                double d0 = (double)k + 0.5 - startVec.x;
                double d1 = (double)l + 0.5 - startVec.z;
                if (d0 * distanceX + d1 * distanceZ >= 0.0) {
-                  PathType pathnodetype = this.nodeProcessor
-                     .getPathNodeType(this.level(), k, y - 1, l, this.entity, sizeX, sizeY, sizeZ, true, true);
+                  PathType pathnodetype = this.nodeProcessor.getPathNodeType(this.level, k, y - 1, l, this.mob, sizeX, sizeY, sizeZ, true, true);
                   if (pathnodetype == PathType.WATER) {
                      return false;
                   }
@@ -364,8 +305,8 @@ public class CreaturePathNavigate extends PathNavigation {
                      return false;
                   }
 
-                  pathnodetype = this.nodeProcessor.getPathNodeType(this.level(), k, y, l, this.entity, sizeX, sizeY, sizeZ, true, true);
-                  float f = this.entity.getPathfindingMalus(pathnodetype);
+                  pathnodetype = this.nodeProcessor.getPathNodeType(this.level, k, y, l, this.mob, sizeX, sizeY, sizeZ, true, true);
+                  float f = this.mob.getPathfindingMalus(pathnodetype);
                   if (f < 0.0F || f >= 8.0F) {
                      return false;
                   }
@@ -383,12 +324,11 @@ public class CreaturePathNavigate extends PathNavigation {
    }
 
    private boolean isPositionClear(int x, int y, int z, int sizeX, int sizeY, int sizeZ, Vec3 startVec, double distanceX, double distanceZ) {
-      for (BlockPos blockpos : BlockPos.getAllInBox(LycPos.of(x, y, z), LycPos.of(x + sizeX - 1, y + sizeY - 1, z + sizeZ - 1))) {
+      for (BlockPos blockpos : BlockPos.betweenClosed(new BlockPos(x, y, z), new BlockPos(x + sizeX - 1, y + sizeY - 1, z + sizeZ - 1))) {
          double d0 = (double)blockpos.getX() + 0.5 - startVec.x;
          double d1 = (double)blockpos.getZ() + 0.5 - startVec.z;
          if (d0 * distanceX + d1 * distanceZ >= 0.0) {
-            Block block = this.level().getBlockState(blockpos).getBlock();
-            if (!block.isPassable(this.level(), blockpos)) {
+            if (!this.level.getBlockState(blockpos).isPathfindable(PathComputationType.LAND)) {
                return false;
             }
          }
@@ -397,21 +337,25 @@ public class CreaturePathNavigate extends PathNavigation {
       return true;
    }
 
-   protected void removeSunnyPath() {
-      super.removeSunnyPath();
+   @Override
+   protected void trimPath() {
+      super.trimPath();
+      if (this.path == null) {
+         return;
+      }
       if (this.entityCreature.level().isDay()) {
          if (this.entityCreature.daylightBurns()) {
-            if (this.level().canSeeSky(this.entity.blockPosition())) {
+            if (this.level.canSeeSky(this.mob.blockPosition())) {
                return;
             }
 
-            for (int j = 0; j < this.currentPath.getNodeCount(); j++) {
-               Node pathpoint2 = this.currentPath.getNode(j);
-               BlockPos pathPos = LycPos.of(pathpoint2.x, pathpoint2.y, pathpoint2.z);
-               if (this.level().getBlockState(pathPos).getBlock() != Blocks.WATER
-                  && this.level().getBlockState(pathPos.below()).getBlock() != Blocks.WATER
-                  && this.level().canSeeSky(pathPos)) {
-                  this.currentPath.setCurrentPathLength(j - 1);
+            for (int j = 0; j < this.path.getNodeCount(); j++) {
+               Node pathpoint2 = this.path.getNode(j);
+               BlockPos pathPos = new BlockPos(pathpoint2.x, pathpoint2.y, pathpoint2.z);
+               if (this.level.getBlockState(pathPos).getBlock() != Blocks.WATER
+                  && this.level.getBlockState(pathPos.below()).getBlock() != Blocks.WATER
+                  && this.level.canSeeSky(pathPos)) {
+                  this.path.truncateNodes(j - 1);
                   return;
                }
             }
@@ -419,61 +363,48 @@ public class CreaturePathNavigate extends PathNavigation {
       }
    }
 
-   protected void pathFollow() {
+   @Override
+   protected void followThePath() {
       if (!this.entityCreature.isFlying() && !this.entityCreature.isInWater()) {
-         super.pathFollow();
+         super.followThePath();
       } else {
-         Vec3 entityVector = this.getEntityPosition();
-         float entitySize = this.entity.getBbWidth() * this.entity.getBbWidth();
-         if (entityVector.distanceToSqr(this.currentPath.getVectorFromIndex(this.entity, this.currentPath.getNextNodeIndex())) < (double)entitySize) {
-            this.currentPath.incrementPathIndex();
+         Vec3 entityVector = this.getTempMobPos();
+         float entitySize = this.mob.getBbWidth() * this.mob.getBbWidth();
+         if (entityVector.distanceToSqr(this.path.getEntityPosAtNode(this.mob, this.path.getNextNodeIndex())) < (double)entitySize) {
+            this.path.advance();
          }
 
          int pathIndexRange = 6;
 
-         for (int pathIndex = Math.min(this.currentPath.getNextNodeIndex() + pathIndexRange, this.currentPath.getNodeCount() - 1);
-            pathIndex > this.currentPath.getNextNodeIndex();
+         for (int pathIndex = Math.min(this.path.getNextNodeIndex() + pathIndexRange, this.path.getNodeCount() - 1);
+            pathIndex > this.path.getNextNodeIndex();
             pathIndex--
          ) {
-            Vec3 pathVector = this.currentPath.getVectorFromIndex(this.entity, pathIndex);
+            Vec3 pathVector = this.path.getEntityPosAtNode(this.mob, pathIndex);
             if (pathVector.distanceToSqr(entityVector) <= 36.0 && this.isDirectPathBetweenPoints(entityVector, pathVector, 0, 0, 0)) {
-               this.currentPath.setCurrentPathIndex(pathIndex);
+               this.path.setNextNodeIndex(pathIndex);
                break;
             }
          }
 
-         this.checkForStuck(entityVector);
+         this.doStuckDetection(entityVector);
       }
    }
 
-   public void onUpdateNavigation() {
+   @Override
+   public void tick() {
       if (!this.isDone() || !this.entityCreature.canClimb()) {
-         super.onUpdateNavigation();
+         super.tick();
       } else if (this.targetPosition != null) {
-         double d0 = (double)(this.entity.getBbWidth() * this.entity.getBbWidth());
-         if (!(this.entity.getDistanceSqToCenter(this.targetPosition) >= d0)
-            || !(this.entity.getY() <= (double)this.targetPosition.getY())
-               && !(
-                  this.entity
-                        .getDistanceSqToCenter(
-                           LycPos.of(
-                              this.targetPosition.getX(),
-                              Mth.floor(this.entity.getY()),
-                              this.targetPosition.getZ()
-                           )
-                        )
-                     >= d0
-               )) {
+         double d0 = (double)(this.mob.getBbWidth() * this.mob.getBbWidth());
+         if (!(this.mob.distanceToSqr(Vec3.atCenterOf(this.targetPosition)) >= d0)
+            || !(this.mob.getY() <= (double)this.targetPosition.getY())
+               && !(this.mob.distanceToSqr(Vec3.atCenterOf(new BlockPos(this.targetPosition.getX(), Mth.floor(this.mob.getY()), this.targetPosition.getZ()))) >= d0)) {
             this.targetPosition = null;
          } else {
-            this.entity
-               .getMoveControl()
-               .setWantedPosition(
-                  (double)this.targetPosition.getX(),
-                  (double)this.targetPosition.getY(),
-                  (double)this.targetPosition.getZ(),
-                  this.speed
-               );
+            this.mob.getMoveControl().setWantedPosition(
+               (double)this.targetPosition.getX(), (double)this.targetPosition.getY(), (double)this.targetPosition.getZ(), this.speedModifier
+            );
          }
       }
    }

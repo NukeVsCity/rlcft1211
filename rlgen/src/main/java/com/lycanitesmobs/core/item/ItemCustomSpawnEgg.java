@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.item;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -104,7 +105,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
    public ItemCustomSpawnEgg(String name, CreatureType creatureType) {
       this.setTranslationKey(name);
       this.setHasSubtypes(true);
-      this.setCreativeTab(LycanitesMobs.creaturesTab);
+      CreativeTabs.add(LycanitesMobs.creaturesTab, this);
       this.itemName = name;
       this.creatureType = creatureType;
       LycReg.setName(this, this.modInfo.modid, this.itemName);
@@ -193,8 +194,8 @@ public class ItemCustomSpawnEgg extends ItemBase {
             world, itemStack, (double)pos.getX() + 0.5, (double)pos.getY() + d0, (double)pos.getZ() + 0.5
          );
          if (entity != null) {
-            if (itemStack.hasDisplayName()) {
-               entity.setCustomNameTag(itemStack.getHoverName());
+            if (itemStack.has(net.minecraft.core.component.DataComponents.CUSTOM_NAME)) {
+               entity.setCustomName(Component.literal(itemStack.getHoverName()));
             }
 
             this.applyItemEntityDataToEntity(world, player, itemStack, entity);
@@ -231,8 +232,8 @@ public class ItemCustomSpawnEgg extends ItemBase {
                   LivingEntity entity = this.spawnCreature(
                      world, itemStack, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ()
                   );
-                  if (entity != null && itemStack.hasDisplayName()) {
-                     entity.setCustomNameTag(itemStack.getHoverName());
+                  if (entity != null && itemStack.has(net.minecraft.core.component.DataComponents.CUSTOM_NAME)) {
+                     entity.setCustomName(Component.literal(itemStack.getHoverName()));
                   }
 
                   if (!player.getAbilities().instabuild) {

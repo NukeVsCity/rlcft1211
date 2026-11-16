@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -143,7 +144,7 @@ public class FearEntity extends BaseCreatureEntity {
             }
 
             if (this.getPickupEntity() == null) {
-               this.set(this.fearedEntity.getX(), this.fearedEntity.getY(), this.fearedEntity.getZ());
+               this.setPos(this.fearedEntity.getX(), this.fearedEntity.getY(), this.fearedEntity.getZ());
                LycMotion.setX(this, this.fearedEntity.getDeltaMovement().x);
                LycMotion.setY(this, this.fearedEntity.getDeltaMovement().y);
                LycMotion.setZ(this, this.fearedEntity.getDeltaMovement().z);

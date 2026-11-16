@@ -246,7 +246,7 @@ R = [
  (r'\.hitVec\b', '.getLocation()'), (r'\.typeOfHit\b', '.getType()'), (r'HitResult\.Type\.BLOCK\b', 'HitResult.Type.BLOCK'),
  
  (r'new BlockPos\.MutableBlockPos\(', 'new BlockPos.MutableBlockPos('), (r'BlockPos\.PooledMutableBlockPos\.retain\(\)', 'new BlockPos.MutableBlockPos()'),
- (r'BlockPos\.PooledMutableBlockPos', 'BlockPos.MutableBlockPos'), (r'\.setPos\(', '.set('),
+ (r'BlockPos\.PooledMutableBlockPos', 'BlockPos.MutableBlockPos'), (r'(\w*[pP]os\w*)\.setPos\(', r'\1.set('),
  (r'new BlockPos\(([^;]*?)\)', lambda m: 'new BlockPos(' + m.group(1) + ')'),
  # damage sources (vanilla ones; Lycanites ones are fixed by hand)
  (r'\bDamageSource\.cause(\w+)Damage\(', r'EntityDamageSource.cause\1Damage('), (r'new DamageSource\(', 'EntityDamageSource.named('),
@@ -356,6 +356,8 @@ RECV = [
  ('getCreativeTab', 'LycReg.tab({r})'),
  ('rayTraceBlocks', 'LycWorld.rayTraceBlocks({r}, {a})'),
  ('setBlockToAir', '{r}.removeBlock({a}, false)'),
+ ('setCustomNameTag', lambda r, a: '%s.setCustomName(%s)' % (r, a if ('getHoverName' in a or 'Component' in a) else 'Component.literal(' + a + ')')),
+ ('getPlayers', lambda r, a: 'LycWorld.getPlayers(%s, %s)' % (r, a) if len(split_args(a)) == 2 else '%s.getPlayers(%s)' % (r, a)),
  ('isShield', lambda r, a: split_args(a)[0] + '.canPerformAction(net.neoforged.neoforge.common.ItemAbilities.SHIELD_BLOCK)'),
  ('attackEntityAsMob', lambda r, a: '%s.%s(%s)' % (r, 'doHurtTarget' if len(split_args(a)) == 1 else 'attackEntityAsMob', a)),
  ('spawnParticle', lambda r, a: '%s.addParticle(%s)' % (r, ', '.join(split_args(a)[:7]))),
@@ -387,7 +389,7 @@ PRE = [
  (r'\.isOpaqueCube\(\)', '.canOcclude()'), (r'\.getLightValue\(\)', '.getLightEmission()'), (r'\.getDisplayName\(\)', '.getDisplayName()'),
  (r'\bItemStack\.EMPTY\b', 'ItemStack.EMPTY'), (r'\.getSlipperiness\(', '.getFriction('), (r'\.slipperiness\b', '.getFriction()'),
  (r'\.isInvisibleToPlayer\(', '.isInvisibleTo('), (r'\.getPassengers\(\)', '.getPassengers()'), (r'\.isPotionApplicable\(', '.canBeAffected('),
- (r'\.getMaxHealth\(\)', '.getMaxHealth()'), (r'\.setGrowingAge\(', '.setAge('), (r'\.getGrowingAge\(\)', '.getAge()'),
+ (r'\.getMaxHealth\(\)', '.getMaxHealth()'),
  (r'\.getAttackingEntity\(\)', '.getKillCredit()'), (r'\.isOnSameTeam\(', '.isAlliedTo('), (r'\.canAttackClass\(', '.canAttackClass('),
  (r'\.getTotalArmorValue\(\)', '.getArmorValue()'), (r'\.isInRangeToRenderDist\(', '.shouldRenderAtSqrDistance('),
  (r'\.dropItem\(', '.spawnAtLocation('), (r'\.getItemDropChance\(', '.getEquipmentDropChance('),
@@ -411,6 +413,21 @@ PRE = [
 ]
 
 POST = [
+
+ (r'\bEntityDataSerializers\.OPTIONAL_UNIQUE_ID\b', 'EntityDataSerializers.OPTIONAL_UUID'),
+ (r'\.getPortalCooldown\(\)', '.getDimensionChangingDelay()'), (r'\bthis\.timeUntilPortal\s*=\s*([^;]+);', r'this.setPortalCooldown(\1);'),
+ (r'\bthis\.timeUntilPortal\b', 'this.getPortalCooldown()'),
+ (r'\bEnumParticleTypes (\w)', r'ParticleOptions \1'), (r'\.hasDisplayName\(\)', '.has(net.minecraft.core.component.DataComponents.CUSTOM_NAME)'),
+ (r'\.getPlayerEntityByUUID\(', '.getPlayerByUUID('), (r'\.getDisplayNameString\(\)', '.getName().getString()'),
+ (r'\.setAlwaysRenderNameTag\(', '.setCustomNameVisible('), (r'\bsetAlwaysRenderNameTag\(', 'setCustomNameVisible('),
+ (r'\bvoid handleStatusUpdate\(byte', 'void handleEntityEvent(byte'), (r'super\.handleStatusUpdate\(', 'super.handleEntityEvent('),
+ (r'super\.getTalkInterval\(\)', 'super.getAmbientSoundInterval()'), (r'\.isEntityInvulnerable\(', '.isInvulnerableTo('),
+ (r'\bisEntityInvulnerable\(', 'isInvulnerableTo('), (r'\bTeam getTeam\(\)', 'net.minecraft.world.scores.PlayerTeam getTeam()'),
+ (r'\bUUID getOwnerId\(\)', 'UUID getOwnerUUID()'), (r'\.getOwnerId\(\)', '.getOwnerUUID()'), (r'\bgetOwnerId\(\)', 'getOwnerUUID()'),
+ (r'public Entity getOwner\(\)', 'public LivingEntity getOwner()'),
+ (r'\.getEntityWorld\(\)', '.level()'), (r'\.isPlayerSleeping\(\)', '.isSleeping()'),
+ (r'\.getItemDamage\(\)', '.getDamageValue()'),
+ (r'\bpublic String getName\(\) \{', 'public Component getName() {'),
  (r'\.isPushedByWater\(\)', '.isPushedByFluid()'), (r'super\.getAlwaysRenderNameTagForRender\(\)', 'super.shouldShowName()'),
  (r'\bcanBreatheUnderwater\(\)', 'canBreatheUnderwater112()'), (r'(\w+)\.openGui\(LycanitesMobs\.instance, ', r'GuiHandler.openGui(\1, '),
  (r'\.openContainer\b', '.containerMenu'), (r'\.setPickupDelay\(', '.setPickUpDelay('), (r'\.addItemStackToInventory\(', '.getInventory().add('),
@@ -495,6 +512,10 @@ def port(src, path):
         keep.append('import %s%s%s;' % (st, name, star))
     body = re.sub(r'^import [^\n]*\n', '', src, flags=re.M)
     body = re.sub(r'^package [^\n]*\n', '', body, count=1)
+    if 'import net.minecraftforge.fluids.Fluid;' in src:
+        body = re.sub(r'(?<![\w."])Fluid(?=[\s<>\[\]),.;:(&|]|$)', 'ForgeFluid', body)
+    body = re.sub(r'this\.setCreativeTab\(([^;]*)\);', r'CreativeTabs.add(\1, this);', body)
+    body = re.sub(r'GameRegistry\.addSmelting\(([^;]*)\);', r'// 1.12 GameRegistry.addSmelting(\1): smelting recipes are data/lycanitesmobs/recipe JSON', body)
     for a, b in PRE:
         if 'onUpdate' in a and ('Extended' in path or 'mobevent' in path):
             continue
@@ -507,6 +528,8 @@ def port(src, path):
     for a, b in POST:
         if 'onUpdate' in a and ('Extended' in path or 'mobevent' in path):
             continue
+        if 'getName' in a and not ('/entity/' in path and 'Extended' not in path):
+            continue
         body = re.sub(a, b, body)
     posdecl = any(declared(body, 'pos' + a) for a in 'XYZ')
     for a, b in R:
@@ -514,7 +537,12 @@ def port(src, path):
             continue
         body = re.sub(a, b, body)
     wild = [w for w in WILDCARDS if not (w == 'net.minecraft.world.level.pathfinder' and 'java.nio.file' in src)]
-    imp = ['import %s.*;' % w for w in wild] + ['import %s;' % e for e in EXPLICIT] + [
+    # 1.21 SynchedEntityData has no gaps: every key belongs to the class that defines it (1.12 used BaseCreatureEntity.class everywhere)
+    body = re.sub(r'SynchedEntityData\.defineId\(\s*\w+\.class', 'SynchedEntityData.defineId(' + os.path.basename(path)[:-5] + '.class', body)
+    if '/entity/creature/' in path or '/entity/projectile/' in path:
+        cls = os.path.basename(path)[:-5]
+        body = re.sub(r'(public ' + cls + r'\(Level (\w+)[^)]*\) \{\s*super\()\2\b', lambda m: m.group(1) + 'LycEntities.type(' + cls + '.class), ' + m.group(2), body)
+    imp = ['import %s.*;' % w for w in wild] + ['import com.lycanitesmobs.LycEntities;'] + ['import %s;' % e for e in EXPLICIT] + [
         'import io.netty.buffer.ByteBuf;', 'import javax.annotation.Nullable;', 'import java.util.Optional;',
         'import net.minecraft.world.level.GameRules;', 'import net.minecraft.tags.DamageTypeTags;', 'import net.minecraft.core.particles.ParticleTypes;',
         'import net.minecraft.core.particles.DustParticleOptions;', 'import net.minecraft.world.damagesource.DamageTypes;',

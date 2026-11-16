@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.block.fluid;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -97,7 +98,7 @@ import java.util.Random;
 
 
 public class BlockFluidMoglava extends BlockFluidBase {
-   public BlockFluidMoglava(Fluid fluid) {
+   public BlockFluidMoglava(ForgeFluid fluid) {
       super(fluid, Material.LAVA, LycanitesMobs.modInfo, "moglava");
       this.setLightOpacity(1);
       this.setLightLevel(1.0F);

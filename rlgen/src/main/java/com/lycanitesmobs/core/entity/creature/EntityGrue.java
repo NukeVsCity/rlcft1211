@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.creature;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -101,7 +102,7 @@ public class EntityGrue extends TameableCreatureEntity implements Enemy {
    private int teleportTime = 60;
 
    public EntityGrue(Level world) {
-      super(world);
+      super(LycEntities.type(EntityGrue.class), world);
       this.attribute = EnumCreatureAttribute.UNDEFINED;
       this.hasAttackSound = true;
       this.spawnsInWater = true;
@@ -124,7 +125,7 @@ public class EntityGrue extends TameableCreatureEntity implements Enemy {
          BlockPos teleportPosition = this.getFacingPosition(this.getTarget(), (double)(-this.getTarget().getBbWidth()) - 1.0, 0.0);
          if (this.canTeleportTo(teleportPosition)) {
             this.playJumpSound();
-            this.set((double)teleportPosition.getX(), (double)teleportPosition.getY(), (double)teleportPosition.getZ());
+            this.setPos((double)teleportPosition.getX(), (double)teleportPosition.getY(), (double)teleportPosition.getZ());
          }
       }
 
@@ -155,7 +156,7 @@ public class EntityGrue extends TameableCreatureEntity implements Enemy {
    @Override
    public void startStealth() {
       if (this.level().isClientSide) {
-         EnumParticleTypes particle = ParticleTypes.WITCH;
+         ParticleOptions particle = ParticleTypes.WITCH;
          double d0 = this.random.nextGaussian() * 0.02;
          double d1 = this.random.nextGaussian() * 0.02;
          double d2 = this.random.nextGaussian() * 0.02;

@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.block;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -109,7 +110,7 @@ public class BlockSummoningPedestal extends BlockBase implements ITileEntityProv
       this.setHarvestLevel("pickaxe", 2);
       this.setSoundType(SoundType.METAL);
       this.hasTileEntity = true;
-      this.setCreativeTab(LycanitesMobs.blocksTab);
+      CreativeTabs.add(LycanitesMobs.blocksTab, this);
       this.setDefaultState(this.getBlockState().getBaseState().setValue(PROPERTY_OWNER, BlockSummoningPedestal.EnumSummoningPedestal.NONE));
    }
 

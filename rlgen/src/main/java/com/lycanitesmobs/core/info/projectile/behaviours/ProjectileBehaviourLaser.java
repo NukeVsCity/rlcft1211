@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.info.projectile.behaviours;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -131,7 +132,7 @@ public class ProjectileBehaviourLaser extends ProjectileBehaviour {
             double var10001 = (double)entityToFollow.height;
             double yPos = entityToFollow.getBoundingBox().minY + var10001 * 0.5;
             double zPos = entityToFollow.position().z;
-            projectile.set(xPos, yPos, zPos);
+            projectile.setPos(xPos, yPos, zPos);
             LycMotion.setX(projectile, entityToFollow.getDeltaMovement().x);
             LycMotion.setY(projectile, entityToFollow.getDeltaMovement().y);
             LycMotion.setZ(projectile, entityToFollow.getDeltaMovement().z);

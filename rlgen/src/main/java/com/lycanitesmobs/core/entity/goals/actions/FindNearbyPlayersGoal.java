@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.goals.actions;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -116,9 +117,9 @@ public class FindNearbyPlayersGoal extends EntityAIBase {
          LivingEntity newTarget = null;
 
          try {
-            this.host.playerTargets = this.host
+            this.host.playerTargets = LycWorld.getPlayers(this.host
                .level()
-               .getPlayers(Player.class, input -> (double)input.distanceTo(this.host) <= this.searchRange);
+               , Player.class, input -> (double)input.distanceTo(this.host) <= this.searchRange);
          } catch (Exception var3) {
             LycanitesMobs.logWarning("", "An exception occurred when player target selecting, this has been skipped to prevent a crash.");
             var3.printStackTrace();

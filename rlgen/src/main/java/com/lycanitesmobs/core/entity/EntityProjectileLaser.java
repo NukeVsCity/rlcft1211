@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -116,8 +117,7 @@ public class EntityProjectileLaser extends BaseProjectileEntity {
    public double offsetY = 0.0;
    public double offsetZ = 0.0;
    public int offsetIDStart = 14;
-   protected static final EntityDataAccessor<Integer> SHOOTING_ENTITY_ID = SynchedEntityData.defineId(
-      EntityProjectileLaser.class, EntityDataSerializers.INT
+   protected static final EntityDataAccessor<Integer> SHOOTING_ENTITY_ID = SynchedEntityData.defineId(EntityProjectileLaser.class, EntityDataSerializers.INT
    );
    protected static final EntityDataAccessor<Integer> LASER_END_ID = SynchedEntityData.defineId(EntityProjectileLaser.class, EntityDataSerializers.INT);
    protected static final EntityDataAccessor<Integer> LASER_TIME = SynchedEntityData.defineId(EntityProjectileLaser.class, EntityDataSerializers.INT);
@@ -214,7 +214,7 @@ public class EntityProjectileLaser extends BaseProjectileEntity {
             zPos = (double)creatureToFollow.getFacingPosition(creatureToFollow, this.offsetZ, (double)creatureToFollow.getYRot()).getZ();
          }
 
-         this.set(xPos, yPos, zPos);
+         this.setPos(xPos, yPos, zPos);
       }
 
       if (this.laserTime > 0) {

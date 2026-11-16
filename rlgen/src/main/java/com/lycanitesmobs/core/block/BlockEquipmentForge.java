@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.block;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -125,7 +126,7 @@ public class BlockEquipmentForge extends BlockBase implements ITileEntityProvide
       this.setup();
       this.setHardness(5.0F);
       this.hasTileEntity = true;
-      this.setCreativeTab(LycanitesMobs.blocksTab);
+      CreativeTabs.add(LycanitesMobs.blocksTab, this);
       this.setDefaultState(this.blockState.getBaseState().setValue(FACING, Direction.NORTH));
    }
 

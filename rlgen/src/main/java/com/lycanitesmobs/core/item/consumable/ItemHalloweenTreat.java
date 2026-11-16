@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.item.consumable;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -182,13 +183,13 @@ public class ItemHalloweenTreat extends ItemBase {
                      BaseCreatureEntity entityCreature = (BaseCreatureEntity)entity;
                      entityCreature.addLevel(world.random.nextInt(10));
                      if (entityCreature.creatureInfo.getName().equals("ent")) {
-                        entityCreature.setCustomNameTag("Twisted Ent");
+                        entityCreature.setCustomName(Component.literal("Twisted Ent"));
                      } else if (entityCreature.creatureInfo.getName().equals("treant")) {
-                        entityCreature.setCustomNameTag("Wicked Treant");
+                        entityCreature.setCustomName(Component.literal("Wicked Treant"));
                      } else if (entityCreature.creatureInfo.getName().equals("epion")) {
-                        entityCreature.setCustomNameTag("Vampire Bat");
+                        entityCreature.setCustomName(Component.literal("Vampire Bat"));
                      } else if (entityCreature.creatureInfo.getName().equals("grue")) {
-                        entityCreature.setCustomNameTag("Shadow Clown");
+                        entityCreature.setCustomName(Component.literal("Shadow Clown"));
                      }
                   }
 

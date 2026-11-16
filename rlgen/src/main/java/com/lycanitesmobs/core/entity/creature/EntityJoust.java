@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.creature;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -99,7 +100,7 @@ import com.lycanitesmobs.core.info.CreatureManager;
 
 public class EntityJoust extends AgeableCreatureEntity {
    public EntityJoust(Level world) {
-      super(world);
+      super(LycEntities.type(EntityJoust.class), world);
       this.attribute = EnumCreatureAttribute.UNDEFINED;
       this.hasAttackSound = true;
       this.babySpawnChance = 0.1;
@@ -188,6 +189,6 @@ public class EntityJoust extends AgeableCreatureEntity {
          this.discard();
       }
 
-      super.setAge(age);
+      super.setGrowingAge(age);
    }
 }

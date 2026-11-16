@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.goals.targeting;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -150,10 +151,10 @@ public class FindMasterGoal extends TargetingGoal {
    protected boolean isValidTarget(LivingEntity target) {
       if (this.targetClass != null && !this.targetClass.isAssignableFrom(target.getClass())) {
          return false;
-      } else if (target instanceof Animal && ((Animal)target).getAge() < 0) {
+      } else if (target instanceof Animal && ((Animal)target).getGrowingAge() < 0) {
          return false;
       } else {
-         return target instanceof AgeableCreatureEntity && ((AgeableCreatureEntity)target).getAge() < 0
+         return target instanceof AgeableCreatureEntity && ((AgeableCreatureEntity)target).getGrowingAge() < 0
             ? false
             : this.tameTargeting || !this.host.isTamed();
       }

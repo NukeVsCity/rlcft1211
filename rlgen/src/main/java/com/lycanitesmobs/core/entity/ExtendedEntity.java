@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -235,7 +236,7 @@ public class ExtendedEntity {
          if (this.pickedUpByEntity != null) {
             double[] pickupOffset = this.getPickedUpOffset();
             this.entity
-               .set(
+               .setPos(
                   this.pickedUpByEntity.getX() + pickupOffset[0],
                   this.pickedUpByEntity.getY() + pickupOffset[1],
                   this.pickedUpByEntity.getZ() + pickupOffset[2]
@@ -287,7 +288,7 @@ public class ExtendedEntity {
 
          if (pickedUpByEntity == null) {
             if (this.lastSafePos != null) {
-               this.entity.set(this.lastSafePos.getX(), this.lastSafePos.getY(), this.lastSafePos.getZ());
+               this.entity.setPos(this.lastSafePos.getX(), this.lastSafePos.getY(), this.lastSafePos.getZ());
             }
 
             LycMotion.setX(this.entity, 0.0);
@@ -359,7 +360,7 @@ public class ExtendedEntity {
       Entity perchedByEntity = this.getPerchedByEntity();
       if (perchedByEntity != null) {
          Vec3 perchPosition = this.getPerchPosition();
-         perchedByEntity.set(perchPosition.x, perchPosition.y, perchPosition.z);
+         perchedByEntity.setPos(perchPosition.x, perchPosition.y, perchPosition.z);
          LycMotion.setX(perchedByEntity, this.entity.getDeltaMovement().x);
          LycMotion.setY(perchedByEntity, this.entity.getDeltaMovement().y);
          LycMotion.setZ(perchedByEntity, this.entity.getDeltaMovement().z);

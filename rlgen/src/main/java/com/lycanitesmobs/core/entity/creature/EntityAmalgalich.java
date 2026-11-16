@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.creature;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -114,7 +115,7 @@ public class EntityAmalgalich extends BaseCreatureEntity implements Enemy, IGrou
    private int consumptionAnimationTime = 0;
 
    public EntityAmalgalich(Level world) {
-      super(world);
+      super(LycEntities.type(EntityAmalgalich.class), world);
       this.attribute = EnumCreatureAttribute.UNDEAD;
       this.hasAttackSound = true;
       this.setAttackCooldownMax(30);
@@ -279,7 +280,7 @@ public class EntityAmalgalich extends BaseCreatureEntity implements Enemy, IGrou
          }
 
          if (this.getX() != (double)arenaPos.getX() || this.getY() != arenaY || this.getZ() != (double)arenaPos.getZ()) {
-            this.set((double)arenaPos.getX(), arenaY, (double)arenaPos.getZ());
+            this.setPos((double)arenaPos.getX(), arenaY, (double)arenaPos.getZ());
          }
       }
 

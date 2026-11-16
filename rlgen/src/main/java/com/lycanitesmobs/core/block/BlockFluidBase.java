@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.block;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -98,7 +99,7 @@ public class BlockFluidBase extends BlockFluidClassic {
    public ModInfo group;
    protected boolean destroyItems = true;
 
-   public BlockFluidBase(Fluid fluid, Material material, ModInfo group, String blockName) {
+   public BlockFluidBase(ForgeFluid fluid, Material material, ModInfo group, String blockName) {
       super(fluid, material);
       this.blockName = blockName;
       this.group = group;

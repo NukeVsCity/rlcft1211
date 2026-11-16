@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.projectile;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -107,15 +108,15 @@ public class EntityHellfireBarrier extends BaseProjectileEntity {
    public double rotation = 0.0;
 
    public EntityHellfireBarrier(Level par1World) {
-      super(par1World);
+      super(LycEntities.type(EntityHellfireBarrier.class), par1World);
    }
 
    public EntityHellfireBarrier(Level par1World, LivingEntity par2EntityLivingBase) {
-      super(par1World, par2EntityLivingBase);
+      super(LycEntities.type(EntityHellfireBarrier.class), par1World, par2EntityLivingBase);
    }
 
    public EntityHellfireBarrier(Level par1World, double par2, double par4, double par6) {
-      super(par1World, par2, par4, par6);
+      super(LycEntities.type(EntityHellfireBarrier.class), par1World, par2, par4, par6);
    }
 
    @Override

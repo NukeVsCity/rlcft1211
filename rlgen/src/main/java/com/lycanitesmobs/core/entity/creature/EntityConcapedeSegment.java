@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.creature;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -100,7 +101,7 @@ public class EntityConcapedeSegment extends AgeableCreatureEntity {
    public BaseCreatureEntity backSegment;
 
    public EntityConcapedeSegment(Level world) {
-      super(world);
+      super(LycEntities.type(EntityConcapedeSegment.class), world);
       this.attribute = EnumCreatureAttribute.ARTHROPOD;
       this.hasAttackSound = true;
       this.hasStepSound = false;
@@ -184,12 +185,12 @@ public class EntityConcapedeSegment extends AgeableCreatureEntity {
                );
                double distY = parentPos.y - this.getY();
                double dragY = this.getY() + distY / 2.0;
-               this.set(dragPos.x, dragY, dragPos.z);
+               this.setPos(dragPos.x, dragY, dragPos.z);
             }
          }
 
-         if (!this.level().isClientSide && this.getAge() <= 0) {
-            this.setAge(-this.growthTime);
+         if (!this.level().isClientSide && this.getGrowingAge() <= 0) {
+            this.setGrowingAge(-this.growthTime);
          }
       }
    }
@@ -225,12 +226,12 @@ public class EntityConcapedeSegment extends AgeableCreatureEntity {
          age = -this.growthTime;
       }
 
-      super.setAge(age);
+      super.setGrowingAge(age);
       if (age == 0 && !this.level().isClientSide) {
          EntityConcapedeHead concapedeHead = (EntityConcapedeHead)CreatureManager.getInstance().getCreature("concapede").createEntity(this.level());
          concapedeHead.copyPosition(this);
          concapedeHead.firstSpawn = false;
-         concapedeHead.setAge(-this.growthTime / 4);
+         concapedeHead.setGrowingAge(-this.growthTime / 4);
          concapedeHead.setSizeScale(this.sizeScale);
          concapedeHead.applyVariant(this.getVariantIndex());
          this.level().addFreshEntity(concapedeHead);
@@ -333,7 +334,7 @@ public class EntityConcapedeSegment extends AgeableCreatureEntity {
       if (!this.canBreed()) {
          return false;
       } else {
-         this.setAge(0);
+         this.setGrowingAge(0);
          return true;
       }
    }

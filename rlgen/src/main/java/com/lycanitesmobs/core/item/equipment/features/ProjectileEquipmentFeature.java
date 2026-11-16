@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.item.equipment.features;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -269,7 +270,7 @@ public class ProjectileEquipmentFeature extends EquipmentFeature {
                double pitch = (double)shooter.getXRot() + this.spreadY * shooter.getRandom().nextDouble() - this.spreadY / 2.0;
                ProjectileInfo projectileInfo = ProjectileManager.getInstance().getProjectile(this.projectileName);
                BaseProjectileEntity projectile = projectileInfo.createProjectile(world, shooter);
-               projectile.set(firePos.x, firePos.y, firePos.z);
+               projectile.setPos(firePos.x, firePos.y, firePos.z);
                projectile.shoot(shooter, (float)pitch, (float)yaw - (float)offsetX, 0.0F, (float)projectileInfo.velocity, 0.0F);
                projectile.setBonusDamage(this.bonusDamage);
                world.addFreshEntity(projectile);
@@ -282,7 +283,7 @@ public class ProjectileEquipmentFeature extends EquipmentFeature {
                double yaw = (double)shooter.getYRot() + angle * (double)i - this.ringRange / 2.0;
                ProjectileInfo projectileInfo = ProjectileManager.getInstance().getProjectile(this.projectileName);
                BaseProjectileEntity projectile = projectileInfo.createProjectile(world, shooter);
-               projectile.set(firePos.x, firePos.y, firePos.z);
+               projectile.setPos(firePos.x, firePos.y, firePos.z);
                projectile.setBonusDamage(this.bonusDamage);
                world.addFreshEntity(projectile);
                projectile.shoot(shooter, shooter.getXRot(), (float)yaw - (float)offsetX, 0.0F, (float)projectileInfo.velocity, 0.0F);
@@ -291,7 +292,7 @@ public class ProjectileEquipmentFeature extends EquipmentFeature {
          } else {
             ProjectileInfo projectileInfo = ProjectileManager.getInstance().getProjectile(this.projectileName);
             mainProjectile = projectileInfo.createProjectile(world, shooter);
-            mainProjectile.set(firePos.x, firePos.y, firePos.z);
+            mainProjectile.setPos(firePos.x, firePos.y, firePos.z);
             mainProjectile.shoot(shooter, shooter.getXRot(), shooter.getYRot() - (float)offsetX, 0.0F, (float)projectileInfo.velocity, 0.0F);
             mainProjectile.setBonusDamage(this.bonusDamage);
             world.addFreshEntity(mainProjectile);

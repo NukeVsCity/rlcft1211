@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.projectile;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -93,15 +94,15 @@ import net.neoforged.neoforge.event.tick.*;
 
 public class EntityHellfireWavePart extends EntityHellfireWall {
    public EntityHellfireWavePart(Level par1World) {
-      super(par1World);
+      super(LycEntities.type(EntityHellfireWavePart.class), par1World);
    }
 
    public EntityHellfireWavePart(Level par1World, LivingEntity par2EntityLivingBase) {
-      super(par1World, par2EntityLivingBase);
+      super(LycEntities.type(EntityHellfireWavePart.class), par1World, par2EntityLivingBase);
    }
 
    public EntityHellfireWavePart(Level par1World, double par2, double par4, double par6) {
-      super(par1World, par2, par4, par6);
+      super(LycEntities.type(EntityHellfireWavePart.class), par1World, par2, par4, par6);
    }
 
    @Override

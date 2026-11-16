@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.creature;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -104,7 +105,7 @@ public class EntityDarkling extends TameableCreatureEntity implements Enemy {
    double latchAngle = 90.0;
 
    public EntityDarkling(Level world) {
-      super(world);
+      super(LycEntities.type(EntityDarkling.class), world);
       this.attribute = EnumCreatureAttribute.UNDEAD;
       this.hasAttackSound = true;
       this.setupMob();
@@ -146,7 +147,7 @@ public class EntityDarkling extends TameableCreatureEntity implements Enemy {
             (double)this.getLatchTarget().width * 0.5,
             this.latchAngle
          );
-         this.set(latchPos.x, latchPos.y, latchPos.z);
+         this.setPos(latchPos.x, latchPos.y, latchPos.z);
          double distanceX = this.getLatchTarget().getX() - this.getX();
          double distanceZ = this.getLatchTarget().getZ() - this.getZ();
          this.yBodyRot = this.setYRot(-((float)Mth.atan2(distanceX, distanceZ)) * (180.0F / (float)Math.PI));
@@ -160,7 +161,7 @@ public class EntityDarkling extends TameableCreatureEntity implements Enemy {
                   }
                }
             } else {
-               this.set(this.getLatchTarget().getX(), this.getLatchTarget().getY(), this.getLatchTarget().getZ());
+               this.setPos(this.getLatchTarget().getX(), this.getLatchTarget().getY(), this.getLatchTarget().getZ());
                this.setLatchTarget(null);
                this.noPhysics = false;
             }
@@ -285,7 +286,7 @@ public class EntityDarkling extends TameableCreatureEntity implements Enemy {
    @Override
    public void startStealth() {
       if (this.level().isClientSide) {
-         EnumParticleTypes particle = ParticleTypes.WITCH;
+         ParticleOptions particle = ParticleTypes.WITCH;
          double d0 = this.random.nextGaussian() * 0.02;
          double d1 = this.random.nextGaussian() * 0.02;
          double d2 = this.random.nextGaussian() * 0.02;

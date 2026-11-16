@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.goals.actions.abilities;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -278,7 +279,7 @@ public class FireProjectilesGoal extends BaseGoal {
    public void fireProjectileOverhead(BaseProjectileEntity projectile) {
       Entity target = (Entity)(this.attackTarget != null ? this.attackTarget : this.host);
       projectile.shoot(0.0, -1.0, 0.0, 0.5F, this.inaccuracy);
-      projectile.set(
+      projectile.setPos(
          (double)target.blockPosition().getX(),
          (double)target.blockPosition().getY() + this.offset.y + this.host.getRandom().nextDouble() * 3.0,
          (double)target.blockPosition().getZ()

@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.dispenser;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -102,8 +103,8 @@ public class DispenserBehaviorMobEggCustom extends BehaviorDefaultDispenseItem {
          double z = blockSource.getZ() + (double)facing.getStepZ();
          ItemCustomSpawnEgg itemCustomSpawnEgg = (ItemCustomSpawnEgg)itemStack.getItem();
          Entity entity = ((ItemCustomSpawnEgg)itemStack.getItem()).spawnCreature(blockSource.getWorld(), itemStack, x, y, z);
-         if (itemStack.hasDisplayName()) {
-            entity.setCustomNameTag(itemStack.getHoverName());
+         if (itemStack.has(net.minecraft.core.component.DataComponents.CUSTOM_NAME)) {
+            entity.setCustomName(Component.literal(itemStack.getHoverName()));
          }
 
          itemStack.splitStack(1);

@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.projectile;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -95,23 +96,23 @@ import com.lycanitesmobs.core.entity.EntityProjectileLaser;
 
 public class EntityHellLaser extends EntityProjectileLaser {
    public EntityHellLaser(Level world) {
-      super(world);
+      super(LycEntities.type(EntityHellLaser.class), world);
    }
 
    public EntityHellLaser(Level world, double par2, double par4, double par6, int setTime, int setDelay) {
-      super(world, par2, par4, par6, setTime, setDelay);
+      super(LycEntities.type(EntityHellLaser.class), world, par2, par4, par6, setTime, setDelay);
    }
 
    public EntityHellLaser(Level world, double par2, double par4, double par6, int setTime, int setDelay, Entity followEntity) {
-      super(world, par2, par4, par6, setTime, setDelay, followEntity);
+      super(LycEntities.type(EntityHellLaser.class), world, par2, par4, par6, setTime, setDelay, followEntity);
    }
 
    public EntityHellLaser(Level world, LivingEntity entityShooter, int setTime, int setDelay) {
-      super(world, entityShooter, setTime, setDelay);
+      super(LycEntities.type(EntityHellLaser.class), world, entityShooter, setTime, setDelay);
    }
 
    public EntityHellLaser(Level world, LivingEntity entityShooter, int setTime, int setDelay, Entity followEntity) {
-      super(world, entityShooter, setTime, setDelay, followEntity);
+      super(LycEntities.type(EntityHellLaser.class), world, entityShooter, setTime, setDelay, followEntity);
    }
 
    @Override

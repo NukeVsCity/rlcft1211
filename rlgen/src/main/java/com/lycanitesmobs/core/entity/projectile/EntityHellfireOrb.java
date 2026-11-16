@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.projectile;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -97,15 +98,15 @@ import com.lycanitesmobs.core.entity.creature.EntityRahovart;
 
 public class EntityHellfireOrb extends BaseProjectileEntity {
    public EntityHellfireOrb(Level par1World) {
-      super(par1World);
+      super(LycEntities.type(EntityHellfireOrb.class), par1World);
    }
 
    public EntityHellfireOrb(Level par1World, LivingEntity par2EntityLivingBase) {
-      super(par1World, par2EntityLivingBase);
+      super(LycEntities.type(EntityHellfireOrb.class), par1World, par2EntityLivingBase);
    }
 
    public EntityHellfireOrb(Level par1World, double par2, double par4, double par6) {
-      super(par1World, par2, par4, par6);
+      super(LycEntities.type(EntityHellfireOrb.class), par1World, par2, par4, par6);
    }
 
    @Override

@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.creature;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -101,7 +102,7 @@ import java.util.List;
 
 public class EntitySerpix extends TameableCreatureEntity implements IGroupHeavy {
    public EntitySerpix(Level world) {
-      super(world);
+      super(LycEntities.type(EntitySerpix.class), world);
       this.attribute = EnumCreatureAttribute.ARTHROPOD;
       this.spawnsOnLand = true;
       this.spawnsInWater = true;
@@ -169,7 +170,7 @@ public class EntitySerpix extends TameableCreatureEntity implements IGroupHeavy 
             float velocity = 1.2F;
             projectile.shoot(d0, d1 + (double)f1, d2, velocity, 6.0F);
             this.playSound(projectile.getLaunchSound(), 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-            projectile.set((double)launchPos.getX(), (double)launchPos.getY(), (double)launchPos.getZ());
+            projectile.setPos((double)launchPos.getX(), (double)launchPos.getY(), (double)launchPos.getZ());
             this.level().addFreshEntity(projectile);
          }
 

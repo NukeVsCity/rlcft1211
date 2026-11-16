@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity.projectile;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -106,15 +107,15 @@ public class EntityHellfireWave extends BaseProjectileEntity {
    public double rotation = 0.0;
 
    public EntityHellfireWave(Level world) {
-      super(world);
+      super(LycEntities.type(EntityHellfireWave.class), world);
    }
 
    public EntityHellfireWave(Level world, LivingEntity shooterEntity) {
-      super(world, shooterEntity);
+      super(LycEntities.type(EntityHellfireWave.class), world, shooterEntity);
    }
 
    public EntityHellfireWave(Level world, double x, double y, double z) {
-      super(world, x, y, z);
+      super(LycEntities.type(EntityHellfireWave.class), world, x, y, z);
    }
 
    @Override

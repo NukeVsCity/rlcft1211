@@ -3,6 +3,7 @@ package com.lycanitesmobs.core.entity;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAIBase;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
+import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
@@ -111,11 +112,9 @@ public class CustomProjectileEntity extends BaseProjectileEntity {
    public float laserAngle;
    public List<BaseProjectileEntity> spawnedProjectiles = new ArrayList<>();
    protected static final EntityDataAccessor<String> PROJECTILE_NAME = SynchedEntityData.defineId(CustomProjectileEntity.class, EntityDataSerializers.STRING);
-   protected static final EntityDataAccessor<Integer> THROWING_ENTITY_ID = SynchedEntityData.defineId(
-      CustomProjectileEntity.class, EntityDataSerializers.INT
+   protected static final EntityDataAccessor<Integer> THROWING_ENTITY_ID = SynchedEntityData.defineId(CustomProjectileEntity.class, EntityDataSerializers.INT
    );
-   protected static final EntityDataAccessor<Integer> PARENT_PROJECTILE_ID = SynchedEntityData.defineId(
-      CustomProjectileEntity.class, EntityDataSerializers.INT
+   protected static final EntityDataAccessor<Integer> PARENT_PROJECTILE_ID = SynchedEntityData.defineId(CustomProjectileEntity.class, EntityDataSerializers.INT
    );
    protected static final EntityDataAccessor<Integer> TARGET_ID = SynchedEntityData.defineId(CustomProjectileEntity.class, EntityDataSerializers.INT);
    protected static final EntityDataAccessor<Float> LASER_ANGLE = SynchedEntityData.defineId(CustomProjectileEntity.class, EntityDataSerializers.FLOAT);
