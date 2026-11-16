@@ -109,7 +109,7 @@ public class MessagePetEntryRemove implements IMessage {
    }
 
    public static void onMessage(MessagePetEntryRemove message, MessageContext ctx, Player player) {
-      if (ctx.side == Side.SERVER) {
+      if (!ctx.client) {
          ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
          PetManager petManager = playerExt.petManager;
          PetEntry petEntry = petManager.getEntry(message.petEntryID);

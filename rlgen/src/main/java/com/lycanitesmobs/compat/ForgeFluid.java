@@ -26,8 +26,8 @@ public class ForgeFluid {
    public int viscosity = 1000;
    public boolean isGaseous = false;
    public FluidType fluidType;
-   public final LycSource sourceFluid;
-   public final LycFlowing flowingFluid;
+   public LycSource sourceFluid;
+   public LycFlowing flowingFluid;
    public BlockFluidBase block;
    public Item bucket;
 

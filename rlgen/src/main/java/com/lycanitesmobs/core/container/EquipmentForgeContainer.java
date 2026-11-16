@@ -143,16 +143,16 @@ public class EquipmentForgeContainer extends BaseContainer {
       if (this.equipmentForge != null) {
          this.clearPartSlots();
          EquipmentForgeSlot slotBase = (EquipmentForgeSlot)this.getSlot(this.inventoryStart + 1);
-         if (slotEquipment.getHasStack() && !slotBase.getHasStack() && slotEquipment.getStack().getItem() instanceof ItemEquipment) {
+         if (slotEquipment.hasItem() && !slotBase.hasItem() && slotEquipment.getItem().getItem() instanceof ItemEquipment) {
             EquipmentForgeSlot slotHead = (EquipmentForgeSlot)this.getSlot(this.inventoryStart + 2);
             EquipmentForgeSlot slotTipA = (EquipmentForgeSlot)this.getSlot(this.inventoryStart + 3);
             EquipmentForgeSlot slotTipB = (EquipmentForgeSlot)this.getSlot(this.inventoryStart + 4);
             EquipmentForgeSlot slotTipC = (EquipmentForgeSlot)this.getSlot(this.inventoryStart + 5);
             EquipmentForgeSlot slotPommel = (EquipmentForgeSlot)this.getSlot(this.inventoryStart + 6);
-            ItemEquipment itemEquipment = (ItemEquipment)slotEquipment.getStack().getItem();
+            ItemEquipment itemEquipment = (ItemEquipment)slotEquipment.getItem().getItem();
             int axeIndex = 0;
 
-            for (ItemStack partStack : itemEquipment.getEquipmentPartStacks(slotEquipment.getStack())) {
+            for (ItemStack partStack : itemEquipment.getEquipmentPartStacks(slotEquipment.getItem())) {
                ItemEquipmentPart itemEquipmentPart = itemEquipment.getEquipmentPart(partStack);
                if (itemEquipmentPart != null) {
                   if ("base".equals(itemEquipmentPart.slotType)) {
@@ -189,34 +189,34 @@ public class EquipmentForgeContainer extends BaseContainer {
          Slot slotPommel = this.getSlot(this.inventoryStart + 6);
          ItemEquipment itemEquipment = (ItemEquipment)ObjectManager.getItem("equipment");
          ItemStack pieceStack = new ItemStack(itemEquipment);
-         if (slotBase.getHasStack()) {
-            itemEquipment.addEquipmentPart(pieceStack, slotBase.getStack(), 0);
+         if (slotBase.hasItem()) {
+            itemEquipment.addEquipmentPart(pieceStack, slotBase.getItem(), 0);
          }
 
-         if (slotHead.getHasStack()) {
-            itemEquipment.addEquipmentPart(pieceStack, slotHead.getStack(), 1);
+         if (slotHead.hasItem()) {
+            itemEquipment.addEquipmentPart(pieceStack, slotHead.getItem(), 1);
          }
 
-         if (slotTipA.getHasStack()) {
-            itemEquipment.addEquipmentPart(pieceStack, slotTipA.getStack(), 2);
+         if (slotTipA.hasItem()) {
+            itemEquipment.addEquipmentPart(pieceStack, slotTipA.getItem(), 2);
          }
 
-         if (slotTipB.getHasStack()) {
-            itemEquipment.addEquipmentPart(pieceStack, slotTipB.getStack(), 3);
+         if (slotTipB.hasItem()) {
+            itemEquipment.addEquipmentPart(pieceStack, slotTipB.getItem(), 3);
          }
 
-         if (slotTipC.getHasStack()) {
-            itemEquipment.addEquipmentPart(pieceStack, slotTipC.getStack(), 4);
+         if (slotTipC.hasItem()) {
+            itemEquipment.addEquipmentPart(pieceStack, slotTipC.getItem(), 4);
          }
 
-         if (slotPommel.getHasStack()) {
-            itemEquipment.addEquipmentPart(pieceStack, slotPommel.getStack(), 5);
+         if (slotPommel.hasItem()) {
+            itemEquipment.addEquipmentPart(pieceStack, slotPommel.getItem(), 5);
          }
 
          if (itemEquipment.getEquipmentPartCount(pieceStack) > 0) {
-            slotPiece.putStack(pieceStack);
+            slotPiece.set(pieceStack);
          } else {
-            slotPiece.putStack(ItemStack.EMPTY);
+            slotPiece.set(ItemStack.EMPTY);
          }
       }
    }
@@ -237,7 +237,7 @@ public class EquipmentForgeContainer extends BaseContainer {
       Slot slotTipA = this.getSlot(this.inventoryStart + 3);
       Slot slotTipB = this.getSlot(this.inventoryStart + 4);
       Slot slotTipC = this.getSlot(this.inventoryStart + 5);
-      return slotBase.getHasStack() && slotHead.getHasStack() ? slotTipA.getHasStack() || slotTipB.getHasStack() || slotTipC.getHasStack() : false;
+      return slotBase.hasItem() && slotHead.hasItem() ? slotTipA.hasItem() || slotTipB.hasItem() || slotTipC.hasItem() : false;
    }
 
    @Override

@@ -105,7 +105,7 @@ public class MessageSummonSetSelection implements IMessage {
    }
 
    public static void onMessage(MessageSummonSetSelection message, MessageContext ctx, Player player) {
-      if (ctx.side == Side.SERVER) {
+      if (!ctx.client) {
          ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
          playerExt.setSelectedSummonSet(message.summonSetID);
       } else {

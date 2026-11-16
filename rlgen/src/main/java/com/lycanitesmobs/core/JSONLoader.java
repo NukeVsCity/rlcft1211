@@ -157,7 +157,7 @@ public abstract class JSONLoader {
 
                   try {
                      reader = Files.newBufferedReader(filePath);
-                     JsonObject json = (JsonObject)JsonUtils.fromJson(gson, reader, JsonObject.class);
+                     JsonObject json = (JsonObject)net.minecraft.util.GsonHelper.fromJson(gson, reader, JsonObject.class);
                      boolean validJSON = true;
                      if (jsonType != null) {
                         if (!json.has("type")) {
@@ -243,7 +243,7 @@ public abstract class JSONLoader {
             JsonObject var6;
             try {
                reader = Files.newBufferedReader(path);
-               JsonObject json = (JsonObject)JsonUtils.fromJson(gson, reader, JsonObject.class);
+               JsonObject json = (JsonObject)net.minecraft.util.GsonHelper.fromJson(gson, reader, JsonObject.class);
                var6 = json;
             } catch (JsonParseException var12) {
                LycanitesMobs.logWarning("", "Parsing error loading JSON " + relativePath + "\n" + var12.toString());

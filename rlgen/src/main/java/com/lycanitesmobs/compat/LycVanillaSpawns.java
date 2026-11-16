@@ -57,16 +57,20 @@ public final class LycVanillaSpawns {
          if (phase != Phase.ADD) {
             return;
          }
-         List<Entry> entries = new ArrayList<>();
-         biome.unwrapKey().ifPresent(key -> entries.addAll(SPAWNS.getOrDefault(key.location(), List.of())));
+         java.util.Set<ResourceLocation> ids = new java.util.LinkedHashSet<>();
+         biome.unwrapKey().ifPresent(key -> ids.add(key.location()));
          if (biome.is(BiomeTags.IS_NETHER)) {
-            entries.addAll(SPAWNS.getOrDefault(LycBiomes.HELL, List.of()));
+            ids.add(LycBiomes.HELL);
          }
          if (biome.is(BiomeTags.IS_END)) {
-            entries.addAll(SPAWNS.getOrDefault(LycBiomes.SKY, List.of()));
+            ids.add(LycBiomes.SKY);
+         }
+         List<Entry> entries = new ArrayList<>();
+         for (ResourceLocation id : ids) {
+            entries.addAll(SPAWNS.getOrDefault(id, List.of()));
          }
          for (Entry entry : entries) {
-            EntityType<?> type = LycEntities.type(entry.entityClass());
+            EntityType<?> type = LycEntities.type((Class)entry.entityClass());
             if (type != null && entry.weight() > 0) {
                builder.getMobSpawnSettings().addSpawn(entry.category(),
                   new MobSpawnSettings.SpawnerData(type, entry.weight(), entry.min(), Math.max(entry.min(), entry.max())));

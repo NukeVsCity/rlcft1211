@@ -96,7 +96,7 @@ import com.lycanitesmobs.core.item.equipment.ItemEquipment;
 
 public class MessagePlayerLeftClick implements IMessage {
    public static void onMessage(MessagePlayerLeftClick message, MessageContext ctx, Player player) {
-      InteractionHand activeHand = player.getActiveHand();
+      InteractionHand activeHand = player.getUsedItemHand();
       ItemStack activeStack = player.getItemInHand(activeHand);
       if (activeStack.getItem() instanceof ItemEquipment) {
          ((ItemEquipment)activeStack.getItem()).onItemLeftClick(player.level(), player, activeHand);

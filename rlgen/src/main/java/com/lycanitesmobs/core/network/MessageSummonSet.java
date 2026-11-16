@@ -114,7 +114,7 @@ public class MessageSummonSet implements IMessage {
    }
 
    public static void onMessage(MessageSummonSet message, MessageContext ctx, Player player) {
-      if (ctx.side == Side.SERVER) {
+      if (!ctx.client) {
          ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
          SummonSet summonSet = playerExt.getSummonSet(message.summonSetID);
          summonSet.readFromPacket(message.summonType, message.subpsecies, message.variant, message.behaviour);

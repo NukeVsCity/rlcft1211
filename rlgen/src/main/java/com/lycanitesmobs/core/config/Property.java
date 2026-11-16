@@ -64,6 +64,38 @@ public class Property {
       return this.values == null ? new String[0] : this.values;
    }
 
+   /** 1.12 getBooleanList / getIntList / getDoubleList: entries that do not parse are left out like Forge. */
+   public boolean[] getBooleanList() {
+      String[] list = this.getStringList();
+      boolean[] out = new boolean[list.length];
+      for (int i = 0; i < list.length; i++) {
+         out[i] = Boolean.parseBoolean(list[i].trim());
+      }
+      return out;
+   }
+
+   public int[] getIntList() {
+      java.util.List<Integer> nums = new java.util.ArrayList<>();
+      for (String v : this.getStringList()) {
+         try {
+            nums.add(Integer.parseInt(v.trim()));
+         } catch (NumberFormatException ignored) {
+         }
+      }
+      return nums.stream().mapToInt(Integer::intValue).toArray();
+   }
+
+   public double[] getDoubleList() {
+      java.util.List<Double> nums = new java.util.ArrayList<>();
+      for (String v : this.getStringList()) {
+         try {
+            nums.add(Double.parseDouble(v.trim()));
+         } catch (NumberFormatException ignored) {
+         }
+      }
+      return nums.stream().mapToDouble(Double::doubleValue).toArray();
+   }
+
    public boolean getBoolean(boolean def) {
       if ("true".equalsIgnoreCase(this.value)) {
          return true;

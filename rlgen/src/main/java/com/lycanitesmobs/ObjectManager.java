@@ -120,7 +120,10 @@ public class ObjectManager {
       } else {
          PotionBase effect = new PotionBase(name, isBad, color);
          effects.put(name, effect);
-         ObjectLists.addEffect(goodEffect ? "buffs" : "debuffs", effect, name);
+         // the effect's registry holder (registered at RegisterEvent)
+         ObjectLists.addEffect(goodEffect ? "buffs" : "debuffs",
+            net.neoforged.neoforge.registries.DeferredHolder.create(net.minecraft.core.registries.Registries.MOB_EFFECT,
+               ResourceLocation.fromNamespaceAndPath(currentModInfo != null ? currentModInfo.modid : "lycanitesmobs", name.toLowerCase())), name);
          return effect;
       }
    }

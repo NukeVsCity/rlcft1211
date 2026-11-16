@@ -126,21 +126,21 @@ public class WorldMobEventEffect extends MobEventEffect {
          }
 
          if ("start".equalsIgnoreCase(this.thunder)) {
-            world.getLevelData().setThundering(true);
+            ((net.minecraft.world.level.storage.ServerLevelData)world.getLevelData()).setThundering(true);
          } else if ("stop".equalsIgnoreCase(this.thunder)) {
-            world.getLevelData().setThundering(false);
+            ((net.minecraft.world.level.storage.ServerLevelData)world.getLevelData()).setThundering(false);
          }
 
          if (this.dayTime >= 0) {
             int dayTime = 23999;
-            long currentTime = world.provider.getDayTime();
+            long currentTime = world.getDayTime();
             int targetTime = this.dayTime;
             long excessTime = currentTime % (long)dayTime;
             if (excessTime > (long)targetTime) {
                targetTime += dayTime;
             }
 
-            world.provider.setWorldTime(currentTime - excessTime + (long)targetTime);
+            ((ServerLevel)world).setDayTime(currentTime - excessTime + (long)targetTime);
          }
       }
    }

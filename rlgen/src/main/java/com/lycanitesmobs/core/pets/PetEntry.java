@@ -347,7 +347,7 @@ public class PetEntry {
                   }
 
                   if (this.respawnTime-- <= 0) {
-                     this.addFreshEntity();
+                     this.spawnEntity();
                      this.isRespawning = false;
                   }
                }
@@ -358,7 +358,10 @@ public class PetEntry {
                   try {
                      if (this.teleportEntity) {
                         if (this.entity.level() != this.host.level()) {
-                           this.entity.changeDimension(LycDim.id(this.host.level()));
+                           // 1.12 changeDimension(dimension id): to the host's level at the same position (set just below)
+                           this.entity = this.entity.changeDimension(new net.minecraft.world.level.portal.DimensionTransition(
+                              (ServerLevel)this.host.level(), this.host.position(), this.entity.getDeltaMovement(), this.entity.getYRot(), this.entity.getXRot(),
+                              net.minecraft.world.level.portal.DimensionTransition.DO_NOTHING));
                         }
 
                         this.entity.setPos(this.host.getX(), this.host.getY(), this.host.getZ());
@@ -495,7 +498,7 @@ public class PetEntry {
    public void onSpawnEntity(Entity entity) {
    }
 
-   public void checkDespawn() {
+   public void despawnEntity() {
       if (this.entity != null) {
          this.onDespawnEntity(this.entity);
          this.saveEntityNBT();
@@ -655,7 +658,7 @@ public class PetEntry {
             this.entityName = this.entity.getCustomName().getString();
          }
 
-         this.entity.writeToNBT(this.entityNBT);
+         this.entity.saveWithoutId(this.entityNBT);
       }
    }
 

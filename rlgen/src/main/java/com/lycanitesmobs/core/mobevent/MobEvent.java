@@ -214,7 +214,7 @@ public class MobEvent {
    }
 
    public boolean canStart(Level world, Player player) {
-      if (world.provider == null) {
+      if (world == null) {
          return false;
       } else if (this.enabled && MobEventManager.getInstance().mobEventsEnabled) {
          ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
@@ -227,7 +227,7 @@ public class MobEvent {
                LycanitesMobs.logDebug("MobEvents", "Global Conditions Required: " + MobEventManager.getInstance().globalEventConditions.size());
 
                for (SpawnCondition condition : MobEventManager.getInstance().globalEventConditions) {
-                  if (!condition.isMet(world, player, player != null ? player.blockPosition() : BlockPos.ORIGIN)) {
+                  if (!condition.isMet(world, player, player != null ? player.blockPosition() : BlockPos.ZERO)) {
                      LycanitesMobs.logDebug("MobEvents", "Global Condition: " + condition + "Failed");
                      return false;
                   }

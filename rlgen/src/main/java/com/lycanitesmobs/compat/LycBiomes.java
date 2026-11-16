@@ -64,4 +64,13 @@ public final class LycBiomes {
    public static ResourceLocation parse(String id) {
       return fromLegacy(id);
    }
+
+   /** 1.12 biome registry getValue(id): the id of a known 1.12 biome, null for an unknown one. */
+   public static ResourceLocation fromId(String id) {
+      String legacy = id.startsWith("minecraft:") ? id.substring("minecraft:".length()) : id;
+      if (legacy.equals("hell") || legacy.equals("sky") || legacy.equals("void") || BiomeDict.TYPES.containsKey(legacy)) {
+         return fromLegacy(id);
+      }
+      return null;
+   }
 }

@@ -101,7 +101,7 @@ import com.lycanitesmobs.core.item.equipment.EquipmentPartManager;
 public abstract class Submod {
    public ModInfo group;
 
-   public void preInit(FMLPreInitializationEvent event) {
+   public void preInit(Object event) {
       this.initialSetup();
       ObjectManager.setCurrentModInfo(this.group);
       this.createBlocks();
@@ -123,13 +123,13 @@ public abstract class Submod {
       this.registerModels();
    }
 
-   public void init(FMLInitializationEvent event) {
+   public void init(Object event) {
       ObjectManager.setCurrentModInfo(this.group);
       this.registerOres();
       this.addRecipes();
    }
 
-   public void postInit(FMLPostInitializationEvent event) {
+   public void postInit(Object event) {
       ObjectManager.setCurrentModInfo(this.group);
       if (CreatureManager.getInstance().spawnConfig.controlVanillaSpawns) {
          this.editVanillaSpawns();
@@ -144,8 +144,7 @@ public abstract class Submod {
 
    public abstract void createEntities();
 
-   public void registerEntities(Register<EntityEntry> event) {
-   }
+   /** 1.12 registerEntities(RegistryEvent.Register<EntityEntry>): LycEntities registers the entity types */
 
    public abstract void registerModels();
 

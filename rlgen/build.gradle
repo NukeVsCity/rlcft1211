@@ -48,6 +48,3 @@ tasks.named('processResources', ProcessResources) {
     inputs.properties props
     filesMatching('META-INF/neoforge.mods.toml') { expand props }
 }
-tasks.withType(JavaCompile).configureEach { options.compilerArgs << '-Xmaxerrs' << '50000' }
-// Lycanites Mobs port in progress (lyc/server): the not-yet-compiling sources are left out of the build unless -PlycWip is given.
-sourceSets.main.java { exclude { e -> !project.hasProperty('lycWip') && !e.directory && e.file.path.contains('/com/lycanitesmobs/') && !e.file.path.contains('/core/dungeon/') } }

@@ -109,9 +109,10 @@ public class CommandMobEventEffect extends MobEventEffect {
    public void onUpdate(Level world, Player player, BlockPos pos, int level, int ticks, int variant) {
       super.onUpdate(world, player, pos, level, ticks, variant);
       if (this.canActivate(world, player, pos, level, ticks)) {
-         MinecraftServer server = world.getServer();
+         net.minecraft.server.MinecraftServer server = world.getServer();
          if (server != null) {
-            server.getCommandManager().executeCommand(null, this.command);
+            // 1.12 CommandHandler.executeCommand(null sender, command): run as the server
+            server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), this.command);
          }
       }
    }

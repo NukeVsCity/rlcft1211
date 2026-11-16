@@ -289,9 +289,10 @@ public class MobEventManager extends JSONLoader {
       return !this.mobEvents.containsKey(mobEventName) ? null : this.mobEvents.get(mobEventName);
    }
 
+   /** 1.12 WorldTickEvent (both phases; lastEventUpdateTime runs it once a tick) */
    @SubscribeEvent
-   public void onWorldUpdate(WorldTickEvent event) {
-      Level world = event.world;
+   public void onWorldUpdate(LevelTickEvent.Post event) {
+      Level world = event.getLevel();
       if (!world.isClientSide) {
          ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
          if (worldExt != null) {
@@ -313,8 +314,8 @@ public class MobEventManager extends JSONLoader {
       }
    }
 
-   @SubscribeEvent
-   public void onClientUpdate(ClientTickEvent event) {
+   /** 1.12 ClientTickEvent (both phases, so client event players tick twice a tick): called by lyc/client. */
+   public void onClientUpdate(Object event) {
       if (LycanitesMobs.proxy.getClientPlayer() != null) {
          Level world = LycanitesMobs.proxy.getClientPlayer().level();
          if (world.isClientSide) {

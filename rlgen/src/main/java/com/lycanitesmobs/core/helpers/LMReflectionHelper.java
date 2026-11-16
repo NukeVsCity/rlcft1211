@@ -96,7 +96,7 @@ import java.lang.reflect.Field;
 
 public class LMReflectionHelper {
    public static <T> Field removeFinal(Class<? super T> classToAccess, T instance, String... fieldNames) {
-      Field field = ReflectionHelper.findField(classToAccess, ObfuscationReflectionHelper.remapFieldNames(classToAccess.getName(), fieldNames));
+      Field field = findField(classToAccess, fieldNames);
 
       try {
          Field modifiersField = Field.class.getDeclaredField("modifiers");
@@ -110,7 +110,7 @@ public class LMReflectionHelper {
    }
 
    public static <T, E> void setPrivateFinalValue(Class<? super T> classToAccess, T instance, E value, String... fieldNames) {
-      Field field = ReflectionHelper.findField(classToAccess, ObfuscationReflectionHelper.remapFieldNames(classToAccess.getName(), fieldNames));
+      Field field = findField(classToAccess, fieldNames);
 
       try {
          Field modifiersField = Field.class.getDeclaredField("modifiers");
@@ -120,5 +120,18 @@ public class LMReflectionHelper {
       } catch (Exception var6) {
          var6.printStackTrace();
       }
+   }
+
+   /** 1.12 ReflectionHelper.findField: the first of the names that exists (1.21 runs with Mojang names, no remapping). */
+   private static Field findField(Class<?> classToAccess, String... fieldNames) {
+      for (String name : fieldNames) {
+         try {
+            Field field = classToAccess.getDeclaredField(name);
+            field.setAccessible(true);
+            return field;
+         } catch (NoSuchFieldException ignored) {
+         }
+      }
+      throw new RuntimeException("No field " + String.join("/", fieldNames) + " in " + classToAccess.getName());
    }
 }

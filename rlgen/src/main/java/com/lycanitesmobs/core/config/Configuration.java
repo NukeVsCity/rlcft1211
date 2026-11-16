@@ -86,6 +86,40 @@ public class Configuration {
       return p;
    }
 
+   public Property get(String category, String key, boolean[] def) {
+      String[] values = new String[def.length];
+      for (int i = 0; i < def.length; i++) {
+         values[i] = Boolean.toString(def[i]);
+      }
+      return this.getList(category, key, values, Property.Type.BOOLEAN);
+   }
+
+   public Property get(String category, String key, int[] def) {
+      String[] values = new String[def.length];
+      for (int i = 0; i < def.length; i++) {
+         values[i] = Integer.toString(def[i]);
+      }
+      return this.getList(category, key, values, Property.Type.INTEGER);
+   }
+
+   public Property get(String category, String key, double[] def) {
+      String[] values = new String[def.length];
+      for (int i = 0; i < def.length; i++) {
+         values[i] = Double.toString(def[i]);
+      }
+      return this.getList(category, key, values, Property.Type.DOUBLE);
+   }
+
+   private Property getList(String category, String key, String[] def, Property.Type type) {
+      Category cat = this.getCategory(category);
+      Property p = cat.properties.get(key);
+      if (p == null) {
+         p = new Property(key, def, type);
+         cat.properties.put(key, p);
+      }
+      return p;
+   }
+
    public void load() {
       if (!this.file.exists()) {
          return;

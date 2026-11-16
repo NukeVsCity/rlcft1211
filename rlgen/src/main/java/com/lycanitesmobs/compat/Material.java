@@ -121,12 +121,12 @@ public final class Material {
       if (b instanceof TransparentBlock || b instanceof StainedGlassPaneBlock || b == Blocks.GLASS_PANE || b == Blocks.GLOWSTONE || b == Blocks.SEA_LANTERN) return GLASS;
       if (b instanceof VineBlock || b instanceof TallGrassBlock || b instanceof DoublePlantBlock || b instanceof DeadBushBlock || b instanceof SeagrassBlock) return VINE;
       if (b instanceof BushBlock || b instanceof SugarCaneBlock || b instanceof CocoaBlock || b instanceof ChorusPlantBlock || b instanceof ChorusFlowerBlock
-         || b instanceof LilyPadBlock || b instanceof KelpBlock || b instanceof KelpPlantBlock || b instanceof BambooStalkBlock) return PLANTS;
+         || b instanceof WaterlilyBlock || b instanceof KelpBlock || b instanceof KelpPlantBlock || b instanceof BambooStalkBlock) return PLANTS;
       if (b instanceof BaseCoralPlantTypeBlock || b instanceof CoralBlock) return CORAL;
       if (b instanceof TorchBlock || b instanceof RedStoneWireBlock || b instanceof DiodeBlock || b instanceof LeverBlock || b instanceof ButtonBlock
          || b instanceof BaseRailBlock || b instanceof LadderBlock || b instanceof FlowerPotBlock || b instanceof SkullBlock || b instanceof TripWireBlock
          || b instanceof TripWireHookBlock) return CIRCUITS;
-      if (b instanceof PistonBaseBlock || b instanceof PistonHeadBlock) return PISTON;
+      if (b instanceof net.minecraft.world.level.block.piston.PistonBaseBlock || b instanceof net.minecraft.world.level.block.piston.PistonHeadBlock) return PISTON;
       if (b == Blocks.REDSTONE_LAMP) return REDSTONE_LIGHT;
       if (state.is(BlockTags.MINEABLE_WITH_AXE)) return WOOD;
       if (state.getSoundType() == net.minecraft.world.level.block.SoundType.METAL || state.getSoundType() == net.minecraft.world.level.block.SoundType.NETHERITE_BLOCK) return IRON;

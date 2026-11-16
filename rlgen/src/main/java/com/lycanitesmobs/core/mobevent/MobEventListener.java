@@ -140,9 +140,10 @@ public class MobEventListener {
       }
    }
 
+   /** 1.12 WorldTickEvent (both phases; lastEventScheduleTime runs it once a tick) */
    @SubscribeEvent
-   public void onWorldUpdate(WorldTickEvent event) {
-      Level world = event.world;
+   public void onWorldUpdate(LevelTickEvent.Post event) {
+      Level world = event.getLevel();
       if (!world.isClientSide) {
          ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
          if (worldExt != null) {

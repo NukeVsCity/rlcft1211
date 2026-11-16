@@ -138,7 +138,7 @@ public class MessagePetEntry implements IMessage {
    }
 
    public static void onMessage(MessagePetEntry message, MessageContext ctx, Player player) {
-      if (ctx.side == Side.SERVER) {
+      if (!ctx.client) {
          ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
          PetManager petManager = playerExt.petManager;
          PetEntry petEntry = petManager.getEntry(message.petEntryID);

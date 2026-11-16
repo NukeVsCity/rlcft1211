@@ -95,5 +95,5 @@ import java.util.Random;
 
 
 public interface IWorldGenBase {
-   void onWorldGen(RandomSource var1, int var2, int var3, Level var4, IChunkGenerator var5, IChunkProvider var6);
+   void onWorldGen(RandomSource var1, int var2, int var3, Level var4, Object var5, Object var6); // 1.12 IChunkGenerator, IChunkProvider
 }

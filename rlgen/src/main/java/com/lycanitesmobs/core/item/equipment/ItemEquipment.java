@@ -707,7 +707,7 @@ public class ItemEquipment extends ItemBase {
             Player playerAttacker = (Player)attacker;
             playerAttacker.sweepAttack();
             attacker.level()
-               .playLocalSound(
+               .playSound(
                   null,
                   attacker.getX(),
                   attacker.getY(),

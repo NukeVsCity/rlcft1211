@@ -101,7 +101,7 @@ public class DLDungeons {
    public static String API_CLASS_NAME = "jaredbgreat.dldungeons.api.DLDungeonsAPI";
 
    public static void init() {
-      if (Loader.isModLoaded("DLDungeonsJBG") || Loader.isModLoaded("dldungeonsjbg")) {
+      if (net.neoforged.fml.ModList.get().isLoaded("dldungeonsjbg")) {
          LycanitesMobs.logInfo("", "Doomlike Dungeons Mod Detected...");
          Class dlDungeonsAPI = null;
          Method isLoaded = null;

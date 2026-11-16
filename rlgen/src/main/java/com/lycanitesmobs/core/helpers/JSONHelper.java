@@ -162,7 +162,7 @@ public class JSONHelper {
       Iterator<JsonElement> jsonIterator = jsonArray.iterator();
 
       while (jsonIterator.hasNext()) {
-         Block block = (Block)GameRegistry.findRegistry(Block.class).getValue(ResourceLocation.parse(jsonIterator.next().getAsString()));
+         Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(jsonIterator.next().getAsString()));
          if (block != null) {
             blocks.add(block);
          }
@@ -176,7 +176,7 @@ public class JSONHelper {
       Iterator<JsonElement> jsonIterator = jsonArray.iterator();
 
       while (jsonIterator.hasNext()) {
-         Item item = (Item)GameRegistry.findRegistry(Item.class).getValue(ResourceLocation.parse(jsonIterator.next().getAsString()));
+         Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(jsonIterator.next().getAsString()));
          if (item != null) {
             items.add(item);
          }
@@ -293,7 +293,7 @@ public class JSONHelper {
       List<ResourceLocation> biomes = new ArrayList<>();
 
       for (String biomeId : biomeIds) {
-         ResourceLocation biome = (ResourceLocation)GameRegistry.findRegistry(ResourceLocation.class).getValue(ResourceLocation.parse(biomeId));
+         ResourceLocation biome = LycBiomes.fromId(biomeId); // 1.12 biome registry lookup
          if (biome != null) {
             biomes.add(biome);
          }

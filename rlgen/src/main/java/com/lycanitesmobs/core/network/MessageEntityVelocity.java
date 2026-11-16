@@ -138,9 +138,9 @@ public class MessageEntityVelocity implements IMessage {
    public static void onMessage(MessageEntityVelocity message, MessageContext ctx, Player player) {
       Level world = player.level();
       Entity entity = world.getEntity(message.entityID);
-      entity.motionX = entity.motionX + (double)message.motionX / 8000.0;
-      entity.motionY = entity.motionY + (double)message.motionY / 8000.0;
-      entity.motionZ = entity.motionZ + (double)message.motionZ / 8000.0;
+      LycMotion.addX(entity, (double)message.motionX / 8000.0);
+      LycMotion.addY(entity, (double)message.motionY / 8000.0);
+      LycMotion.addZ(entity, (double)message.motionZ / 8000.0);
    }
 
    public void fromBytes(ByteBuf buf) {

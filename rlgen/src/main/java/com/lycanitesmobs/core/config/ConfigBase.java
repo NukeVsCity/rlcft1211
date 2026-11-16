@@ -164,7 +164,7 @@ public class ConfigBase {
       currentVersion = currentVersion.replace(" ", "");
       currentVersion = currentVersion.split("-")[0];
       if (!configVersion.equals(currentVersion)) {
-         versionConfig.putString("Version", "Config Version", currentVersion);
+         versionConfig.setString("Version", "Config Version", currentVersion);
       }
    }
 
@@ -486,7 +486,7 @@ public class ConfigBase {
    }
 
    public void setDouble(String category, String key, double value) {
-      this.putDouble(category, key, value, null);
+      this.setDouble(category, key, value, null);
    }
 
    public void setDouble(String category, String key, double value, String comment) {
@@ -501,7 +501,7 @@ public class ConfigBase {
    }
 
    public void setString(String category, String key, String value) {
-      this.putString(category, key, value, null);
+      this.setString(category, key, value, null);
    }
 
    public void setString(String category, String key, String value, String comment) {

@@ -116,7 +116,7 @@ public class MobEventPlayerServer {
    }
 
    public void onStart() {
-      this.startedWorldTime = this.level().getGameTime();
+      this.startedWorldTime = this.world.getGameTime();
       this.ticks = 0;
       LycanitesMobs.logInfo(
          "",
@@ -125,7 +125,7 @@ public class MobEventPlayerServer {
             + ": "
             + this.mobEvent.getTitle()
             + " In Dimension: "
-            + LycDim.id(this.level())
+            + LycDim.id(this.world)
             + " Duration: "
             + this.mobEvent.duration / 20
             + "secs"
@@ -139,11 +139,11 @@ public class MobEventPlayerServer {
          "Mob Event Start Time Changed: "
             + this.mobEvent.getTitle()
             + " In Dimension: "
-            + LycDim.id(this.level())
+            + LycDim.id(this.world)
             + " Duration: "
             + this.mobEvent.duration / 20
             + "secs Time Remaining: "
-            + ((long)this.mobEvent.duration - (this.level().getGameTime() - this.startedWorldTime)) / 20L
+            + ((long)this.mobEvent.duration - (this.world.getGameTime() - this.startedWorldTime)) / 20L
             + "secs"
       );
    }
@@ -155,13 +155,13 @@ public class MobEventPlayerServer {
    public void onUpdate() {
       if (this.world == null) {
          LycanitesMobs.logWarning("", "MobEventBase was trying to update without a world object, stopped!");
-      } else if (this.level().isClientSide) {
+      } else if (this.world.isClientSide) {
          LycanitesMobs.logWarning("", "MobEventBase was trying to update with a client side world, stopped!");
       } else {
-         this.mobEvent.onUpdate(this.level(), this.player, this.origin, this.level, this.ticks, this.variant);
+         this.mobEvent.onUpdate(this.world, this.player, this.origin, this.level, this.ticks, this.variant);
          this.ticks++;
          if (this.ticks >= this.mobEvent.duration) {
-            ExtendedWorld worldExt = ExtendedWorld.getForWorld(this.level());
+            ExtendedWorld worldExt = ExtendedWorld.getForWorld(this.world);
             if ("world".equalsIgnoreCase(this.mobEvent.channel)) {
                worldExt.stopWorldEvent();
             } else {

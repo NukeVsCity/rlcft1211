@@ -100,7 +100,7 @@ public class MobEventPlayerClient {
    public MobEvent mobEvent;
    public int ticks = 0;
    public Level world;
-   public PositionedSoundRecord sound;
+   public Object sound; // 1.12 PositionedSoundRecord, made by the client proxy
    public boolean extended = false;
 
    public MobEventPlayerClient(MobEvent mobEvent, Level world) {
@@ -128,19 +128,8 @@ public class MobEventPlayerClient {
       if (AssetManager.getSound("mobevent_" + this.mobEvent.title.toLowerCase()) == null) {
          LycanitesMobs.logWarning("MobEvent", "Sound missing for: " + this.mobEvent.getTitle());
       } else {
-         this.sound = new PositionedSoundRecord(
-            AssetManager.getSound("mobevent_" + this.mobEvent.title.toLowerCase()).getSoundName(),
-            SoundSource.RECORDS,
-            1.0F,
-            1.0F,
-            false,
-            0,
-            AttenuationType.NONE,
-            0.0F,
-            0.0F,
-            0.0F
-         );
-         Minecraft.getMinecraft().getSoundHandler().playSound(this.sound);
+         // 1.12 PositionedSoundRecord(sound, RECORDS, 1, 1, no repeat, 0, AttenuationType.NONE, 0, 0, 0) on the sound handler
+         this.sound = LycanitesMobs.proxy.playMobEventSound(AssetManager.getSound("mobevent_" + this.mobEvent.title.toLowerCase()));
       }
    }
 
@@ -154,11 +143,11 @@ public class MobEventPlayerClient {
       this.ticks++;
    }
 
-   public void onGUIUpdate(BaseOverlay gui, int sWidth, int sHeight) {
+   public void onGUIUpdate(Object gui, int sWidth, int sHeight) {
       Player player = LycanitesMobs.proxy.getClientPlayer();
       if (!player.getAbilities().instabuild || MobEventPlayerServer.testOnCreative || !"world".equalsIgnoreCase(this.mobEvent.channel)) {
-         if (this.level() != null && this.world == player.level()) {
-            if (this.level().isClientSide) {
+         if (this.world != null && this.world == player.level()) {
+            if (this.world.isClientSide) {
                int introTime = 240;
                if (this.ticks <= introTime) {
                   int startTime = 40;
@@ -176,10 +165,9 @@ public class MobEventPlayerClient {
                   int y = sHeight / 2 - height / 2;
                   x += 3 - this.ticks % 6;
                   y += 2 - this.ticks % 4;
-                  gui.minecraft.getTextureManager().bindTexture(this.getTexture());
-                  GL11.glColor4f(1.0F, 1.0F, 1.0F, animation);
+                  // 1.12 bindTexture + glColor4f(1, 1, 1, animation) + drawTexturedModalRect: drawn by the client overlay
                   if (animation > 0.0F) {
-                     gui.drawTexturedModalRect(x, y, width, height, width, height);
+                     LycanitesMobs.proxy.drawMobEventIntro(gui, this.getTexture(), x, y, width, height, animation);
                   }
                }
             }

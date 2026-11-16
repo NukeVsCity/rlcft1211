@@ -73,6 +73,15 @@ public class CommonProxy {
    public void openClientScreen(String screen, Player player) {
    }
 
+   /** 1.12 MobEventPlayerClient.playSound (client sound handler): lyc/client. Returns the playing sound. */
+   public Object playMobEventSound(net.minecraft.sounds.SoundEvent sound) {
+      return null;
+   }
+
+   /** 1.12 MobEventPlayerClient.onGUIUpdate drawing (the event intro image): lyc/client. */
+   public void drawMobEventIntro(Object gui, net.minecraft.resources.ResourceLocation texture, int x, int y, int width, int height, float alpha) {
+   }
+
    public Player getPlayer(MessageContext ctx) {
       return ctx.player;
    }
