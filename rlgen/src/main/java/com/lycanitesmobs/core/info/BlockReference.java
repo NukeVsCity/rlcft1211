@@ -104,7 +104,7 @@ public class BlockReference {
    }
 
    public Level getWorld() {
-      return this.level();
+      return this.world;
    }
 
    public BlockPos getPos() {
@@ -123,12 +123,12 @@ public class BlockReference {
          return false;
       } else {
          BlockReference that = (BlockReference)o;
-         return this.level().equals(that.world) && this.pos.equals(that.pos);
+         return this.world.equals(that.world) && this.pos.equals(that.pos);
       }
    }
 
    @Override
    public int hashCode() {
-      return Objects.hash(this.level(), this.pos);
+      return Objects.hash(this.world, this.pos);
    }
 }

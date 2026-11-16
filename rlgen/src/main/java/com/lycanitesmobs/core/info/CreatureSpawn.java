@@ -251,7 +251,7 @@ public class CreatureSpawn {
          int vanillaWeight = (int)Math.ceil(CreatureManager.getInstance().spawnConfig.spawnWeightScale * (double)this.spawnWeight);
 
          for (MobCategory creatureType : this.vanillaSpawnerTypes) {
-            EntityRegistry.addSpawn(
+            com.lycanitesmobs.compat.LycVanillaSpawns.addSpawn(
                creatureInfo.entityClass,
                vanillaWeight,
                CreatureManager.getInstance().spawnConfig.ignoreWorldGenSpawning ? 0 : this.spawnGroupMin,
@@ -261,8 +261,8 @@ public class CreatureSpawn {
             );
 
             for (ResourceLocation biome : vanillaBiomes) {
-               if (biome == Biomes.HELL) {
-                  EntityRegistry.addSpawn(
+               if (LycBiomes.HELL.equals(biome)) {
+                  com.lycanitesmobs.compat.LycVanillaSpawns.addSpawn(
                      creatureInfo.entityClass,
                      vanillaWeight * 10,
                      CreatureManager.getInstance().spawnConfig.ignoreWorldGenSpawning ? 0 : this.spawnGroupMin,
@@ -281,13 +281,13 @@ public class CreatureSpawn {
       }
 
       if (!CreatureManager.getInstance().spawnConfig.disableDungeonSpawners && this.dungeonWeight > 0) {
-         DungeonHooks.addDungeonMob(creatureInfo.getResourceLocation(), this.dungeonWeight);
+         com.lycanitesmobs.compat.DungeonHooks.addDungeonMob(creatureInfo.getResourceLocation(), this.dungeonWeight);
          LycanitesMobs.logDebug("MobSetup", "Dungeon Spawn Added - Weight: " + this.dungeonWeight);
       }
    }
 
    public boolean isAllowedDimension(Level world) {
-      if (world != null && world.provider != null) {
+      if (world != null) {
          if (!CreatureManager.getInstance().spawnConfig.isAllowedGlobal(world)) {
             return false;
          } else if (this.dimensionIds.length == 0) {

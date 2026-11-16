@@ -116,8 +116,8 @@ public class ProjectileBehaviourExplosion extends ProjectileBehaviour {
       if (this.radius > 0 && !projectile.level().isClientSide) {
          if (world.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
             int explosionRadius = this.radius;
-            if (projectile.getOwner() != null && projectile.getOwner() instanceof BaseCreatureEntity) {
-               BaseCreatureEntity baseCreatureEntity = (BaseCreatureEntity)projectile.getOwner();
+            if (projectile.getThrower() != null && projectile.getThrower() instanceof BaseCreatureEntity) {
+               BaseCreatureEntity baseCreatureEntity = (BaseCreatureEntity)projectile.getThrower();
                if (baseCreatureEntity.isRareVariant()) {
                   explosionRadius += 2;
                }
@@ -132,7 +132,8 @@ public class ProjectileBehaviourExplosion extends ProjectileBehaviour {
                destroyBlocks = true;
             }
 
-            world.newExplosion(
+            LycWorld.createExplosion(
+               world,
                projectile,
                projectile.position().x,
                projectile.position().y,

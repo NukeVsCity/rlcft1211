@@ -94,18 +94,20 @@ import net.neoforged.neoforge.event.tick.*;
 import com.lycanitesmobs.core.item.ItemCustomSpawnEgg;
 
 
-public class DispenserBehaviorMobEggCustom extends BehaviorDefaultDispenseItem {
-   public ItemStack dispenseStack(IBlockSource blockSource, ItemStack itemStack) {
+/** 1.12 DispenserBehaviorMobEggCustom (BehaviorDefaultDispenseItem) */
+public class DispenserBehaviorMobEggCustom extends net.minecraft.core.dispenser.DefaultDispenseItemBehavior {
+   @Override
+   protected ItemStack execute(net.minecraft.core.dispenser.BlockSource blockSource, ItemStack itemStack) {
       if (!(itemStack.getItem() instanceof ItemCustomSpawnEgg)) {
          return itemStack;
       } else {
-         Direction facing = (Direction)blockSource.getBlockState().getValue(BlockDispenser.FACING);
-         double x = blockSource.getX() + (double)facing.getStepX();
-         double y = (double)((float)blockSource.getY() + 0.2F);
-         double z = blockSource.getZ() + (double)facing.getStepZ();
+         Direction facing = (Direction)blockSource.state().getValue(net.minecraft.world.level.block.DispenserBlock.FACING);
+         double x = blockSource.center().x + (double)facing.getStepX();
+         double y = (double)((float)blockSource.center().y + 0.2F);
+         double z = blockSource.center().z + (double)facing.getStepZ();
          ItemCustomSpawnEgg itemCustomSpawnEgg = (ItemCustomSpawnEgg)itemStack.getItem();
-         Entity entity = ((ItemCustomSpawnEgg)itemStack.getItem()).spawnCreature(blockSource.getWorld(), itemStack, x, y, z);
-         if (itemStack.has(net.minecraft.core.component.DataComponents.CUSTOM_NAME)) {
+         Entity entity = ((ItemCustomSpawnEgg)itemStack.getItem()).spawnCreature(blockSource.level(), itemStack, x, y, z);
+         if (entity != null && itemStack.has(net.minecraft.core.component.DataComponents.CUSTOM_NAME)) {
             entity.setCustomName(itemStack.getHoverName());
          }
 

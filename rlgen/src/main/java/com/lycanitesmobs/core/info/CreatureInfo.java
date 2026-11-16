@@ -114,7 +114,7 @@ public class CreatureInfo {
    public CreatureType creatureType;
    public List<CreatureGroup> groups = new ArrayList<>();
    public Class<? extends Mob> entityClass;
-   public Class<? extends ModelBase> modelClass;
+   public Class<?> modelClass; // 1.12 ModelBase class (client)
    public ModInfo modInfo;
    public boolean enabled = true;
    public boolean dummy = false;
@@ -427,15 +427,17 @@ public class CreatureInfo {
    public void load() {
       if (!this.dummy) {
          ItemStack achievementStack = new ItemStack(ObjectManager.getItem("mobtoken"));
-         achievementStack.setTagInfo("Mob", new StringTag(this.getName()));
-         ObjectManager.addStat(this.getName() + ".kill", new StatBase(this.getName() + ".kill", Component.literal(this.getName() + ".kill")));
-         ObjectManager.addStat(this.getName() + ".learn", new StatBase(this.getName() + ".learn", Component.literal(this.getName() + ".learn")));
+         CompoundTag achievementTag = LycNBT.getTag(achievementStack);
+         achievementTag.putString("Mob", this.getName());
+         LycNBT.setTag(achievementStack, achievementTag);
+         ObjectManager.addStat(this.getName() + ".kill", this.getName() + ".kill");
+         ObjectManager.addStat(this.getName() + ".learn", this.getName() + ".learn");
          if (this.isSummonable()) {
-            ObjectManager.addStat(this.getName() + ".summon", new StatBase(this.getName() + ".summon", Component.literal(this.getName() + ".summon")));
+            ObjectManager.addStat(this.getName() + ".summon", this.getName() + ".summon");
          }
 
          if (this.isTameable()) {
-            ObjectManager.addStat(this.getName() + ".tame", new StatBase(this.getName() + ".tame", Component.literal(this.getName() + ".tame")));
+            ObjectManager.addStat(this.getName() + ".tame", this.getName() + ".tame");
          }
 
          this.addSounds("");
@@ -598,7 +600,7 @@ public class CreatureInfo {
             }
 
             firstBiome = false;
-            biomeNames = biomeNames + biome.getBiomeName();
+            biomeNames = biomeNames + biome.toString();
          }
 
          return biomeNames;

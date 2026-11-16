@@ -118,7 +118,7 @@ public class ItemWraithSigil extends ItemScepter {
       if (!world.isClientSide) {
          for (int i = -2; i <= 2; i++) {
             EntityWraith minion = new EntityWraith(world);
-            minion.setPositionAndRotation(
+            minion.absMoveTo(
                entity.getX(), entity.getY() + 1.0, entity.getZ(), entity.getYRot() + (float)(5 * i), -entity.getXRot()
             );
             minion.setMinion(true);

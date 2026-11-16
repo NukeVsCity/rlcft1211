@@ -108,7 +108,8 @@ public class CropBlockSpawnTrigger extends BlockSpawnTrigger {
    @Override
    public boolean isTriggerBlock(BlockState blockState, Level world, BlockPos blockPos, int fortune) {
       Block block = blockState.getBlock();
-      return block instanceof IPlantable || block instanceof BlockVine;
+      // 1.12 IPlantable (BlockBush, BlockCactus, BlockReed) or BlockVine
+      return block instanceof BushBlock || block instanceof CactusBlock || block instanceof SugarCaneBlock || block instanceof VineBlock;
    }
 
    @Override

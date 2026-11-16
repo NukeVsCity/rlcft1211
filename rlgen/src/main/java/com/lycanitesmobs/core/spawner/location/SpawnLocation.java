@@ -154,7 +154,7 @@ public class SpawnLocation {
             yPos,
             this.getOffset(world.random, this.rangeMin.getZ(), this.rangeMax.getZ())
          );
-         spawnPositions.add(triggerPos.add(offset));
+         spawnPositions.add(triggerPos.offset(offset));
       }
 
       return this.sortSpawnPositions(spawnPositions, world, triggerPos);

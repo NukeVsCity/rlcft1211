@@ -329,28 +329,7 @@ public class CreatureManager extends JSONLoader {
       return this.nextCreatureNetworkId++;
    }
 
-   @SubscribeEvent
-   public void registerEntities(Register<EntityEntry> event) {
-      ModInfo modInfo = LycanitesMobs.modInfo;
-      LycanitesMobs.logDebug("Creature", "Forge registering all " + this.creatures.size() + " creatures from the mod: " + modInfo.name + "...");
-
-      for (CreatureInfo creatureInfo : this.creatures.values()) {
-         if (creatureInfo.modInfo == modInfo) {
-            try {
-               EntityEntry entityEntry = EntityEntryBuilder.create()
-                  .entity(creatureInfo.entityClass)
-                  .id(creatureInfo.getId(), this.getNextCreatureNetworkId())
-                  .name(creatureInfo.getName())
-                  .tracker(creatureInfo.isBoss() ? 160 : 80, 3, false)
-                  .build();
-               event.getRegistry().register(entityEntry);
-            } catch (Exception var6) {
-               LycanitesMobs.logWarning("", "Unable to find entity class for: " + creatureInfo.getName() + ".");
-               throw var6;
-            }
-         }
-      }
-   }
+   // 1.12 registerEntities (RegistryEvent.Register<EntityEntry>): LycEntities registers one entity type per creature
 
    public void reload() {
       this.loadConfig();

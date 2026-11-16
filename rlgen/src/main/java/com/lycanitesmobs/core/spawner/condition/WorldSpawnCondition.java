@@ -243,7 +243,7 @@ public class WorldSpawnCondition extends SpawnCondition {
                      return false;
                   } else if (this.difficultyMax >= 0 && world.getDifficulty().getId() > this.difficultyMax) {
                      return false;
-                  } else if (this.moonPhase >= 0 && world.provider.getMoonPhase(world.getDayTime()) != this.moonPhase) {
+                  } else if (this.moonPhase >= 0 && world.getMoonPhase() != this.moonPhase) {
                      return false;
                   } else {
                      return !this.isAllowedBiome(world, position) ? false : super.isMet(world, player, position);

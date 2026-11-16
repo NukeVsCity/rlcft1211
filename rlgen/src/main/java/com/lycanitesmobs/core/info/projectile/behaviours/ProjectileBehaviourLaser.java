@@ -123,15 +123,15 @@ public class ProjectileBehaviourLaser extends ProjectileBehaviour {
       if (projectile instanceof CustomProjectileEntity) {
          projectile.movement = false;
          ((CustomProjectileEntity)projectile).syncThrower();
-         ((CustomProjectileEntity)projectile).laserWidth = this.getBbWidth();
-         if (projectile.getOwner() != null) {
-            Entity entityToFollow = projectile.getOwner();
+         ((CustomProjectileEntity)projectile).laserWidth = this.width;
+         if (projectile.getThrower() != null) {
+            Entity entityToFollow = projectile.getThrower();
             if (((CustomProjectileEntity)projectile).getParent() != null) {
                entityToFollow = ((CustomProjectileEntity)projectile).getParent();
             }
 
             double xPos = entityToFollow.position().x;
-            double var10001 = (double)entityToFollow.height;
+            double var10001 = (double)entityToFollow.getBbHeight();
             double yPos = entityToFollow.getBoundingBox().minY + var10001 * 0.5;
             double zPos = entityToFollow.position().z;
             projectile.setPos(xPos, yPos, zPos);
@@ -159,9 +159,9 @@ public class ProjectileBehaviourLaser extends ProjectileBehaviour {
             );
          targetZ = target[2]
             + (double)(Mth.cos(((float)projectile.updateTick + ((CustomProjectileEntity)projectile).laserAngle) * 0.25F) * 1.0F - 0.5F);
-      } else if (projectile.getOwner() != null) {
-         if (projectile.getOwner() instanceof BaseCreatureEntity && ((BaseCreatureEntity)projectile.getOwner()).getTarget() != null) {
-            ((CustomProjectileEntity)projectile).setTarget(((BaseCreatureEntity)projectile.getOwner()).getTarget());
+      } else if (projectile.getThrower() != null) {
+         if (projectile.getThrower() instanceof BaseCreatureEntity && ((BaseCreatureEntity)projectile.getThrower()).getTarget() != null) {
+            ((CustomProjectileEntity)projectile).setTarget(((BaseCreatureEntity)projectile.getThrower()).getTarget());
          }
 
          Entity attackTarget = ((CustomProjectileEntity)projectile).getTarget();
@@ -171,12 +171,12 @@ public class ProjectileBehaviourLaser extends ProjectileBehaviour {
             targetZ = attackTarget.position().z;
             lockedLaser = true;
          } else {
-            Vec3 lookDirection = projectile.getOwner().getLookAngle();
-            targetX = projectile.getOwner().position().x + lookDirection.x * this.range;
-            targetY = projectile.getOwner().position().y
-               + (double)projectile.getOwner().getEyeHeight()
+            Vec3 lookDirection = projectile.getThrower().getLookAngle();
+            targetX = projectile.getThrower().position().x + lookDirection.x * this.range;
+            targetY = projectile.getThrower().position().y
+               + (double)projectile.getThrower().getEyeHeight()
                + lookDirection.y * this.range;
-            targetZ = projectile.getOwner().position().z + lookDirection.z * this.range;
+            targetZ = projectile.getThrower().position().z + lookDirection.z * this.range;
          }
       }
 
@@ -186,9 +186,9 @@ public class ProjectileBehaviourLaser extends ProjectileBehaviour {
          new Vec3(targetX, targetY, targetZ),
          false,
          true,
-         this.getBbWidth(),
-         projectile.getOwner() != null
-            ? Utilities.collidableExlcuding(projectile, projectile.getOwner(), projectile.getOwner().getControllingPassenger())
+         this.width,
+         projectile.getThrower() != null
+            ? Utilities.collidableExlcuding(projectile, projectile.getThrower(), projectile.getThrower().getControllingPassenger())
             : Utilities.collidableExlcuding(projectile)
       );
       Entity entityHit = null;
@@ -209,7 +209,7 @@ public class ProjectileBehaviourLaser extends ProjectileBehaviour {
       if (projectile.updateTick % 10L == 0L
          && projectile.isAlive()
          && entityHit != null
-         && ((CustomProjectileEntity)projectile).getLaserEnd().distanceTo(entityHit.position()) <= (double)(this.getBbWidth() * 10.0F)) {
+         && ((CustomProjectileEntity)projectile).getLaserEnd().distanceTo(entityHit.position()) <= (double)(this.width * 10.0F)) {
          boolean doDamage = true;
          if (entityHit instanceof LivingEntity) {
             doDamage = projectile.canDamage((LivingEntity)entityHit);
@@ -236,19 +236,19 @@ public class ProjectileBehaviourLaser extends ProjectileBehaviour {
       }
 
       boolean attackSuccess;
-      if (projectile.getOwner() instanceof BaseCreatureEntity) {
-         BaseCreatureEntity creatureThrower = (BaseCreatureEntity)projectile.getOwner();
+      if (projectile.getThrower() instanceof BaseCreatureEntity) {
+         BaseCreatureEntity creatureThrower = (BaseCreatureEntity)projectile.getThrower();
          attackSuccess = creatureThrower.doRangedDamage(target, projectile, damage, projectile.isBlockedByEntity(target, projectile.position()));
       } else {
          double pierceDamage = 1.0;
          if ((double)damage <= pierceDamage) {
-            attackSuccess = target.hurt(EntityDamageSource.causeThrownDamage(projectile, projectile.getOwner()).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
+            attackSuccess = target.hurt(EntityDamageSource.causeThrownDamage(projectile, projectile.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), damage);
          } else {
             int hurtResistantTimeBefore = target.invulnerableTime;
-            target.hurt(EntityDamageSource.causeThrownDamage(projectile, projectile.getOwner()).setDamageBypassesArmor().setDamageIsAbsolute(), (float)pierceDamage);
+            target.hurt(EntityDamageSource.causeThrownDamage(projectile, projectile.getThrower()).setDamageBypassesArmor().setDamageIsAbsolute(), (float)pierceDamage);
             target.invulnerableTime = hurtResistantTimeBefore;
             damage = (float)((double)damage - pierceDamage);
-            attackSuccess = target.hurt(EntityDamageSource.causeThrownDamage(projectile, projectile.getOwner()), damage);
+            attackSuccess = target.hurt(EntityDamageSource.causeThrownDamage(projectile, projectile.getThrower()), damage);
          }
       }
 

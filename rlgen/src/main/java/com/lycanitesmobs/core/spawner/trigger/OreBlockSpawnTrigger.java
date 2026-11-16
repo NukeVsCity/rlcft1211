@@ -153,8 +153,11 @@ public class OreBlockSpawnTrigger extends BlockSpawnTrigger {
                   return true;
                }
 
-               Item dropItem = block.getItemDropped(blockState, world.random, fortune);
-               if (!(dropItem instanceof BlockItem) && !blockName.contains("coal")) {
+               // 1.12 getItemDropped: the first drop of the loot table; 1.21 raw iron/gold/copper count as ore blocks (1.12 ores dropped themselves)
+               java.util.List<ItemStack> drops = world instanceof ServerLevel serverLevel ? Block.getDrops(blockState, serverLevel, blockPos, null) : new java.util.ArrayList<>();
+               Item dropItem = drops.isEmpty() ? Items.AIR : drops.get(0).getItem();
+               boolean rawOre = BuiltInRegistries.ITEM.getKey(dropItem).getPath().startsWith("raw_");
+               if (!(dropItem instanceof BlockItem) && !rawOre && !blockName.contains("coal")) {
                   return this.gems;
                }
 

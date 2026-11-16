@@ -51,7 +51,13 @@ public class CreativeTabs {
                   .displayItems((params, output) -> {
                      for (ItemLike item : tab.items) {
                         Item i = item.asItem();
-                        if (i != null && i != net.minecraft.world.item.Items.AIR) {
+                        if (i instanceof SubItems subItems) {
+                           net.minecraft.core.NonNullList<ItemStack> stacks = net.minecraft.core.NonNullList.create();
+                           subItems.getSubItems(tab, stacks);
+                           for (ItemStack stack : stacks) {
+                              output.accept(stack);
+                           }
+                        } else if (i != null && i != net.minecraft.world.item.Items.AIR) {
                            output.accept(i);
                         }
                      }
@@ -59,5 +65,10 @@ public class CreativeTabs {
                   .build());
          }
       });
+   }
+
+   /** 1.12 Item.getSubItems(tab, items): items that show several stacks in their tab. */
+   public interface SubItems {
+      void getSubItems(CreativeTabs tab, net.minecraft.core.NonNullList<ItemStack> items);
    }
 }

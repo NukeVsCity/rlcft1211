@@ -260,7 +260,7 @@ public class ProjectileEquipmentFeature extends EquipmentFeature {
 
          Level world = shooter.level();
          BaseProjectileEntity mainProjectile = null;
-         Vec3 firePos = new Vec3(shooter.getX(), shooter.getY() + (double)shooter.height * 0.65, shooter.getZ());
+         Vec3 firePos = new Vec3(shooter.getX(), shooter.getY() + (double)shooter.getBbHeight() * 0.65, shooter.getZ());
          double offsetX = 0.0;
          if ("spread".equals(this.projectilePattern)) {
             this.count = 10;
@@ -273,7 +273,7 @@ public class ProjectileEquipmentFeature extends EquipmentFeature {
                ProjectileInfo projectileInfo = ProjectileManager.getInstance().getProjectile(this.projectileName);
                BaseProjectileEntity projectile = projectileInfo.createProjectile(world, shooter);
                projectile.setPos(firePos.x, firePos.y, firePos.z);
-               projectile.shoot(shooter, (float)pitch, (float)yaw - (float)offsetX, 0.0F, (float)projectileInfo.velocity, 0.0F);
+               projectile.shootFromRotation(shooter, (float)pitch, (float)yaw - (float)offsetX, 0.0F, (float)projectileInfo.velocity, 0.0F);
                projectile.setBonusDamage(this.bonusDamage);
                world.addFreshEntity(projectile);
                mainProjectile = projectile;
@@ -288,14 +288,14 @@ public class ProjectileEquipmentFeature extends EquipmentFeature {
                projectile.setPos(firePos.x, firePos.y, firePos.z);
                projectile.setBonusDamage(this.bonusDamage);
                world.addFreshEntity(projectile);
-               projectile.shoot(shooter, shooter.getXRot(), (float)yaw - (float)offsetX, 0.0F, (float)projectileInfo.velocity, 0.0F);
+               projectile.shootFromRotation(shooter, shooter.getXRot(), (float)yaw - (float)offsetX, 0.0F, (float)projectileInfo.velocity, 0.0F);
                mainProjectile = projectile;
             }
          } else {
             ProjectileInfo projectileInfo = ProjectileManager.getInstance().getProjectile(this.projectileName);
             mainProjectile = projectileInfo.createProjectile(world, shooter);
             mainProjectile.setPos(firePos.x, firePos.y, firePos.z);
-            mainProjectile.shoot(shooter, shooter.getXRot(), shooter.getYRot() - (float)offsetX, 0.0F, (float)projectileInfo.velocity, 0.0F);
+            mainProjectile.shootFromRotation(shooter, shooter.getXRot(), shooter.getYRot() - (float)offsetX, 0.0F, (float)projectileInfo.velocity, 0.0F);
             mainProjectile.setBonusDamage(this.bonusDamage);
             world.addFreshEntity(mainProjectile);
          }

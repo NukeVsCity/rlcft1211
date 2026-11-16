@@ -121,8 +121,8 @@ public class ProjectileBehaviourCatch extends ProjectileBehaviour {
 
    @Override
    public boolean canDamage(BaseProjectileEntity projectile, Level world, LivingEntity target, boolean canDamage) {
-      if (!projectile.level().isClientSide && target != projectile.getOwner()) {
-         ResourceLocation entityResourceLocation = EntityList.getKey(target);
+      if (!projectile.level().isClientSide && target != projectile.getThrower()) {
+         ResourceLocation entityResourceLocation = target instanceof Player ? null : BuiltInRegistries.ENTITY_TYPE.getKey(target.getType());
          if (entityResourceLocation == null) {
             return canDamage;
          } else {

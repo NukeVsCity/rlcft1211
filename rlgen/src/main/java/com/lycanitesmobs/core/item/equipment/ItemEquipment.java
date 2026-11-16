@@ -127,13 +127,10 @@ public class ItemEquipment extends ItemBase {
 
       public void addInformation(ItemStack itemStack, Level world, List<String> tooltip, TooltipFlag tooltipFlag) {
       super.addInformation(itemStack, world, tooltip, tooltipFlag);
-      FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-
+      // 1.12 FontRenderer.listFormattedStringToWidth: the client proxy wraps with the font
       for (String description : this.getAdditionalDescriptions(itemStack, world, tooltipFlag)) {
-         for (Object formattedDescription : fontRenderer.listFormattedStringToWidth(description, DESCRIPTION_WIDTH + 100)) {
-            if (formattedDescription instanceof String) {
-               tooltip.add("§3" + formattedDescription);
-            }
+         for (String formattedDescription : LycanitesMobs.proxy.wrapText(description, DESCRIPTION_WIDTH + 100)) {
+            tooltip.add("§3" + formattedDescription);
          }
       }
    }
@@ -228,12 +225,9 @@ public class ItemEquipment extends ItemBase {
 
    public int getMetadata(ItemStack stack) {
       ITEMSTACK_TO_RENDER = stack;
-      return super.getMetadata(stack);
+      return 0;
    }
 
-   public FontRenderer getFontRenderer(ItemStack stack) {
-      return LycanitesMobs.proxy.getFontRenderer();
-   }
 
    public boolean showDurabilityBar(ItemStack itemStack) {
       return (double)this.getSharpness(itemStack) < (double)SHARPNESS_MAX;
@@ -624,11 +618,13 @@ public class ItemEquipment extends ItemBase {
       }
    }
 
-   public boolean onBlockDestroyed(ItemStack itemStack, Level worldIn, BlockState blockState, BlockPos pos, LivingEntity entityLiving) {
+   /** 1.12 onBlockDestroyed */
+   @Override
+   public boolean mineBlock(ItemStack itemStack, Level worldIn, BlockState blockState, BlockPos pos, LivingEntity entityLiving) {
       if (this.getSharpness(itemStack) <= 0) {
-         return super.onBlockDestroyed(itemStack, worldIn, blockState, pos, entityLiving);
+         return super.mineBlock(itemStack, worldIn, blockState, pos, entityLiving);
       } else if (worldIn.isClientSide) {
-         return super.onBlockDestroyed(itemStack, worldIn, blockState, pos, entityLiving);
+         return super.mineBlock(itemStack, worldIn, blockState, pos, entityLiving);
       } else {
          for (EquipmentFeature equipmentFeature : this.getFeaturesByType(itemStack, "harvest")) {
             HarvestEquipmentFeature harvestFeature = (HarvestEquipmentFeature)equipmentFeature;
@@ -636,7 +632,7 @@ public class ItemEquipment extends ItemBase {
          }
 
          this.removeSharpness(itemStack, 1);
-         return super.onBlockDestroyed(itemStack, worldIn, blockState, pos, entityLiving);
+         return super.mineBlock(itemStack, worldIn, blockState, pos, entityLiving);
       }
    }
 
@@ -709,7 +705,7 @@ public class ItemEquipment extends ItemBase {
 
          if (attacker instanceof Player && targets.size() > 1) {
             Player playerAttacker = (Player)attacker;
-            playerAttacker.spawnSweepParticles();
+            playerAttacker.sweepAttack();
             attacker.level()
                .playLocalSound(
                   null,
@@ -717,7 +713,7 @@ public class ItemEquipment extends ItemBase {
                   attacker.getY(),
                   attacker.getZ(),
                   SoundEvents.PLAYER_ATTACK_SWEEP,
-                  attacker.getSoundCategory(),
+                  attacker.getSoundSource(),
                   1.0F,
                   1.0F
                );
@@ -767,21 +763,17 @@ public class ItemEquipment extends ItemBase {
       }
    }
 
+   /** 1.12 getAttributeModifiers(MAINHAND, stack): the weapon modifiers of this stack's parts. */
    @Override
-   public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack itemStack) {
-      Multimap<String, AttributeModifier> multimap = super.getItemAttributeModifiers(slot);
-      if (slot == EquipmentSlot.MAINHAND) {
-         multimap.put(
-            Attributes.ATTACK_DAMAGE.getName(),
-            new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", this.getDamageAmount(itemStack), 0)
-         );
-         multimap.put(
-            Attributes.ATTACK_SPEED.getName(),
-            new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", -this.getDamageCooldown(itemStack), 0)
-         );
-      }
-
-      return multimap;
+   public net.minecraft.world.item.component.ItemAttributeModifiers getDefaultAttributeModifiers(ItemStack itemStack) {
+      return net.minecraft.world.item.component.ItemAttributeModifiers.builder()
+         .add(Attributes.ATTACK_DAMAGE,
+            new AttributeModifier(BASE_ATTACK_DAMAGE_ID, this.getDamageAmount(itemStack), AttributeModifier.Operation.ADD_VALUE),
+            net.minecraft.world.entity.EquipmentSlotGroup.MAINHAND)
+         .add(Attributes.ATTACK_SPEED,
+            new AttributeModifier(BASE_ATTACK_SPEED_ID, -this.getDamageCooldown(itemStack), AttributeModifier.Operation.ADD_VALUE),
+            net.minecraft.world.entity.EquipmentSlotGroup.MAINHAND)
+         .build();
    }
 
    public double getDamageAmount(ItemStack itemStack) {
@@ -858,10 +850,6 @@ public class ItemEquipment extends ItemBase {
       }
    }
 
-   @Override
-   public ModelResourceLocation getModelResourceLocation() {
-      return new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath("lycanitesmobs", "equipmentpart"), "inventory");
-   }
 
    public ResourceLocation getTexture(ItemStack itemStack) {
       return AssetManager.getTexture(this.itemName);

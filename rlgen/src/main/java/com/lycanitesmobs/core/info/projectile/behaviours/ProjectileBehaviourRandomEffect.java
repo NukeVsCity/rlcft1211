@@ -120,7 +120,7 @@ public class ProjectileBehaviourRandomEffect extends ProjectileBehaviour {
 
    @Override
    public void onProjectileDamage(BaseProjectileEntity projectile, Level world, LivingEntity target, float damage) {
-      if (projectile.getOwner() != null && !(damage <= 0.0F)) {
+      if (projectile.getThrower() != null && !(damage <= 0.0F)) {
          if (this.duration > 0 && this.amplifier >= 0) {
             int randomIndex = world.random.nextInt(this.effects.size());
             Holder<MobEffect> effect = LycEffects.get(ResourceLocation.parse(this.effects.get(randomIndex)));

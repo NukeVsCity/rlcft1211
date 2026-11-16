@@ -102,6 +102,7 @@ public class LycanitesMobs {
       installDefaultConfigs();
       LycEntities.init(modBus);
       LycAttachments.init(modBus);
+      com.lycanitesmobs.compat.LycVanillaSpawns.init(modBus);
       GuiHandler.init(modBus);
       modBus.addListener(packetHandler::registerPayloads);
       packetHandler.init();

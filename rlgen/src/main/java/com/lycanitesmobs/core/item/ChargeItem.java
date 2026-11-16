@@ -129,13 +129,10 @@ public class ChargeItem extends ItemBase {
 
       public void addInformation(ItemStack itemStack, Level world, List<String> tooltip, TooltipFlag tooltipFlag) {
       super.addInformation(itemStack, world, tooltip, tooltipFlag);
-      FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-
+      // 1.12 FontRenderer.listFormattedStringToWidth: the client proxy wraps with the font
       for (String description : this.getAdditionalDescriptions(itemStack, world, tooltipFlag)) {
-         for (Object formattedDescription : fontRenderer.listFormattedStringToWidth("-------------------\n" + description, DESCRIPTION_WIDTH)) {
-            if (formattedDescription instanceof String) {
-               tooltip.add("§3" + formattedDescription);
-            }
+         for (String formattedDescription : LycanitesMobs.proxy.wrapText("-------------------\n" + description, DESCRIPTION_WIDTH)) {
+            tooltip.add("§3" + formattedDescription);
          }
       }
    }

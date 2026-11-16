@@ -110,7 +110,7 @@ public class Subspecies {
    public int index;
    public int priority = 0;
    public String name;
-   public Class<? extends ModelBase> modelClass;
+   public Class<?> modelClass; // 1.12 ModelBase class (client)
    public List<ElementInfo> elements = new ArrayList<>();
    public List<SpawnCondition> spawnConditions = new ArrayList<>();
    public Vec3 mountOffset = new Vec3(0.0, 1.0, 0.0);

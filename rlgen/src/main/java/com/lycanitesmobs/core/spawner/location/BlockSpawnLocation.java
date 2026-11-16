@@ -153,7 +153,7 @@ public class BlockSpawnLocation extends SpawnLocation {
             y = yMin;
          }
 
-         int yMax = world.getActualHeight();
+         int yMax = LycDim.id(world) == -1 ? 128 : 256; // 1.12 World.getActualHeight
          if (this.yMax >= 0) {
             yMax = Math.min(this.yMax, yMax);
          }
@@ -166,16 +166,14 @@ public class BlockSpawnLocation extends SpawnLocation {
             for (int z = triggerPos.getZ() - this.rangeMax.getZ(); z <= triggerPos.getZ() + this.rangeMax.getZ(); z++) {
                BlockPos spawnPos = LycPos.of(x, y, z);
                BlockState blockState = world.getBlockState(spawnPos);
-               if (blockState.getBlock() instanceof net.minecraft.world.level.block.LiquidBlock) {
-                  float filled = ((net.minecraft.world.level.block.LiquidBlock)blockState.getBlock()).getFilledPercentage(world, spawnPos);
-                  if (filled != 1.0F && filled != -1.0F) {
-                     continue;
-                  }
+               // 1.12 IFluidBlock.getFilledPercentage != 1 and BlockLiquid meta != 0: flowing fluids are skipped
+               if (!blockState.getFluidState().isEmpty() && !blockState.getFluidState().isSource()) {
+                  continue;
                }
 
-               if ((!(blockState.getBlock() instanceof BlockLiquid) || blockState.getBlock().getMetaFromState(blockState) == 0)
+               if (true
                   && this.isValidBlock(world, spawnPos)) {
-                  spawnPositions.add(spawnPos.add(this.offset));
+                  spawnPositions.add(spawnPos.offset(this.offset));
                   if (this.requiredBlockTypes > 0) {
                      Block block = world.getBlockState(spawnPos).getBlock();
                      if (!validBlocksFound.containsKey(block)) {

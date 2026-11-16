@@ -298,12 +298,12 @@ public class ProjectileInfo {
 
       if (json.has("particleType")) {
          String particleTypeName = json.get("particleType").getAsString();
-         this.particleType = ParticleTypes.getByName(particleTypeName);
+         this.particleType = LycParticles.byName(particleTypeName);
       }
 
       if (json.has("waterParticleType")) {
          String waterParticleTypeName = json.get("waterParticleType").getAsString();
-         this.waterParticleType = ParticleTypes.getByName(waterParticleTypeName);
+         this.waterParticleType = LycParticles.byName(waterParticleTypeName);
       }
    }
 
@@ -316,7 +316,7 @@ public class ProjectileInfo {
          }
 
          this.dispenserBehaviour = new DispenserBehaviorBase(this);
-         BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(this.chargeItem, this.dispenserBehaviour);
+         net.minecraft.world.level.block.DispenserBlock.registerBehavior(this.chargeItem, this.dispenserBehaviour);
       }
 
       AssetManager.addSound(this.name, this.modInfo, "projectile." + this.name);

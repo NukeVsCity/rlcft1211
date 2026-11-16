@@ -103,11 +103,7 @@ public class ItemScepter extends ItemBase {
    public ItemScepter() {
       this.setMaxStackSize(1);
       this.setMaxDamage(this.getDurability());
-      this.addPropertyOverride(ResourceLocation.parse("using"), new IItemPropertyGetter() {
-         public float apply(ItemStack itemStack, Level world, LivingEntity entity) {
-            return entity != null && entity.isUsingItem() && entity.getUseItem() == itemStack ? 1.0F : 0.0F;
-         }
-      });
+      // 1.12 addPropertyOverride("using"): client item property, registered by the client
    }
 
    @Override
@@ -115,12 +111,13 @@ public class ItemScepter extends ItemBase {
       super.onUpdate(itemStack, world, entity, par4, par5);
    }
 
-   public boolean onEntitySwing(LivingEntity entity, ItemStack itemStack) {
+   @Override
+   public boolean onEntitySwing(ItemStack itemStack, LivingEntity entity) {
       if (entity instanceof Player) {
          entity.startUsingItem(InteractionHand.MAIN_HAND);
          return true;
       } else {
-         return super.onEntitySwing(entity, itemStack);
+         return super.onEntitySwing(itemStack, entity);
       }
    }
 
@@ -221,10 +218,6 @@ public class ItemScepter extends ItemBase {
       return false;
    }
 
-   @Override
-   public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
-      return super.getAttributeModifiers(slot, stack);
-   }
 
    @Override
    public int getItemEnchantability() {
@@ -232,7 +225,7 @@ public class ItemScepter extends ItemBase {
    }
 
    public void playSound(ItemStack itemStack, Level world, LivingEntity entity, float power, BaseProjectileEntity projectile) {
-      this.playLocalSound(
+      this.playSound(
          world,
          entity.getX(),
          entity.getY(),

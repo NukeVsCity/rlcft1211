@@ -111,18 +111,22 @@ public class VillageSpawnLocation extends RandomSpawnLocation {
    @Override
    public List<BlockPos> getSpawnPositions(Level world, Player player, BlockPos triggerPos) {
       LycanitesMobs.logDebug("JSONSpawner", "Getting Nearest Object Within Range");
-      Object village = world.getVillageCollection().getNearestVillage(triggerPos, this.villageRange);
+      // 1.12 VillageCollection.getNearestVillage: the nearest 1.12 village (rlgen:village) start within range
+      BlockPos village = world instanceof ServerLevel serverLevel ? LycStructures.nearest(serverLevel, "Village", triggerPos) : null;
+      if (village != null && Math.sqrt(village.distSqr(triggerPos)) > (double)this.villageRange) {
+         village = null;
+      }
       if (village == null) {
          LycanitesMobs.logDebug("JSONSpawner", "No Object within range found.");
          return new ArrayList<>();
       } else {
-         double villageDistance = Math.sqrt(village.getCenter().distSqr(triggerPos));
+         double villageDistance = Math.sqrt(village.distSqr(triggerPos));
          if (villageDistance > (double)this.villageRange) {
-            LycanitesMobs.logDebug("JSONSpawner", "No Object within range, nearest was: " + villageDistance + " at: " + village.getCenter());
+            LycanitesMobs.logDebug("JSONSpawner", "No Object within range, nearest was: " + villageDistance + " at: " + village);
             return new ArrayList<>();
          } else {
-            LycanitesMobs.logDebug("JSONSpawner", "Found a Object within range, at: " + village.getCenter());
-            return super.getSpawnPositions(world, player, village.getCenter());
+            LycanitesMobs.logDebug("JSONSpawner", "Found a Object within range, at: " + village);
+            return super.getSpawnPositions(world, player, village);
          }
       }
    }

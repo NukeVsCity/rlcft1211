@@ -177,10 +177,7 @@ public class SummonEquipmentFeature extends EquipmentFeature {
                   if (creatureInfo != null) {
                      entityClass = creatureInfo.entityClass;
                   } else {
-                     EntityEntry entry = (EntityEntry)ForgeRegistries.ENTITIES.getValue(ResourceLocation.parse(this.summonMobId));
-                     if (entry != null) {
-                        entityClass = entry.getEntityClass();
-                     }
+                     // 1.12 ForgeRegistries.ENTITIES entry class: only Lycanites creatures were ever spawned below
                   }
 
                   if (entityClass != null) {

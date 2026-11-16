@@ -140,13 +140,11 @@ public class MobSpawn {
             mobSpawn = new MobSpawn(creatureInfo);
             mobSpawn.loadFromJSON(json);
          } else {
-            Class entityClass = null;
-            EntityEntry entry = (EntityEntry)ForgeRegistries.ENTITIES.getValue(ResourceLocation.parse(mobId));
-            if (entry != null) {
-               entityClass = entry.getEntityClass();
-            }
-
-            mobSpawn = new MobSpawn(entityClass);
+            // 1.12 ForgeRegistries.ENTITIES entry class: the 1.21 entity type (no class is registered)
+            ResourceLocation typeId = ResourceLocation.tryParse(mobId);
+            EntityType<?> type = typeId != null && BuiltInRegistries.ENTITY_TYPE.containsKey(typeId) ? BuiltInRegistries.ENTITY_TYPE.get(typeId) : null;
+            mobSpawn = new MobSpawn((Class)null);
+            mobSpawn.entityType = type;
          }
 
          if (mobSpawn != null) {
@@ -163,6 +161,9 @@ public class MobSpawn {
       this.creatureInfo = creatureInfo;
       this.entityClass = creatureInfo.entityClass;
    }
+
+   /** Non-Lycanites mob of this spawn (1.21 has no entity classes in its registry). */
+   public EntityType<?> entityType;
 
    public MobSpawn(Class entityClass) {
       this.entityClass = entityClass;
@@ -358,6 +359,9 @@ public class MobSpawn {
          if (this.creatureInfo != null) {
             return this.creatureInfo.createEntity(world);
          } else {
+            if (this.entityType != null) {
+               return this.entityType.create(world) instanceof Mob mob ? mob : null;
+            }
             return this.entityClass == null ? null : (Mob)this.entityClass.getConstructor(Level.class).newInstance(world);
          }
       } catch (Exception var3) {
@@ -428,7 +432,7 @@ public class MobSpawn {
       if (this.creatureInfo != null) {
          return this.creatureInfo.getName();
       } else {
-         return this.entityClass != null ? this.entityClass.toString() : "Invalid Creature ID or Class";
+         return this.entityType != null ? this.entityType.toString() : this.entityClass != null ? this.entityClass.toString() : "Invalid Creature ID or Class";
       }
    }
 }

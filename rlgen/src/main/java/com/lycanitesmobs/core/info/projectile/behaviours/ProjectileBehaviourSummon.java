@@ -147,15 +147,15 @@ public class ProjectileBehaviourSummon extends ProjectileBehaviour {
    @Override
    public void onProjectileImpact(BaseProjectileEntity projectile, Level world, BlockPos pos) {
       if (projectile != null && !projectile.level().isClientSide) {
-         if (!(projectile.getOwner() instanceof Player) || CreatureManager.getInstance().config.isSummoningAllowed(world)) {
+         if (!(projectile.getThrower() instanceof Player) || CreatureManager.getInstance().config.isSummoningAllowed(world)) {
             Class entityClass = null;
             SummonSet summonSet = null;
             if (this.summonMinion) {
-               if (!(projectile.getOwner() instanceof Player)) {
+               if (!(projectile.getThrower() instanceof Player)) {
                   return;
                }
 
-               Player player = (Player)projectile.getOwner();
+               Player player = (Player)projectile.getThrower();
                ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(player);
                if (extendedPlayer == null) {
                   return;
@@ -179,10 +179,7 @@ public class ProjectileBehaviourSummon extends ProjectileBehaviour {
                if (creatureInfo != null) {
                   entityClass = creatureInfo.entityClass;
                } else {
-                  EntityEntry entry = (EntityEntry)ForgeRegistries.ENTITIES.getValue(ResourceLocation.parse(this.summonMobId));
-                  if (entry != null) {
-                     entityClass = entry.getEntityClass();
-                  }
+                  // 1.12 ForgeRegistries.ENTITIES entry class: only Lycanites creatures are ever spawned below
                }
             }
 
@@ -201,9 +198,9 @@ public class ProjectileBehaviourSummon extends ProjectileBehaviour {
                            entityCreature.setMinion(true);
                            entityCreature.setTemporary(this.summonDuration);
                            entityCreature.setSizeScale(this.sizeScale);
-                           if (projectile.getOwner() instanceof Player && entityCreature instanceof TameableCreatureEntity) {
+                           if (projectile.getThrower() instanceof Player && entityCreature instanceof TameableCreatureEntity) {
                               TameableCreatureEntity entityTameable = (TameableCreatureEntity)entityCreature;
-                              entityTameable.setPlayerOwner((Player)projectile.getOwner());
+                              entityTameable.setPlayerOwner((Player)projectile.getThrower());
                               entityTameable.setSitting(false);
                               entityTameable.setFollowing(true);
                               entityTameable.setPassive(false);

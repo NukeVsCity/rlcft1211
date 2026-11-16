@@ -153,8 +153,8 @@ public class ProjectileBehaviourFireProjectiles extends ProjectileBehaviour {
          return null;
       } else {
          BaseProjectileEntity childProjectile;
-         if (projectile.getOwner() != null) {
-            childProjectile = projectileInfo.createProjectile(projectile.level(), projectile.getOwner());
+         if (projectile.getThrower() != null) {
+            childProjectile = projectileInfo.createProjectile(projectile.level(), projectile.getThrower());
             childProjectile.setPos(
                projectile.position().x, projectile.position().y, projectile.position().z
             );

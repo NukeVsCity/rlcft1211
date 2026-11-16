@@ -108,6 +108,6 @@ public class ChunkSpawnTrigger extends SpawnTrigger {
    public boolean onChunkPopulate(Level world, ChunkPos chunkPos) {
       return this.chance < 1.0 && world.random.nextDouble() > this.chance
          ? false
-         : this.trigger(world, null, LycPos.of(chunkPos.getXStart() + 8, world.getSeaLevel(), chunkPos.getZStart() + 8), 0, 0);
+         : this.trigger(world, null, LycPos.of(chunkPos.getMinBlockX() + 8, world.getSeaLevel(), chunkPos.getMinBlockZ() + 8), 0, 0);
    }
 }

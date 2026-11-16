@@ -511,29 +511,20 @@ public class Spawner {
                         world.random.nextFloat() * 360.0F,
                         0.0F
                      );
-                     Result canSpawn = ForgeEventFactory.canEntitySpawn(
-                        entityLiving,
-                        world,
-                        (float)spawnPosxx.getX() + 0.5F,
-                        (float)spawnPosxx.getY(),
-                        (float)spawnPosxx.getZ() + 0.5F,
-                        false
-                     );
-                     if (canSpawn == Result.DENY && !this.ignoreForgeCanSpawnEvent && !mobSpawn.ignoreForgeCanSpawnEvent) {
+                     // 1.12 ForgeEventFactory.canEntitySpawn (LivingSpawnEvent.CheckSpawn): 1.21 MobSpawnEvent.PositionCheck
+                     net.neoforged.neoforge.event.entity.living.MobSpawnEvent.PositionCheck checkEvent =
+                        new net.neoforged.neoforge.event.entity.living.MobSpawnEvent.PositionCheck(entityLiving, (ServerLevel)world, MobSpawnType.NATURAL, null);
+                     net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(checkEvent);
+                     net.neoforged.neoforge.event.entity.living.MobSpawnEvent.PositionCheck.Result canSpawn = checkEvent.getResult();
+                     if (canSpawn == net.neoforged.neoforge.event.entity.living.MobSpawnEvent.PositionCheck.Result.FAIL && !this.ignoreForgeCanSpawnEvent && !mobSpawn.ignoreForgeCanSpawnEvent) {
                         LycanitesMobs.logDebug("JSONSpawner", "Spawn Check Failed! Spawning blocked by Forge Can Spawn Event, this is caused another mod.");
-                     } else if (!this.mobInstanceSpawnCheck(entityLiving, mobSpawn, world, player, spawnPosxx, level, canSpawn == Result.ALLOW)) {
+                     } else if (!this.mobInstanceSpawnCheck(entityLiving, mobSpawn, world, player, spawnPosxx, level, canSpawn == net.neoforged.neoforge.event.entity.living.MobSpawnEvent.PositionCheck.Result.SUCCEED)) {
                         LycanitesMobs.logDebug("JSONSpawner", "Mob Instance Spawn Check Failed!");
                      } else {
-                        this.addFreshEntity(world, worldExt, entityLiving, level, mobSpawn, player, chain);
-                        if (!ForgeEventFactory.doSpecialSpawn(
-                              entityLiving,
-                              world,
-                              (float)spawnPosxx.getX() + 0.5F,
-                              (float)spawnPosxx.getY(),
-                              (float)spawnPosxx.getZ() + 0.5F
-                           )
-                           && entityCreature != null) {
-                           entityLiving.onInitialSpawn(world.getCurrentDifficultyAt(spawnPosxx), null);
+                        this.spawnEntity(world, worldExt, entityLiving, level, mobSpawn, player, chain);
+                        // 1.12 ForgeEventFactory.doSpecialSpawn then onInitialSpawn for Lycanites mobs (after spawnEntity, like 1.12)
+                        if (entityCreature != null) {
+                           net.neoforged.neoforge.event.EventHooks.finalizeMobSpawn(entityLiving, (ServerLevel)world, world.getCurrentDifficultyAt(spawnPosxx), MobSpawnType.NATURAL, null);
                         }
 
                         LycanitesMobs.logDebug("JSONSpawner", "Spawn Checks Passed! Mob Spawned!");
@@ -698,7 +689,7 @@ public class Spawner {
          }
       } else if (!mobSpawn.ignoreMobInstanceConditions) {
          LycanitesMobs.logDebug("JSONSpawner", "None Lycanites Mobs Checks...");
-         return entityLiving.getCanSpawnHere();
+         return entityLiving.checkSpawnRules(world, MobSpawnType.NATURAL) && entityLiving.checkSpawnObstruction(world); // 1.12 getCanSpawnHere
       } else {
          LycanitesMobs.logDebug("JSONSpawner", "All Mob Instance Checks Ignored");
          return true;
@@ -706,7 +697,7 @@ public class Spawner {
    }
 
    public void spawnEntity(Level world, ExtendedWorld worldExt, Mob entityLiving, int level, MobSpawn mobSpawn, Player player, int chain) {
-      entityLiving.timeUntilPortal = entityLiving.getDimensionChangingDelay();
+      entityLiving.setPortalCooldown();
       if (entityLiving instanceof BaseCreatureEntity) {
          BaseCreatureEntity entityCreature = (BaseCreatureEntity)entityLiving;
          entityCreature.forceNoDespawn = this.forceNoDespawn;

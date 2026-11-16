@@ -150,7 +150,7 @@ public abstract class EntitySpawnTrigger extends SpawnTrigger {
 
    public boolean isMatchingEntity(LivingEntity killedEntity) {
       if (!this.entityTypes.isEmpty()) {
-         if (this.entityTypes.contains(killedEntity.getCreatureAttribute())) {
+         if (this.entityTypes.contains(EnumCreatureAttribute.of(killedEntity))) {
             if ("blacklist".equalsIgnoreCase(this.entityTypesListType)) {
                return false;
             }
@@ -160,7 +160,7 @@ public abstract class EntitySpawnTrigger extends SpawnTrigger {
       }
 
       if (!this.entityIds.isEmpty()) {
-         ResourceLocation entityResourceLocation = EntityList.getKey(killedEntity);
+         ResourceLocation entityResourceLocation = killedEntity instanceof Player ? null : BuiltInRegistries.ENTITY_TYPE.getKey(killedEntity.getType());
          if (entityResourceLocation == null) {
             return false;
          }

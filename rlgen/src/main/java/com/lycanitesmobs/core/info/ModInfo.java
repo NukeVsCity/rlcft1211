@@ -106,8 +106,8 @@ public class ModInfo {
    public boolean dimensionWhitelist = false;
    public String biomeEntries = "";
    public ResourceLocation[] biomes = new ResourceLocation[0];
-   public Type[] biomeTypesAllowed;
-   public Type[] biomeTypesDenied;
+   public BiomeDictionary.Type[] biomeTypesAllowed;
+   public BiomeDictionary.Type[] biomeTypesDenied;
 
    public ModInfo(Object mod, String name, int order) {
       this.mod = mod;

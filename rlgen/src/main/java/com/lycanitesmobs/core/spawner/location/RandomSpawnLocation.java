@@ -285,7 +285,7 @@ public class RandomSpawnLocation extends BlockSpawnLocation {
          BlockState possibleGroundBlockState = world.getBlockState(pos.below());
 
          try {
-            if (possibleGroundBlockState.isSolidRender(this.level(), this.blockPosition())) {
+            if (possibleGroundBlockState.isRedstoneConductor(world, pos.below()) /* 1.12 isNormalCube */) {
                return true;
             }
          } catch (Exception var6) {
@@ -296,11 +296,11 @@ public class RandomSpawnLocation extends BlockSpawnLocation {
                return true;
             }
 
-            if (possibleGroundBlockState.isSideSolid(world, pos.below(), Direction.UP)) {
+            if (LycMath.isSideSolid(world, pos.below(), Direction.UP)) {
                return true;
             }
 
-            if (possibleGroundBlockState.isSideSolid(world, pos.below(), Direction.DOWN)) {
+            if (LycMath.isSideSolid(world, pos.below(), Direction.DOWN)) {
                return true;
             }
          } catch (Exception var5) {

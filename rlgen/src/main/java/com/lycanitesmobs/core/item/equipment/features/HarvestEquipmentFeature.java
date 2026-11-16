@@ -126,7 +126,7 @@ public class HarvestEquipmentFeature extends EquipmentFeature {
          Blocks.DIAMOND_BLOCK,
          Blocks.DIAMOND_ORE,
          Blocks.SMOOTH_STONE,
-         Blocks.GOLDEN_RAIL,
+         Blocks.POWERED_RAIL,
          Blocks.GOLD_BLOCK,
          Blocks.GOLD_ORE,
          Blocks.ICE,
@@ -153,7 +153,7 @@ public class HarvestEquipmentFeature extends EquipmentFeature {
          Blocks.OAK_PLANKS,
          Blocks.BOOKSHELF,
          Blocks.OAK_LOG,
-         Blocks.LOG2,
+         Blocks.ACACIA_LOG,
          Blocks.CHEST,
          Blocks.PUMPKIN,
          Blocks.JACK_O_LANTERN,
@@ -307,15 +307,16 @@ public class HarvestEquipmentFeature extends EquipmentFeature {
             selectionRanges[vert][min] = new Vec3i(0, vertOffset, 0);
             selectionRanges[vert][max] = new Vec3i(0, this.harvestRange.getY() + vertOffset, 0);
          } else {
+            // 1.12 Vec3i(double, double, double) floors
             selectionRanges[vert][min] = new Vec3i(
-               (double)((float)(this.harvestRange.getY() * -Math.abs(facingH.getStepX())) * 0.5F),
-               (double)((float)(this.harvestRange.getY() * -Math.abs(facingH.getStepY())) * 0.5F),
-               (double)((float)(this.harvestRange.getY() * -Math.abs(facingH.getStepZ())) * 0.5F)
+               Mth.floor((double)((float)(this.harvestRange.getY() * -Math.abs(facingH.getStepX())) * 0.5F)),
+               Mth.floor((double)((float)(this.harvestRange.getY() * -Math.abs(facingH.getStepY())) * 0.5F)),
+               Mth.floor((double)((float)(this.harvestRange.getY() * -Math.abs(facingH.getStepZ())) * 0.5F))
             );
             selectionRanges[vert][max] = new Vec3i(
-               (double)((float)(this.harvestRange.getY() * Math.abs(facingH.getStepX())) * 0.5F),
-               (double)((float)(this.harvestRange.getY() * Math.abs(facingH.getStepY())) * 0.5F),
-               (double)((float)(this.harvestRange.getY() * Math.abs(facingH.getStepZ())) * 0.5F)
+               Mth.floor((double)((float)(this.harvestRange.getY() * Math.abs(facingH.getStepX())) * 0.5F)),
+               Mth.floor((double)((float)(this.harvestRange.getY() * Math.abs(facingH.getStepY())) * 0.5F)),
+               Mth.floor((double)((float)(this.harvestRange.getY() * Math.abs(facingH.getStepZ())) * 0.5F))
             );
          }
 
@@ -409,7 +410,7 @@ public class HarvestEquipmentFeature extends EquipmentFeature {
          return false;
       } else {
          BlockState blockState = world.getBlockState(pos);
-         int hook = ForgeEventFactory.onHoeUse(itemStack, player, world, pos);
+         int hook = 0; // 1.12 ForgeEventFactory.onHoeUse (UseHoeEvent): no 1.21 equivalent for a custom hoe
          if (hook != 0) {
             return false;
          } else {
@@ -421,17 +422,15 @@ public class HarvestEquipmentFeature extends EquipmentFeature {
                   return true;
                }
 
+               // 1.12 BlockDirt variants DIRT and COARSE_DIRT
                if (block == Blocks.DIRT) {
-                  switch ((DirtType)iblockstate.getValue(BlockDirt.VARIANT)) {
-                     case DIRT:
-                        this.hoeBlock(itemStack, player, world, pos, Blocks.FARMLAND.defaultBlockState());
-                        return true;
-                     case COARSE_DIRT:
-                        this.hoeBlock(
-                           itemStack, player, world, pos, Blocks.DIRT.defaultBlockState().setValue(BlockDirt.VARIANT, DirtType.DIRT)
-                        );
-                        return true;
-                  }
+                  this.hoeBlock(itemStack, player, world, pos, Blocks.FARMLAND.defaultBlockState());
+                  return true;
+               }
+
+               if (block == Blocks.COARSE_DIRT) {
+                  this.hoeBlock(itemStack, player, world, pos, Blocks.DIRT.defaultBlockState());
+                  return true;
                }
             }
 
@@ -455,10 +454,8 @@ public class HarvestEquipmentFeature extends EquipmentFeature {
       } else {
          IShearable target = (IShearable)entity;
          BlockPos pos = LycPos.of(entity.getX(), entity.getY(), entity.getZ());
-         if (target.isShearable(itemStack, entity.level(), pos)) {
-            List<ItemStack> drops = target.onSheared(
-               itemStack, entity.level(), pos, EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, itemStack)
-            );
+         if (target.isShearable(player, itemStack, entity.level(), pos)) {
+            List<ItemStack> drops = target.onSheared(player, itemStack, entity.level(), pos);
             RandomSource rand = RandomSource.create();
 
             for (ItemStack stack : drops) {

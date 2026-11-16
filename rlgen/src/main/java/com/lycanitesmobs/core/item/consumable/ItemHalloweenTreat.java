@@ -131,7 +131,7 @@ public class ItemHalloweenTreat extends ItemBase {
    public void openGood(ItemStack itemStack, Level world, Player player) {
       String message = LanguageManager.translate("item." + this.itemName + ".good");
       player.sendSystemMessage(Component.literal(message));
-      this.playLocalSound(
+      this.playSound(
          world,
          player.getX(),
          player.getY(),
@@ -156,7 +156,7 @@ public class ItemHalloweenTreat extends ItemBase {
    public void openBad(ItemStack itemStack, Level world, Player player) {
       String message = LanguageManager.translate("item." + this.itemName + ".bad");
       player.sendSystemMessage(Component.literal(message));
-      this.playLocalSound(
+      this.playSound(
          world,
          player.getX(),
          player.getY(),

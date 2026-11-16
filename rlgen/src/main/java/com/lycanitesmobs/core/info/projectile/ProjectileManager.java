@@ -168,45 +168,7 @@ public class ProjectileManager extends JSONLoader {
       return this.nextProjectileNetworkId++;
    }
 
-   @SubscribeEvent
-   public void registerEntities(Register<EntityEntry> event) {
-      ModInfo modInfo = LycanitesMobs.modInfo;
-      LycanitesMobs.logDebug("Projectile", "Forge registering all " + this.projectiles.size() + " projectiles from the mod: " + modInfo.name + "...");
-
-      for (ProjectileInfo projectileInfo : this.projectiles.values()) {
-         if (projectileInfo.modInfo == modInfo) {
-            EntityEntry entityEntry = EntityEntryBuilder.create()
-               .entity(projectileInfo.entityClass)
-               .id(projectileInfo.getId(), this.getNextProjectileNetworkId())
-               .name(projectileInfo.getId())
-               .tracker(40, 3, true)
-               .build();
-            event.getRegistry().register(entityEntry);
-         }
-      }
-
-      for (String entityName : this.oldSpriteProjectiles.keySet()) {
-         String registryName = LycanitesMobs.modInfo.modid + ":" + entityName;
-         EntityEntry entityEntry = EntityEntryBuilder.create()
-            .entity(this.oldSpriteProjectiles.get(entityName))
-            .id(registryName, this.getNextProjectileNetworkId())
-            .name(registryName)
-            .tracker(40, 3, true)
-            .build();
-         event.getRegistry().register(entityEntry);
-      }
-
-      for (String entityName : this.oldModelProjectiles.keySet()) {
-         String registryName = LycanitesMobs.modInfo.modid + ":" + entityName;
-         EntityEntry entityEntry = EntityEntryBuilder.create()
-            .entity(this.oldModelProjectiles.get(entityName))
-            .id(registryName, this.getNextProjectileNetworkId())
-            .name(registryName)
-            .tracker(40, 3, true)
-            .build();
-         event.getRegistry().register(entityEntry);
-      }
-   }
+   // 1.12 registerEntities (RegistryEvent.Register<EntityEntry>): LycEntities registers the projectile entity types
 
    public ProjectileInfo getProjectile(String projectileName) {
       return !this.projectiles.containsKey(projectileName) ? null : this.projectiles.get(projectileName);

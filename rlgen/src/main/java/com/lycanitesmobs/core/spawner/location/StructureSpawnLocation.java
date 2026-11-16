@@ -123,7 +123,7 @@ public class StructureSpawnLocation extends RandomSpawnLocation {
          BlockPos structurePos = null;
 
          try {
-            structurePos = ((ServerLevel)world).getChunkProvider().getNearestStructurePos(world, this.structureType, triggerPos, false);
+            structurePos = LycStructures.nearest((ServerLevel)world, this.structureType, triggerPos);
          } catch (Exception var7) {
          }
 

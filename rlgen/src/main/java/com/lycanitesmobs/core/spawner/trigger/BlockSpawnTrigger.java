@@ -185,7 +185,7 @@ public class BlockSpawnTrigger extends SpawnTrigger {
    }
 
    public void onBlockTriggered(Level world, Player player, BlockPos blockPos, BlockState blockState, int chain, int fortune) {
-      if (!this.playerOnly || player != null && !(player instanceof FakePlayer)) {
+      if (!this.playerOnly || player != null && !(player instanceof net.neoforged.neoforge.common.util.FakePlayer)) {
          if (this.isTriggerBlock(blockState, world, blockPos, fortune)) {
             if (!(this.chance < 1.0) || !(world.random.nextDouble() > this.chance)) {
                this.trigger(world, player, blockPos, this.getBlockLevel(blockState, world, blockPos), chain);

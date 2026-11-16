@@ -95,7 +95,8 @@ import com.lycanitesmobs.core.info.projectile.ProjectileInfo;
 import java.util.Random;
 
 
-public class DispenserBehaviorBase extends BehaviorProjectileDispense {
+/** 1.12 DispenserBehaviorBase (BehaviorProjectileDispense) on 1.21 DefaultDispenseItemBehavior. */
+public class DispenserBehaviorBase extends net.minecraft.core.dispenser.DefaultDispenseItemBehavior {
    ProjectileInfo projectileInfo;
 
    public DispenserBehaviorBase(ProjectileInfo projectileInfo) {
@@ -105,10 +106,11 @@ public class DispenserBehaviorBase extends BehaviorProjectileDispense {
    public DispenserBehaviorBase() {
    }
 
-   public ItemStack dispenseStack(IBlockSource blockSource, ItemStack stack) {
-      Level world = blockSource.getWorld();
-      IPosition position = BlockDispenser.getDispensePosition(blockSource);
-      Direction facing = (Direction)blockSource.getBlockState().getValue(BlockDispenser.FACING);
+   @Override
+   protected ItemStack execute(net.minecraft.core.dispenser.BlockSource blockSource, ItemStack stack) {
+      Level world = blockSource.level();
+      net.minecraft.core.Position position = net.minecraft.world.level.block.DispenserBlock.getDispensePosition(blockSource);
+      Direction facing = (Direction)blockSource.state().getValue(net.minecraft.world.level.block.DispenserBlock.FACING);
       Projectile iprojectile = this.getProjectileEntity(world, position, stack);
       if (iprojectile == null) {
          return stack;
@@ -122,8 +124,8 @@ public class DispenserBehaviorBase extends BehaviorProjectileDispense {
       }
    }
 
-   protected Projectile getProjectileEntity(Level world, IPosition pos, ItemStack stack) {
-      return this.projectileInfo == null ? null : this.projectileInfo.createProjectile(world, pos.getX(), pos.getY(), pos.getZ());
+   protected Projectile getProjectileEntity(Level world, net.minecraft.core.Position pos, ItemStack stack) {
+      return this.projectileInfo == null ? null : this.projectileInfo.createProjectile(world, pos.x(), pos.y(), pos.z());
    }
 
    protected float getProjectileInaccuracy() {
@@ -134,11 +136,13 @@ public class DispenserBehaviorBase extends BehaviorProjectileDispense {
       return this.projectileInfo != null ? (float)this.projectileInfo.velocity : 1.1F;
    }
 
-   protected void playDispenseSound(IBlockSource blockSource) {
+   /** 1.12 playDispenseSound */
+   @Override
+   protected void playSound(net.minecraft.core.dispenser.BlockSource blockSource) {
       SoundEvent soundEvent = this.getDispenseSound();
       if (soundEvent != null && blockSource != null) {
-         blockSource.getWorld()
-            .playSound(null, blockSource.getBlockPos(), soundEvent, SoundSource.AMBIENT, 1.0F, 1.0F / (RandomSource.create().nextFloat() * 0.4F + 0.8F));
+         blockSource.level()
+            .playSound(null, blockSource.pos(), soundEvent, SoundSource.AMBIENT, 1.0F, 1.0F / (RandomSource.create().nextFloat() * 0.4F + 0.8F));
       }
    }
 

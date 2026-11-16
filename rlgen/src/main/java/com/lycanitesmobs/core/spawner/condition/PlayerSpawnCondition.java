@@ -187,7 +187,7 @@ public class PlayerSpawnCondition extends SpawnCondition {
       }
 
       if (json.has("inWater")) {
-         this.wasTouchingWater = json.get("inWater").getAsBoolean();
+         this.inWater = json.get("inWater").getAsBoolean();
       }
 
       if (json.has("notInWater")) {
@@ -211,7 +211,7 @@ public class PlayerSpawnCondition extends SpawnCondition {
          return false;
       } else {
          ExtendedPlayer playerExt = ExtendedPlayer.getForPlayer(player);
-         if (!"".equals(this.username) && !this.username.equalsIgnoreCase(player.getName())) {
+         if (!"".equals(this.username) && !this.username.equalsIgnoreCase(player.getName().getString())) {
             return false;
          } else {
             if (this.difficultyMin >= 0.0F || this.difficultyMax >= 0.0F) {
@@ -226,7 +226,7 @@ public class PlayerSpawnCondition extends SpawnCondition {
                }
             }
 
-            double spawnDistance = Math.sqrt(player.blockPosition().distSqr(world.getSpawnPoint()));
+            double spawnDistance = Math.sqrt(player.blockPosition().distSqr(world.getSharedSpawnPos()));
             if (this.spawnDistanceMin >= 0.0F && spawnDistance < (double)this.spawnDistanceMin) {
                return false;
             } else if (this.spawnDistanceMax >= 0.0F && spawnDistance > (double)this.spawnDistanceMax) {
@@ -252,7 +252,7 @@ public class PlayerSpawnCondition extends SpawnCondition {
                   return false;
                } else if (this.notGrounded && player.onGround()) {
                   return false;
-               } else if (this.wasTouchingWater && !player.isInWater()) {
+               } else if (this.inWater && !player.isInWater()) {
                   return false;
                } else if (this.notInWater && player.isInWater()) {
                   return false;
@@ -267,7 +267,7 @@ public class PlayerSpawnCondition extends SpawnCondition {
                      }
                   }
 
-                  int lightLevel = world.getLight(player.blockPosition());
+                  int lightLevel = world.getRawBrightness(player.blockPosition(), 0); // 1.12 World.getLight
                   if (this.lightLevelMin >= 0 && lightLevel < this.lightLevelMin) {
                      return false;
                   } else if (this.lightLevelMax >= 0 && lightLevel > this.lightLevelMax) {

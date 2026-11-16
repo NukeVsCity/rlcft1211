@@ -294,7 +294,7 @@ public class ItemManager extends JSONLoader {
    ) {
       fluid.setLuminosity(luminosity).setDensity(density).setViscosity(viscosity).setTemperature(temperature);
       ObjectManager.addBlock(name, block);
-      ObjectManager.addItem("bucket" + name, new GenericBucketItem(fluid, block, name).setContainerItem(Items.BUCKET));
+      ObjectManager.addItem("bucket" + name, new GenericBucketItem(fluid, block, name));
       if (addSound) {
          AssetManager.addSound(name, LycanitesMobs.modInfo, "block." + name);
       }
@@ -375,7 +375,7 @@ public class ItemManager extends JSONLoader {
       } else {
          Item item = itemStack.getItem();
          ResourceLocation checkId = LycReg.key(item);
-         if (item == Items.INK_SAC && item.getMetadata(itemStack) == 4) {
+         if (item == Items.LAPIS_LAZULI) {
             checkId = ResourceLocation.parse("minecraft:lapis_lazuli");
          }
 
@@ -413,7 +413,7 @@ public class ItemManager extends JSONLoader {
       } else {
          Item item = itemStack.getItem();
          ResourceLocation checkId = LycReg.key(item);
-         if (item == Items.INK_SAC && item.getMetadata(itemStack) == 4) {
+         if (item == Items.LAPIS_LAZULI) {
             checkId = ResourceLocation.parse("minecraft:lapis_lazuli");
          }
 

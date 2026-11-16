@@ -111,10 +111,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import javax.vecmath.Vector4f;
+import org.joml.Vector4f;
 
 
-public class ItemEquipmentPart extends ItemBase {
+public class ItemEquipmentPart extends ItemBase implements CreativeTabs.SubItems {
    public static int BASE_LEVELUP_EXPERIENCE = 500;
    public static ItemStack ITEMSTACK_TO_RENDER;
    public static Map<String, List<ItemEquipmentPart>> MOB_PART_DROPS = new HashMap<>();
@@ -196,19 +196,16 @@ public class ItemEquipmentPart extends ItemBase {
 
    @Override
    public String getItemStackDisplayName(ItemStack itemStack) {
-      String displayName = LanguageManager.translate(this.getTranslationKey(itemStack) + ".name");
+      String displayName = LanguageManager.translate("item." + this.itemName + ".name");
       return displayName + " " + LanguageManager.translate("equipment.level") + " " + this.getLevel(itemStack);
    }
 
       public void addInformation(ItemStack itemStack, Level world, List<String> tooltip, TooltipFlag tooltipFlag) {
       super.addInformation(itemStack, world, tooltip, tooltipFlag);
-      FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-
+      // 1.12 FontRenderer.listFormattedStringToWidth: the client proxy wraps with the font
       for (String description : this.getAdditionalDescriptions(itemStack, world, tooltipFlag)) {
-         for (Object formattedDescription : fontRenderer.listFormattedStringToWidth(description, DESCRIPTION_WIDTH)) {
-            if (formattedDescription instanceof String) {
-               tooltip.add("§3" + formattedDescription);
-            }
+         for (String formattedDescription : LycanitesMobs.proxy.wrapText(description, DESCRIPTION_WIDTH)) {
+            tooltip.add("§3" + formattedDescription);
          }
       }
    }
@@ -248,19 +245,12 @@ public class ItemEquipmentPart extends ItemBase {
       return descriptions;
    }
 
-   @Override
-   public Multimap<String, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
-      return super.getAttributeModifiers(slot, stack);
-   }
 
    public int getMetadata(ItemStack stack) {
       ITEMSTACK_TO_RENDER = stack;
-      return super.getMetadata(stack);
+      return 0;
    }
 
-   public FontRenderer getFontRenderer(ItemStack stack) {
-      return LycanitesMobs.proxy.getFontRenderer();
-   }
 
    public void randomizeLevel(Level world, ItemStack itemStack) {
       int level = this.levelMax;
@@ -471,7 +461,7 @@ public class ItemEquipmentPart extends ItemBase {
    }
 
    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-      if (this.isInCreativeTab(tab)) {
+      {
          for (int level = 1; level <= this.levelMax; level++) {
             ItemStack itemStack = new ItemStack(this, 1);
             this.setLevel(itemStack, level);
@@ -500,10 +490,6 @@ public class ItemEquipmentPart extends ItemBase {
       return elementNames;
    }
 
-   @Override
-   public ModelResourceLocation getModelResourceLocation() {
-      return new ModelResourceLocation(ResourceLocation.fromNamespaceAndPath("lycanitesmobs", "equipmentpart"), "inventory");
-   }
 
    public ResourceLocation getTexture(ItemStack itemStack, String suffix) {
       if (AssetManager.getTexture(this.itemName + suffix) == null) {

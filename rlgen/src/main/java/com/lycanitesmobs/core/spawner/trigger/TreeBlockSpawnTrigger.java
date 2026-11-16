@@ -163,11 +163,11 @@ public class TreeBlockSpawnTrigger extends BlockSpawnTrigger {
 
    public boolean isLog(BlockState blockState) {
       Block block = blockState.getBlock();
-      return block instanceof BlockLog || ObjectLists.isInOreDictionary("logWood", block);
+      return blockState.is(BlockTags.LOGS) || ObjectLists.isInOreDictionary("logWood", block);
    }
 
    public boolean isLeaves(BlockState blockState) {
       Block block = blockState.getBlock();
-      return block instanceof BlockLeaves || ObjectLists.isInOreDictionary("treeLeaves", block);
+      return block instanceof LeavesBlock || ObjectLists.isInOreDictionary("treeLeaves", block);
    }
 }

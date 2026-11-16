@@ -220,17 +220,35 @@ public class SpawnerEventListener {
       }
    }
 
+   /** 1.12 PopulateChunkEvent.Post: new chunks, handled on the next level tick (spawning inside a chunk load could load more chunks). */
+   private final Map<Level, List<ChunkPos>> populatedChunks = new WeakHashMap<>();
+
    @SubscribeEvent
-   public void onWorldUpdate(WorldTickEvent event) {
-      Level world = event.world;
+   public void onChunkLoad(net.neoforged.neoforge.event.level.ChunkEvent.Load event) {
+      if (event.isNewChunk() && event.getLevel() instanceof ServerLevel world) {
+         this.populatedChunks.computeIfAbsent(world, k -> new ArrayList<>()).add(event.getChunk().getPos());
+      }
+   }
+
+   /** 1.12 WorldTickEvent (both phases; lastSpawnerTime runs it once a tick) */
+   @SubscribeEvent
+   public void onWorldUpdate(LevelTickEvent.Post event) {
+      Level world = event.getLevel();
       if (!world.isClientSide) {
+         List<ChunkPos> newChunks = this.populatedChunks.remove(world);
+         if (newChunks != null) {
+            for (ChunkPos chunkPos : newChunks) {
+               this.onChunkPopulate(world, chunkPos);
+            }
+         }
+
          ExtendedWorld worldExt = ExtendedWorld.getForWorld(world);
          if (worldExt != null) {
             if (worldExt.lastSpawnerTime != world.getGameTime()) {
                worldExt.lastSpawnerTime = world.getGameTime();
                List<BlockPos> triggerPositions = new ArrayList<>();
 
-               for (Player player : world.playerEntities) {
+               for (Player player : world.players()) {
                   if (triggerPositions.isEmpty()) {
                      triggerPositions.add(player.blockPosition());
                   } else {
@@ -265,9 +283,9 @@ public class SpawnerEventListener {
    }
 
    @SubscribeEvent
-   public void onPlayerTickEvent(PlayerTickEvent event) {
-      if (event.phase == Phase.START) {
-         Player player = event.player;
+   public void onPlayerTickEvent(PlayerTickEvent.Pre event) {
+      {
+         Player player = event.getEntity();
          if (!player.level().isClientSide) {
             long entityUpdateTick = this.playerUpdateTicks.compute(player, (k, v) -> v != null ? v + 1L : 1L) - 1L;
             int tickOffset = 0;
@@ -297,8 +315,9 @@ public class SpawnerEventListener {
       }
    }
 
+   /** 1.12 LivingSpawnEvent (CheckSpawn/SpecialSpawn/AllowDespawn): no RLCraft spawner uses this trigger. */
    @SubscribeEvent
-   public void onEntitySpawn(LivingSpawnEvent event) {
+   public void onEntitySpawn(FinalizeSpawnEvent event) {
       LivingEntity spawnedEntity = event.getEntity();
       if (spawnedEntity != null
          && spawnedEntity.level() != null
@@ -311,11 +330,10 @@ public class SpawnerEventListener {
       }
    }
 
-   @SubscribeEvent
-   public void onChunkPopulate(Post event) {
+   public void onChunkPopulate(Level world, ChunkPos chunkPos) {
       if (!this.chunkSpawnTriggersActive) {
          for (ChunkSpawnTrigger spawnTrigger : this.chunkSpawnTriggers) {
-            if (spawnTrigger.onChunkPopulate(event.getWorld(), new ChunkPos(event.getChunkX(), event.getChunkZ()))) {
+            if (spawnTrigger.onChunkPopulate(world, chunkPos)) {
                this.chunkSpawnTriggersActive = true;
             }
          }
@@ -324,26 +342,33 @@ public class SpawnerEventListener {
       }
    }
 
+   /** 1.12 HarvestDropsEvent: 1.21 BlockDropsEvent (fortune and silk touch from the tool) */
    @SubscribeEvent
-   public void onHarvestDrops(HarvestDropsEvent event) {
-      Player player = event.getHarvester();
-      if (event.getState() != null && event.getWorld() != null && !event.getWorld().isClientSide && !event.isCanceled()) {
+   public void onHarvestDrops(BlockDropsEvent event) {
+      Player player = event.getBreaker() instanceof Player breaker ? breaker : null;
+      if (event.getState() != null && event.getLevel() != null && !event.getLevel().isClientSide && !event.isCanceled()) {
          if (player == null || testOnCreative || !player.getAbilities().instabuild) {
-            Level world = event.getWorld();
+            Level world = event.getLevel();
             BlockPos blockPos = event.getPos();
             BlockState blockState = event.getState();
+            net.minecraft.core.HolderLookup.RegistryLookup<net.minecraft.world.item.enchantment.Enchantment> enchantments =
+               world.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT);
+            int fortune = net.minecraft.world.item.enchantment.EnchantmentHelper.getItemEnchantmentLevel(
+               enchantments.getOrThrow(net.minecraft.world.item.enchantment.Enchantments.FORTUNE), event.getTool());
+            boolean silkTouch = net.minecraft.world.item.enchantment.EnchantmentHelper.getItemEnchantmentLevel(
+               enchantments.getOrThrow(net.minecraft.world.item.enchantment.Enchantments.SILK_TOUCH), event.getTool()) > 0;
 
             for (BlockSpawnTrigger spawnTrigger : this.blockSpawnTriggers) {
-               spawnTrigger.onBlockHarvest(world, player, blockPos, blockState, 0, event.getFortuneLevel(), event.isSilkTouching());
+               spawnTrigger.onBlockHarvest(world, player, blockPos, blockState, 0, fortune, silkTouch);
             }
          }
       }
    }
 
    @SubscribeEvent
-   public void onBlockBreak(BreakEvent event) {
-      if (event.getState() != null && event.getWorld() != null && !event.getWorld().isClientSide && !event.isCanceled()) {
-         this.onBlockBreak(event.getWorld(), event.getPos(), event.getState(), event.getPlayer(), 0);
+   public void onBlockBreak(BlockEvent.BreakEvent event) {
+      if (event.getState() != null && event.getLevel() instanceof Level world && !world.isClientSide && !event.isCanceled()) {
+         this.onBlockBreak(world, event.getPos(), event.getState(), event.getPlayer(), 0);
       }
    }
 
@@ -356,9 +381,9 @@ public class SpawnerEventListener {
    }
 
    @SubscribeEvent
-   public void onBlockPlace(PlaceEvent event) {
-      if (event.getState() != null && event.getWorld() != null && !event.getWorld().isClientSide && !event.isCanceled()) {
-         this.onBlockPlace(event.getWorld(), event.getPos(), event.getState(), event.getPlayer(), 0);
+   public void onBlockPlace(BlockEvent.EntityPlaceEvent event) {
+      if (event.getPlacedBlock() != null && event.getLevel() instanceof Level world && !world.isClientSide && !event.isCanceled()) {
+         this.onBlockPlace(world, event.getPos(), event.getPlacedBlock(), event.getEntity() instanceof Player placer ? placer : null, 0);
       }
    }
 
@@ -372,11 +397,11 @@ public class SpawnerEventListener {
 
    @SubscribeEvent
    public void onSleep(CanPlayerSleepEvent event) {
-      Player player = event.getEntityPlayer();
-      if (player != null && player.level() != null && !player.level().isClientSide && !event.isCanceled()) {
+      Player player = event.getEntity();
+      if (player != null && player.level() != null && !player.level().isClientSide) {
          Level world = player.level();
          BlockPos spawnPos = event.getPos().offset(0, 0, 1);
-         if (world != null && !world.isClientSide && !world.provider.isDay()) {
+         if (world != null && !world.isClientSide && !world.isDay()) {
             boolean interrupted = false;
 
             for (SleepSpawnTrigger spawnTrigger : this.sleepSpawnTriggers) {
@@ -386,7 +411,7 @@ public class SpawnerEventListener {
             }
 
             if (interrupted) {
-               event.setResult(SleepResult.NOT_SAFE);
+               event.setProblem(Player.BedSleepingProblem.NOT_SAFE);
             }
          }
       }
@@ -394,7 +419,7 @@ public class SpawnerEventListener {
 
    @SubscribeEvent
    public void onFished(ItemFishedEvent event) {
-      Player player = event.getEntityPlayer();
+      Player player = event.getEntity();
       if (player != null && player.level() != null && !player.level().isClientSide && !event.isCanceled()) {
          if (player == null || testOnCreative || !player.getAbilities().instabuild) {
             Level world = player.level();
@@ -408,13 +433,13 @@ public class SpawnerEventListener {
    }
 
    @SubscribeEvent
-   public void onExplosion(Detonate event) {
+   public void onExplosion(ExplosionEvent.Detonate event) {
       Explosion explosion = event.getExplosion();
       if (explosion != null) {
-         Level world = event.getWorld();
+         Level world = event.getLevel();
          Player player = null;
-         if (explosion.getExplosivePlacedBy() instanceof Player) {
-            player = (Player)explosion.getExplosivePlacedBy();
+         if (explosion.getIndirectSourceEntity() instanceof Player) {
+            player = (Player)explosion.getIndirectSourceEntity();
          }
 
          if (player == null || testOnCreative || !player.getAbilities().instabuild) {
@@ -426,9 +451,8 @@ public class SpawnerEventListener {
    }
 
    @SubscribeEvent
-   public void onLavaMix(FluidPlaceBlockEvent event) {
-      if (event.getWorld() != null) {
-         Level world = event.getWorld();
+   public void onLavaMix(BlockEvent.FluidPlaceBlockEvent event) {
+      if (event.getLevel() instanceof Level world) {
          if (event.getOriginalState().getBlock() == Blocks.LAVA && event.getNewState().getBlock() == Blocks.OBSIDIAN) {
             for (MixBlockSpawnTrigger spawnTrigger : this.mixBlockSpawnTriggers) {
                spawnTrigger.onMix(world, event.getState(), event.getLiquidPos());

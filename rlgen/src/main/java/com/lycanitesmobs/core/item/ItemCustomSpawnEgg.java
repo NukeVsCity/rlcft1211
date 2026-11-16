@@ -101,7 +101,7 @@ import java.util.List;
 import java.util.UUID;
 
 
-public class ItemCustomSpawnEgg extends ItemBase {
+public class ItemCustomSpawnEgg extends ItemBase implements CreativeTabs.SubItems {
    public CreatureType creatureType;
 
    public ItemCustomSpawnEgg(String name, CreatureType creatureType) {
@@ -111,7 +111,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
       this.itemName = name;
       this.creatureType = creatureType;
       LycReg.setName(this, this.modInfo.modid, this.itemName);
-      BlockDispenser.DISPENSE_BEHAVIOR_REGISTRY.putObject(this, new DispenserBehaviorMobEggCustom());
+      net.minecraft.world.level.block.DispenserBlock.registerBehavior(this, new DispenserBehaviorMobEggCustom());
       LycanitesMobs.logDebug("Creature Type", "Created Creature Type Spawn Egg: " + this.itemName);
    }
 
@@ -165,14 +165,13 @@ public class ItemCustomSpawnEgg extends ItemBase {
          return InteractionResult.FAIL;
       } else if (block == Blocks.SPAWNER) {
          BlockEntity tileEntity = world.getBlockEntity(pos);
-         MobSpawnerBaseLogic mobspawnerbaselogic = ((TileEntityMobSpawner)tileEntity).getSpawnerBaseLogic();
          CreatureInfo creatureInfo = this.getCreatureInfo(itemStack);
-         if (creatureInfo == null) {
+         if (creatureInfo == null || !(tileEntity instanceof net.minecraft.world.level.block.entity.SpawnerBlockEntity spawner)) {
             return InteractionResult.FAIL;
          } else {
-            mobspawnerbaselogic.setEntityId(creatureInfo.getResourceLocation());
-            tileEntity.markDirty();
-            world.notifyBlockUpdate(pos, blockState, blockState, 3);
+            spawner.setEntityId(com.lycanitesmobs.LycEntities.type(creatureInfo.entityClass), world.random);
+            tileEntity.setChanged();
+            world.sendBlockUpdated(pos, blockState, blockState, 3);
             if (!player.getAbilities().instabuild) {
                itemStack.setCount(Math.max(0, itemStack.getCount() - 1));
             }
@@ -182,7 +181,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
       } else {
          pos = pos.relative(facing);
          double d0 = 0.0;
-         if (facing == Direction.UP && blockState.getBlock() instanceof BlockFence) {
+         if (facing == Direction.UP && blockState.getBlock() instanceof FenceBlock) {
             d0 = 0.5;
          }
 
@@ -210,17 +209,17 @@ public class ItemCustomSpawnEgg extends ItemBase {
       if (world.isClientSide) {
          return new InteractionResultHolder(InteractionResult.PASS, itemStack);
       } else {
-         HitResult rayTraceResult = this.rayTrace(world, player, true);
+         net.minecraft.world.phys.BlockHitResult rayTraceResult = getPlayerPOVHitResult(world, player, net.minecraft.world.level.ClipContext.Fluid.ANY);
          if (rayTraceResult == null) {
             return new InteractionResultHolder(InteractionResult.PASS, itemStack);
          } else {
-            if (rayTraceResult.getType() == Type.BLOCK) {
+            if (rayTraceResult.getType() == HitResult.Type.BLOCK) {
                BlockPos pos = rayTraceResult.getBlockPos();
-               if (!world.canMineBlockBody(player, pos)) {
+               if (!world.mayInteract(player, pos)) {
                   return new InteractionResultHolder(InteractionResult.FAIL, itemStack);
                }
 
-               if (!player.mayUseItemAt(pos, rayTraceResult.sideHit, itemStack)) {
+               if (!player.mayUseItemAt(pos, rayTraceResult.getDirection(), itemStack)) {
                   return new InteractionResultHolder(InteractionResult.PASS, itemStack);
                }
 
@@ -255,7 +254,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
    }
 
    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-      if (this.modInfo != null && this.creatureType != null && this.isInCreativeTab(tab)) {
+      if (this.modInfo != null && this.creatureType != null) {
          for (CreatureInfo creatureInfo : this.creatureType.creatures.values()) {
             ItemStack itemstack = new ItemStack(this, 1);
             this.applyCreatureInfoToItemStack(itemstack, creatureInfo);
@@ -291,8 +290,10 @@ public class ItemCustomSpawnEgg extends ItemBase {
             entity.yBodyRot = entity.getYRot();
             if (entity instanceof Mob) {
                Mob entityliving = (Mob)entity;
-               entityliving.onInitialSpawn(world.getCurrentDifficultyAt(LycPos.of(entityliving)), null);
-               entityliving.playLivingSound();
+               if (world instanceof ServerLevel serverLevel) {
+                  entityliving.finalizeSpawn(serverLevel, world.getCurrentDifficultyAt(LycPos.of(entityliving)), MobSpawnType.SPAWN_EGG, null); // 1.12 onInitialSpawn
+               }
+               entityliving.playAmbientSound();
             }
 
             world.addFreshEntity(entity);
@@ -311,22 +312,22 @@ public class ItemCustomSpawnEgg extends ItemBase {
    }
 
    public void applyItemEntityDataToEntity(Level entityWorld, Player player, ItemStack stack, Entity targetEntity) {
-      MinecraftServer minecraftserver = entityWorld.getServer();
+      net.minecraft.server.MinecraftServer minecraftserver = entityWorld.getServer();
       if (minecraftserver != null && targetEntity != null) {
          CompoundTag nbttagcompound = LycNBT.getTag(stack);
          if (nbttagcompound != null && nbttagcompound.contains("CreatureInfoSpawnEgg", 10)) {
             if (!entityWorld.isClientSide
-               && targetEntity.ignoreItemEntityData()
-               && (player == null || !minecraftserver.getPlayerList().canSendCommands(player.getGameProfile()))) {
+               && targetEntity.onlyOpCanSetNbt()
+               && (player == null || !minecraftserver.getPlayerList().isOp(player.getGameProfile()))) {
                return;
             }
 
             CompoundTag entityNBT = new CompoundTag();
-            targetEntity.writeToNBT(entityNBT);
+            targetEntity.saveWithoutId(entityNBT);
             UUID uuid = targetEntity.getUUID();
             entityNBT.merge(nbttagcompound.getCompound("CreatureInfoSpawnEgg"));
-            targetEntity.putUUID(uuid);
-            targetEntity.readFromNBT(entityNBT);
+            targetEntity.setUUID(uuid);
+            targetEntity.load(entityNBT);
          }
       }
    }

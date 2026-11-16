@@ -124,7 +124,7 @@ public class ProjectileBehaviourPlaceBlocks extends ProjectileBehaviour {
 
    @Override
    public void onProjectileImpact(BaseProjectileEntity projectile, Level world, BlockPos pos) {
-      Block block = (Block)GameRegistry.findRegistry(Block.class).getValue(ResourceLocation.parse(this.blockName));
+      Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(this.blockName));
       if (block != null) {
          if (block == Blocks.WATER) {
             block = Blocks.WATER;
@@ -133,12 +133,12 @@ public class ProjectileBehaviourPlaceBlocks extends ProjectileBehaviour {
          }
 
          BlockState blockState = block.defaultBlockState();
-         if (block instanceof BlockDynamicLiquid || block instanceof BlockFluidBase) {
-            blockState = blockState.setValue(BlockLiquid.LEVEL, 2);
+         if (block instanceof net.minecraft.world.level.block.LiquidBlock) {
+            blockState = blockState.setValue(net.minecraft.world.level.block.LiquidBlock.LEVEL, 2);
          }
 
          for (int x = -this.radius + 1; x < this.radius; x++) {
-            for (int y = this.getBbHeight() - 1; y < this.getBbHeight(); y++) {
+            for (int y = this.height - 1; y < this.height; y++) {
                for (int z = -this.radius + 1; z < this.radius; z++) {
                   BlockPos placePos = pos.offset(x, y, z);
                   if ((!this.solidSurface || Material.of(world.getBlockState(placePos.below())).isSolid())

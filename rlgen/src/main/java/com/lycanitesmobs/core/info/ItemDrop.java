@@ -239,19 +239,19 @@ public class ItemDrop {
 
    public ItemDrop setDrop(ItemStack itemStack) {
       this.itemId = LycReg.key(itemStack.getItem()).toString();
-      this.metadata = itemStack.getMetadata();
+      this.metadata = 0; // 1.12 metadata: flattened into the item
       return this;
    }
 
    public ItemDrop setBurningDrop(ItemStack itemStack) {
       this.burningItemId = LycReg.key(itemStack.getItem()).toString();
-      this.burningMetadata = itemStack.getMetadata();
+      this.burningMetadata = 0;
       return this;
    }
 
    public ItemDrop setEffectDrop(int effectID, ItemStack itemStack) {
       this.effectItemIds.put(effectID, LycReg.key(itemStack.getItem()).toString());
-      this.effectItemMetadata.put(effectID, itemStack.getMetadata());
+      this.effectItemMetadata.put(effectID, 0);
       return this;
    }
 
@@ -303,12 +303,25 @@ public class ItemDrop {
       }
    }
 
+   /** 1.12 item registry lookup with metadata: a 1.21 id as is, else the flattened 1.12 id + metadata. */
+   private static Item legacyItem(String id, int metadata) {
+      ResourceLocation key = ResourceLocation.tryParse(id);
+      if (key != null && metadata == 0 && BuiltInRegistries.ITEM.containsKey(key)) {
+         return BuiltInRegistries.ITEM.get(key);
+      }
+      Item item = com.nukevscity.rlgen.legacy.LegacyStates.item(id, metadata);
+      if (item == null && key != null && BuiltInRegistries.ITEM.containsKey(key)) {
+         item = BuiltInRegistries.ITEM.get(key);
+      }
+      return item == Items.AIR ? null : item;
+   }
+
    public ItemStack getItemStack() {
       if (this.itemId == null) {
          return ItemStack.EMPTY;
       } else {
-         Item item = (Item)GameRegistry.findRegistry(Item.class).getValue(ResourceLocation.parse(this.itemId));
-         return item != null ? new ItemStack(item, 1, this.metadata) : ItemStack.EMPTY;
+         Item item = legacyItem(this.itemId, this.metadata);
+         return item != null ? new ItemStack(item, 1) : ItemStack.EMPTY;
       }
    }
 
@@ -316,15 +329,15 @@ public class ItemDrop {
       if (this.burningItemId == null) {
          return this.getItemStack();
       } else {
-         Item item = (Item)GameRegistry.findRegistry(Item.class).getValue(ResourceLocation.parse(this.burningItemId));
-         return item != null ? new ItemStack(item, 1, this.burningMetadata) : this.getItemStack();
+         Item item = legacyItem(this.burningItemId, this.burningMetadata);
+         return item != null ? new ItemStack(item, 1) : this.getItemStack();
       }
    }
 
    public ItemStack getEffectItemStack(int effectId) {
       if (this.effectItemIds.containsKey(effectId) && this.effectItemMetadata.containsKey(effectId)) {
-         Item item = (Item)GameRegistry.findRegistry(Item.class).getValue(ResourceLocation.parse(this.effectItemIds.get(effectId)));
-         return item != null ? new ItemStack(item, 1, this.effectItemMetadata.get(effectId)) : ItemStack.EMPTY;
+         Item item = legacyItem(this.effectItemIds.get(effectId), this.effectItemMetadata.get(effectId));
+         return item != null ? new ItemStack(item, 1) : ItemStack.EMPTY;
       } else {
          return ItemStack.EMPTY;
       }

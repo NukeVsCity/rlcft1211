@@ -103,11 +103,7 @@ public class ItemStaffSummoning extends ItemScepter {
    public ItemStaffSummoning(String itemName, String textureName) {
       this.itemName = itemName;
       this.setup();
-      this.addPropertyOverride(ResourceLocation.parse("using"), new IItemPropertyGetter() {
-         public float apply(ItemStack itemStack, Level world, LivingEntity entity) {
-            return entity != null && entity.isUsingItem() && entity.getUseItem() == itemStack ? 1.0F : 0.0F;
-         }
-      });
+      // 1.12 addPropertyOverride("using"): client item property, registered by the client
    }
 
    @Override
@@ -206,7 +202,7 @@ public class ItemStaffSummoning extends ItemScepter {
                }
 
                if (player.level().isClientSide) {
-                  SummoningBeastiaryScreen.openToPlayer(player);
+                  com.lycanitesmobs.LycanitesMobs.proxy.openClientScreen("summoning_beastiary", player);
                }
             }
          }

@@ -122,9 +122,9 @@ public class ExplosionSpawnTrigger extends EntitySpawnTrigger {
       } else if (this.chance < 1.0 && world.random.nextDouble() > this.chance) {
          return false;
       } else {
-         return !this.playerOnly && explosion.getExplosivePlacedBy() != null && !this.isMatchingEntity(explosion.getExplosivePlacedBy())
+         return !this.playerOnly && explosion.getIndirectSourceEntity() != null && !this.isMatchingEntity(explosion.getIndirectSourceEntity())
             ? false
-            : this.trigger(world, player, LycPos.of(explosion.blockPosition()), 0, 0);
+            : this.trigger(world, player, LycPos.of(explosion.center()), 0, 0);
       }
    }
 }

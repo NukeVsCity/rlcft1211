@@ -64,6 +64,15 @@ public class CommonProxy {
    public void openClientGui(Player player, int id, net.minecraft.world.level.Level world, int x, int y, int z) {
    }
 
+   /** 1.12 FontRenderer.listFormattedStringToWidth: the client proxy wraps with the font; servers keep the lines. */
+   public java.util.List<String> wrapText(String text, int width) {
+      return java.util.Arrays.asList(text.split("\n"));
+   }
+
+   /** Client screens opened directly by 1.12 code (SummoningBeastiaryScreen.openToPlayer...): lyc/client. */
+   public void openClientScreen(String screen, Player player) {
+   }
+
    public Player getPlayer(MessageContext ctx) {
       return ctx.player;
    }

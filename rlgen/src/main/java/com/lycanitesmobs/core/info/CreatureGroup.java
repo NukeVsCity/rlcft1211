@@ -257,7 +257,7 @@ public class CreatureGroup {
             if (this.frozen && entity instanceof SnowGolem) {
                return true;
             } else if (!this.inferno || !(entity instanceof Blaze) && !(entity instanceof MagmaCube)) {
-               ResourceLocation entityResourceLocation = EntityList.getKey(entity);
+               ResourceLocation entityResourceLocation = entity instanceof Player ? null : BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType());
                if (entityResourceLocation == null) {
                   return false;
                } else {
