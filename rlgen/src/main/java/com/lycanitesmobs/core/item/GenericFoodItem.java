@@ -106,43 +106,59 @@ public class GenericFoodItem extends Item {
    public ItemProperties properties;
 
    public GenericFoodItem(ItemProperties properties, String itemName) {
-      super(properties.food.hunger, properties.food.saturation, properties.food.meat);
+      // 1.12 ItemFood(hunger, saturation modifier, isWolfsFavoriteMeat): 1.21 food component with the same nutrition and saturation formula
+      super(foodProperties(properties));
       this.itemName = itemName;
       this.properties = properties;
       this.setup();
    }
 
+   private static Item.Properties foodProperties(ItemProperties properties) {
+      net.minecraft.world.food.FoodProperties.Builder food = new net.minecraft.world.food.FoodProperties.Builder()
+         .nutrition(properties.food.hunger).saturationModifier(properties.food.saturation);
+      if (properties.food.alwaysEdible) {
+         food.alwaysEdible();
+      }
+      return new Item.Properties().food(food.build()).stacksTo(Math.max(1, Math.min(99, properties.maxStackSize)));
+   }
+
    public void setup() {
       LycReg.setName(this, this.group.modid, this.itemName);
-      this.setTranslationKey(this.itemName);
       CreativeTabs.add(this.properties.creativeTab, this);
-      this.setMaxStackSize(this.properties.maxStackSize);
-      if (this.properties.food.alwaysEdible) {
-         this.setAlwaysEdible();
-      }
    }
 
    public void addInformation(ItemStack stack, Level worldIn, List<String> tooltip, TooltipFlag flagIn) {
       String description = this.getDescription(stack, worldIn, tooltip, flagIn);
       if (!"".equalsIgnoreCase(description)) {
-         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-
-         for (Object formattedDescription : fontRenderer.listFormattedStringToWidth(description, ItemBase.DESCRIPTION_WIDTH)) {
-            if (formattedDescription instanceof String) {
-               tooltip.add("§a" + formattedDescription);
-            }
-         }
+         // 1.12 wrapped the text to DESCRIPTION_WIDTH with the client font
+         tooltip.add("§a" + description);
       }
+   }
 
-      super.addInformation(stack, worldIn, tooltip, flagIn);
+   @Override
+   public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag flag) {
+      List<String> tooltip = new java.util.ArrayList<>();
+      this.addInformation(stack, null, tooltip, flag);
+      for (String line : tooltip) {
+         tooltipComponents.add(Component.literal(line));
+      }
    }
 
    public String getDescription(ItemStack stack, Level worldIn, List<String> tooltip, TooltipFlag flagIn) {
-      return LanguageManager.translate(this.getDescriptionId() + ".description");
+      return LanguageManager.translate("item." + this.itemName + ".description");
+   }
+
+   /** 1.12 ItemFood.onFoodEaten (players only) */
+   @Override
+   public ItemStack finishUsingItem(ItemStack itemStack, Level world, LivingEntity entity) {
+      ItemStack result = super.finishUsingItem(itemStack, world, entity);
+      if (!world.isClientSide && entity instanceof Player player) {
+         this.onFoodEaten(itemStack, world, player);
+      }
+      return result;
    }
 
    protected void onFoodEaten(ItemStack itemStack, Level world, Player player) {
-      super.onFoodEaten(itemStack, world, player);
 
       for (EffectEntry effectEntry : this.properties.food.effects) {
          MobEffectInstance potionEffect = effectEntry.createEffectInstance(world);

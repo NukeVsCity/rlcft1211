@@ -221,7 +221,7 @@ public class ItemStaffSummoning extends ItemScepter {
    }
 
    private void damage_item(ItemStack itemStack, int amountToDamage, LivingEntity entity) {
-      itemStack.damageItem(amountToDamage, entity);
+      LycItems.damageItem(itemStack, amountToDamage, entity);
       if (itemStack.getCount() == 0) {
          if (entity.getItemInHand(InteractionHand.MAIN_HAND).equals(itemStack)) {
             entity.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);

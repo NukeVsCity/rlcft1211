@@ -184,11 +184,11 @@ public class ItemScepter extends ItemBase {
    }
 
    public void damageItemRapid(ItemStack itemStack, LivingEntity entity) {
-      itemStack.damageItem(1, entity);
+      LycItems.damageItem(itemStack, 1, entity);
    }
 
    public void damageItemCharged(ItemStack itemStack, LivingEntity entity, float power) {
-      itemStack.damageItem(Math.max((int)power, 1), entity);
+      LycItems.damageItem(itemStack, Math.max((int)power, 1), entity);
    }
 
    public int getDurability() {
@@ -240,7 +240,7 @@ public class ItemScepter extends ItemBase {
          projectile.getLaunchSound(),
          SoundSource.PLAYERS,
          0.5F,
-         0.4F / (itemRand.nextFloat() * 0.4F + 0.8F)
+         0.4F / (ItemBase.ITEM_RAND.nextFloat() * 0.4F + 0.8F)
       );
    }
 

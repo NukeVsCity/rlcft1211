@@ -290,13 +290,13 @@ public class ItemEquipmentPart extends ItemBase {
    }
 
    public void setLevel(ItemStack itemStack, int level) {
-      CompoundTag nbt = LycNBT.get(this);
+      CompoundTag nbt = this.getTagCompound(itemStack);
       nbt.putInt("equipmentLevel", level);
-      LycNBT.put(itemStack, nbt);
+      LycNBT.setTag(itemStack, nbt);
    }
 
    public int getLevel(ItemStack itemStack) {
-      CompoundTag nbt = LycNBT.get(this);
+      CompoundTag nbt = this.getTagCompound(itemStack);
       int level = 1;
       if (nbt.contains("equipmentLevel")) {
          level = nbt.getInt("equipmentLevel");
@@ -306,9 +306,9 @@ public class ItemEquipmentPart extends ItemBase {
    }
 
    public void setExperience(ItemStack itemStack, int experience) {
-      CompoundTag nbt = LycNBT.get(this);
+      CompoundTag nbt = this.getTagCompound(itemStack);
       nbt.putInt("equipmentExperience", experience);
-      LycNBT.put(itemStack, nbt);
+      LycNBT.setTag(itemStack, nbt);
    }
 
    public void addExperience(ItemStack itemStack, int experience) {
@@ -328,7 +328,7 @@ public class ItemEquipmentPart extends ItemBase {
    }
 
    public int getExperience(ItemStack itemStack) {
-      CompoundTag nbt = LycNBT.get(this);
+      CompoundTag nbt = this.getTagCompound(itemStack);
       int experience = 0;
       if (nbt.contains("equipmentExperience")) {
          experience = nbt.getInt("equipmentExperience");
@@ -371,7 +371,7 @@ public class ItemEquipmentPart extends ItemBase {
    }
 
    public int getSharpness(ItemStack itemStack) {
-      CompoundTag nbt = LycNBT.get(this);
+      CompoundTag nbt = this.getTagCompound(itemStack);
       int sharpness = ItemEquipment.SHARPNESS_MAX;
       if (nbt.contains("equipmentSharpness")) {
          sharpness = nbt.getInt("equipmentSharpness");
@@ -381,9 +381,9 @@ public class ItemEquipmentPart extends ItemBase {
    }
 
    public void setSharpness(ItemStack itemStack, int sharpness) {
-      CompoundTag nbt = LycNBT.get(this);
+      CompoundTag nbt = this.getTagCompound(itemStack);
       nbt.putInt("equipmentSharpness", Math.max(Math.min(sharpness, ItemEquipment.SHARPNESS_MAX), 0));
-      LycNBT.put(itemStack, nbt);
+      LycNBT.setTag(itemStack, nbt);
    }
 
    public boolean addSharpness(ItemStack itemStack, int sharpness) {
@@ -407,7 +407,7 @@ public class ItemEquipmentPart extends ItemBase {
    }
 
    public int getMana(ItemStack itemStack) {
-      CompoundTag nbt = LycNBT.get(this);
+      CompoundTag nbt = this.getTagCompound(itemStack);
       int mana = ItemEquipment.MANA_MAX;
       if (nbt.contains("equipmentMana")) {
          mana = nbt.getInt("equipmentMana");
@@ -417,9 +417,9 @@ public class ItemEquipmentPart extends ItemBase {
    }
 
    public void setMana(ItemStack itemStack, int mana) {
-      CompoundTag nbt = LycNBT.get(this);
+      CompoundTag nbt = this.getTagCompound(itemStack);
       nbt.putInt("equipmentMana", Math.max(Math.min(mana, ItemEquipment.MANA_MAX), 0));
-      LycNBT.put(itemStack, nbt);
+      LycNBT.setTag(itemStack, nbt);
    }
 
    public boolean addMana(ItemStack itemStack, int mana) {
@@ -443,7 +443,7 @@ public class ItemEquipmentPart extends ItemBase {
    }
 
    public Vector4f getColor(ItemStack itemStack) {
-      CompoundTag nbt = LycNBT.get(this);
+      CompoundTag nbt = this.getTagCompound(itemStack);
       float r = 1.0F;
       float g = 1.0F;
       float b = 1.0F;
@@ -463,11 +463,11 @@ public class ItemEquipmentPart extends ItemBase {
    }
 
    public void setColor(ItemStack itemStack, float red, float green, float blue) {
-      CompoundTag nbt = LycNBT.get(this);
+      CompoundTag nbt = this.getTagCompound(itemStack);
       nbt.putFloat("equipmentColorR", red);
       nbt.putFloat("equipmentColorG", green);
       nbt.putFloat("equipmentColorB", blue);
-      LycNBT.put(itemStack, nbt);
+      LycNBT.setTag(itemStack, nbt);
    }
 
    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {

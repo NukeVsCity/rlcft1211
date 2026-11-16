@@ -173,7 +173,7 @@ public class ChargeItem extends ItemBase {
          }
 
          this.playSound(
-            world, player.blockPosition(), projectile.getLaunchSound(), SoundSource.NEUTRAL, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F)
+            world, player.blockPosition(), projectile.getLaunchSound(), SoundSource.NEUTRAL, 0.5F, 0.4F / (ItemBase.ITEM_RAND.nextFloat() * 0.4F + 0.8F)
          );
       }
 

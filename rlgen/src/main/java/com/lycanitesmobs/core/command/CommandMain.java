@@ -5,6 +5,7 @@ import com.github.alexthe666.iceandfire.entity.ai.legacy.EntityAITasks;
 import com.github.alexthe666.iceandfire.entity.ai.legacy.Legacy112;
 import com.lycanitesmobs.LycEntities;
 import com.lycanitesmobs.compat.*;
+import net.minecraft.server.MinecraftServer;
 import io.netty.buffer.ByteBuf;
 import java.util.Optional;
 import javax.annotation.Nullable;
@@ -120,7 +121,53 @@ import java.util.stream.IntStream;
 import org.apache.commons.lang3.math.NumberUtils;
 
 
-public class CommandMain extends CommandBase {
+/**
+ * 1.12 CommandMain (/lycanitesmobs, aliases lm, lycan, lycmobs, lycanmobs): the 1.12 String[] handling is kept and called
+ * from a brigadier command with one greedy argument.
+ */
+public class CommandMain {
+   public static void register(com.mojang.brigadier.CommandDispatcher<net.minecraft.commands.CommandSourceStack> dispatcher) {
+      CommandMain command = new CommandMain();
+      for (Object alias : java.util.List.of("lycanitesmobs", "lm", "lycan", "lycmobs", "lycanmobs")) {
+         dispatcher.register(net.minecraft.commands.Commands.literal((String)alias)
+            .requires(src -> !src.isPlayer() || src.hasPermission(command.getRequiredPermissionLevel()))
+            .executes(ctx -> {
+               command.execute(ctx.getSource().getServer(), new ICommandSender(ctx.getSource()), new String[0]);
+               return 1;
+            })
+            .then(net.minecraft.commands.Commands.argument("args", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
+               .suggests((ctx, builder) -> {
+                  String[] typed = builder.getRemaining().split(" ", -1);
+                  for (String option : command.getTabCompletions(ctx.getSource().getServer(), new ICommandSender(ctx.getSource()), typed, null)) {
+                     builder.suggest(option);
+                  }
+                  return builder.buildFuture();
+               })
+               .executes(ctx -> {
+                  command.execute(ctx.getSource().getServer(), new ICommandSender(ctx.getSource()),
+                     com.mojang.brigadier.arguments.StringArgumentType.getString(ctx, "args").trim().split(" +"));
+                  return 1;
+               })));
+      }
+   }
+
+   /** 1.12 CommandBase.getListOfStringsMatchingLastWord */
+   public static List<String> getListOfStringsMatchingLastWord(String[] args, String... options) {
+      return getListOfStringsMatchingLastWord(args, java.util.Arrays.asList(options));
+   }
+
+   public static List<String> getListOfStringsMatchingLastWord(String[] args, java.util.Collection<?> options) {
+      String last = args.length == 0 ? "" : args[args.length - 1];
+      List<String> list = new ArrayList<>();
+      for (Object o : options) {
+         String option = String.valueOf(o);
+         if (option.regionMatches(true, 0, last, 0, last.length())) {
+            list.add(option);
+         }
+      }
+      return list;
+   }
+
    private List aliases = new ArrayList();
 
    public CommandMain() {
@@ -136,7 +183,7 @@ public class CommandMain extends CommandBase {
    }
 
    public String getUsage(ICommandSender commandSender) {
-      return commandSender instanceof Player
+      return commandSender.getPlayer() != null
          ? "/lycanitesmobs <sub-commands: mobevent [start <event name>, stop, list, enable, disable]>"
          : "/lycanitesmobs <sub-commands: mobevent [start <event name> dimensionID, stop, list, enable, disable]>";
    }
@@ -219,7 +266,7 @@ public class CommandMain extends CommandBase {
 
                      if (args.length == 4) {
                         return getListOfStringsMatchingLastWord(
-                           args, Arrays.stream(DimensionManager.getIDs()).mapToInt(Integer::intValue).mapToObj(Integer::toString).collect(Collectors.toList())
+                           args, java.util.List.of("0", "-1", "1")
                         );
                      }
 
@@ -237,13 +284,13 @@ public class CommandMain extends CommandBase {
                   } else if ("random".equalsIgnoreCase(args[1])) {
                      if (args.length == 3) {
                         return getListOfStringsMatchingLastWord(
-                           args, Arrays.stream(DimensionManager.getIDs()).mapToInt(Integer::intValue).mapToObj(Integer::toString).collect(Collectors.toList())
+                           args, java.util.List.of("0", "-1", "1")
                         );
                      }
                   } else if ("stop".equalsIgnoreCase(args[1])) {
                      if (args.length == 3) {
                         return getListOfStringsMatchingLastWord(
-                           args, Arrays.stream(DimensionManager.getIDs()).mapToInt(Integer::intValue).mapToObj(Integer::toString).collect(Collectors.toList())
+                           args, java.util.List.of("0", "-1", "1")
                         );
                      }
                   } else if ("enable".equalsIgnoreCase(args[1])) {
@@ -265,9 +312,6 @@ public class CommandMain extends CommandBase {
       return false;
    }
 
-   public int compareTo(ICommand p_compareTo_1_) {
-      return this.getName().compareTo(p_compareTo_1_.getName());
-   }
 
    public void execute(MinecraftServer server, ICommandSender commandSender, String[] args) {
       String reply = LanguageManager.translate("lyc.command.invalid");
@@ -310,7 +354,7 @@ public class CommandMain extends CommandBase {
 
             if ("test".equalsIgnoreCase(args[1])) {
                reply = LanguageManager.translate("lyc.command.spawners.test");
-               if (!(commandSender instanceof Player)) {
+               if (!(commandSender.getPlayer() != null)) {
                   return;
                }
 
@@ -320,7 +364,7 @@ public class CommandMain extends CommandBase {
 
                String spawnerName = args[2];
                Level world = commandSender.level();
-               Player player = (Player)commandSender;
+               Player player = commandSender.getPlayer();
                BlockPos pos = player.blockPosition();
                int level = 1;
                if (args.length > 3) {
@@ -393,7 +437,7 @@ public class CommandMain extends CommandBase {
                return;
             }
 
-            Player player = (Player)commandSender;
+            Player player = commandSender.getPlayer();
             ExtendedPlayer extendedPlayer = ExtendedPlayer.getForPlayer(player);
             if ("spirit".equalsIgnoreCase(args[1])) {
                reply = "Restored Player Spirit.";
@@ -448,13 +492,13 @@ public class CommandMain extends CommandBase {
                return;
             }
 
-            if (!(commandSender instanceof Player)) {
+            if (!(commandSender.getPlayer() != null)) {
                reply = LanguageManager.translate("lyc.command.playeronly");
                commandSender.sendSystemMessage(Component.literal(reply));
                return;
             }
 
-            Player playerx = (Player)commandSender;
+            Player playerx = commandSender.getPlayer();
             ExtendedPlayer extendedPlayerx = ExtendedPlayer.getForPlayer(playerx);
             Beastiary beastiary = extendedPlayerx.getBeastiary();
             if (extendedPlayerx == null || beastiary == null) {
@@ -565,7 +609,7 @@ public class CommandMain extends CommandBase {
 
                Level world = null;
                if (args.length >= 4 && NumberUtils.isNumber(args[3])) {
-                  world = DimensionManager.getWorld(Integer.parseInt(args[3]));
+                  world = LycServer.level(Integer.parseInt(args[3]));
                } else {
                   world = commandSender.level();
                }
@@ -587,8 +631,8 @@ public class CommandMain extends CommandBase {
 
                Player playerxx = null;
                BlockPos pos = LycPos.of(0, 0, 0);
-               if (commandSender instanceof Player) {
-                  playerxx = (Player)commandSender;
+               if (commandSender.getPlayer() != null) {
+                  playerxx = commandSender.getPlayer();
                   pos = playerxx.blockPosition();
                }
 
@@ -622,7 +666,7 @@ public class CommandMain extends CommandBase {
 
             Level worldx;
             if (args.length >= 3 && NumberUtils.isNumber(args[2])) {
-               worldx = DimensionManager.getWorld(Integer.parseInt(args[2]));
+               worldx = LycServer.level(Integer.parseInt(args[2]));
             } else {
                worldx = commandSender.level();
             }
@@ -714,6 +758,6 @@ public class CommandMain extends CommandBase {
    }
 
    public boolean checkPermission(MinecraftServer server, ICommandSender commandSender) {
-      return !(commandSender instanceof Player) || commandSender.canUseCommand(this.getRequiredPermissionLevel(), this.getName());
+      return !(commandSender.getPlayer() != null) || commandSender.canUseCommand(this.getRequiredPermissionLevel(), this.getName());
    }
 }

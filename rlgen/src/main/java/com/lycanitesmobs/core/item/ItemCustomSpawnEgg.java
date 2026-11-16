@@ -137,13 +137,8 @@ public class ItemCustomSpawnEgg extends ItemBase {
       public void addInformation(ItemStack stack, Level worldIn, List<String> tooltip, TooltipFlag flagIn) {
       String description = this.getDescription(stack, worldIn, tooltip, flagIn);
       if (!"".equalsIgnoreCase(description) && !("item." + this.itemName + ".description").equals(description)) {
-         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-
-         for (Object formattedDescription : fontRenderer.listFormattedStringToWidth(description, ItemBase.DESCRIPTION_WIDTH)) {
-            if (formattedDescription instanceof String) {
-               tooltip.add("§a" + formattedDescription);
-            }
-         }
+         // 1.12 wrapped the text to DESCRIPTION_WIDTH with the client font
+         tooltip.add("§a" + description);
       }
    }
 
@@ -166,7 +161,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
       Block block = blockState.getBlock();
       if (world.isClientSide) {
          return InteractionResult.SUCCESS;
-      } else if (!player.canPlayerEdit(pos.relative(facing), facing, itemStack)) {
+      } else if (!player.mayUseItemAt(pos.relative(facing), facing, itemStack)) {
          return InteractionResult.FAIL;
       } else if (block == Blocks.SPAWNER) {
          BlockEntity tileEntity = world.getBlockEntity(pos);
@@ -196,7 +191,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
          );
          if (entity != null) {
             if (itemStack.has(net.minecraft.core.component.DataComponents.CUSTOM_NAME)) {
-               entity.setCustomName(Component.literal(itemStack.getHoverName()));
+               entity.setCustomName(itemStack.getHoverName());
             }
 
             this.applyItemEntityDataToEntity(world, player, itemStack, entity);
@@ -225,7 +220,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
                   return new InteractionResultHolder(InteractionResult.FAIL, itemStack);
                }
 
-               if (!player.canPlayerEdit(pos, rayTraceResult.sideHit, itemStack)) {
+               if (!player.mayUseItemAt(pos, rayTraceResult.sideHit, itemStack)) {
                   return new InteractionResultHolder(InteractionResult.PASS, itemStack);
                }
 
@@ -234,7 +229,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
                      world, itemStack, (double)pos.getX(), (double)pos.getY(), (double)pos.getZ()
                   );
                   if (entity != null && itemStack.has(net.minecraft.core.component.DataComponents.CUSTOM_NAME)) {
-                     entity.setCustomName(Component.literal(itemStack.getHoverName()));
+                     entity.setCustomName(itemStack.getHoverName());
                   }
 
                   if (!player.getAbilities().instabuild) {
@@ -275,7 +270,7 @@ public class ItemCustomSpawnEgg extends ItemBase {
    }
 
    public String getCreatureName(ItemStack itemStack) {
-      CompoundTag itemStackNBT = LycNBT.get(itemStack);
+      CompoundTag itemStackNBT = LycNBT.getTag(itemStack);
       if (itemStackNBT != null && itemStackNBT.contains("CreatureInfoSpawnEgg", 10)) {
          CompoundTag spawnEggNBT = itemStackNBT.getCompound("CreatureInfoSpawnEgg");
          return !spawnEggNBT.contains("creaturename", 8) ? null : spawnEggNBT.getString("creaturename");
@@ -308,17 +303,17 @@ public class ItemCustomSpawnEgg extends ItemBase {
    }
 
    public void applyCreatureInfoToItemStack(ItemStack itemStack, CreatureInfo creatureInfo) {
-      CompoundTag itemStackNBT = LycNBT.hasTag(itemStack) ? LycNBT.get(itemStack) : new CompoundTag();
+      CompoundTag itemStackNBT = LycNBT.hasTag(itemStack) ? LycNBT.getTag(itemStack) : new CompoundTag();
       CompoundTag spawnEggNBT = new CompoundTag();
       spawnEggNBT.putString("creaturename", creatureInfo.getName());
       itemStackNBT.put("CreatureInfoSpawnEgg", spawnEggNBT);
-      LycNBT.put(itemStack, itemStackNBT);
+      LycNBT.setTag(itemStack, itemStackNBT);
    }
 
    public void applyItemEntityDataToEntity(Level entityWorld, Player player, ItemStack stack, Entity targetEntity) {
       MinecraftServer minecraftserver = entityWorld.getServer();
       if (minecraftserver != null && targetEntity != null) {
-         CompoundTag nbttagcompound = LycNBT.get(stack);
+         CompoundTag nbttagcompound = LycNBT.getTag(stack);
          if (nbttagcompound != null && nbttagcompound.contains("CreatureInfoSpawnEgg", 10)) {
             if (!entityWorld.isClientSide
                && targetEntity.ignoreItemEntityData()

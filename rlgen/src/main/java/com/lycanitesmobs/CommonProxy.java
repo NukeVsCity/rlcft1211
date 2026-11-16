@@ -35,6 +35,11 @@ public class CommonProxy {
    public void registerModels(ModInfo groupInfo) {
    }
 
+   /** The client world (null on the server): lyc/client returns Minecraft's level. */
+   public net.minecraft.world.level.Level getClientWorld() {
+      return null;
+   }
+
    public Player getClientPlayer() {
       return null;
    }

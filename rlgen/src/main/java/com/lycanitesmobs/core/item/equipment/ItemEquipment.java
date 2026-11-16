@@ -245,7 +245,7 @@ public class ItemEquipment extends ItemBase {
 
    public NonNullList<ItemStack> getEquipmentPartStacks(ItemStack itemStack) {
       NonNullList<ItemStack> itemStacks = NonNullList.withSize(PART_LIMIT, ItemStack.EMPTY);
-      CompoundTag nbt = LycNBT.get(this);
+      CompoundTag nbt = this.getTagCompound(itemStack);
       if (nbt.contains("Items")) {
          ContainerHelper.loadAllItems(nbt, itemStacks, LycReg.access());
       }
@@ -277,9 +277,9 @@ public class ItemEquipment extends ItemBase {
       if (slotIndex < PART_LIMIT) {
          NonNullList<ItemStack> itemStacks = this.getEquipmentPartStacks(equipmentStack);
          itemStacks.set(slotIndex, equipmentPartStack);
-         CompoundTag nbt = LycNBT.get(this);
+         CompoundTag nbt = this.getTagCompound(equipmentStack);
          ContainerHelper.saveAllItems(nbt, itemStacks, LycReg.access());
-         LycNBT.put(equipmentStack, nbt);
+         LycNBT.setTag(equipmentStack, nbt);
       }
    }
 
@@ -379,9 +379,9 @@ public class ItemEquipment extends ItemBase {
          }
       }
 
-      CompoundTag nbt = LycNBT.get(this);
+      CompoundTag nbt = this.getTagCompound(equipmentStack);
       ContainerHelper.saveAllItems(nbt, itemStacks, LycReg.access());
-      LycNBT.put(equipmentStack, nbt);
+      LycNBT.setTag(equipmentStack, nbt);
       return sharpnessIncreased;
    }
 
@@ -396,9 +396,9 @@ public class ItemEquipment extends ItemBase {
          }
       }
 
-      CompoundTag nbt = LycNBT.get(this);
+      CompoundTag nbt = this.getTagCompound(equipmentStack);
       ContainerHelper.saveAllItems(nbt, itemStacks, LycReg.access());
-      LycNBT.put(equipmentStack, nbt);
+      LycNBT.setTag(equipmentStack, nbt);
       return sharpnessDecreased;
    }
 
@@ -429,9 +429,9 @@ public class ItemEquipment extends ItemBase {
          }
       }
 
-      CompoundTag nbt = LycNBT.get(this);
+      CompoundTag nbt = this.getTagCompound(equipmentStack);
       ContainerHelper.saveAllItems(nbt, itemStacks, LycReg.access());
-      LycNBT.put(equipmentStack, nbt);
+      LycNBT.setTag(equipmentStack, nbt);
       return manaIncreased;
    }
 
@@ -446,9 +446,9 @@ public class ItemEquipment extends ItemBase {
          }
       }
 
-      CompoundTag nbt = LycNBT.get(this);
+      CompoundTag nbt = this.getTagCompound(equipmentStack);
       ContainerHelper.saveAllItems(nbt, itemStacks, LycReg.access());
-      LycNBT.put(equipmentStack, nbt);
+      LycNBT.setTag(equipmentStack, nbt);
       return manaDecreased;
    }
 

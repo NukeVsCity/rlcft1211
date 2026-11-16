@@ -111,7 +111,7 @@ public class ItemGeistLiver extends ItemBase {
          return InteractionResult.SUCCESS;
       } else {
          pos = pos.relative(facing);
-         if (player.canPlayerEdit(pos, facing, itemStack)) {
+         if (player.mayUseItemAt(pos, facing, itemStack)) {
             try {
                Block block = world.getBlockState(pos).getBlock();
                if (block == Blocks.AIR) {
@@ -122,7 +122,7 @@ public class ItemGeistLiver extends ItemBase {
                      AssetManager.getSound("shadowfire"),
                      SoundSource.PLAYERS,
                      1.0F,
-                     itemRand.nextFloat() * 0.4F + 0.8F,
+                     ItemBase.ITEM_RAND.nextFloat() * 0.4F + 0.8F,
                      false
                   );
                   world.setBlock(pos, ObjectManager.getBlock("shadowfire").defaultBlockState(), 3);

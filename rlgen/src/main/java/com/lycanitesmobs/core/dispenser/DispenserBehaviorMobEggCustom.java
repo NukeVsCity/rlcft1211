@@ -106,7 +106,7 @@ public class DispenserBehaviorMobEggCustom extends BehaviorDefaultDispenseItem {
          ItemCustomSpawnEgg itemCustomSpawnEgg = (ItemCustomSpawnEgg)itemStack.getItem();
          Entity entity = ((ItemCustomSpawnEgg)itemStack.getItem()).spawnCreature(blockSource.getWorld(), itemStack, x, y, z);
          if (itemStack.has(net.minecraft.core.component.DataComponents.CUSTOM_NAME)) {
-            entity.setCustomName(Component.literal(itemStack.getHoverName()));
+            entity.setCustomName(itemStack.getHoverName());
          }
 
          itemStack.split(1);

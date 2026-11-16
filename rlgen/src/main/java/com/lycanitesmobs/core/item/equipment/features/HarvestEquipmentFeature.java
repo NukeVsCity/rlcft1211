@@ -405,7 +405,7 @@ public class HarvestEquipmentFeature extends EquipmentFeature {
    public boolean onBlockUsed(Level world, Player player, BlockPos pos, ItemStack itemStack, Direction facing) {
       if (!"hoe".equals(this.harvestType)) {
          return false;
-      } else if (!player.canPlayerEdit(pos.relative(facing), facing, itemStack)) {
+      } else if (!player.mayUseItemAt(pos.relative(facing), facing, itemStack)) {
          return false;
       } else {
          BlockState blockState = world.getBlockState(pos);

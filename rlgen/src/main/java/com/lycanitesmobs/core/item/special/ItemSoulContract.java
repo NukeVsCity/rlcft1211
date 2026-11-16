@@ -108,7 +108,7 @@ public class ItemSoulContract extends ItemBase {
    }
 
    public UUID getOwnerUUID(ItemStack itemStack) {
-      CompoundTag nbt = LycNBT.get(this);
+      CompoundTag nbt = this.getTagCompound(itemStack);
       UUID uuid = null;
       if (nbt.hasUUID("ownerUUID")) {
          uuid = nbt.getUUID("ownerUUID");
@@ -118,7 +118,7 @@ public class ItemSoulContract extends ItemBase {
    }
 
    public UUID getPetEntryUUID(ItemStack itemStack) {
-      CompoundTag nbt = LycNBT.get(this);
+      CompoundTag nbt = this.getTagCompound(itemStack);
       UUID uuid = null;
       if (nbt.hasUUID("petEntryUUID")) {
          uuid = nbt.getUUID("petEntryUUID");
@@ -142,12 +142,12 @@ public class ItemSoulContract extends ItemBase {
          PetEntry petEntry = extendedOwner.petManager.getEntry(petEntryUUID);
          if (petEntry == null) {
             tooltip.add(LanguageManager.translate("item.lycanitesmobs.soul_contract.released"));
-            tooltip.add(LanguageManager.translate("item.lycanitesmobs.soul_contract.owner") + " " + owner.getHoverName());
+            tooltip.add(LanguageManager.translate("item.lycanitesmobs.soul_contract.owner") + " " + owner.getDisplayName().getString());
             return;
          }
 
-         tooltip.add(LanguageManager.translate("item.lycanitesmobs.soul_contract.bound") + " " + petEntry.getHoverName());
-         tooltip.add(LanguageManager.translate("item.lycanitesmobs.soul_contract.owner") + " " + owner.getHoverName().getString());
+         tooltip.add(LanguageManager.translate("item.lycanitesmobs.soul_contract.bound") + " " + petEntry.getDisplayName());
+         tooltip.add(LanguageManager.translate("item.lycanitesmobs.soul_contract.owner") + " " + owner.getDisplayName().getString());
       }
    }
 
@@ -172,10 +172,10 @@ public class ItemSoulContract extends ItemBase {
    public boolean bindSoul(ItemStack itemStack, Player player, TameableCreatureEntity tameableCreatureEntity) {
       if (tameableCreatureEntity.getPlayerOwner() == player && !"familiar".equalsIgnoreCase(tameableCreatureEntity.getPetEntry().getType())) {
          if (!player.level().isClientSide) {
-            CompoundTag nbt = LycNBT.get(this);
+            CompoundTag nbt = this.getTagCompound(itemStack);
             nbt.putUUID("ownerUUID", player.getUUID());
             nbt.putUUID("petEntryUUID", tameableCreatureEntity.getPetEntry().petEntryID);
-            LycNBT.put(itemStack, nbt);
+            LycNBT.setTag(itemStack, nbt);
             player.sendSystemMessage(Component.literal(LanguageManager.translate("message.soul_contract.bound")));
          }
 
@@ -193,12 +193,12 @@ public class ItemSoulContract extends ItemBase {
       if (player.getUUID().equals(ownerUUID)) {
          if (petEntryUUID.equals(tameableCreatureEntity.getPetEntry().petEntryID)) {
             if (!player.level().isClientSide) {
-               CompoundTag nbt = LycNBT.get(this);
+               CompoundTag nbt = this.getTagCompound(itemStack);
                nbt.remove("ownerUUIDMost");
                nbt.remove("ownerUUIDLeast");
                nbt.remove("petEntryUUIDMost");
                nbt.remove("petEntryUUIDLeast");
-               LycNBT.put(itemStack, nbt);
+               LycNBT.setTag(itemStack, nbt);
                player.sendSystemMessage(Component.literal(LanguageManager.translate("message.soul_contract.unbound")));
             }
 

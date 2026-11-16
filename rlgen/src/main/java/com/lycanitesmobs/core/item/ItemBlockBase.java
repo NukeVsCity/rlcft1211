@@ -96,10 +96,22 @@ import net.neoforged.neoforge.event.tick.*;
 
 public class ItemBlockBase extends BlockItem {
    public ItemBlockBase(Block block) {
-      super(block);
+      super(block, new Item.Properties());
    }
 
    public String getItemStackDisplayName(ItemStack stack) {
-      return this.block.getLocalizedName();
+      return this.getBlock() instanceof com.lycanitesmobs.core.block.BlockBase base ? base.getLocalizedName() : this.getBlock().getName().getString();
+   }
+
+   /** 1.12 ItemBlock tooltip: the block's addInformation. */
+   @Override
+   public void appendHoverText(ItemStack stack, Item.TooltipContext context, java.util.List<Component> tooltipComponents, TooltipFlag flag) {
+      java.util.List<String> tooltip = new java.util.ArrayList<>();
+      if (this.getBlock() instanceof com.lycanitesmobs.core.block.BlockBase base) {
+         base.addInformation(stack, null, tooltip, flag);
+      }
+      for (String line : tooltip) {
+         tooltipComponents.add(Component.literal(line));
+      }
    }
 }

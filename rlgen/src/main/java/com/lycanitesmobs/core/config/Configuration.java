@@ -27,6 +27,10 @@ public class Configuration {
       public String comment;
       public final Map<String, Property> properties = new TreeMap<>();
 
+      public java.util.Set<String> keySet() {
+         return this.properties.keySet();
+      }
+
       public boolean containsKey(String key) {
          return this.properties.containsKey(key);
       }

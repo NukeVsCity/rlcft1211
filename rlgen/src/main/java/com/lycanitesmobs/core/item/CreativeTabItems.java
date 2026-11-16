@@ -95,8 +95,9 @@ import com.lycanitesmobs.ObjectManager;
 
 
 public class CreativeTabItems extends CreativeTabs {
-   public CreativeTabItems(int tabID, String modID) {
-      super(tabID, modID);
+   public CreativeTabItems(String modID) {
+      super(modID);
+      this.icon = this::createIcon;
    }
 
    public ItemStack createIcon() {

@@ -98,36 +98,37 @@ import com.lycanitesmobs.core.info.ModInfo;
 import java.util.List;
 
 
-public class GenericBucketItem extends ItemBucket {
+public class GenericBucketItem extends BucketItem {
    public String itemName;
    public ModInfo group = LycanitesMobs.modInfo;
 
    public GenericBucketItem(ForgeFluid fluid, Block fluidBlock, String fluidName) {
-      super(fluidBlock);
+      super(fluid.getSource(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1));
       this.itemName = "bucket" + fluidName;
       LycReg.setName(this, this.group.modid, this.itemName);
-      this.setTranslationKey(this.itemName);
       CreativeTabs.add(LycanitesMobs.itemsTab, this);
       ObjectManager.addBucket(this, fluidBlock, fluid);
    }
 
    public String getItemStackDisplayName(ItemStack stack) {
-      return LanguageManager.translate(this.getUnlocalizedNameInefficiently(stack) + ".name").trim();
+      return LanguageManager.translate("item." + this.itemName + ".name").trim();
    }
 
    public void addInformation(ItemStack stack, Level worldIn, List<String> tooltip, TooltipFlag flagIn) {
       String description = this.getDescription(stack, worldIn, tooltip, flagIn);
       if (!"".equalsIgnoreCase(description) && !("item." + this.itemName + ".description").equals(description)) {
-         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
-
-         for (Object formattedDescription : fontRenderer.listFormattedStringToWidth(description, ItemBase.DESCRIPTION_WIDTH)) {
-            if (formattedDescription instanceof String) {
-               tooltip.add("§a" + formattedDescription);
-            }
-         }
+         // 1.12 wrapped the text to DESCRIPTION_WIDTH with the client font
+         tooltip.add("§a" + description);
       }
+   }
 
-      super.addInformation(stack, worldIn, tooltip, flagIn);
+   @Override
+   public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltipComponents, TooltipFlag flag) {
+      java.util.List<String> tooltip = new java.util.ArrayList<>();
+      this.addInformation(stack, null, tooltip, flag);
+      for (String line : tooltip) {
+         tooltipComponents.add(Component.literal(line));
+      }
    }
 
    public String getDescription(ItemStack stack, Level worldIn, List<String> tooltip, TooltipFlag flagIn) {
