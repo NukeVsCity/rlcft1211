@@ -11,7 +11,7 @@ import net.minecraft.resources.ResourceLocation;
  * 1.12 BaseScreen (a GuiScreen). The drawing helpers are the 1.12 ones (see {@link DrawHelper}); {@link #render} keeps the
  * frame's GuiGraphics for them and calls the 1.12 style {@link #drawScreen}.
  */
-public class BaseScreen extends Screen {
+public class BaseScreen extends Screen implements com.lycanitesmobs.client.gui.buttons.ButtonBase.Listener {
    protected Minecraft mc;
    protected float zLevel;
    protected DrawHelper drawHelper;
@@ -24,6 +24,16 @@ public class BaseScreen extends Screen {
       super(title);
       this.mc = Minecraft.getInstance();
       this.drawHelper = new DrawHelper(this.mc, this.mc.font);
+   }
+
+   /** 1.12 actionPerformed(GuiButton). */
+   @Override
+   public void actionPerformed(com.lycanitesmobs.client.gui.buttons.ButtonBase button) {
+   }
+
+   /** 1.12 buttonList.add. */
+   public <T extends com.lycanitesmobs.client.gui.buttons.ButtonBase> T addButton(T button) {
+      return this.addRenderableWidget(button);
    }
 
    public Font getFontRenderer() {
