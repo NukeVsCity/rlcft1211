@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SSS",
+    "S S",
+    "S S"
+  ],
+  "key": {
+    "S": {
+      "item": "simpledifficulty:ice_chunk"
+    }
+  },
+  "result": {
+    "id": "simpledifficulty:ice_leggings",
+    "count": 1
+  }
+}

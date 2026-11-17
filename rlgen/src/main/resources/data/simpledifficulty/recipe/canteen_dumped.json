@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "simpledifficulty:canteen"
+    }
+  ],
+  "result": {
+    "id": "simpledifficulty:canteen",
+    "count": 1,
+    "components": {
+      "minecraft:custom_data": "{Doses:0,CanteenType:0}"
+    }
+  }
+}

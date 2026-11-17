@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "RR",
+    "RR"
+  ],
+  "key": {
+    "R": {
+      "item": "notreepunching:rock/diorite"
+    }
+  },
+  "result": {
+    "id": "notreepunching:cobblestone/diorite",
+    "count": 1
+  }
+}

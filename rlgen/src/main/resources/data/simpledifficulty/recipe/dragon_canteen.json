@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "S",
+    "C",
+    "H"
+  ],
+  "key": {
+    "S": {
+      "item": "iceandfire:dragon_skull"
+    },
+    "C": {
+      "item": "simpledifficulty:iron_canteen"
+    },
+    "H": [
+      {
+        "item": "iceandfire:fire_dragon_heart"
+      },
+      {
+        "item": "iceandfire:ice_dragon_heart"
+      }
+    ]
+  },
+  "result": {
+    "id": "simpledifficulty:dragon_canteen",
+    "count": 1
+  }
+}

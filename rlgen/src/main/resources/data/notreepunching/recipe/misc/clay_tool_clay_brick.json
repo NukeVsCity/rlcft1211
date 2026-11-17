@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SW"
+  ],
+  "key": {
+    "S": {
+      "item": "notreepunching:clay_tool"
+    },
+    "W": {
+      "item": "minecraft:clay_ball"
+    }
+  },
+  "result": {
+    "id": "notreepunching:clay_brick",
+    "count": 1
+  }
+}

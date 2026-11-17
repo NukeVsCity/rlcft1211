@@ -17,6 +17,15 @@
     "iceandfire:myrmex_desert_resin_block",
     "iceandfire:myrmex_jungle_resin_block",
     "iceandfire:myrmex_desert_resin_glass",
-    "iceandfire:myrmex_jungle_resin_glass"
+    "iceandfire:myrmex_jungle_resin_glass",
+    "simpledifficulty:rain_collector",
+    "simpledifficulty:heater",
+    "simpledifficulty:chiller",
+    "notreepunching:cobblestone/andesite",
+    "notreepunching:cobblestone/granite",
+    "notreepunching:cobblestone/diorite",
+    "notreepunching:cobblestone/marble",
+    "notreepunching:cobblestone/limestone",
+    "notreepunching:cobblestone/basalt"
   ]
 }

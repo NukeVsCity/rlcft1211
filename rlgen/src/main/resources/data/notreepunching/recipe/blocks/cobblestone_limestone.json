@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "RR",
+    "RR"
+  ],
+  "key": {
+    "R": {
+      "item": "notreepunching:rock/limestone"
+    }
+  },
+  "result": {
+    "id": "notreepunching:cobblestone/limestone"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "simpledifficulty:canteen_charcoal_recipe",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "simpledifficulty:iron_canteen"
+    },
+    {
+      "item": "simpledifficulty:charcoal_filter"
+    }
+  ],
+  "result": {
+    "id": "simpledifficulty:iron_canteen",
+    "count": 1,
+    "components": {
+      "minecraft:custom_data": "{Doses:0,CanteenType:0}"
+    }
+  }
+}

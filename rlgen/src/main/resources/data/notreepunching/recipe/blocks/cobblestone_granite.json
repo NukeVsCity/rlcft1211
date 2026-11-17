@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "RR",
+    "RR"
+  ],
+  "key": {
+    "R": {
+      "item": "notreepunching:rock/granite"
+    }
+  },
+  "result": {
+    "id": "notreepunching:cobblestone/granite",
+    "count": 1
+  }
+}

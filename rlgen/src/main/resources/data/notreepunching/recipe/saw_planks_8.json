@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "S",
+    "W"
+  ],
+  "key": {
+    "S": {
+      "tag": "notreepunching:saws"
+    },
+    "W": {
+      "tag": "minecraft:cherry_logs"
+    }
+  },
+  "result": {
+    "id": "minecraft:cherry_planks",
+    "count": 4
+  }
+}

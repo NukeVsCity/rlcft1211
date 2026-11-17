@@ -78,6 +78,16 @@ public class EntityAITasks {
       }
    }
 
+   /** First Aid 1.12 PlayerSizeHelper.getMeleeDistribution: is a task of this type running (taskEntries with using set). */
+   public boolean isExecutingType(Class<?> type) {
+      for (EntityAITasks.EntityAITaskEntry entry : this.taskEntries) {
+         if (entry.using && type.isInstance(entry.action)) {
+            return true;
+         }
+      }
+      return false;
+   }
+
    public boolean isExecuting(EntityAIBase task) {
       for (EntityAITasks.EntityAITaskEntry entry : this.executingTaskEntries) {
          if (entry.action == task) {

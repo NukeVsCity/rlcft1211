@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "S",
+    "W"
+  ],
+  "key": {
+    "S": {
+      "tag": "notreepunching:saws"
+    },
+    "W": {
+      "tag": "minecraft:warped_stems"
+    }
+  },
+  "result": {
+    "id": "minecraft:warped_planks",
+    "count": 4
+  }
+}

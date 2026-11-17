@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "p",
+    "x",
+    "p"
+  ],
+  "key": {
+    "p": {
+      "item": "minecraft:paper"
+    },
+    "x": {
+      "item": "minecraft:charcoal"
+    }
+  },
+  "result": {
+    "id": "simpledifficulty:charcoal_filter",
+    "count": 3
+  }
+}

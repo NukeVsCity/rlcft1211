@@ -1,6 +1,10 @@
 {
   "replace": false,
   "values": [
-    "iceandfire:gorgon"
+    "iceandfire:gorgon",
+    "simpledifficulty:dehydration",
+    "simpledifficulty:hyperthermia",
+    "simpledifficulty:hypothermia",
+    "simpledifficulty:parasites"
   ]
 }

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:sugar"
+    },
+    {
+      "item": "simpledifficulty:purified_water_bottle"
+    },
+    {
+      "item": "minecraft:cactus"
+    }
+  ],
+  "result": {
+    "id": "simpledifficulty:juice",
+    "count": 1,
+    "components": {
+      "simpledifficulty:metadata": 2
+    }
+  }
+}
