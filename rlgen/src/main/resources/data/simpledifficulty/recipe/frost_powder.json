@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "simpledifficulty:frost_rod"
+    }
+  ],
+  "result": {
+    "id": "simpledifficulty:frost_powder",
+    "count": 2
+  }
+}

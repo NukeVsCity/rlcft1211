@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "enabled=true": {
+      "model": "simpledifficulty:block/temper_chill_on"
+    },
+    "enabled=false": {
+      "model": "simpledifficulty:block/temper_chill_off"
+    }
+  }
+}

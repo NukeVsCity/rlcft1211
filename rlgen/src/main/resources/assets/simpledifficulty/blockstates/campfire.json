@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "simpledifficulty:block/campfire"
+    },
+    "age=1": {
+      "model": "simpledifficulty:block/campfire"
+    },
+    "age=2": {
+      "model": "simpledifficulty:block/campfire"
+    },
+    "age=3": {
+      "model": "simpledifficulty:block/campfire_half"
+    },
+    "age=4": {
+      "model": "simpledifficulty:block/campfire_half"
+    },
+    "age=5": {
+      "model": "simpledifficulty:block/campfire_half"
+    },
+    "age=6": {
+      "model": "simpledifficulty:block/campfire_burnt"
+    },
+    "age=7": {
+      "model": "simpledifficulty:block/campfire_burnt"
+    }
+  }
+}

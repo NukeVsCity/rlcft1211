@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " I ",
+    "ICI",
+    "III"
+  ],
+  "key": {
+    "C": {
+      "item": "simpledifficulty:canteen"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "id": "simpledifficulty:iron_canteen",
+    "count": 1,
+    "components": {
+      "minecraft:custom_data": "{Doses:0,CanteenType:0}"
+    }
+  }
+}

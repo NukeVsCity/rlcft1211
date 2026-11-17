@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "S S",
+    "S S"
+  ],
+  "key": {
+    "S": {
+      "tag": "minecraft:wool"
+    }
+  },
+  "result": {
+    "id": "simpledifficulty:wool_boots",
+    "count": 1
+  }
+}

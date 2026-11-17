@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "ingredient": {
+    "item": "minecraft:potion"
+  },
+  "result": {
+    "id": "simpledifficulty:purified_water_bottle"
+  },
+  "experience": 0.0,
+  "cookingtime": 200
+}

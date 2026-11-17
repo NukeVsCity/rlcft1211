@@ -48,5 +48,11 @@ versionRange="[1.7,)"
 ordering="AFTER"
 side="BOTH"
 
+[[mods]]
+modId="simpledifficulty"
+version="0.3.9"
+displayName="SimpleDifficulty (1.12 RLCraft port)"
+description='''Simple Difficulty 0.3.9 (thirst and temperature) as in RLCraft 2.9.3, ported from the 1.12 code.'''
+
 [[mixins]]
 config="iceandfire.mixins.json"

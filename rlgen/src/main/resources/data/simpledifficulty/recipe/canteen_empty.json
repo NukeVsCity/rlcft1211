@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " x ",
+    "x x",
+    "xxx"
+  ],
+  "key": {
+    "x": {
+      "item": "minecraft:leather"
+    }
+  },
+  "result": {
+    "id": "simpledifficulty:canteen",
+    "count": 1,
+    "components": {
+      "minecraft:custom_data": "{Doses:0,CanteenType:0}"
+    }
+  }
+}

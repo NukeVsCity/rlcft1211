@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "MM",
+    "MM"
+  ],
+  "key": {
+    "M": {
+      "item": "simpledifficulty:ice_chunk"
+    }
+  },
+  "result": {
+    "id": "minecraft:ice",
+    "count": 1
+  }
+}
