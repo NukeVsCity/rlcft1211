@@ -28,7 +28,7 @@ public class BaseScreen extends Screen implements com.lycanitesmobs.client.gui.b
       this.drawHelper = new DrawHelper(this.mc, this.mc.font);
    }
 
-   /** 1.12 actionPerformed(GuiButton). */
+   /** 1.12 actionPerformed(ButtonBase). */
    @Override
    public void actionPerformed(com.lycanitesmobs.client.gui.buttons.ButtonBase button) {
    }
@@ -142,5 +142,30 @@ public class BaseScreen extends Screen implements com.lycanitesmobs.client.gui.b
 
    public void drawTexturedModalRect(ResourceLocation texture, int x, int y, int u, int v, int width, int height, int resolution) {
       this.drawHelper.drawTexturedModalRect(texture, x, y, u, v, width, height, resolution);
+   }
+   /** The texture 1.12 had bound (TextureManager.bindTexture) for drawTexturedModalRect. */
+   protected ResourceLocation boundTexture;
+
+   public void bindTexture(ResourceLocation texture) {
+      this.boundTexture = texture;
+   }
+
+   public void drawTexturedModalRect(int x, int y, int u, int v, int width, int height) {
+      this.drawTexturedModalRect(this.boundTexture, x, y, u, v, width, height, 1);
+   }
+
+   public void drawTexturedModalRect(int x, int y, int u, int v, int width, int height, int resolution) {
+      this.drawTexturedModalRect(this.boundTexture, x, y, u, v, width, height, resolution);
+   }
+
+   /** 1.12 buttonList. */
+   public java.util.List<com.lycanitesmobs.client.gui.buttons.ButtonBase> buttons() {
+      java.util.List<com.lycanitesmobs.client.gui.buttons.ButtonBase> list = new java.util.ArrayList<>();
+      for (Object child : this.children()) {
+         if (child instanceof com.lycanitesmobs.client.gui.buttons.ButtonBase button) {
+            list.add(button);
+         }
+      }
+      return list;
    }
 }

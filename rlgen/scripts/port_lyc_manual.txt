@@ -1,0 +1,19 @@
+# files hand-fixed after translation (port_lyc.py --force never overwrites them)
+com/lycanitesmobs/core/network/PacketHandler.java
+com/lycanitesmobs/core/entity/navigate/CreatureNodeProcessor.java
+com/lycanitesmobs/core/entity/navigate/CreaturePathNavigate.java
+com/lycanitesmobs/core/entity/navigate/CreatureMoveHelper.java
+com/lycanitesmobs/LycanitesMobs.java
+com/lycanitesmobs/CommonProxy.java
+com/lycanitesmobs/core/entity/BaseCreatureEntity.java
+com/lycanitesmobs/core/entity/AgeableCreatureEntity.java
+com/lycanitesmobs/core/entity/TameableCreatureEntity.java
+com/lycanitesmobs/core/entity/RideableCreatureEntity.java
+com/lycanitesmobs/core/block/BlockBase.java
+com/lycanitesmobs/ObjectManager.java
+com/lycanitesmobs/PotionBase.java
+com/lycanitesmobs/core/block/BlockFluidBase.java
+com/lycanitesmobs/GuiHandler.java
+com/lycanitesmobs/core/tileentity/TileEntityBase.java
+com/lycanitesmobs/GameEventListener.java
+com/lycanitesmobs/PotionEffects.java

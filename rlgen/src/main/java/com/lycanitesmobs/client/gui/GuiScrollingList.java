@@ -211,6 +211,11 @@ public abstract class GuiScrollingList {
       int border = 4;
 
       graphics.enableScissor(this.left, this.top, this.left + this.listWidth, this.bottom);
+      this.graphics = graphics;
+      // Forge 1.12: a dark gradient behind the list when in a world (the dirt background otherwise)
+      if (this.client.level != null) {
+         this.drawGradientRect(this.left, this.top, this.right, this.bottom, 0xC0101010, 0xD0101010);
+      }
 
       int baseY = this.top + border - (int)this.scrollDistance;
       if (this.hasHeader) {
@@ -255,6 +260,12 @@ public abstract class GuiScrollingList {
 
       this.drawScreen(mouseX, mouseY);
       graphics.disableScissor();
+   }
+
+   protected GuiGraphics graphics;
+
+   protected void drawGradientRect(int left, int top, int right, int bottom, int color1, int color2) {
+      this.graphics.fillGradient(left, top, right, bottom, color1, color2);
    }
 
    protected int clamp(int value) {

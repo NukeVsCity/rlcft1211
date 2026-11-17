@@ -131,4 +131,34 @@ public class DrawHelper {
       buffer.addVertex(matrix, x, y, z).setUv(u0, v0);
       BufferUploader.drawWithShader(buffer.buildOrThrow());
    }
+
+   /**
+    * 1.12 GuiInventory.drawEntityOnScreen(x, y, scale, lookX, lookY, entity): the entity's feet at (x, y), turned towards
+    * the look offsets (body yaw atan(lookX / 40) * 20, yaw * 40, pitch -atan(lookY / 40) * 20), drawn with the 1.21
+    * inventory entity renderer (the same rotations as vanilla 1.12).
+    */
+   public static void drawEntityOnScreen(int x, int y, int scale, float lookX, float lookY, net.minecraft.world.entity.LivingEntity entity) {
+      float angleX = (float)Math.atan((double)(lookX / 40.0F));
+      float angleY = (float)Math.atan((double)(lookY / 40.0F));
+      org.joml.Quaternionf rotation = new org.joml.Quaternionf().rotateZ((float)Math.PI);
+      org.joml.Quaternionf pitch = new org.joml.Quaternionf().rotateX(angleY * 20.0F * (float)(Math.PI / 180.0));
+      rotation.mul(pitch);
+      float f = entity.yBodyRot;
+      float f1 = entity.getYRot();
+      float f2 = entity.getXRot();
+      float f3 = entity.yHeadRotO;
+      float f4 = entity.yHeadRot;
+      entity.yBodyRot = angleX * 20.0F;
+      entity.setYRot(angleX * 40.0F);
+      entity.setXRot(-angleY * 20.0F);
+      entity.yHeadRot = entity.getYRot();
+      entity.yHeadRotO = entity.getYRot();
+      net.minecraft.client.gui.screens.inventory.InventoryScreen.renderEntityInInventory(graphics, (float)x, (float)y, (float)scale,
+         new org.joml.Vector3f(), rotation, pitch, entity);
+      entity.yBodyRot = f;
+      entity.setYRot(f1);
+      entity.setXRot(f2);
+      entity.yHeadRotO = f3;
+      entity.yHeadRot = f4;
+   }
 }

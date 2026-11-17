@@ -48,11 +48,11 @@ versionRange="[1.7,)"
 ordering="AFTER"
 side="BOTH"
 
-[[mixins]]
-config="iceandfire.mixins.json"
-
 [[mods]]
 modId="lycanitesmobs"
 version="2.0.8.9"
 displayName="Lycanites Mobs (1.12 RLCraft port)"
-description='''Lycanites Mobs 2.0.8.9 as in RLCraft 2.9.3, ported from the 1.12 code.'''
+description='''Lycanites Mobs 2.0.8.9 as in RLCraft 2.9.3, ported from the 1.12 code with RLCraft's config.'''
+
+[[mixins]]
+config="iceandfire.mixins.json"

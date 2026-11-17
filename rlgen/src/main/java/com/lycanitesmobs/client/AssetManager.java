@@ -64,8 +64,8 @@ public class AssetManager {
    }
 
    public static ModelBase getCreatureModel(CreatureInfo creatureInfo) {
-      if (creatureInfo != null && creatureInfo.modelClassName != null) {
-         return getModelInstance(creatureInfo.modelClassName);
+      if (creatureInfo != null && creatureInfo.modelClass != null) {
+         return getModelInstance(creatureInfo.modelClass.getName());
       } else {
          return null;
       }
