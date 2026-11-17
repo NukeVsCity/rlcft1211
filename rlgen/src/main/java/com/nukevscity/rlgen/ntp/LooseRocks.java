@@ -66,23 +66,10 @@ public final class LooseRocks {
          || s.is(RLGen.SAND_DEFILED.get()) || s.is(RLGen.GRAVEL_DEFILED.get());
    }
 
+   /** 1.12 WorldGenRocks: Stone.getFromBlock(state 6 below) (unknown = STONE), the real No Tree Punching loose rock of it */
    private static Block rockFor(BlockState s) {
-      String stone = "stone";
-      if (s.is(Blocks.GRANITE)) {
-         stone = "granite";
-      } else if (s.is(Blocks.DIORITE)) {
-         stone = "diorite";
-      } else if (s.is(Blocks.ANDESITE)) {
-         stone = "andesite";
-      } else if (s.is(Blocks.SANDSTONE) || s.is(Blocks.CHISELED_SANDSTONE) || s.is(Blocks.CUT_SANDSTONE)) {
-         stone = "sandstone";
-      } else if (s.is(Blocks.RED_SANDSTONE) || s.is(Blocks.CHISELED_RED_SANDSTONE) || s.is(Blocks.CUT_RED_SANDSTONE)) {
-         stone = "red_sandstone";
-      } else if (s.is(RLGen.MARBLE.get())) {
-         stone = "marble";
-      } else if (s.is(RLGen.LIMESTONE.get())) {
-         stone = "limestone";
-      }
-      return RLGen.LOOSE_ROCKS.get(stone).get();
+      com.alcatrazescapee.notreepunching.util.types.Stone stone = com.alcatrazescapee.notreepunching.util.types.Stone.getFromBlockOrStone(s);
+      var rock = com.alcatrazescapee.notreepunching.NoTreePunching.LOOSE_ROCKS.get(stone);
+      return (rock != null ? rock : com.alcatrazescapee.notreepunching.NoTreePunching.LOOSE_ROCKS.get(com.alcatrazescapee.notreepunching.util.types.Stone.STONE)).get();
    }
 }

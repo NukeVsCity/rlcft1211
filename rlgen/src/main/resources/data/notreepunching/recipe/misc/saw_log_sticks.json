@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SW"
+  ],
+  "key": {
+    "S": {
+      "tag": "notreepunching:saws"
+    },
+    "W": {
+      "tag": "minecraft:logs"
+    }
+  },
+  "result": {
+    "id": "minecraft:stick",
+    "count": 8
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "RR",
+    "RR"
+  ],
+  "key": {
+    "R": {
+      "item": "notreepunching:rock/sandstone"
+    }
+  },
+  "result": {
+    "id": "minecraft:sandstone",
+    "count": 1
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "GI",
+    "S "
+  ],
+  "key": {
+    "I": {
+      "item": "notreepunching:flint_shard"
+    },
+    "S": {
+      "tag": "c:rods/wooden"
+    },
+    "G": {
+      "tag": "c:strings"
+    }
+  },
+  "result": {
+    "id": "notreepunching:axe/flint",
+    "count": 1
+  }
+}

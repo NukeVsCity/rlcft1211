@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "RR",
+    "RR"
+  ],
+  "key": {
+    "R": {
+      "item": "notreepunching:rock/andesite"
+    }
+  },
+  "result": {
+    "id": "notreepunching:cobblestone/andesite",
+    "count": 1
+  }
+}

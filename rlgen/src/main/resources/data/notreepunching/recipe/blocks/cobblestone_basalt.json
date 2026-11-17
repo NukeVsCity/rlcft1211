@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "RR",
+    "RR"
+  ],
+  "key": {
+    "R": {
+      "item": "notreepunching:rock/basalt"
+    }
+  },
+  "result": {
+    "id": "notreepunching:cobblestone/basalt"
+  }
+}

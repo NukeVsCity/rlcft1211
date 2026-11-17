@@ -136,9 +136,9 @@ MOD_BLOCKS = {
     "variedcommodities:table": st("spruce_slab", type="top"), "variedcommodities:tombstone": st("mossy_cobblestone_wall"),
     "variedcommodities:wall_banner": like("wall_banner", "white_wall_banner"), "variedcommodities:weapon_rack": st("air"),
     # no tree punching
-    "notreepunching:cobblestone/basalt": st("cobbled_deepslate"), "notreepunching:cobblestone/limestone": st("cobblestone"),
-    "notreepunching:cobblestone/marble": st("cobblestone"), "notreepunching:loose_rock/limestone": st("air"),
-    "notreepunching:loose_rock/sandstone": st("air"), "notreepunching:loose_rock/stone": st("air"),
+    "notreepunching:cobblestone/basalt": ("rlgen", "notreepunching:cobblestone/basalt"), "notreepunching:cobblestone/limestone": ("rlgen", "notreepunching:cobblestone/limestone"),
+    "notreepunching:cobblestone/marble": ("rlgen", "notreepunching:cobblestone/marble"), "notreepunching:loose_rock/limestone": ("rlgen", "notreepunching:loose_rock/limestone"),
+    "notreepunching:loose_rock/sandstone": ("rlgen", "notreepunching:loose_rock/sandstone"), "notreepunching:loose_rock/stone": ("rlgen", "notreepunching:loose_rock/stone"),
     # charm
     "charm:barrel": st("barrel", facing="up"), "charm:bookshelf_chest": st("bookshelf"), "charm:composter": st("composter"),
     "charm:ender_pearl_block": st("warped_wart_block"), "charm:iron_lantern": st("lantern"), "charm:nether_gold_deposit": st("nether_gold_ore"),

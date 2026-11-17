@@ -117,15 +117,6 @@ public final class RLGen {
    // Traverse and Defiled Lands terrain blocks (plain blocks for now; the mods' behaviour comes later).
    public static final DeferredBlock<Block> RED_ROCK = stone("red_rock", MapColor.COLOR_ORANGE);
    public static final DeferredBlock<Block> BLUE_ROCK = stone("blue_rock", MapColor.COLOR_LIGHT_BLUE);
-   /** No Tree Punching loose rocks, by stone (andesite... limestone as Quark compat was on in RLCraft). */
-   public static final java.util.Map<String, DeferredBlock<com.nukevscity.rlgen.ntp.LooseRockBlock>> LOOSE_ROCKS = new java.util.LinkedHashMap<>();
-   static {
-      for (String s : new String[]{"stone", "andesite", "granite", "diorite", "sandstone", "red_sandstone", "marble", "limestone"}) {
-         LOOSE_ROCKS.put(s, BLOCKS.registerBlock("loose_rock_" + s, com.nukevscity.rlgen.ntp.LooseRockBlock::new,
-            BlockBehaviour.Properties.of().mapColor(MapColor.STONE).noCollission().instabreak().sound(SoundType.STONE).noOcclusion()
-               .pushReaction(net.minecraft.world.level.material.PushReaction.DESTROY)));
-      }
-   }
    /** Coral Reef 2.5: reef rock and six corals (light 15, underwater). */
    public static final DeferredBlock<com.nukevscity.rlgen.coral.ReefBlock> REEF = BLOCKS.registerBlock("reef", com.nukevscity.rlgen.coral.ReefBlock::new,
       BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PINK).requiresCorrectToolForDrops().strength(1.5F, 10.0F).sound(SoundType.STONE));
@@ -324,7 +315,6 @@ public final class RLGen {
          GLOWCELIUM, GLOWSHROOM, SAKURA_LEAVES}) {
          ITEMS.registerSimpleBlockItem(b);
       }
-      LOOSE_ROCKS.values().forEach(ITEMS::registerSimpleBlockItem);
       ITEMS.registerSimpleBlockItem(REEF);
       ITEMS.registerSimpleBlockItem(REEF_ROCK);
       CORALS.forEach(ITEMS::registerSimpleBlockItem);

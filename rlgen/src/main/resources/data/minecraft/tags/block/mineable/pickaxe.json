@@ -20,6 +20,12 @@
     "iceandfire:myrmex_jungle_resin_glass",
     "simpledifficulty:rain_collector",
     "simpledifficulty:heater",
-    "simpledifficulty:chiller"
+    "simpledifficulty:chiller",
+    "notreepunching:cobblestone/andesite",
+    "notreepunching:cobblestone/granite",
+    "notreepunching:cobblestone/diorite",
+    "notreepunching:cobblestone/marble",
+    "notreepunching:cobblestone/limestone",
+    "notreepunching:cobblestone/basalt"
   ]
 }

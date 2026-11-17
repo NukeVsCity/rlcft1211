@@ -60,6 +60,12 @@ version="1.6.22"
 displayName="First Aid (1.12 RLCraft port)"
 description='''First Aid 1.6.22 (body part health) as in RLCraft 2.9.3, ported from the 1.12 code.'''
 
+[[mods]]
+modId="notreepunching"
+version="2.0.21"
+displayName="No Tree Punching (1.12 RLCraft port)"
+description='''No Tree Punching 2.0.21 as in RLCraft 2.9.3, ported from the 1.12 code.'''
+
 [[mixins]]
 config="iceandfire.mixins.json"
 
