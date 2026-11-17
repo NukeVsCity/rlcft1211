@@ -16,6 +16,7 @@ public class AssetManager {
    public static Map<String, ResourceLocation[]> textureGroups = new HashMap<>();
    public static Map<String, ModelBase> models = new HashMap<>();
    public static Map<ProjectileInfo, ModelBase> projectileModels = new HashMap<>();
+   public static Map<String, com.lycanitesmobs.client.model.ModelItemBase> itemModels = new HashMap<>();
 
    public static void addTexture(String name, ModInfo modInfo, String path) {
       name = name.toLowerCase();
@@ -101,6 +102,24 @@ public class AssetManager {
          }
       }
       projectileModels.put(projectileInfo, model);
+      return model;
+   }
+
+   public static void addItemModel(String name, com.lycanitesmobs.client.model.ModelItemBase model) {
+      itemModels.put(name.toLowerCase(), model);
+   }
+
+   /**
+    * 1.12 registerModels made a ModelEquipmentPart for every ItemEquipmentPart at start (reading its OBJ from the resources);
+    * here on first use, once the client resources are loaded.
+    */
+   public static com.lycanitesmobs.client.model.ModelItemBase getItemModel(String name) {
+      name = name.toLowerCase();
+      com.lycanitesmobs.client.model.ModelItemBase model = itemModels.get(name);
+      if (model == null) {
+         model = new com.lycanitesmobs.client.model.ModelEquipmentPart(name, LycanitesMobs.modInfo);
+         itemModels.put(name, model);
+      }
       return model;
    }
 }

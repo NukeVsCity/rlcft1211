@@ -4,7 +4,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.lycanitesmobs.client.model.animation.ModelPartAnimation;
 import com.lycanitesmobs.client.model.animation.TextureLayerAnimation;
+import com.lycanitesmobs.client.renderer.IItemModelRenderer;
 import com.lycanitesmobs.client.renderer.RenderCreature;
+import com.lycanitesmobs.client.renderer.layer.LayerItem;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -43,5 +45,22 @@ public class ModelAnimation {
       for (TextureLayerAnimation textureLayer : this.textureLayers.values()) {
          renderer.addLayer(textureLayer.createCreatureLayer(renderer));
       }
+   }
+
+   public void addItemLayers(IItemModelRenderer renderer) {
+      for (TextureLayerAnimation textureLayer : this.textureLayers.values()) {
+         renderer.addLayer(textureLayer.createItemLayer(renderer));
+      }
+   }
+
+   public LayerItem getBaseLayer(IItemModelRenderer renderer) {
+      if (this.textureLayers.containsKey("base")) {
+         TextureLayerAnimation animationLayer = this.textureLayers.get("base");
+         if (animationLayer != null) {
+            return animationLayer.createItemLayer(renderer);
+         }
+      }
+
+      return null;
    }
 }

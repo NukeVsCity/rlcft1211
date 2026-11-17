@@ -1,7 +1,9 @@
 package com.lycanitesmobs.client.model.animation;
 
 import com.google.gson.JsonObject;
+import com.lycanitesmobs.client.renderer.IItemModelRenderer;
 import com.lycanitesmobs.client.renderer.RenderCreature;
+import com.lycanitesmobs.client.renderer.layer.LayerItem;
 import com.lycanitesmobs.client.renderer.layer.LayerCreatureEffect;
 import org.joml.Vector2f;
 import org.joml.Vector4f;
@@ -80,6 +82,23 @@ public class TextureLayerAnimation {
       LayerCreatureEffect renderLayer = new LayerCreatureEffect(renderer, this.textureSuffix, this.glow, blendingId, this.subspeciesTexture);
       renderLayer.name = this.name;
       renderLayer.scrollSpeed = this.scrollSpeed;
+      return renderLayer;
+   }
+
+   public LayerItem createItemLayer(IItemModelRenderer renderer) {
+      int blendingId = LayerCreatureEffect.BLEND.NORMAL.id;
+      if ("additive".equals(this.blending)) {
+         blendingId = LayerCreatureEffect.BLEND.ADD.id;
+      } else if ("subtractive".equals(this.blending)) {
+         blendingId = LayerCreatureEffect.BLEND.SUB.id;
+      }
+
+      LayerItem renderLayer = new LayerItem(renderer, this.name);
+      renderLayer.textureSuffix = this.textureSuffix;
+      renderLayer.glow = this.glow;
+      renderLayer.blending = blendingId;
+      renderLayer.scrollSpeed = this.scrollSpeed;
+      renderLayer.colorFadeSpeed = this.colorFadeSpeed;
       return renderLayer;
    }
 }

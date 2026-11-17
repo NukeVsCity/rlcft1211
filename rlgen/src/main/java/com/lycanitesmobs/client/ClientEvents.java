@@ -31,4 +31,30 @@ public final class ClientEvents {
          KeyHandler.instance.registerKeys(event);
       }
    }
+
+   /** 1.12 ClientProxy.addItemRender: ForgeHooksClient.registerTESRItemStack for equipment parts and equipment. */
+   @SubscribeEvent
+   public static void registerItemRenderers(net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent event) {
+      java.util.function.Supplier<com.lycanitesmobs.client.renderer.EquipmentPartRenderer> partRenderer =
+         com.google.common.base.Suppliers.memoize(com.lycanitesmobs.client.renderer.EquipmentPartRenderer::new);
+      java.util.function.Supplier<com.lycanitesmobs.client.renderer.EquipmentRenderer> equipmentRenderer =
+         com.google.common.base.Suppliers.memoize(com.lycanitesmobs.client.renderer.EquipmentRenderer::new);
+      for (net.minecraft.world.item.Item item : net.minecraft.core.registries.BuiltInRegistries.ITEM) {
+         if (item instanceof com.lycanitesmobs.core.item.equipment.ItemEquipmentPart) {
+            event.registerItem(new net.neoforged.neoforge.client.extensions.common.IClientItemExtensions() {
+               @Override
+               public net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                  return partRenderer.get();
+               }
+            }, item);
+         } else if (item instanceof com.lycanitesmobs.core.item.equipment.ItemEquipment) {
+            event.registerItem(new net.neoforged.neoforge.client.extensions.common.IClientItemExtensions() {
+               @Override
+               public net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                  return equipmentRenderer.get();
+               }
+            }, item);
+         }
+      }
+   }
 }
