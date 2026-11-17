@@ -107,6 +107,7 @@ public class LycanitesMobs {
       modBus.addListener(packetHandler::registerPayloads);
       packetHandler.init();
       NeoForge.EVENT_BUS.addListener((RegisterCommandsEvent event) -> CommandMain.register(event.getDispatcher()));
+      NeoForge.EVENT_BUS.addListener((RegisterCommandsEvent event) -> com.lycanitesmobs.core.command.TestPlayerCommand.register(event.getDispatcher()));
       NeoForge.EVENT_BUS.addListener((ServerAboutToStartEvent event) -> LycDamage.setRegistries(event.getServer().registryAccess()));
       NeoForge.EVENT_BUS.addListener((ServerStoppedEvent event) -> LycDamage.setRegistries(null));
    }

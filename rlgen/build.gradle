@@ -19,6 +19,8 @@ neoForge {
         "${mod_id}" { sourceSet(sourceSets.main) }
     }
 }
+// Lycanites dev-server test command (lyctestplayer, see com.lycanitesmobs.core.command.TestPlayerCommand)
+neoForge.runs.server.systemProperty 'lycanitesmobs.testcommands', 'true'
 
 // Plain-Java checks of the 1.12 port against the real 1.12.2 classes (optional, see tools/).
 sourceSets {
