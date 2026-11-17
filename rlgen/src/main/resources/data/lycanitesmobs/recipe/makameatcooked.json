@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "lycanitesmobs:bulwark_burger"
+    }
+  ],
+  "result": {
+    "id": "lycanitesmobs:cooked_maka_meat",
+    "count": 1
+  }
+}

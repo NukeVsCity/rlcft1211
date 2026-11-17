@@ -123,6 +123,7 @@ public class BlockPrimefire extends BlockFireBase {
       world.setBlock(pos, replaceFireBlock, 3);
    }
 
+      @Override
       public Item getItemDropped(BlockState state, RandomSource random, int zero) {
       return null;
    }

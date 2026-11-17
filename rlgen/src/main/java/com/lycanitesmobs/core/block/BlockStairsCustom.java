@@ -38,4 +38,10 @@ public class BlockStairsCustom extends StairBlock {
    public String getDescription(ItemStack itemStack, Level world) {
       return "§a" + LanguageManager.translate("tile." + this.modelBlock.blockName + "_stairs.description");
    }
+
+   /** 1.12: drops itself (no loot tables) */
+   @Override
+   protected java.util.List<ItemStack> getDrops(net.minecraft.world.level.block.state.BlockState state, net.minecraft.world.level.storage.loot.LootParams.Builder params) {
+      return java.util.List.of(new ItemStack(this, 1));
+   }
 }

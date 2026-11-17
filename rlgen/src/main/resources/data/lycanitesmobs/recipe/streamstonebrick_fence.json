@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BBB",
+    "B B"
+  ],
+  "key": {
+    "B": {
+      "item": "lycanitesmobs:streamstonebrick"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:streamstonebrick_fence",
+    "count": 5
+  }
+}

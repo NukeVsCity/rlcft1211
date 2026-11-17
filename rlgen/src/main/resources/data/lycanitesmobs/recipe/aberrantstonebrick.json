@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BB",
+    "BB"
+  ],
+  "key": {
+    "B": {
+      "item": "lycanitesmobs:aberrantstone"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:aberrantstonebrick",
+    "count": 4
+  }
+}

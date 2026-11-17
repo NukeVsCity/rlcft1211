@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " MM",
+    "BBM",
+    " MM"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:bone"
+    },
+    "M": {
+      "tag": "lycanitesmobs:ore/listallrotten"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:undeadtreat",
+    "count": 4
+  }
+}

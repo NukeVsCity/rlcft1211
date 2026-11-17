@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "lycanitesmobs:moss_pie"
+    }
+  ],
+  "result": {
+    "id": "lycanitesmobs:cooked_aspid_meat",
+    "count": 1
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "MMM",
+    "MSM",
+    "MMM"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:saddle"
+    },
+    "M": {
+      "item": "minecraft:nether_wart"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:saddle_demon",
+    "count": 1
+  }
+}

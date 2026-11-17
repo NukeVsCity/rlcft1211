@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BB",
+    "BB"
+  ],
+  "key": {
+    "B": {
+      "item": "lycanitesmobs:ashenstonepolished"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:ashenstonetile",
+    "count": 4
+  }
+}

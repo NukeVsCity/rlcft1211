@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "minecraft:cooked_mutton",
+      "required": false
+    },
+    {
+      "id": "lycanitesmobs:cooked_yale_meat",
+      "required": false
+    },
+    {
+      "id": "lycanitesmobs:cooked_chupacabra_meat",
+      "required": false
+    }
+  ]
+}

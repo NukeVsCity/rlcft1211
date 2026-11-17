@@ -375,6 +375,7 @@ public class BlockFireBase extends BlockBase {
          || world.isRainingAt(pos.south());
    }
 
+      @Override
       public int quantityDropped(RandomSource random) {
       return 0;
    }

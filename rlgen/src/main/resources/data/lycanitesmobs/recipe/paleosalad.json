@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:oak_leaves"
+    },
+    {
+      "item": "minecraft:carrot"
+    },
+    {
+      "item": "lycanitesmobs:cooked_arisaur_meat"
+    }
+  ],
+  "result": {
+    "id": "lycanitesmobs:paleo_salad",
+    "count": 1
+  }
+}

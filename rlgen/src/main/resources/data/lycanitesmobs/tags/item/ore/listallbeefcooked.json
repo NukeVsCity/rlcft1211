@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "minecraft:cooked_beef",
+      "required": false
+    },
+    {
+      "id": "lycanitesmobs:cooked_pinky_meat",
+      "required": false
+    },
+    {
+      "id": "lycanitesmobs:cooked_aspid_meat",
+      "required": false
+    }
+  ]
+}

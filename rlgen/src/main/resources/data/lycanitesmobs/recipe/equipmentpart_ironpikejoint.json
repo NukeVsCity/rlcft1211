@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " I ",
+    " H ",
+    " I "
+  ],
+  "key": {
+    "H": {
+      "item": "lycanitesmobs:woodenhilt"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:ironpikejoint",
+    "count": 1
+  }
+}

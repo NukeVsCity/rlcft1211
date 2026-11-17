@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " MM",
+    "BBM",
+    " MM"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:bone"
+    },
+    "M": {
+      "item": "minecraft:slime_ball"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:amphibiantreat",
+    "count": 4
+  }
+}

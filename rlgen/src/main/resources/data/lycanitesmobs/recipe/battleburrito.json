@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "lycanitesmobs:cooked_pinky_meat"
+    },
+    {
+      "item": "lycanitesmobs:cooked_maka_meat"
+    },
+    {
+      "item": "lycanitesmobs:cooked_arisaur_meat"
+    },
+    {
+      "item": "lycanitesmobs:cooked_bobeko_meat"
+    },
+    {
+      "item": "lycanitesmobs:cooked_aspid_meat"
+    }
+  ],
+  "result": {
+    "id": "lycanitesmobs:battle_burrito",
+    "count": 1
+  }
+}

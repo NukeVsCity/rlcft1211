@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BB",
+    "BB"
+  ],
+  "key": {
+    "B": {
+      "item": "lycanitesmobs:lushstone"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:lushstonebrick",
+    "count": 4
+  }
+}

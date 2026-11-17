@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "lycanitesmobs:ioraystinger"
+    }
+  ],
+  "result": {
+    "id": "lycanitesmobs:waterjetcharge",
+    "count": 4
+  }
+}

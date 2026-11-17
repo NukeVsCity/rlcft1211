@@ -134,6 +134,7 @@ public class BlockPoisonCloud extends BlockBase {
       builder.add(AGE);
    }
 
+      @Override
       public Item getItemDropped(BlockState blockState, RandomSource random, int fortune) {
       return null;
    }
@@ -142,6 +143,7 @@ public class BlockPoisonCloud extends BlockBase {
       return 0;
    }
 
+      @Override
       public int quantityDropped(RandomSource random) {
       return 1;
    }

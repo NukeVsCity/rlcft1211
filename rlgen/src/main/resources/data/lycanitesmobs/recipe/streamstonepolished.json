@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BB"
+  ],
+  "key": {
+    "B": {
+      "item": "lycanitesmobs:streamstone"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:streamstonepolished",
+    "count": 2
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BB"
+  ],
+  "key": {
+    "B": {
+      "item": "lycanitesmobs:demonstone"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:demonstonepolished",
+    "count": 2
+  }
+}

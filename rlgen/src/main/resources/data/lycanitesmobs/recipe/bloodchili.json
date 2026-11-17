@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:bowl"
+    },
+    {
+      "item": "minecraft:cocoa_beans"
+    },
+    {
+      "item": "lycanitesmobs:cooked_chupacabra_meat"
+    }
+  ],
+  "result": {
+    "id": "lycanitesmobs:blood_chili",
+    "count": 1
+  }
+}

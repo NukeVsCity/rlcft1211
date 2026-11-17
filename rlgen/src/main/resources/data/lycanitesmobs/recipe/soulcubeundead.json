@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BBB",
+    "BSB",
+    "BBB"
+  ],
+  "key": {
+    "S": {
+      "item": "lycanitesmobs:soulstone_undead"
+    },
+    "B": {
+      "item": "lycanitesmobs:shadowstone"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:soulcubeundead",
+    "count": 1
+  }
+}

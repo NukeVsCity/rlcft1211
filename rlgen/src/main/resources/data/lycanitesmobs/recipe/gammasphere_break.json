@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "lycanitesmobs:gammasphere"
+    }
+  ],
+  "result": {
+    "id": "lycanitesmobs:lightballcharge",
+    "count": 4
+  }
+}

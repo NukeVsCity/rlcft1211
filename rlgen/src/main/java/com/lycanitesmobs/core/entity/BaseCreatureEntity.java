@@ -641,9 +641,17 @@ public abstract class BaseCreatureEntity extends Mob {
       return this.creatureInfo.creatureSpawn.spawnGroupMax;
    }
 
+   /**
+    * 1.12 world gen spawning (performWorldGenSpawning) ran getCanSpawnHere on the finished world; 1.21 spawns while the chunk
+    * is still generating on a worker thread, where this.level() must not be read, so the check runs on the first tick.
+    */
    /** 1.12 WorldEntitySpawner: getCanSpawnHere */
    @Override
    public boolean checkSpawnRules(net.minecraft.world.level.LevelAccessor level, MobSpawnType spawnReason) {
+      if (spawnReason == MobSpawnType.CHUNK_GENERATION) {
+         this.getPersistentData().putBoolean("LycWorldGenSpawnCheck", true);
+         return true;
+      }
       return this.getCanSpawnHere();
    }
 
@@ -660,9 +668,12 @@ public abstract class BaseCreatureEntity extends Mob {
          : this.level().isUnobstructed(this) && this.level().noCollision(this, this.getBoundingBox());
    }
 
+   /** 1.12 isNotColliding on the given level (the generating region during world gen spawning). */
    @Override
    public boolean checkSpawnObstruction(LevelReader level) {
-      return this.isNotColliding();
+      return !this.spawnsInWater
+         ? level.isUnobstructed(this) && level.noCollision(this) && !level.containsAnyLiquid(this.getBoundingBox())
+         : level.isUnobstructed(this) && level.noCollision(this, this.getBoundingBox());
    }
 
    public boolean checkSpawnVanilla(Level world, BlockPos pos) {
@@ -1454,6 +1465,13 @@ public abstract class BaseCreatureEntity extends Mob {
 
    @Override
    public void tick() {
+      if (!this.level().isClientSide && this.getPersistentData().getBoolean("LycWorldGenSpawnCheck")) {
+         this.getPersistentData().remove("LycWorldGenSpawnCheck");
+         if (!this.getCanSpawnHere()) {
+            this.discard();
+            return;
+         }
+      }
       super.tick();
       if (!this.level().isClientSide) {
          this.updateLeashedState();

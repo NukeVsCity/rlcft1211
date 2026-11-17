@@ -306,6 +306,28 @@ public class BlockBase extends Block {
       return this.setSoundType(soundType);
    }
 
+   /** 1.12 Block.getItemDropped: the block's own item. */
+   public net.minecraft.world.item.Item getItemDropped(BlockState state, RandomSource random, int fortune) {
+      return this.asItem();
+   }
+
+   /** 1.12 Block.quantityDropped */
+   public int quantityDropped(RandomSource random) {
+      return 1;
+   }
+
+   /** 1.12 Block.getDrops: quantityDropped of getItemDropped (1.12 blocks had no loot tables). */
+   @Override
+   protected java.util.List<ItemStack> getDrops(BlockState state, net.minecraft.world.level.storage.loot.LootParams.Builder params) {
+      RandomSource random = params.getLevel().getRandom();
+      int count = this.quantityDropped(random);
+      net.minecraft.world.item.Item item = this.getItemDropped(state, random, 0);
+      if (count <= 0 || item == null || item == net.minecraft.world.item.Items.AIR) {
+         return java.util.List.of();
+      }
+      return java.util.List.of(new ItemStack(item, count));
+   }
+
    /** 1.12 onBlockPlacedBy */
    public void onBlockPlacedBy(Level world, BlockPos pos, BlockState state, net.minecraft.world.entity.LivingEntity placer, ItemStack stack) {
    }

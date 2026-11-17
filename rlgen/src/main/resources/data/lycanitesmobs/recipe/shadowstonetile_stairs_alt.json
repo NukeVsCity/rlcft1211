@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "  B",
+    " BB",
+    "BBB"
+  ],
+  "key": {
+    "B": {
+      "item": "lycanitesmobs:shadowstonetile"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:shadowstonetile_stairs",
+    "count": 8
+  }
+}

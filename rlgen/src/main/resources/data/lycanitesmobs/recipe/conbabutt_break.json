@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "lycanitesmobs:conbabutt"
+    }
+  ],
+  "result": {
+    "id": "lycanitesmobs:poopcharge",
+    "count": 4
+  }
+}

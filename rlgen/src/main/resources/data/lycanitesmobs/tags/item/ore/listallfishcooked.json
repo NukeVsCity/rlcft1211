@@ -1,0 +1,20 @@
+{
+  "values": [
+    {
+      "id": "minecraft:cooked_cod",
+      "required": false
+    },
+    {
+      "id": "lycanitesmobs:cooked_silex_meat",
+      "required": false
+    },
+    {
+      "id": "lycanitesmobs:cooked_cephignis_meat",
+      "required": false
+    },
+    {
+      "id": "lycanitesmobs:cooked_ika_meat",
+      "required": false
+    }
+  ]
+}

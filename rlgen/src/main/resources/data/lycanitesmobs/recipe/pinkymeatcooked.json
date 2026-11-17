@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "lycanitesmobs:devil_lasagna"
+    }
+  ],
+  "result": {
+    "id": "lycanitesmobs:cooked_pinky_meat",
+    "count": 1
+  }
+}

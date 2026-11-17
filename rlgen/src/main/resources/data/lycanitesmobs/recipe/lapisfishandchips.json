@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:potato"
+    },
+    {
+      "item": "lycanitesmobs:cooked_silex_meat"
+    }
+  ],
+  "result": {
+    "id": "lycanitesmobs:lapis_fish_and_chips",
+    "count": 1
+  }
+}

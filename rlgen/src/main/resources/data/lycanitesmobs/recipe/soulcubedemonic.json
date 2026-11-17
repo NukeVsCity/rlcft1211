@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BBB",
+    "BSB",
+    "BBB"
+  ],
+  "key": {
+    "S": {
+      "item": "lycanitesmobs:soulstone_demon"
+    },
+    "B": {
+      "item": "lycanitesmobs:demonstone"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:soulcubedemonic",
+    "count": 1
+  }
+}

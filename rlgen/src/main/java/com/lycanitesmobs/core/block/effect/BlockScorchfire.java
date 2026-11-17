@@ -113,6 +113,7 @@ public class BlockScorchfire extends BlockFireBase {
       this.setLightLevel(0.8F);
    }
 
+      @Override
       public Item getItemDropped(BlockState state, RandomSource random, int zero) {
       return null;
    }

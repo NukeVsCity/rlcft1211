@@ -112,6 +112,7 @@ public class BlockIcefire extends BlockFireBase {
       this.setLightLevel(0.0F);
    }
 
+      @Override
       public Item getItemDropped(BlockState state, RandomSource random, int zero) {
       return null;
    }

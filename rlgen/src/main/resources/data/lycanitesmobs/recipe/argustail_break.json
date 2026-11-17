@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "lycanitesmobs:argustail"
+    }
+  ],
+  "result": {
+    "id": "lycanitesmobs:chaosorbcharge",
+    "count": 4
+  }
+}

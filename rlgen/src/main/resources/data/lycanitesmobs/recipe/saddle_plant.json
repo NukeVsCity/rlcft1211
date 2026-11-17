@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "MMM",
+    "MSM",
+    "NNN"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:saddle"
+    },
+    "M": {
+      "item": "minecraft:sugar_cane"
+    },
+    "N": {
+      "item": "minecraft:paper"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:saddle_plant",
+    "count": 1
+  }
+}
