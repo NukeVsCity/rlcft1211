@@ -35,9 +35,9 @@ public class SDItems {
 
    // EnumHelper.addArmorMaterial("SDWOOL", "simpledifficulty:wool", 2, {1,1,1,1}, 5, ITEM_ARMOR_EQUIP_GENERIC, 0); repair = white wool (meta 0)
    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> woolArmorMaterial = MATERIALS.register("wool",
-      () -> material("wool", Ingredient.of(Items.WHITE_WOOL)));
+      () -> material("wool", () -> Ingredient.of(Items.WHITE_WOOL)));
    public static final DeferredHolder<ArmorMaterial, ArmorMaterial> iceArmorMaterial = MATERIALS.register("ice",
-      () -> material("ice", Ingredient.of(SDItems.ice_chunk.get())));
+      () -> material("ice", () -> Ingredient.of(SDItems.ice_chunk.get())));
 
    public static final DeferredItem<Item> purifiedWaterBottle = ITEMS.register("purified_water_bottle", () -> new ItemPurifiedWaterBottle(new Item.Properties()));
    public static final DeferredItem<Item> juice = ITEMS.register("juice", () -> new ItemJuice(new Item.Properties()));
@@ -70,12 +70,12 @@ public class SDItems {
    public static final DeferredItem<Item> purifiedWaterBucket = ITEMS.register("purifiedwater_bucket",
       () -> new BucketItem(SDFluids.purifiedWater.get(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1)));
 
-   private static ArmorMaterial material(String name, Ingredient repair) {
+   private static ArmorMaterial material(String name, java.util.function.Supplier<Ingredient> repair) {
       EnumMap<ArmorItem.Type, Integer> def = new EnumMap<>(ArmorItem.Type.class);
       for (ArmorItem.Type t : ArmorItem.Type.values()) {
          def.put(t, 1);
       }
-      return new ArmorMaterial(def, 5, SoundEvents.ARMOR_EQUIP_GENERIC, () -> repair,
+      return new ArmorMaterial(def, 5, SoundEvents.ARMOR_EQUIP_GENERIC, repair,
          List.of(new ArmorMaterial.Layer(ResourceLocation.fromNamespaceAndPath(SimpleDifficulty.MODID, name))), 0.0F, 0.0F);
    }
 

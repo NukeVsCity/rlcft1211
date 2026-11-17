@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 
 /**
- * 1.12 CommandSimpleDifficulty: help, reloadJson, nbt, setThirst, setTemperature (admin = permission 4 and a player). The in-game
+ * 1.12 CommandSimpleDifficulty: help, reloadJson, nbt, setThirst, setTemperature (1.12: permission 4 and a player; setThirst/setTemperature here need only 2 so datapack functions can use them). The in-game
  * json editing commands (addArmor, addBlock, ..., exportJson) are not ported: edit config/simpledifficulty/*.json and reloadJson.
  */
 public class CommandSimpleDifficulty {
@@ -40,7 +40,7 @@ public class CommandSimpleDifficulty {
             CustomData data = stack.get(DataComponents.CUSTOM_DATA);
             return msg(c.getSource(), data == null ? "Item has no NBT! " + SimpleDifficulty.getMetadata(stack) : data.copyTag().toString());
          }))
-         .then(Commands.literal("setthirst").requires(s -> s.hasPermission(4))
+         .then(Commands.literal("setthirst").requires(s -> s.hasPermission(2))
             .then(Commands.argument("thirst", IntegerArgumentType.integer()).executes(c -> {
                SDCapabilities.getThirstData(c.getSource().getPlayerOrException()).setThirstLevel(IntegerArgumentType.getInteger(c, "thirst"));
                return 1;
@@ -50,7 +50,7 @@ public class CommandSimpleDifficulty {
                cap.setThirstSaturation(FloatArgumentType.getFloat(c, "saturation"));
                return 1;
             }))))
-         .then(Commands.literal("settemperature").requires(s -> s.hasPermission(4))
+         .then(Commands.literal("settemperature").requires(s -> s.hasPermission(2))
             .then(Commands.argument("temperature", IntegerArgumentType.integer()).executes(c -> {
                SDCapabilities.getTemperatureData(c.getSource().getPlayerOrException()).setTemperatureLevel(IntegerArgumentType.getInteger(c, "temperature"));
                return 1;

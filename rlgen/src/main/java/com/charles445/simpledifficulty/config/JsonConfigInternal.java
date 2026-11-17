@@ -66,6 +66,8 @@ public class JsonConfigInternal {
 
    /** 1.12 postInit defaults + processAllJson. */
    public static void postInit() {
+      // 1.12 DebugMode (off in RLCraft): on while config/simpledifficulty/debug.txt exists, prints the modifiers to the player
+      ModConfig.server.debugMode = Files.exists(jsonDirectory().resolve("debug.txt"));
       clearContainers();
       JsonItemIdentity any = new JsonItemIdentity(-1);
       for (Item i : new Item[]{SDItems.wool_helmet.get(), SDItems.wool_chestplate.get(), SDItems.wool_leggings.get(), SDItems.wool_boots.get()}) {

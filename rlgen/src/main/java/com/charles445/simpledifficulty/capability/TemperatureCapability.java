@@ -142,8 +142,12 @@ public class TemperatureCapability implements INBTSerializable<CompoundTag> {
       for (TemperatureRegistry.ITemperatureModifier modifier : TemperatureRegistry.modifiers.values()) {
          float modsum = modifier.getWorldInfluence(world, pos) + modifier.getPlayerInfluence(player);
          player.sendSystemMessage(Component.literal(modifier.getName() + " - " + modsum));
+         com.charles445.simpledifficulty.SimpleDifficulty.logger.info("SDDEBUG {} {}", modifier.getName(), modsum);
       }
       player.sendSystemMessage(Component.literal("( " + TemperatureUtil.getPlayerTargetTemperature(player) + " )"));
+      com.charles445.simpledifficulty.SimpleDifficulty.logger.info("SDDEBUG target {} temp {} thirst {} sat {} pos {}", TemperatureUtil.getPlayerTargetTemperature(player),
+         this.temperature, com.charles445.simpledifficulty.api.SDCapabilities.getThirstData(player).getThirstLevel(),
+         com.charles445.simpledifficulty.api.SDCapabilities.getThirstData(player).getThirstSaturation(), pos);
       player.sendSystemMessage(Component.literal("TempTickLimit: " + this.getTemperatureTickLimit()));
    }
 
