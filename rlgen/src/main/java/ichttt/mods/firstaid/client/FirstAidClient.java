@@ -85,6 +85,9 @@ public final class FirstAidClient {
          return;
       }
       EquipmentSlot slot = armor.getEquipmentSlot();
+      if (slot.getType() != EquipmentSlot.Type.HUMANOID_ARMOR) {
+         return; // wolf/horse body armor had no 1.12 equivalent
+      }
       List<Component> tooltip = event.getToolTip();
       double normalArmor = ArmorUtils.getArmor(stack, slot);
       double totalArmor = ArmorUtils.applyArmorModifier(slot, normalArmor);

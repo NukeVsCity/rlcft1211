@@ -98,9 +98,10 @@ public class GuiHealthScreen extends Screen {
       this.onClose();
    }
 
+   /** 1.12 drawDefaultBackground (dark gradient over the world) + the window and the player, under the buttons */
    @Override
-   public void render(GuiGraphics g, int mouseX, int mouseY, float partialTicks) {
-      this.renderBackground(g, mouseX, mouseY, partialTicks);
+   public void renderBackground(GuiGraphics g, int mouseX, int mouseY, float partialTicks) {
+      g.fillGradient(0, 0, this.width, this.height, -1072689136, -804253680);
       g.fill(this.guiLeft, this.guiTop, this.guiLeft + 256, this.guiTop + 137, 0xFF000000);
       g.blit(HealthRenderUtils.GUI_LOCATION, this.guiLeft, this.guiTop, 0, 0, 256, 137);
       float lookX = (float)(this.guiLeft + 128 - mouseX);
@@ -109,6 +110,10 @@ public class GuiHealthScreen extends Screen {
       int feetY = this.height / 2 + 30;
       InventoryScreen.renderEntityInInventoryFollowsAngle(g, this.width / 2 - 100, feetY - 100, this.width / 2 + 100, feetY + 100, 45,
          -this.minecraft.player.getBbHeight() / 2.0F, (float)Math.atan(lookX / 40.0F), (float)Math.atan(lookY / 40.0F), this.minecraft.player);
+   }
+
+   @Override
+   public void render(GuiGraphics g, int mouseX, int mouseY, float partialTicks) {
       for (GuiHoldButton b : this.holdButtons) {
          if (!this.disableButtons) {
             b.active = this.damageModel.getFromEnum(b.part).activeHealer == null;
