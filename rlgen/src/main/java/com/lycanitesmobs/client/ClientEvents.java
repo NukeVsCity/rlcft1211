@@ -39,6 +39,26 @@ public final class ClientEvents {
          com.google.common.base.Suppliers.memoize(com.lycanitesmobs.client.renderer.EquipmentPartRenderer::new);
       java.util.function.Supplier<com.lycanitesmobs.client.renderer.EquipmentRenderer> equipmentRenderer =
          com.google.common.base.Suppliers.memoize(com.lycanitesmobs.client.renderer.EquipmentRenderer::new);
+      // 1.12 Fluid still/flowing textures (modid:blocks/<fluid>_still, _flow)
+      for (com.lycanitesmobs.compat.ForgeFluid fluid : com.lycanitesmobs.ObjectManager.fluids.values()) {
+         if (fluid.fluidType == null) {
+            continue;
+         }
+         // the textures are in textures/blocks like 1.12 (the atlas source "blocks" maps them to blocks/...)
+         net.minecraft.resources.ResourceLocation still = net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(LycanitesMobs.modid, "blocks/" + fluid.fluidName + "_still");
+         net.minecraft.resources.ResourceLocation flowing = net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(LycanitesMobs.modid, "blocks/" + fluid.fluidName + "_flow");
+         event.registerFluidType(new net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions() {
+            @Override
+            public net.minecraft.resources.ResourceLocation getStillTexture() {
+               return still;
+            }
+
+            @Override
+            public net.minecraft.resources.ResourceLocation getFlowingTexture() {
+               return flowing;
+            }
+         }, fluid.fluidType);
+      }
       for (net.minecraft.world.item.Item item : net.minecraft.core.registries.BuiltInRegistries.ITEM) {
          if (item instanceof com.lycanitesmobs.core.item.equipment.ItemEquipmentPart) {
             event.registerItem(new net.neoforged.neoforge.client.extensions.common.IClientItemExtensions() {

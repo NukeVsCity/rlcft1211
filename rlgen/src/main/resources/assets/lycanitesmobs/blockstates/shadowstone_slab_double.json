@@ -1,0 +1,16 @@
+{
+ "variants": {
+  "axis=y": {
+   "model": "lycanitesmobs:block/shadowstone_slab_double"
+  },
+  "axis=z": {
+   "model": "lycanitesmobs:block/shadowstone_slab_double",
+   "x": 90
+  },
+  "axis=x": {
+   "model": "lycanitesmobs:block/shadowstone_slab_double",
+   "x": 90,
+   "y": 90
+  }
+ }
+}

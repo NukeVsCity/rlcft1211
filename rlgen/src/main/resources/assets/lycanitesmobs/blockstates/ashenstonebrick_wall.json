@@ -1,0 +1,51 @@
+{
+ "multipart": [
+  {
+   "when": {
+    "up": "true"
+   },
+   "apply": {
+    "model": "lycanitesmobs:block/ashenstonebrick_wall_post"
+   }
+  },
+  {
+   "when": {
+    "north_wall": "low|tall"
+   },
+   "apply": {
+    "model": "lycanitesmobs:block/ashenstonebrick_wall_side",
+    "uvlock": true
+   }
+  },
+  {
+   "when": {
+    "east_wall": "low|tall"
+   },
+   "apply": {
+    "model": "lycanitesmobs:block/ashenstonebrick_wall_side",
+    "y": 90,
+    "uvlock": true
+   }
+  },
+  {
+   "when": {
+    "south_wall": "low|tall"
+   },
+   "apply": {
+    "model": "lycanitesmobs:block/ashenstonebrick_wall_side",
+    "y": 180,
+    "uvlock": true
+   }
+  },
+  {
+   "when": {
+    "west_wall": "low|tall"
+   },
+   "apply": {
+    "model": "lycanitesmobs:block/ashenstonebrick_wall_side",
+    "y": 270,
+    "uvlock": true
+   }
+  }
+ ]
+}
