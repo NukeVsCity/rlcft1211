@@ -209,7 +209,7 @@ look-alikes (convert_rc.py MOD_BLOCKS). After changing the mapping: re-run conve
 | SetBonus-1.12.2.020.jar | Gameplay (combat/items) | TODO |
 | ShieldBreak-1.1.3.jar | Gameplay (combat/items) | TODO |
 | SilentLib-1.12.2-3.0.14+168.jar | Library | only when a ported mod needs it |
-| SimpleDifficulty-1.12.2-0.3.9.jar | Gameplay (survival) | TODO |
+| SimpleDifficulty-1.12.2-0.3.9.jar | Gameplay (survival) | DONE (v0.12.0) |
 | SnowRealMagic-1.12.2-0.7.1.jar | World gen | DONE (world gen) |
 | SoManyEnchantments-0.5.5.jar | Gameplay (combat/items) | TODO |
 | SoundFilters-0.12.1_for_1.12.jar | Client visuals/feel | TODO later (client look/feel: port 1.12 or check) |
@@ -253,7 +253,7 @@ look-alikes (convert_rc.py MOD_BLOCKS). After changing the mapping: re-run conve
 | defiledlands-1.12.2-1.4.3.jar | World gen | DONE (world gen) |
 | disenchanter[1.12]1.8.jar | Gameplay (combat/items) | TODO |
 | dynamictreesdefiledlands-1.12.2-1.0.0.jar | World gen | DONE (world gen) |
-| firstaid-1.6.22.jar | Gameplay (survival) | TODO |
+| firstaid-1.6.22.jar | Gameplay (survival) | DONE (v0.12.0) |
 | foamfix-0.10.15-1.12.2.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
 | forgottenitems-1.12.2-1.3.1.4.jar | Gameplay (items/baubles) | TODO |
 | framevoidpatch-1.0.0.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
@@ -270,7 +270,7 @@ look-alikes (convert_rc.py MOD_BLOCKS). After changing the mapping: re-run conve
 | lycanitesmobs-1.12.2-2.0.8.9.jar | Gameplay (mobs) | DONE (v0.11.0) |
 | mcw-bridges-1.0.6b-mc1.12.2.jar | Gameplay (misc) | TODO |
 | modtweaker-4.0.20.11.jar | RLCraft tweaks/scripts | TODO (apply what they change) |
-| notreepunching-2.0.21.jar | World gen + gameplay | world gen DONE, gameplay TODO |
+| notreepunching-2.0.21.jar | World gen + gameplay | DONE (v0.12.0) |
 | particleculling-1.12.2-v1.4.1.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
 | phosphor-1.12.2-0.2.6+build50-universal.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
 | pigstep-1.12.jar | Gameplay (mobs) | TODO |
