@@ -61,6 +61,10 @@ public class EntityDamageSource extends DamageSource {
 
    static Holder<DamageType> holder(@Nullable Entity entity, ResourceKey<DamageType> key) {
       RegistryAccess access = entity != null ? entity.level().registryAccess() : LycDamage.registries();
+      if (access == null) {
+         // made during mod loading (1.12 static damage sources): resolved when used
+         return new LazyDamageType(key);
+      }
       return access.registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(key);
    }
 

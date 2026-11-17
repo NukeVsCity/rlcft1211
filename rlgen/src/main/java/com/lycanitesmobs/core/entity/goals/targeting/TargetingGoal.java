@@ -229,7 +229,7 @@ public abstract class TargetingGoal extends EntityAIBase {
    }
 
    public <T extends LivingEntity> List<T> getPossibleTargets(Class<? extends T> clazz, double rangeX, double rangeY, double rangeZ) {
-      return (List<T>)(List)this.host.level().getEntitiesOfClass((Class<LivingEntity>)clazz, this.host.getBoundingBox().inflate(rangeX, rangeY, rangeZ), (java.util.function.Predicate)this.targetSelector);
+      return (List<T>)(List)this.host.level().getEntitiesOfClass((Class<LivingEntity>)clazz, this.host.getBoundingBox().inflate(rangeX, rangeY, rangeZ), this.targetSelector != null ? (java.util.function.Predicate)this.targetSelector : e -> true);
    }
 
    protected double getTargetDistance() {

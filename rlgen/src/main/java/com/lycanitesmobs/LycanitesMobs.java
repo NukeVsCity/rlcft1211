@@ -141,8 +141,7 @@ public class LycanitesMobs {
       );
       config.setCategoryComment("Player", "Settings for player related stats and features.");
       NeoForge.EVENT_BUS.register(new GameEventListener());
-      NeoForge.EVENT_BUS.register(CreatureManager.getInstance());
-      NeoForge.EVENT_BUS.register(ProjectileManager.getInstance());
+      // 1.12 also registered CreatureManager and ProjectileManager for RegistryEvent.Register<EntityEntry>: LycEntities registers them
       PlayerFamiliars.INSTANCE.familiarBlacklist = new ArrayList<>();
       String[] familiarBlacklist = config.getStringList(
          "Extras",
@@ -203,7 +202,7 @@ public class LycanitesMobs {
       MobEventManager.getInstance().loadAllFromJSON(modInfo);
       // 1.12 GameRegistry.registerWorldGenerator(WorldGeneratorFluids, 0) and (WorldGeneratorDungeon, 1000): Lycanites world
       // gen runs from rlgen's legacy populate (com.nukevscity.rlgen.lyc).
-      DungeonManager.getInstance().loadAllFromJSON();
+      // 1.12 DungeonManager.loadAllFromJSON: loaded once by rlgen (com.nukevscity.rlgen.lyc.dungeon), which builds the dungeons
       dungeonGenerator = new WorldGeneratorDungeon();
       ItemHalloweenTreat.createObjectLists();
       ItemWinterGift.createObjectLists();

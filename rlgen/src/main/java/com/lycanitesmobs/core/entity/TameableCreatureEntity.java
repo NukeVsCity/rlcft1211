@@ -135,6 +135,8 @@ public class TameableCreatureEntity extends AgeableCreatureEntity implements Own
       builder.define(OWNER_ID, Optional.empty());
       builder.define(HUNGER, this.getCreatureHungerMax());
       builder.define(STAMINA, this.getStaminaMax());
+      // 1.12 created LOYALTY but never registered it; 1.21 ids have no gaps, so it is defined (never used)
+      builder.define(LOYALTY, 0);
    }
 
    @Override
