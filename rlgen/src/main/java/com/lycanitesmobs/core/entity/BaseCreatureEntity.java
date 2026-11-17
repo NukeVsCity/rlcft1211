@@ -451,6 +451,8 @@ public abstract class BaseCreatureEntity extends Mob {
       builder.define(ANIMATION_ATTACK_COOLDOWN_MAX, 0);
       builder.define(CLIMBING, (byte)0);
       builder.define(STEALTH, 0.0F);
+      // 1.12 created BABY but never registered it (reads failed and gave false); 1.21 ids have no gaps, so it is defined as false
+      builder.define(BABY, false);
       builder.define(COLOR, (byte)0);
       builder.define(SIZE, 1.0F);
       builder.define(LEVEL, 1);
@@ -637,6 +639,18 @@ public abstract class BaseCreatureEntity extends Mob {
 
    public int getMaxSpawnedInChunk() {
       return this.creatureInfo.creatureSpawn.spawnGroupMax;
+   }
+
+   /** 1.12 WorldEntitySpawner: getCanSpawnHere */
+   @Override
+   public boolean checkSpawnRules(net.minecraft.world.level.LevelAccessor level, MobSpawnType spawnReason) {
+      return this.getCanSpawnHere();
+   }
+
+   /** 1.12 getMaxSpawnedInChunk */
+   @Override
+   public int getMaxSpawnClusterSize() {
+      return this.getMaxSpawnedInChunk();
    }
 
    /** 1.12 EntityLiving.isNotColliding (vanilla: no liquid, no collisions; water mobs only check collisions). */
@@ -4177,7 +4191,7 @@ public abstract class BaseCreatureEntity extends Mob {
    }
 
    public <T extends Entity> List<T> getNearbyEntities(Class<? extends T> clazz, Predicate<Entity> predicate, double range) {
-      return (List<T>)(List)this.level().getEntitiesOfClass((Class<Entity>)clazz, this.getBoundingBox().inflate(range, range, range), predicate);
+      return (List<T>)(List)this.level().getEntitiesOfClass((Class<Entity>)clazz, this.getBoundingBox().inflate(range, range, range), predicate != null ? predicate : e -> true);
    }
 
    public <T extends Entity> T getNearestEntity(Class<? extends T> clazz, Class filterClass, double range, boolean canAttack) {

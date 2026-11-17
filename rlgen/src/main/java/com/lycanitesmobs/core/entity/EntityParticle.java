@@ -102,6 +102,11 @@ public class EntityParticle extends ThrowableProjectile {
    public String texture;
    public ModInfo group;
 
+   /** For the 1.21 entity type factory (1.12 particles were client-only and never made from a type). */
+   public EntityParticle(Level world) {
+      super(LycEntities.type(EntityParticle.class), world);
+   }
+
    public EntityParticle(Level world, double x, double y, double z, String texture, ModInfo group) {
       super(LycEntities.type(EntityParticle.class), world);
       LycMotion.setPosX(this, x);

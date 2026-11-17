@@ -173,7 +173,7 @@ public class Utilities {
          aabb = aabb.inflate((double)rayWidth);
       }
 
-      List<Entity> possibleEntities = world.getEntitiesOfClass(Entity.class, aabb, predicate != null ? predicate::test : null);
+      List<Entity> possibleEntities = world.getEntitiesOfClass(Entity.class, aabb, predicate != null ? predicate::test : e -> true);
       Entity closestHitEntity = null;
       Vec3 closestHitLocation = null;
       double closestHitDistSqr = Double.POSITIVE_INFINITY;
@@ -316,35 +316,18 @@ public class Utilities {
       return (int)((d2.getTime() - d1.getTime()) / 86400000L);
    }
 
+   /** 1.12 getAssetPath (the jar's file system or the dev folder): 1.21 mod file's own path (union file system). */
    public static Path getAssetPath(Class clazz, String assetDomain, String assetPath) {
-      Path path = null;
-      String assetDir = "/assets/" + assetDomain + (!"".equals(assetPath) ? "/" + assetPath : "");
-
+      String assetDir = "assets/" + assetDomain + (!"".equals(assetPath) ? "/" + assetPath : "");
       try {
-         URL url = clazz.getResource("/assets/" + assetDomain + "/.root");
-         URI uri = url.toURI();
-         if ("file".equals(uri.getScheme())) {
-            path = Paths.get(clazz.getResource(assetDir).toURI());
-         } else {
-            if (!"jar".equals(uri.getScheme())) {
-               LycanitesMobs.logWarning("", "Unsupported file scheme: " + uri.getScheme());
-               return null;
-            }
-
-            FileSystem filesystem;
-            try {
-               filesystem = FileSystems.getFileSystem(uri);
-            } catch (Exception var9) {
-               filesystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
-            }
-
-            path = filesystem.getPath(assetDir);
+         Path path = net.neoforged.fml.ModList.get().getModFileById("lycanitesmobs").getFile().findResource(assetDir.split("/"));
+         if (Files.exists(path)) {
+            return path;
          }
       } catch (Exception var10) {
-         LycanitesMobs.logWarning("", "No data found in: " + assetDir);
       }
-
-      return path;
+      LycanitesMobs.logWarning("", "No data found in: /" + assetDir);
+      return null;
    }
 
    public static List<ResourceLocation> getPathResourceLocations(Path path, String assetDomain, String fileType) {

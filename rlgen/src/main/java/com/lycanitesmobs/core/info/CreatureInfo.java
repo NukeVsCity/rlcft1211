@@ -427,7 +427,7 @@ public class CreatureInfo {
    public void load() {
       if (!this.dummy) {
          ItemStack achievementStack = new ItemStack(ObjectManager.getItem("mobtoken"));
-         CompoundTag achievementTag = LycNBT.getTag(achievementStack);
+         CompoundTag achievementTag = LycNBT.hasTag(achievementStack) ? LycNBT.getTag(achievementStack) : new CompoundTag();
          achievementTag.putString("Mob", this.getName());
          LycNBT.setTag(achievementStack, achievementTag);
          ObjectManager.addStat(this.getName() + ".kill", this.getName() + ".kill");

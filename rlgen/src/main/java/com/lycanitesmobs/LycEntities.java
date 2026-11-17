@@ -54,6 +54,23 @@ public final class LycEntities {
       ATTRIBUTES.register(modBus);
       modBus.addListener(LycEntities::onRegister);
       modBus.addListener(LycEntities::onAttributes);
+      modBus.addListener(LycEntities::onSpawnPlacements);
+   }
+
+   /**
+    * 1.12 EntitySpawnPlacementRegistry (Forge default ON_GROUND for unregistered mobs); the 1.12 getCanSpawnHere and
+    * isNotColliding checks are the creature's checkSpawnRules and checkSpawnObstruction.
+    */
+   @SuppressWarnings({"unchecked", "rawtypes"})
+   private static void onSpawnPlacements(net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent event) {
+      for (CreatureInfo creatureInfo : CreatureManager.getInstance().creatures.values()) {
+         EntityType type = creatureInfo.entityClass != null ? CLASS_TYPES.get(creatureInfo.entityClass) : null;
+         if (type != null) {
+            event.register(type, net.minecraft.world.entity.SpawnPlacementTypes.ON_GROUND,
+               net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+               (t, level, reason, pos, random) -> true, net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent.Operation.REPLACE);
+         }
+      }
    }
 
    @SuppressWarnings("unchecked")
@@ -130,7 +147,9 @@ public final class LycEntities {
             continue;
          }
          Class cls = creatureInfo.entityClass;
-         register(registry, creatureInfo.getName(), cls, worldConstructor(cls), MobCategory.MONSTER, (float)creatureInfo.width,
+         // 1.12 spawn caps counted IMob mobs as monsters; the others (not EntityAnimal) were counted as nothing, CREATURE is closest
+         MobCategory category = net.minecraft.world.entity.monster.Enemy.class.isAssignableFrom(cls) ? MobCategory.MONSTER : MobCategory.CREATURE;
+         register(registry, creatureInfo.getName(), cls, worldConstructor(cls), category, (float)creatureInfo.width,
             (float)creatureInfo.height, creatureInfo.isBoss() ? 10 : 5, 3, false);
       }
       // ProjectileManager.registerEntities: tracker(40, 3, true)

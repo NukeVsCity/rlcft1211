@@ -107,6 +107,12 @@ public class RapidFireProjectileEntity extends BaseProjectileEntity {
    public double offsetY = 0.0;
    public double offsetZ = 0.0;
 
+   /** For the 1.21 entity type factory (the client copy of a spawned rapid fire projectile). */
+   public RapidFireProjectileEntity(Level world) {
+      super(LycEntities.type(RapidFireProjectileEntity.class), world);
+      this.setSize(this.projectileWidth, this.projectileHeight);
+   }
+
    public RapidFireProjectileEntity(Class entityClass, Level world, int setTime, int setDelay) {
       super(LycEntities.type(RapidFireProjectileEntity.class), world);
       this.setSize(this.projectileWidth, this.projectileHeight);
