@@ -104,8 +104,19 @@ public class BlockFirePit extends BaseEntityBlock {
 
    /** World.getTopSolidOrLiquidBlock(pos).getY() < pos.getY() + 2 with canBlockSeeSky and isRaining */
    private static boolean isRainedOn(Level worldIn, BlockPos pos) {
-      return worldIn.canSeeSky(pos) && worldIn.isRaining()
+      return canBlockSeeSky(worldIn, pos) && worldIn.isRaining()
          && worldIn.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, pos).getY() < pos.getY() + 2;
+   }
+
+   /** 1.12 Chunk.canSeeSky: pos.y >= the height map, which only counts blocks with light opacity (not the fire pit itself) */
+   private static boolean canBlockSeeSky(Level worldIn, BlockPos pos) {
+      int top = worldIn.getHeight(Heightmap.Types.WORLD_SURFACE, pos.getX(), pos.getZ());
+      for (BlockPos.MutableBlockPos p = new BlockPos.MutableBlockPos(pos.getX(), top - 1, pos.getZ()); p.getY() > pos.getY(); p.move(0, -1, 0)) {
+         if (worldIn.getBlockState(p).getLightBlock(worldIn, p) > 0) {
+            return false;
+         }
+      }
+      return true;
    }
 
    @Override
