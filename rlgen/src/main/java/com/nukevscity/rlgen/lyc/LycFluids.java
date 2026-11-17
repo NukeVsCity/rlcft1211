@@ -64,6 +64,15 @@ public final class LycFluids {
          ALL.add(this);
       }
 
+      /** The world gen block: the real Lycanites fluid block (lycanitesmobs:<name>) when registered, else this stand-in. */
+      public net.minecraft.world.level.block.state.BlockState state() {
+         net.minecraft.resources.ResourceLocation real = net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("lycanitesmobs", this.name);
+         if (net.minecraft.core.registries.BuiltInRegistries.BLOCK.containsKey(real)) {
+            return net.minecraft.core.registries.BuiltInRegistries.BLOCK.get(real).defaultBlockState();
+         }
+         return this.block.get().defaultBlockState();
+      }
+
       private Supplier<Fluid> source() {
          return () -> this.source.get();
       }

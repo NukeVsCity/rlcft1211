@@ -40,6 +40,13 @@ public final class DungeonHooks {
       return rarity;
    }
 
+   /** getRandomDungeonMob as an entity type (an id without a registered type gives a zombie). */
+   public static net.minecraft.world.entity.EntityType<?> randomDungeonMobType(Random rand) {
+      ResourceLocation id = getRandomDungeonMob(rand);
+      return net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.containsKey(id)
+         ? net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.get(id) : net.minecraft.world.entity.EntityType.ZOMBIE;
+   }
+
    /** 1.12 getRandomDungeonMob: WeightedRandom.getRandomItem (one nextInt of the total weight). */
    public static ResourceLocation getRandomDungeonMob(Random rand) {
       int total = 0;

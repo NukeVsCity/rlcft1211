@@ -275,7 +275,8 @@ public final class Gen {
       w.set(pos, Blocks.SPAWNER.defaultBlockState());
       BlockEntity be = w.level.getBlockEntity(pos);
       if (be instanceof SpawnerBlockEntity spawner) {
-         spawner.setEntityId(mobs[random.nextInt(mobs.length)], RandomSource.create(random.nextLong()));
+         // Forge 1.12 WorldGenDungeons.pickMobSpawner = DungeonHooks.getRandomDungeonMob (with the Lycanites dungeon mobs)
+         spawner.setEntityId(mobs == DUNGEON_MOBS ? com.lycanitesmobs.compat.DungeonHooks.randomDungeonMobType(random) : mobs[random.nextInt(mobs.length)], RandomSource.create(random.nextLong()));
       }
       return true;
    }

@@ -138,7 +138,7 @@ public class PetEntry {
       CreatureInfo creatureInfo = entity.creatureInfo;
       PetEntry petEntry = new PetEntry(UUID.randomUUID(), petType, player, creatureInfo.getName());
       if (entity.hasCustomName()) {
-         petEntry.setEntityName(entity.getCustomName().getString());
+         petEntry.setEntityName(entity.getCustomName() != null ? entity.getCustomName().getString() : "");
       }
 
       petEntry.setEntitySubspecies(entity.getSubspeciesIndex());
@@ -381,7 +381,7 @@ public class PetEntry {
                   }
 
                   if (this.entity.hasCustomName()) {
-                     this.entityName = this.entity.getCustomName().getString();
+                     this.entityName = this.entity.getCustomName() != null ? this.entity.getCustomName().getString() : "";
                   }
                }
             } else {
@@ -655,7 +655,7 @@ public class PetEntry {
          }
 
          if (this.entity.hasCustomName()) {
-            this.entityName = this.entity.getCustomName().getString();
+            this.entityName = this.entity.getCustomName() != null ? this.entity.getCustomName().getString() : "";
          }
 
          this.entity.saveWithoutId(this.entityNBT);

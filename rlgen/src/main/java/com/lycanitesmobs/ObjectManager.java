@@ -79,8 +79,8 @@ public class ObjectManager {
       ModInfo group = currentModInfo;
       ForgeFluid fluid = new ForgeFluid(
          fluidName,
-         ResourceLocation.fromNamespaceAndPath(group.modid, "block/" + fluidName + "_still"),
-         ResourceLocation.fromNamespaceAndPath(group.modid, "block/" + fluidName + "_flow")
+         ResourceLocation.fromNamespaceAndPath(group.modid, "blocks/" + fluidName + "_still"),
+         ResourceLocation.fromNamespaceAndPath(group.modid, "blocks/" + fluidName + "_flow")
       );
       if (fluids.containsKey(fluidName)) {
          LycanitesMobs.logWarning("", "Another fluid was registered as " + fluidName);

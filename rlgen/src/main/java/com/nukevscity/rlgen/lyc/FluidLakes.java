@@ -34,11 +34,11 @@ public final class FluidLakes {
       int x = cx * 16 + 16;
       int z = cz * 16 + 16;
       if (typeValid && random.nextDouble() <= SURFACE) {
-         Gen.lake(w, random, new BlockPos(x, random.nextInt(128), z), kind.block.get().defaultBlockState(), false);
+         Gen.lake(w, random, new BlockPos(x, random.nextInt(128), z), kind.state(), false);
       }
       if (random.nextDouble() <= UNDERGROUND) {
          int top = Math.max(1, w.topSolidOrLiquid(new BlockPos(x, 0, z)).getY() - 10);
-         Gen.lake(w, random, new BlockPos(x, random.nextInt(top), z), kind.block.get().defaultBlockState(), false);
+         Gen.lake(w, random, new BlockPos(x, random.nextInt(top), z), kind.state(), false);
       }
    }
 }

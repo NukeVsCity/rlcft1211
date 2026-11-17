@@ -152,7 +152,7 @@ public final class QuarkGen {
          BlockPos pos = e.getKey();
          if (e.getValue().equals("spawner")) {
             spawners++;
-            EntityType<?> mob = DUNGEON_MOBS[rand.nextInt(DUNGEON_MOBS.length)]; // DungeonHooks.getRandomDungeonMob: one draw
+            EntityType<?> mob = com.lycanitesmobs.compat.DungeonHooks.randomDungeonMobType(rand); // DungeonHooks.getRandomDungeonMob: one draw
             w.set(pos, Blocks.SPAWNER.defaultBlockState());
             if (w.level.getBlockEntity(pos) instanceof SpawnerBlockEntity spawner && w.get(pos).is(Blocks.SPAWNER)) {
                spawner.setEntityId(mob, RandomSource.create(pos.asLong()));
