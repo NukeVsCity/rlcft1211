@@ -10,7 +10,7 @@
   },
   {
    "when": {
-    "north_wall": "low|tall"
+    "north": "low|tall"
    },
    "apply": {
     "model": "lycanitesmobs:block/demonstonebrick_wall_side",
@@ -19,7 +19,7 @@
   },
   {
    "when": {
-    "east_wall": "low|tall"
+    "east": "low|tall"
    },
    "apply": {
     "model": "lycanitesmobs:block/demonstonebrick_wall_side",
@@ -29,7 +29,7 @@
   },
   {
    "when": {
-    "south_wall": "low|tall"
+    "south": "low|tall"
    },
    "apply": {
     "model": "lycanitesmobs:block/demonstonebrick_wall_side",
@@ -39,7 +39,7 @@
   },
   {
    "when": {
-    "west_wall": "low|tall"
+    "west": "low|tall"
    },
    "apply": {
     "model": "lycanitesmobs:block/demonstonebrick_wall_side",

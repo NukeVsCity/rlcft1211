@@ -151,7 +151,7 @@ public class EntityJabberwock extends TameableCreatureEntity implements Enemy {
 
    @Override
    public ResourceLocation getTexture() {
-      if (!"Rudolph".equals(this.getCustomName().getString())) {
+      if (!"Rudolph".equals((this.hasCustomName() ? this.getCustomName().getString() : ""))) {
          return super.getTexture();
       } else {
          String textureName = this.getTextureName() + "_rudolph";

@@ -190,7 +190,7 @@ public class EntityReaper extends TameableCreatureEntity implements Enemy {
 
    @Override
    public ResourceLocation getTexture(String suffix) {
-      if (!"Satan Claws".equals(this.getCustomName().getString())) {
+      if (!"Satan Claws".equals((this.hasCustomName() ? this.getCustomName().getString() : ""))) {
          return super.getTexture(suffix);
       } else {
          String textureName = this.getTextureName() + "_satanclaws";

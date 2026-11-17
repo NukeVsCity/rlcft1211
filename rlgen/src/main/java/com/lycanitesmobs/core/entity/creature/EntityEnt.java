@@ -189,14 +189,14 @@ public class EntityEnt extends TameableCreatureEntity implements Enemy {
 
    @Override
    public ResourceLocation getTexture() {
-      if ("Twisted Ent".equals(this.getCustomName().getString())) {
+      if ("Twisted Ent".equals((this.hasCustomName() ? this.getCustomName().getString() : ""))) {
          String textureName = this.getTextureName() + "_twisted";
          if (AssetManager.getTexture(textureName) == null) {
             AssetManager.addTexture(textureName, this.creatureInfo.modInfo, "textures/entity/" + textureName.toLowerCase() + ".png");
          }
 
          return AssetManager.getTexture(textureName);
-      } else if ("Salty Tree".equals(this.getCustomName().getString())) {
+      } else if ("Salty Tree".equals((this.hasCustomName() ? this.getCustomName().getString() : ""))) {
          String textureName = this.getTextureName() + "_saltytree";
          if (AssetManager.getTexture(textureName) == null) {
             AssetManager.addTexture(textureName, this.creatureInfo.modInfo, "textures/entity/" + textureName.toLowerCase() + ".png");

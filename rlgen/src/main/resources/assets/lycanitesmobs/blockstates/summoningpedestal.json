@@ -1,8 +1,5 @@
 {
  "variants": {
-  "": {
-   "model": "lycanitesmobs:block/summoningpedestal_none"
-  },
   "owner=none": {
    "model": "lycanitesmobs:block/summoningpedestal_none"
   },

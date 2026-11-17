@@ -145,7 +145,7 @@ public class EntityWildkin extends TameableCreatureEntity implements Enemy {
 
    @Override
    public ResourceLocation getTexture() {
-      if (!"Gooderness".equals(this.getCustomName().getString())) {
+      if (!"Gooderness".equals((this.hasCustomName() ? this.getCustomName().getString() : ""))) {
          return super.getTexture();
       } else {
          String textureName = this.getTextureName() + "_gooderness";

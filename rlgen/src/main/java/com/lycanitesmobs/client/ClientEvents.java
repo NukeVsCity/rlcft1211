@@ -16,6 +16,22 @@ public final class ClientEvents {
 
    public static void register() {
       new KeyHandler(Minecraft.getInstance());
+      // Dev test hook: a file lyc_testscreen.txt in the game dir names a client screen (ClientScreens.open) to open
+      // 15 s after joining a world, so automated client runs can screenshot the GUIs.
+      java.io.File testScreen = new java.io.File(Minecraft.getInstance().gameDirectory, "lyc_testscreen.txt");
+      if (testScreen.exists()) {
+         int[] ticks = {0};
+         NeoForge.EVENT_BUS.addListener(net.neoforged.neoforge.client.event.ClientTickEvent.Post.class, e -> {
+            Minecraft mc = Minecraft.getInstance();
+            if (mc.player != null && ++ticks[0] == 300) {
+               try {
+                  com.lycanitesmobs.client.gui.ClientScreens.open(java.nio.file.Files.readString(testScreen.toPath()).trim(), mc.player);
+               } catch (java.io.IOException ex) {
+                  LycanitesMobs.logWarning("", "test screen: " + ex);
+               }
+            }
+         });
+      }
       NeoForge.EVENT_BUS.register(new com.lycanitesmobs.client.gui.overlays.BaseOverlay(Minecraft.getInstance()));
       NeoForge.EVENT_BUS.register(new ClientEventListener());
    }

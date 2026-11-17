@@ -6,7 +6,7 @@ usage: lyc_blockstates.py <1.12 assets/lycanitesmobs/blockstates> <out blockstat
 - slabs (1.12 "half=bottom/top,variant=default", the double slab a separate block): 1.21 SlabBlock type=bottom/top/double,
   double = the 1.12 <name>_double block's model (y axis) or the full block the slab was cut from (BlockMaker: the brick and
   tile slabs used their full block as the double slab);
-- walls (1.12 multipart up/north... = "true"): 1.21 WallBlock up=true, north_wall=low|tall (1.12 had no tall walls, so both
+- walls (1.12 multipart up/north... = "true"): 1.21 WallBlock up=true, north=low|tall (1.12 had no tall walls, so both
   use the 1.12 side model);
 - the Forge fluid blockstate becomes one blockstate per fluid block with a particle-only model (1.21 draws fluids itself);
 - everything else (stairs, fences, pillars, facing blocks, fires, webs) keeps its variants/multipart."""
@@ -67,13 +67,15 @@ for name, j in files.items():
             if k == 'up':
                newwhen['up'] = str(val).lower()
             else:
-               newwhen[k + '_wall'] = 'low|tall'
+               newwhen[k] = 'low|tall'
          parts.append({'when': newwhen, 'apply': fixapply(p['apply'])} if newwhen else {'apply': fixapply(p['apply'])})
       json.dump({'multipart': parts}, open(os.path.join(out, name + '.json'), 'w'), indent=1)
       continue
    if 'variants' in j:
       res = {}
       for k, a in j['variants'].items():
+         if k == 'normal' and len(j['variants']) > 1:
+            continue  # 1.12 item variant next to the real ones (1.21: overlapping definition)
          res['' if k == 'normal' else k] = fixapply(a)
       j = {'variants': res}
    elif 'multipart' in j:
