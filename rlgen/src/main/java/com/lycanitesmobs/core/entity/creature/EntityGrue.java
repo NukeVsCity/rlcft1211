@@ -245,7 +245,7 @@ public class EntityGrue extends TameableCreatureEntity implements Enemy {
 
    @Override
    public ResourceLocation getTexture(String suffix) {
-      if (!"Shadow Clown".equals(this.getCustomName().getString())) {
+      if (!"Shadow Clown".equals((this.hasCustomName() ? this.getCustomName().getString() : ""))) {
          return super.getTexture(suffix);
       } else {
          String textureName = this.getTextureName() + "_shadowclown";

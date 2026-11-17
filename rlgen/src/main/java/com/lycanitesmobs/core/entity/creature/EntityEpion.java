@@ -250,7 +250,7 @@ public class EntityEpion extends RideableCreatureEntity implements Enemy {
 
    @Override
    public ResourceLocation getTexture() {
-      if (!"Vampire Bat".equals(this.getCustomName().getString())) {
+      if (!"Vampire Bat".equals((this.hasCustomName() ? this.getCustomName().getString() : ""))) {
          return super.getTexture();
       } else {
          String textureName = this.getTextureName() + "_vampirebat";
