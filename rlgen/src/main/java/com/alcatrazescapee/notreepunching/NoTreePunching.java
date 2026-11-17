@@ -1,6 +1,18 @@
 package com.alcatrazescapee.notreepunching;
 
+import com.alcatrazescapee.notreepunching.common.blocks.BlockFirePit;
+import com.alcatrazescapee.notreepunching.common.blocks.BlockLargeVessel;
+import com.alcatrazescapee.notreepunching.common.blocks.BlockPottery;
 import com.alcatrazescapee.notreepunching.common.blocks.BlockRock;
+import com.alcatrazescapee.notreepunching.common.container.ContainerFirePit;
+import com.alcatrazescapee.notreepunching.common.container.ContainerLargeVessel;
+import com.alcatrazescapee.notreepunching.common.container.ContainerSmallVessel;
+import com.alcatrazescapee.notreepunching.common.items.ItemCeramicBucket;
+import com.alcatrazescapee.notreepunching.common.items.ItemClayTool;
+import com.alcatrazescapee.notreepunching.common.items.ItemSmallVessel;
+import com.alcatrazescapee.notreepunching.common.tile.TileFirePit;
+import com.alcatrazescapee.notreepunching.common.tile.TileLargeVessel;
+import com.alcatrazescapee.notreepunching.util.types.Pottery;
 import com.alcatrazescapee.notreepunching.common.items.ItemFireStarter;
 import com.alcatrazescapee.notreepunching.common.items.ItemKnife;
 import com.alcatrazescapee.notreepunching.common.items.ItemMattock;
@@ -12,7 +24,18 @@ import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.material.Fluids;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.SimpleFluidContent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -45,8 +68,8 @@ import org.apache.logging.log4j.Logger;
 
 /**
  * No Tree Punching 2.0.21 as in RLCraft 2.9.3, ported from the 1.12 code (RegistryHelper of alcatrazcore -> DeferredRegisters, the
- * 1.12 registry names with "/" are kept: notreepunching:rock/stone, knife/flint ...). Not ported: the fire pit and the clay pottery
- * (worked clay, ceramic vessels/bucket); the clay tool only makes clay bricks.
+ * 1.12 registry names with "/" are kept: notreepunching:rock/stone, knife/flint, pottery/worked ...). The ModGuiHandler GUIs are
+ * menus: large vessel, small vessel, fire pit.
  */
 @Mod(NoTreePunching.MOD_ID)
 public final class NoTreePunching {
@@ -58,6 +81,13 @@ public final class NoTreePunching {
    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MOD_ID);
    public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(Registries.SOUND_EVENT, MOD_ID);
    public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MOD_ID);
+   public static final DeferredRegister<BlockEntityType<?>> TILES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, MOD_ID);
+   public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, MOD_ID);
+   public static final DeferredRegister.DataComponents COMPONENTS = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, MOD_ID);
+
+   /** the ceramic bucket's fluid (1.12 FluidHandlerItemStackSimple NBT "Fluid") */
+   public static final DeferredHolder<DataComponentType<?>, DataComponentType<SimpleFluidContent>> FLUID_CONTENT = COMPONENTS.registerComponentType("fluid",
+      b -> b.persistent(SimpleFluidContent.CODEC).networkSynchronized(SimpleFluidContent.STREAM_CODEC));
 
    public static final DeferredHolder<SoundEvent, SoundEvent> KNAPPING = SOUNDS.register("knapping",
       () -> SoundEvent.createVariableRangeEvent(ResourceLocation.fromNamespaceAndPath(MOD_ID, "knapping")));
@@ -107,19 +137,54 @@ public final class NoTreePunching {
    public static final DeferredItem<Item> GRASS_STRING = ITEMS.registerSimpleItem("grass_string");
    public static final DeferredItem<Item> FLINT_SHARD = ITEMS.registerSimpleItem("flint_shard");
    public static final DeferredItem<Item> CLAY_BRICK = ITEMS.registerSimpleItem("clay_brick");
-   /** ItemClayTool: 60 uses, stays in the crafting grid (Forge default container item: a new clay tool); shaping clay into pottery is not ported */
-   public static final DeferredItem<Item> CLAY_TOOL = ITEMS.register("clay_tool", () -> new Item(new Item.Properties().durability(60).setNoRepair()) {
-      @Override
-      public ItemStack getCraftingRemainingItem(ItemStack stack) {
-         return new ItemStack(this);
-      }
-
-      @Override
-      public boolean hasCraftingRemainingItem(ItemStack stack) {
-         return true;
-      }
-   });
+   public static final DeferredItem<Item> CLAY_TOOL = ITEMS.register("clay_tool", () -> new ItemClayTool(new Item.Properties()));
    public static final DeferredItem<Item> FIRE_STARTER = ITEMS.register("fire_starter", () -> new ItemFireStarter(new Item.Properties().durability(10)));
+   public static final DeferredItem<Item> CERAMIC_SMALL_VESSEL = ITEMS.register("ceramic_small_vessel", () -> new ItemSmallVessel(new Item.Properties()));
+   public static final DeferredItem<ItemCeramicBucket> CERAMIC_BUCKET = ITEMS.register("ceramic_bucket", () -> new ItemCeramicBucket(new Item.Properties()));
+
+   /** ModBlocks: pottery/<type> (item blocks except worked clay), ceramic_large_vessel, fire_pit (no item) */
+   public static final Map<Pottery, DeferredBlock<BlockPottery>> POTTERY = new EnumMap<>(Pottery.class);
+
+   static {
+      for (Pottery type : Pottery.values()) {
+         // BlockPottery: Material.CLAY, hardness 0.8 - 0.1 * ordinal, SoundType.GROUND (= 1.21 gravel), shovel 0
+         DeferredBlock<BlockPottery> b = BLOCKS.registerBlock("pottery/" + type.name().toLowerCase(), p -> new BlockPottery(type, p), BlockBehaviour.Properties.of()
+            .mapColor(MapColor.CLAY).strength(0.8F - 0.1F * (float)type.ordinal()).sound(SoundType.GRAVEL).noOcclusion());
+         POTTERY.put(type, b);
+         if (type != Pottery.WORKED) {
+            ITEMS.registerSimpleBlockItem(b);
+         }
+      }
+   }
+
+   /** BlockLargeVessel: Material.GROUND, hardness 1, pickaxe 0 */
+   public static final DeferredBlock<BlockLargeVessel> CERAMIC_LARGE_VESSEL = BLOCKS.registerBlock("ceramic_large_vessel", BlockLargeVessel::new,
+      BlockBehaviour.Properties.of().mapColor(MapColor.DIRT).strength(1.0F).sound(SoundType.GRAVEL).noOcclusion());
+   public static final DeferredItem<BlockItem> CERAMIC_LARGE_VESSEL_ITEM = ITEMS.registerSimpleBlockItem(CERAMIC_LARGE_VESSEL);
+   /** BlockFirePit: Material.CIRCUITS (hardness 0, destroyed by pistons), wood sound, light 15 when lit */
+   public static final DeferredBlock<BlockFirePit> FIRE_PIT = BLOCKS.registerBlock("fire_pit", BlockFirePit::new, BlockBehaviour.Properties.of()
+      .instabreak().sound(SoundType.WOOD).noCollission().noOcclusion().pushReaction(PushReaction.DESTROY)
+      .lightLevel(st -> st.getValue(BlockFirePit.LIT) ? 15 : 0));
+
+   public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TileLargeVessel>> LARGE_VESSEL_TILE = TILES.register("ceramic_large_vessel",
+      () -> BlockEntityType.Builder.of(TileLargeVessel::new, CERAMIC_LARGE_VESSEL.get()).build(null));
+   public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TileFirePit>> FIRE_PIT_TILE = TILES.register("fire_pit",
+      () -> BlockEntityType.Builder.of(TileFirePit::new, FIRE_PIT.get()).build(null));
+
+   public static final DeferredHolder<MenuType<?>, MenuType<ContainerLargeVessel>> LARGE_VESSEL_MENU = MENUS.register("large_vessel",
+      () -> IMenuTypeExtension.create((id, inv, buf) -> {
+         BlockPos pos = buf.readBlockPos();
+         return new ContainerLargeVessel(id, inv, inv.player.level().getBlockEntity(pos) instanceof TileLargeVessel te ? te
+            : new TileLargeVessel(pos, CERAMIC_LARGE_VESSEL.get().defaultBlockState()));
+      }));
+   public static final DeferredHolder<MenuType<?>, MenuType<ContainerSmallVessel>> SMALL_VESSEL_MENU = MENUS.register("small_vessel",
+      () -> IMenuTypeExtension.create((id, inv, buf) -> new ContainerSmallVessel(id, inv, ContainerSmallVessel.heldVessel(inv.player))));
+   public static final DeferredHolder<MenuType<?>, MenuType<ContainerFirePit>> FIRE_PIT_MENU = MENUS.register("fire_pit",
+      () -> IMenuTypeExtension.create((id, inv, buf) -> {
+         BlockPos pos = buf.readBlockPos();
+         return new ContainerFirePit(id, inv, inv.player.level().getBlockEntity(pos) instanceof TileFirePit te ? te
+            : new TileFirePit(pos, FIRE_PIT.get().defaultBlockState()));
+      }));
 
    public static final Map<Stone, DeferredBlock<BlockRock>> LOOSE_ROCKS = new EnumMap<>(Stone.class);
    public static final Map<Stone, DeferredItem<Item>> ROCKS = new EnumMap<>(Stone.class);
@@ -165,6 +230,17 @@ public final class NoTreePunching {
          }
          ROCKS.values().forEach(r -> out.accept(r.get()));
          COBBLESTONE.values().forEach(c -> out.accept(c.get()));
+         POTTERY.forEach((t, b) -> {
+            if (t != Pottery.WORKED) {
+               out.accept(b.get());
+            }
+         });
+         out.accept(CERAMIC_LARGE_VESSEL.get());
+         out.accept(CERAMIC_SMALL_VESSEL.get());
+         out.accept(CERAMIC_BUCKET.get());
+         ItemStack water = new ItemStack(CERAMIC_BUCKET.get());
+         water.set(FLUID_CONTENT.get(), SimpleFluidContent.copyOf(new FluidStack(Fluids.WATER, ItemCeramicBucket.CAPACITY)));
+         out.accept(water);
       }).build());
    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB_TOOLS = TABS.register("tools", () -> CreativeModeTab.builder()
       .title(Component.translatable("itemGroup.notreepunching.tools")).icon(() -> new ItemStack(FLINT_TOOLS.get(ToolType.KNIFE).get()))
@@ -203,6 +279,18 @@ public final class NoTreePunching {
       ITEMS.register(modBus);
       SOUNDS.register(modBus);
       TABS.register(modBus);
+      TILES.register(modBus);
+      MENUS.register(modBus);
+      COMPONENTS.register(modBus);
+      modBus.addListener(NoTreePunching::registerCapabilities);
       NeoForge.EVENT_BUS.register(ModEventHandler.class);
+   }
+
+   /** 1.12 capabilities: the ceramic bucket's fluid handler, TileLargeVessel on every side, TileInventory (fire pit) only for side null */
+   private static void registerCapabilities(RegisterCapabilitiesEvent event) {
+      event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new ItemCeramicBucket.FluidHandlerCeramicBucket(stack, ItemCeramicBucket.CAPACITY),
+         CERAMIC_BUCKET.get());
+      event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, LARGE_VESSEL_TILE.get(), (te, side) -> te.getInventory());
+      event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, FIRE_PIT_TILE.get(), (te, side) -> side == null ? te.getInventory() : null);
    }
 }

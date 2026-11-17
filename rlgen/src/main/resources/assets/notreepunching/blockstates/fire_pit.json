@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "notreepunching:block/fire_pit"
+    },
+    "lit=true": {
+      "model": "notreepunching:block/fire_pit"
+    }
+  }
+}

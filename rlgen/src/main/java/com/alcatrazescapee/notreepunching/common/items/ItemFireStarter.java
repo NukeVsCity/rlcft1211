@@ -1,6 +1,16 @@
 package com.alcatrazescapee.notreepunching.common.items;
 
 import com.alcatrazescapee.notreepunching.ModConfig;
+import com.alcatrazescapee.notreepunching.NoTreePunching;
+import com.alcatrazescapee.notreepunching.common.tile.TileFirePit;
+import java.util.List;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.InteractionHand;
@@ -18,11 +28,13 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * 1.12 ItemFireStarter: drawn like a bow for 30 ticks, then lights a fire on the looked-at block with FireStarterFireStartChance
- * (RLCraft 0.5). 1.12 turned 3 sticks + 1 log + 1 kindling lying there into a fire pit; the fire pit is not ported, so that case
- * also just tries to light a fire. RLCraft removed its crafting recipe.
+ * 1.12 ItemFireStarter: drawn like a bow for 30 ticks. If 3 sticks, 1 log and 1 kindling (grass string, paper, hay bale) lie on the
+ * looked-at block, they become a lit fire pit (every item entity there is removed, 1.12 quirk); otherwise it lights a fire with
+ * fireStarterFireStartChance (RLCraft 0.5). RLCraft removed its crafting recipe.
  */
 public class ItemFireStarter extends Item {
+   private static final TagKey<Item> STICKS = ItemTags.create(ResourceLocation.fromNamespaceAndPath("c", "rods/wooden"));
+
    public ItemFireStarter(Properties props) {
       super(props);
    }
@@ -40,7 +52,27 @@ public class ItemFireStarter extends Item {
          if (result.getType() == HitResult.Type.BLOCK && !world.isClientSide) {
             BlockPos pos = result.getBlockPos();
             stack.hurtAndBreak(1, entity, LivingEntity.getSlotForHand(player.getUsedItemHand()));
-            if ((double)world.random.nextFloat() < ModConfig.BALANCE.fireStarterFireStartChance) {
+            List<ItemEntity> entities = world.getEntitiesOfClass(ItemEntity.class, new AABB(pos.above()).setMaxY(pos.getY() + 2));
+            int sticks = 3;
+            int logs = 1;
+            int thatch = 1;
+            for (ItemEntity drop : entities) {
+               ItemStack dropStack = drop.getItem();
+               if (dropStack.is(NoTreePunching.GRASS_STRING.get()) || dropStack.is(Items.PAPER) || dropStack.is(Items.HAY_BLOCK)) {
+                  thatch -= dropStack.getCount();
+               } else if (dropStack.is(ItemTags.LOGS)) {
+                  logs -= dropStack.getCount();
+               } else if (dropStack.is(STICKS)) {
+                  sticks -= dropStack.getCount();
+               }
+            }
+            if (sticks <= 0 && logs <= 0 && thatch <= 0) {
+               world.setBlockAndUpdate(pos.above(), NoTreePunching.FIRE_PIT.get().defaultBlockState());
+               if (world.getBlockEntity(pos.above()) instanceof TileFirePit te) {
+                  te.light(true);
+               }
+               entities.forEach(Entity::discard);
+            } else if ((double)world.random.nextFloat() < ModConfig.BALANCE.fireStarterFireStartChance) {
                world.setBlockAndUpdate(pos.above(), Blocks.FIRE.defaultBlockState());
             }
          }

@@ -1,0 +1,12 @@
+{
+  "loader": "neoforge:fluid_container",
+  "parent": "neoforge:item/default",
+  "fluid": "minecraft:empty",
+  "flip_gas": true,
+  "cover_is_mask": false,
+  "textures": {
+    "base": "notreepunching:item/ceramic_bucket",
+    "fluid": "neoforge:item/mask/bucket_fluid",
+    "cover": "notreepunching:item/ceramic_bucket_cover"
+  }
+}

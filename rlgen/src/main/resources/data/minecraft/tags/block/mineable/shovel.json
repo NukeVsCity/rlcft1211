@@ -7,6 +7,11 @@
     "iceandfire:ash",
     "iceandfire:frozen_dirt",
     "iceandfire:frozen_grass",
-    "iceandfire:frozen_grass_path"
+    "iceandfire:frozen_grass_path",
+    "notreepunching:pottery/worked",
+    "notreepunching:pottery/large_vessel",
+    "notreepunching:pottery/small_vessel",
+    "notreepunching:pottery/bucket",
+    "notreepunching:pottery/flower_pot"
   ]
 }

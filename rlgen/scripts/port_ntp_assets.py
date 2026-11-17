@@ -6,7 +6,7 @@ usage: port_ntp_assets.py <decompiled notreepunching jar dir> <rlgen/src/main/re
 Textures/sounds (1.21 folder names), models, blockstates, en_us.json (1.12 .lang + RLCraft display names), loot tables, tags and
 recipes: the 1.12 json recipes, the generated Saw + Log -> Planks recipes (replaceLogRecipes: the vanilla log -> planks and stick
 recipes are switched off), the smelting recipes of ModRecipes.init and RLCraft's Shiv.zs changes (no fire starter recipe, 4 rocks ->
-1 sandstone / red sandstone, the sand -> sandstone recipes removed).
+1 sandstone / red sandstone, the sand -> sandstone recipes removed, no furnace recipe for the ceramic small vessel).
 """
 import json
 import os
@@ -94,6 +94,77 @@ for s in COBBLES:
    w(os.path.join(A, 'models', 'item', 'cobblestone', s + '.json'), {'parent': 'notreepunching:block/cobblestone/' + s})
    w(os.path.join(D, 'loot_table', 'blocks', 'cobblestone', s + '.json'), {'type': 'minecraft:block', 'pools': [
       {'rolls': 1, 'entries': [{'type': 'minecraft:item', 'name': 'notreepunching:cobblestone/' + s}], 'conditions': [{'condition': 'minecraft:survives_explosion'}]}]})
+
+# ---- fire pit, pottery, ceramic vessels/bucket (ModBlocks, ModItems, ModGuiHandler textures) ----
+for fn in ('fire_pit.png', 'large_vessel.png', 'small_vessel.png'):
+   cp(os.path.join(SRC, 'textures', 'gui', fn), os.path.join(A, 'textures', 'gui', fn))
+cp(os.path.join(SRC, 'textures', 'blocks', 'ceramic.png'), os.path.join(A, 'textures', 'block', 'ceramic.png'))
+
+
+def block_model(src, dst, textures):
+   m = json.load(open(os.path.join(SRC, 'models', 'block', src + '.json')))
+   m.pop('__comment', None)
+   m.pop('credit', None)
+   for e in m.get('elements', []):
+      e.pop('name', None)
+      e.pop('type', None)
+   m['parent'] = 'block/block'
+   m['textures'] = textures
+   w(os.path.join(A, 'models', 'block', dst + '.json'), m)
+
+
+def drop_self(name):
+   w(os.path.join(D, 'loot_table', 'blocks', name + '.json'), {'type': 'minecraft:block', 'pools': [
+      {'rolls': 1, 'entries': [{'type': 'minecraft:item', 'name': 'notreepunching:' + name}], 'conditions': [{'condition': 'minecraft:survives_explosion'}]}]})
+
+
+# fire_pit: one model for both lit states (StateMapper ignores LIT), drops 2 sticks
+block_model('fire_pit', 'fire_pit', {'bark': 'minecraft:block/oak_log', 'end': 'minecraft:block/oak_log_top', 'particle': 'minecraft:block/oak_log'})
+w(os.path.join(A, 'blockstates', 'fire_pit.json'), {'variants': {'lit=false': {'model': 'notreepunching:block/fire_pit'},
+                                                               'lit=true': {'model': 'notreepunching:block/fire_pit'}}})
+w(os.path.join(D, 'loot_table', 'blocks', 'fire_pit.json'), {'type': 'minecraft:block', 'pools': [
+   {'rolls': 1, 'entries': [{'type': 'minecraft:item', 'name': 'minecraft:stick',
+                             'functions': [{'function': 'minecraft:set_count', 'count': 2}]}]}]})
+# pottery/<type>: clay texture; item models: large vessel = block model (forge:default-block), the others the 1.12 item sprites
+POTTERY = ['worked', 'large_vessel', 'small_vessel', 'bucket', 'flower_pot']
+CLAY = {'all': 'minecraft:block/clay', 'particle': 'minecraft:block/clay'}
+for t in POTTERY:
+   block_model('pottery/' + t, 'pottery/' + t, CLAY)
+   w(os.path.join(A, 'blockstates', 'pottery', t + '.json'), {'variants': {'': {'model': 'notreepunching:block/pottery/' + t}}})
+   if t == 'worked':
+      w(os.path.join(D, 'loot_table', 'blocks', 'pottery', 'worked.json'), {'type': 'minecraft:block', 'pools': [
+         {'rolls': 1, 'entries': [{'type': 'minecraft:item', 'name': 'minecraft:clay_ball',
+                                   'functions': [{'function': 'minecraft:set_count', 'count': 3}]}],
+          'conditions': [{'condition': 'minecraft:survives_explosion'}]}]})
+      continue
+   drop_self('pottery/' + t)
+   if t == 'large_vessel':
+      w(os.path.join(A, 'models', 'item', 'pottery', t + '.json'), {'parent': 'notreepunching:block/pottery/large_vessel'})
+   else:
+      im = json.load(open(os.path.join(SRC, 'models', 'item', 'pottery', t + '.json')))
+      item_tex = im['textures']['layer0'].replace('notreepunching:items/', 'notreepunching:item/')
+      w(os.path.join(A, 'models', 'item', 'pottery', t + '.json'), {'parent': 'item/generated', 'textures': {'layer0': item_tex}})
+# ceramic_large_vessel: the large vessel model with the ceramic texture
+block_model('pottery/large_vessel', 'ceramic_large_vessel', {'all': 'notreepunching:block/ceramic', 'particle': 'notreepunching:block/ceramic'})
+w(os.path.join(A, 'blockstates', 'ceramic_large_vessel.json'), {'variants': {'': {'model': 'notreepunching:block/ceramic_large_vessel'}}})
+w(os.path.join(A, 'models', 'item', 'ceramic_large_vessel.json'), {'parent': 'notreepunching:block/ceramic_large_vessel'})
+drop_self('ceramic_large_vessel')
+item_model('ceramic_small_vessel')
+# ceramic_bucket: forge:forgebucket (base, masked fluid, cover drawn on top, flipGas) = neoforge:fluid_container with cover_is_mask false
+w(os.path.join(A, 'models', 'item', 'ceramic_bucket.json'), {'loader': 'neoforge:fluid_container', 'parent': 'neoforge:item/default',
+                                                             'fluid': 'minecraft:empty', 'flip_gas': True, 'cover_is_mask': False,
+                                                             'textures': {'base': 'notreepunching:item/ceramic_bucket',
+                                                                          'fluid': 'neoforge:item/mask/bucket_fluid',
+                                                                          'cover': 'notreepunching:item/ceramic_bucket_cover'}})
+w(os.path.join(MC, 'tags', 'block', 'mineable', 'shovel.json'), {'values': ['notreepunching:pottery/' + t for t in POTTERY]})
+w(os.path.join(MC, 'tags', 'block', 'mineable', 'pickaxe.json'), {'values': ['notreepunching:ceramic_large_vessel']})
+w(os.path.join(MC, 'tags', 'item', 'enchantable', 'durability.json'), {'values': ['notreepunching:clay_tool']})
+# ModRecipes.init: pottery -> fired type in the furnace (0.1 xp); Shiv.zs furnace.remove(<notreepunching:ceramic_small_vessel>)
+FIRED = {'large_vessel': 'notreepunching:ceramic_large_vessel', 'bucket': 'notreepunching:ceramic_bucket', 'flower_pot': 'minecraft:flower_pot'}
+for t, out in FIRED.items():
+   w(os.path.join(D, 'recipe', 'smelting', 'pottery_' + t + '.json'), {'type': 'minecraft:smelting', 'category': 'misc',
+                                                                     'ingredient': {'item': 'notreepunching:pottery/' + t}, 'result': {'id': out},
+                                                                     'experience': 0.1, 'cookingtime': 200})
 
 # ---- lang ----
 lang = {}

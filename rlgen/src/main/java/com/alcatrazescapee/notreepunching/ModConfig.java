@@ -27,6 +27,7 @@ public final class ModConfig {
          "minecraft:mycelium", "minecraft:clay", "minecraft:snow", "minecraft:snow_layer", "iceandfire:ash", "defiledlands:grass_defiled",
          "defiledlands:dirt_defiled", "defiledlands:gravel_defiled", "defiledlands:sand_defiled", "minecraft:soul_sand", "minecraft:farmland", "minecraft:ice",
          "minecraft:packed_ice"};
+      public String[] ceramicBucketValidFluids = {"water"};
       public boolean enableAdvancedRecipeReplacement = true;
       public boolean enableBreakingChanges = true;
       public boolean enableRandomStoneWorldGenVariants = false;
