@@ -54,5 +54,14 @@ version="0.3.9"
 displayName="SimpleDifficulty (1.12 RLCraft port)"
 description='''Simple Difficulty 0.3.9 (thirst and temperature) as in RLCraft 2.9.3, ported from the 1.12 code.'''
 
+[[mods]]
+modId="firstaid"
+version="1.6.22"
+displayName="First Aid (1.12 RLCraft port)"
+description='''First Aid 1.6.22 (body part health) as in RLCraft 2.9.3, ported from the 1.12 code.'''
+
 [[mixins]]
 config="iceandfire.mixins.json"
+
+[[mixins]]
+config="firstaid.mixins.json"
