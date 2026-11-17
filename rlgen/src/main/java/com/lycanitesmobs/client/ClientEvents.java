@@ -34,6 +34,11 @@ public final class ClientEvents {
       }
       NeoForge.EVENT_BUS.register(new com.lycanitesmobs.client.gui.overlays.BaseOverlay(Minecraft.getInstance()));
       NeoForge.EVENT_BUS.register(new ClientEventListener());
+      // 1.12 MobEventManager handled ClientTickEvent in both phases, so client mob event players tick twice per tick
+      NeoForge.EVENT_BUS.addListener(net.neoforged.neoforge.client.event.ClientTickEvent.Pre.class,
+         e -> com.lycanitesmobs.core.mobevent.MobEventManager.getInstance().onClientUpdate(e));
+      NeoForge.EVENT_BUS.addListener(net.neoforged.neoforge.client.event.ClientTickEvent.Post.class,
+         e -> com.lycanitesmobs.core.mobevent.MobEventManager.getInstance().onClientUpdate(e));
    }
 
    /** 1.12 TabManager.registerTab(new MainTab(0)). */

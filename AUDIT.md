@@ -82,7 +82,7 @@ Comparison with a real 1.12 save: `rlgen/scripts/compare112.py` (+ `gen_compare_
 |---|---|
 | LLibrary 1.7.20 (parts IaF uses) | DONE (v0.10.0) |
 | Ice and Fire 1.7.1 | DONE (v0.10.0): items/blocks/recipes/loot/config, dragons (server+client), land mobs, air/water mobs, world-gen spawns |
-| Lycanites Mobs 2.0.8.9 | TODO (next) |
+| Lycanites Mobs 2.0.8.9 | DONE (v0.11.0) |
 | Mechanics (Simple Difficulty, First Aid, NTP, Spartan, RLCombat/Dodge/ShieldBreak, Baubles, Scaling Health/Infernal/Champions/Bloodmoon, Reskillable/CompatSkills/Level Up, Potion Core/SME/Better Survival) | TODO |
 
 ## Blocks inside structures
@@ -170,7 +170,7 @@ look-alikes (convert_rc.py MOD_BLOCKS). After changing the mapping: re-run conve
 | Locks-1.12.2-3.0.0.jar | Gameplay (misc) | TODO |
 | LootTweaker-0.3.1+MC1.12.2.jar | RLCraft tweaks/scripts | TODO (apply what they change) |
 | Lum.1.12.2.zip | Resource pack | with its mod |
-| LycanitesMobs32X.zip | Gameplay (mobs) | world gen DONE, mobs IN PROGRESS |
+| LycanitesMobs32X.zip | Gameplay (mobs) | DONE (v0.11.0) |
 | MTLib-3.0.7.jar | Library | only when a ported mod needs it |
 | MainMenuScale-1.3.2.jar | Performance/client/UI tweak | not needed (1.21 equivalents can be installed) |
 | Mantle-1.12-1.3.3.55.jar | Library | only when a ported mod needs it |
@@ -267,7 +267,7 @@ look-alikes (convert_rc.py MOD_BLOCKS). After changing the mapping: re-run conve
 | librarianlib-1.12.2-4.22.jar | Library | only when a ported mod needs it |
 | llibrary-1.7.20-1.12.2.jar | Gameplay | DONE (v0.10.0) |
 | lostcities-1.12-2.0.22.jar | World gen | SKIP (user dropped / not used) |
-| lycanitesmobs-1.12.2-2.0.8.9.jar | Gameplay (mobs) | world gen DONE, mobs IN PROGRESS |
+| lycanitesmobs-1.12.2-2.0.8.9.jar | Gameplay (mobs) | DONE (v0.11.0) |
 | mcw-bridges-1.0.6b-mc1.12.2.jar | Gameplay (misc) | TODO |
 | modtweaker-4.0.20.11.jar | RLCraft tweaks/scripts | TODO (apply what they change) |
 | notreepunching-2.0.21.jar | World gen + gameplay | world gen DONE, gameplay TODO |

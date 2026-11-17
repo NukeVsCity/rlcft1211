@@ -111,7 +111,7 @@ import java.util.UUID;
 /** 1.12 ExtendedWorld (WorldSavedData in the per-dimension storage "LycanitesMobs"; 1.21 SavedData in the level's DataStorage). */
 public class ExtendedWorld extends net.minecraft.world.level.saveddata.SavedData {
    private static final String EXT_PROP_NAME = "LycanitesMobs";
-   private static final Map<Level, ExtendedWorld> loadedExtWorlds = new HashMap<>();
+   private static final Map<Level, ExtendedWorld> loadedExtWorlds = new java.util.concurrent.ConcurrentHashMap<>();
    public Level world;
    public boolean initialized = false;
    public long lastSpawnerTime = 0L;
@@ -130,7 +130,16 @@ public class ExtendedWorld extends net.minecraft.world.level.saveddata.SavedData
    public Map<UUID, DungeonInstance> dungeons = new HashMap<>();
 
    public static ExtendedWorld getForWorld(Level world) {
-      return world == null ? null : loadedExtWorlds.computeIfAbsent(world, k -> {
+      if (world == null) {
+         return null;
+      }
+      // get/put instead of computeIfAbsent: in single player the client and server threads share this map, and creating an
+      // ExtendedWorld can come back here (1.12 used a plain HashMap.get/put)
+      ExtendedWorld existing = loadedExtWorlds.get(world);
+      if (existing != null) {
+         return existing;
+      }
+      {
          ExtendedWorld worldExt;
          if (world instanceof ServerLevel serverLevel) {
             boolean[] loaded = new boolean[1];
@@ -151,8 +160,9 @@ public class ExtendedWorld extends net.minecraft.world.level.saveddata.SavedData
             worldExt = new ExtendedWorld(world);
          }
 
-         return worldExt;
-      });
+         ExtendedWorld raced = loadedExtWorlds.putIfAbsent(world, worldExt);
+         return raced != null ? raced : worldExt;
+      }
    }
 
    public static void remove(Level world) {
