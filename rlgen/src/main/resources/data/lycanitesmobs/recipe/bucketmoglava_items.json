@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " G ",
+    "IMI",
+    " I "
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:ghast_tear"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "M": {
+      "item": "minecraft:magma_cream"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:bucketmoglava",
+    "count": 1
+  }
+}

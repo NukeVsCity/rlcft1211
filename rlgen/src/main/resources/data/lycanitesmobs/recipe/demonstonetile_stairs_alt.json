@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "  B",
+    " BB",
+    "BBB"
+  ],
+  "key": {
+    "B": {
+      "item": "lycanitesmobs:demonstonetile"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:demonstonetile_stairs",
+    "count": 8
+  }
+}

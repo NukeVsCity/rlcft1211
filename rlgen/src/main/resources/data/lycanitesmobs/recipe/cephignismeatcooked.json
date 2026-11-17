@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "lycanitesmobs:searing_taco"
+    }
+  ],
+  "result": {
+    "id": "lycanitesmobs:cooked_cephignis_meat",
+    "count": 1
+  }
+}

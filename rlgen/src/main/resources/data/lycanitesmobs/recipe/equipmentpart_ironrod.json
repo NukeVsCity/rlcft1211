@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " I ",
+    " I ",
+    " R "
+  ],
+  "key": {
+    "R": {
+      "item": "lycanitesmobs:woodenrod"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:ironrod",
+    "count": 1
+  }
+}

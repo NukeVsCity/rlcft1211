@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " MM",
+    "BBM",
+    " MM"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:sugar_cane"
+    },
+    "M": {
+      "tag": "lycanitesmobs:ore/listallvegetables"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:planttreat",
+    "count": 4
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "lycanitesmobs:sylphwing"
+    }
+  ],
+  "result": {
+    "id": "lycanitesmobs:aetherwavecharge",
+    "count": 4
+  }
+}

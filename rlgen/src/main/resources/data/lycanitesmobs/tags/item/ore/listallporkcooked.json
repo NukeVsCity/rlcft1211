@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "minecraft:cooked_porkchop",
+      "required": false
+    },
+    {
+      "id": "lycanitesmobs:cooked_bobeko_meat",
+      "required": false
+    },
+    {
+      "id": "lycanitesmobs:cooked_maka_meat",
+      "required": false
+    }
+  ]
+}

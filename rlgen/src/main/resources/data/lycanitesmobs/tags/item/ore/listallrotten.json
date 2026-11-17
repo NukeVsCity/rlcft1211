@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "minecraft:rotten_flesh",
+      "required": false
+    },
+    {
+      "id": "lycanitesmobs:geistliver",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "B ",
+    "B "
+  ],
+  "key": {
+    "B": {
+      "item": "lycanitesmobs:demonstonebrick_slab"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:demonstonechiseled",
+    "count": 2
+  }
+}

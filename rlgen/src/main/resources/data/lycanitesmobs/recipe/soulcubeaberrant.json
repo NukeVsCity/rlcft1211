@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BBB",
+    "BSB",
+    "BBB"
+  ],
+  "key": {
+    "S": {
+      "item": "lycanitesmobs:soulstone_aberration"
+    },
+    "B": {
+      "item": "lycanitesmobs:aberrantstone"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:soulcubeaberrant",
+    "count": 1
+  }
+}

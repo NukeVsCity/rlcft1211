@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "LLL",
+    "LFL",
+    "LLL"
+  ],
+  "key": {
+    "L": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "F": {
+      "item": "lycanitesmobs:equipmentforge_lesser"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:equipment_infuser",
+    "count": 1
+  }
+}

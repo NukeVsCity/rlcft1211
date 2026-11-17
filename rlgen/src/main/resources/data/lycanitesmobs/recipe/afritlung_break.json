@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "lycanitesmobs:afritlung"
+    }
+  ],
+  "result": {
+    "id": "lycanitesmobs:scorchfireballcharge",
+    "count": 4
+  }
+}

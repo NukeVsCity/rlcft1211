@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BBB"
+  ],
+  "key": {
+    "B": {
+      "item": "lycanitesmobs:shadowstone"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:shadowstone_slab",
+    "count": 6
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "values": [
+    {
+      "id": "minecraft:mushroom_stew",
+      "required": false
+    },
+    {
+      "id": "minecraft:red_mushroom",
+      "required": false
+    },
+    {
+      "id": "minecraft:red_mushroom_block",
+      "required": false
+    },
+    {
+      "id": "minecraft:brown_mushroom",
+      "required": false
+    },
+    {
+      "id": "minecraft:brown_mushroom_block",
+      "required": false
+    }
+  ]
+}

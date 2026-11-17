@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "lycanitesmobs:malwratheye"
+    }
+  ],
+  "result": {
+    "id": "lycanitesmobs:demonicblastcharge",
+    "count": 4
+  }
+}

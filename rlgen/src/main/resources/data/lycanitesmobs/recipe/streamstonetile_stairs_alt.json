@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "  B",
+    " BB",
+    "BBB"
+  ],
+  "key": {
+    "B": {
+      "item": "lycanitesmobs:streamstonetile"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:streamstonetile_stairs",
+    "count": 8
+  }
+}

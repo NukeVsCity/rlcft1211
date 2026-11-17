@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " MM",
+    "BBM",
+    " MM"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:bone"
+    },
+    "M": {
+      "tag": "lycanitesmobs:ore/listallbeefcooked"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:beasttreat",
+    "count": 4
+  }
+}

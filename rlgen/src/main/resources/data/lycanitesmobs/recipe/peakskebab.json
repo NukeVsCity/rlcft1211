@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:stick"
+    },
+    {
+      "item": "minecraft:carrot"
+    },
+    {
+      "item": "minecraft:melon_slice"
+    },
+    {
+      "item": "lycanitesmobs:cooked_yale_meat"
+    }
+  ],
+  "result": {
+    "id": "lycanitesmobs:peaks_kebab",
+    "count": 1
+  }
+}

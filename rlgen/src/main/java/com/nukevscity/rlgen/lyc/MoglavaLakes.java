@@ -50,7 +50,7 @@ public final class MoglavaLakes extends Feature<NoneFeatureConfiguration> {
          int z = cp.z * 16 + 16;
          int top = Math.max(1, topSolidOrLiquid(w, x, z) - 10);
          int y = random.nextInt(top);
-         return Gen.lake(w, random, new BlockPos(x, y, z), LycFluids.MOGLAVA.block.get().defaultBlockState(), true);
+         return Gen.lake(w, random, new BlockPos(x, y, z), LycFluids.MOGLAVA.state(), true);
       }
       return false;
    }

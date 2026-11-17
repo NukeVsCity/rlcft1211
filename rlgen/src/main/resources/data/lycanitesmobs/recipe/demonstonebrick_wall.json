@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BBB",
+    "BBB"
+  ],
+  "key": {
+    "B": {
+      "item": "lycanitesmobs:demonstonebrick"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:demonstonebrick_wall",
+    "count": 6
+  }
+}

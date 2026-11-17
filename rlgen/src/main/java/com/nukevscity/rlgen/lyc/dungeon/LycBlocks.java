@@ -8,8 +8,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
 /**
- * Theme block ids as 1.21 blocks: Lycanites stone sets and crystals are rlgen blocks with Lycanites' textures, its fluids are the
- * rlgen fluids, its fires are vanilla fire (they don't keep burning like Lycanites' did), clouds are air.
+ * Theme block ids as 1.21 blocks: the real Lycanites blocks (stone sets, crystals, fluids, fires, clouds) of the ported mod;
+ * ids it does not have fall back to the rlgen stand-ins (stone sets with Lycanites' textures, rlgen fluids, vanilla fire, air).
  */
 public final class LycBlocks {
    private static final Map<String, String> SPECIAL = Map.ofEntries(
@@ -29,6 +29,10 @@ public final class LycBlocks {
    }
 
    public static Block block(String id) {
+      ResourceLocation real = ResourceLocation.tryParse(id);
+      if (real != null && real.getNamespace().equals("lycanitesmobs") && BuiltInRegistries.BLOCK.containsKey(real)) {
+         return BuiltInRegistries.BLOCK.get(real);
+      }
       switch (id) {
          case "lycanitesmobs:ooze":
             return LycFluids.OOZE.block.get();

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BBB",
+    "B B"
+  ],
+  "key": {
+    "B": {
+      "item": "lycanitesmobs:ashenstonebrick"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:ashenstonebrick_fence",
+    "count": 5
+  }
+}

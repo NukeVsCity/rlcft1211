@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "B  ",
+    "BB ",
+    "BBB"
+  ],
+  "key": {
+    "B": {
+      "item": "lycanitesmobs:ashenstonebrick"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:ashenstonebrick_stairs",
+    "count": 8
+  }
+}

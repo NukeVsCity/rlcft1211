@@ -7,7 +7,7 @@ import net.minecraft.world.entity.EntityType;
 
 /**
  * The parts of Lycanites' MobSpawn a dungeon uses: the weight (Lycanites creatures without one used their creature spawn weight,
- * 8 here) and the dungeon level/boss filters. Lycanites mobs are not ported, so spawners get a vanilla stand-in.
+ * 8 here) and the dungeon level/boss filters. Spawners get the real mob (Lycanites Mobs is ported, mod id lycanitesmobs).
  */
 public class MobSpawn {
    public final String mobId;
@@ -44,10 +44,10 @@ public class MobSpawn {
       return this.weight > -1 ? this.weight : 8;
    }
 
-   /** The entity a spawner gets: vanilla ids as they are, Lycanites mobs as zombies until Lycanites is ported. */
+   /** The entity a spawner gets: the mob of the id (vanilla or Lycanites); an unknown id stays a zombie. */
    public EntityType<?> entityType() {
       ResourceLocation id = ResourceLocation.tryParse(this.mobId);
-      if (id != null && id.getNamespace().equals("minecraft") && BuiltInRegistries.ENTITY_TYPE.containsKey(id)) {
+      if (id != null && BuiltInRegistries.ENTITY_TYPE.containsKey(id)) {
          return BuiltInRegistries.ENTITY_TYPE.get(id);
       }
       return EntityType.ZOMBIE;

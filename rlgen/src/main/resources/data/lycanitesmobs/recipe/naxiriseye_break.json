@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "lycanitesmobs:naxiriseye"
+    }
+  ],
+  "result": {
+    "id": "lycanitesmobs:arcanelaserstormcharge",
+    "count": 4
+  }
+}

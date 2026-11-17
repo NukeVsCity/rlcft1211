@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "lycanitesmobs:shadowstone"
+    },
+    {
+      "item": "minecraft:glowstone"
+    }
+  ],
+  "result": {
+    "id": "lycanitesmobs:shadowcrystal",
+    "count": 1
+  }
+}

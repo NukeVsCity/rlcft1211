@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " MM",
+    "BBM",
+    " MM"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:bone"
+    },
+    "M": {
+      "tag": "lycanitesmobs:ore/listallchickencooked"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:aviantreat",
+    "count": 4
+  }
+}

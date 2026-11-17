@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "minecraft:cooked_chicken",
+      "required": false
+    },
+    {
+      "id": "lycanitesmobs:cooked_joust_meat",
+      "required": false
+    },
+    {
+      "id": "lycanitesmobs:cooked_concapede_meat",
+      "required": false
+    }
+  ]
+}

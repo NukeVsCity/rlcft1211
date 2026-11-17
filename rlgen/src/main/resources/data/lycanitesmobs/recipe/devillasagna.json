@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:nether_wart"
+    },
+    {
+      "item": "minecraft:wheat"
+    },
+    {
+      "item": "lycanitesmobs:cooked_pinky_meat"
+    }
+  ],
+  "result": {
+    "id": "lycanitesmobs:devil_lasagna",
+    "count": 1
+  }
+}

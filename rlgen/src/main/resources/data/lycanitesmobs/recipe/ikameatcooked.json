@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "lycanitesmobs:seashell_maki"
+    }
+  ],
+  "result": {
+    "id": "lycanitesmobs:cooked_ika_meat",
+    "count": 1
+  }
+}

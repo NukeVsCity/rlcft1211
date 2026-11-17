@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "B ",
+    "B "
+  ],
+  "key": {
+    "B": {
+      "item": "lycanitesmobs:ashenstonetile_slab"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:ashenstonechiseled",
+    "count": 2
+  }
+}

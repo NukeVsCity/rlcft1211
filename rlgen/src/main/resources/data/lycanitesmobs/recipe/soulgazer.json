@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "GBG",
+    "BDB",
+    "GBG"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:bone"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    }
+  },
+  "result": {
+    "id": "lycanitesmobs:soulgazer",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:vine"
+    },
+    {
+      "item": "minecraft:red_mushroom"
+    },
+    {
+      "item": "lycanitesmobs:cooked_aspid_meat"
+    }
+  ],
+  "result": {
+    "id": "lycanitesmobs:moss_pie",
+    "count": 1
+  }
+}
